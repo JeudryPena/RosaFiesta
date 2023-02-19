@@ -17,7 +17,7 @@ public class UserController : ControllerBase
         _context = context;
     }
 
-    [HttpGet("usuarios")]afdsfdsa
+    [HttpGet("usuarios")]
     public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
     {
         return await _context.User.ToListAsync();
