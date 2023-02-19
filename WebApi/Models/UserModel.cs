@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApi;
+namespace WebApi.Models;
 
 public class UserModel
 {
@@ -9,13 +9,16 @@ public class UserModel
 
      [MinLength(3), MaxLength(30)]
      public string FirstName { get; set; }
-     
+
      [MinLength(3), MaxLength(30)]
      public string LastName { get; set; }
-     
+
      [Range(5, 120)]
      public int Age { get; set; }
-     
+
      [MinLength(3), MaxLength(30)]
      public string CivilStatus { get; set; }
+
+
+
 }

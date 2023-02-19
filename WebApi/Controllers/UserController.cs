@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Models;
 
 namespace WebApi.Controllers;
 
@@ -20,13 +21,14 @@ public class UserController : ControllerBase
     [HttpGet("usuarios")]
     public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
     {
-        return await _context.User.ToListAsync();
+        return await _context.Users.ToListAsync();
     }
 
     [HttpPost("crearUsuario")]
     public async Task<ActionResult<UserModel>> CreateUser(UserModel user)
     {
-        _context.User.Add(user);
+        user.ID = Guid.NewGuid();
+        _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return Ok(user);
     }

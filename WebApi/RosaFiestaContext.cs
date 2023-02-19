@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApi.Models;
 
 namespace WebApi;
 
@@ -7,7 +8,8 @@ public class RosaFiestaContext : DbContext
     // Aqui se declara tabla
     public RosaFiestaContext(DbContextOptions<RosaFiestaContext> options) : base(options)
     {
-        User = Set<UserModel>();
+        Users = Set<UserModel>();
+        Products = Set<ProductModel>();
     }
 
     // Se va a declarar relaciones de tablas 
@@ -19,5 +21,7 @@ public class RosaFiestaContext : DbContext
         modelBuilder.UseIdentityColumns();
     }
 
-    public DbSet<UserModel> User { get; }
+    public DbSet<UserModel> Users { get; }
+    public DbSet<ProductModel> Products { get; }
+
 }
