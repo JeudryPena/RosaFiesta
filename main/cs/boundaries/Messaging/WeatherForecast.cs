@@ -1,4 +1,4 @@
-namespace Persistence;
+namespace Messaging;
 
 public class WeatherForecast
 {
