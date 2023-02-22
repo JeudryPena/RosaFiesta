@@ -11,7 +11,7 @@ public class RosaFiestaContext : DbContext
     public RosaFiestaContext(DbContextOptions<RosaFiestaContext> options)
         : base(options)
     {
-        Users = Set<UserModel>();
+        Users = Set<UserEntity>();
         Products = Set<ProductModel>();
     }
 
@@ -24,6 +24,6 @@ public class RosaFiestaContext : DbContext
         modelBuilder.UseIdentityColumns();
     }
 
-    public DbSet<UserModel> Users { get; }
+    public DbSet<UserEntity> Users { get; }
     public DbSet<ProductModel> Products { get; }
 }

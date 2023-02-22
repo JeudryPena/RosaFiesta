@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,26 +9,25 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly RosaFiestaContext _context;  
+    private readonly RosaFiestaContext _context;
+
     public UserController(RosaFiestaContext context)
     {
         _context = context;
     }
 
     [HttpGet("usuarios")]
-    public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<UserEntity>>> GetUsers()
     {
         return await _context.Users.ToListAsync();
     }
 
     [HttpPost("crearUsuario")]
-    public async Task<ActionResult<UserModel>> CreateUser(UserModel user)
+    public async Task<ActionResult<UserEntity>> CreateUser(UserEntity user)
     {
         user.ID = Guid.NewGuid();
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return Ok(user);
     }
-
-
 }

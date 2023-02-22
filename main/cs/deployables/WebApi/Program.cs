@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using Core.Models;
+using Core.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -17,6 +18,8 @@ public static class Program
 {
     private const string OriginsKey = "Origins";
     private const string SqlConnectionString = "SqlServerConnection";
+    private const string JwtTokenConfigKey = "jwtTokenConfig";
+    private const string SmtpKey = "SmtpConfig";
 
     public static void Main(string[] args)
     {
@@ -222,7 +225,7 @@ public static class Program
     private static void AddIdentity(IServiceCollection services, ConfigurationManager configuration)
     {
         services
-            .AddIdentity<UserModel, IdentityRole>(opts =>
+            .AddIdentity<UserEntity, RoleEntity>(opts =>
             {
                 opts.Password.RequiredLength = 8;
                 opts.Password.RequireDigit = true;
@@ -265,12 +268,12 @@ public static class Program
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ValidAudience = configuration["JWT:ValidAudience"],
-                    ValidIssuer = configuration["JWT:ValidIssuer"],
+                    ValidAudience = configuration["jwtTokenConfig:audience"],
+                    ValidIssuer = configuration["jwtTokenConfig:issuer"],
                     ValidateIssuerSigningKey = true,
                     RequireExpirationTime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configuration["JWT:Secret"])
+                        Encoding.UTF8.GetBytes(configuration["jwtTokenConfig:secret"])
                     ),
                     ClockSkew = TimeSpan.FromMinutes(5)
                 };
