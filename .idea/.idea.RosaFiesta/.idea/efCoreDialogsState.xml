@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EfCoreDialogsState">
+    <option name="keyValueStorage">
+      <map>
+        <entry key="Common:3021de1d-9296-48b2-84e8-04f6507a6631:dbContext" value="Persistence.RosaFiestaContext" />
+        <entry key="Common:86abd41e-bb29-423b-992f-b7974bc28154:dbContext" value="Persistence.RosaFiestaContext" />
+        <entry key="Common:buildConfiguration" value="Debug" />
+        <entry key="Common:noBuild" value="false" />
+        <entry key="Common:outputFolder" value="Migrations" />
+        <entry key="Common:useDefaultConnection" value="true" />
+      </map>
+    </option>
+  </component>
+</project>
