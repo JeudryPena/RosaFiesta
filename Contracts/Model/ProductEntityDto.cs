@@ -17,5 +17,5 @@ public class ProductEntityDto
 
     public bool IsAvailable { get; set; }
 
-    public DateTime AddedAt { get; set; }
+    public DateTimeOffset AddedAt { get; set; } = DateTimeOffset.Now;
 }

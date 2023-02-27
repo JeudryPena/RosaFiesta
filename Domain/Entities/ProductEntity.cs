@@ -4,7 +4,7 @@ namespace Domain.Entities;
 
 public class ProductEntity
 {
-    public Guid ID { get; set; }
+    public Guid Id { get; set; }
 
     [MinLength(3), MaxLength(30)]
     public string? Name { get; set; }

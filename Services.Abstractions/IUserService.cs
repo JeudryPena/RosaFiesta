@@ -1,4 +1,3 @@
-using Contracts;
 using Contracts.Model;
 using Contracts.Response;
 
@@ -6,5 +5,13 @@ namespace Services.Abstractions;
 
 public interface IUserService
 {
-    Task<RegisterResponse> RegisterAsync(PreRegisterDto preRegisterDto, CancellationToken cancellationToken);
+    Task<IEnumerable<UserDto>> GetAllUserAsync(CancellationToken cancellationToken = default);
+    Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    Task<RegisterResponse> RegisterAsync(
+        PreRegisterDto preRegisterDto,
+        CancellationToken cancellationToken = default
+    );
+
+    Task UpdateAsync(Guid userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken = default);
 }

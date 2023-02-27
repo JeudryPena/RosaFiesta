@@ -9,7 +9,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
     public void Configure(EntityTypeBuilder<ProductEntity> builder)
     {
         builder.ToTable(nameof(ProductEntity));
-        builder.HasKey(owner => owner.ID);
+        builder.HasKey(owner => owner.Id);
         builder.Property(owner => owner.Name).HasMaxLength(60);
         builder.Property(owner => owner.Description).HasMaxLength(100);
         builder.Property(owner => owner.Price).IsRequired();

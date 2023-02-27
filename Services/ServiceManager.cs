@@ -1,5 +1,6 @@
 using Domain.Entities;
 using Domain.IRepository;
+using Messaging;
 using Microsoft.AspNetCore.Identity;
 using Services.Abstractions;
 
@@ -12,12 +13,11 @@ public sealed class ServiceManager: IServiceManager
     private readonly Lazy<IUserService> _lazyUserService;
     private readonly Lazy<IProductService> _lazyProductService;
 
-    public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager)
+    public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender)
     {
-         
         _lazyOwnerService = new Lazy<IOwnerService>(() => new OwnerService(repositoryManager));
         _lazyAccountService = new Lazy<IAccountService>(() => new AccountService(repositoryManager));
-        _lazyUserService = new Lazy<IUserService>(() => new UserService(repositoryManager, userManager));
+        _lazyUserService = new Lazy<IUserService>(() => new UserService(repositoryManager, userManager, emailSender));
         _lazyProductService = new Lazy<IProductService>(() => new ProductService(repositoryManager));
     }
     

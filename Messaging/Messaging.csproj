@@ -5,4 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
 </Project>

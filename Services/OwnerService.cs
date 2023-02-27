@@ -21,10 +21,6 @@ internal sealed class OwnerService: IOwnerService
     public async Task<OwnerDto> GetByIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
     {
         var owner = await _repositoryManager.OwnerRepository.GetByIdAsync(ownerId, cancellationToken);
-        if (owner is null)
-        {
-            throw new OwnerNotFoundException(ownerId);
-        }
         var ownerDto = owner.Adapt<OwnerDto>();
         return ownerDto;
     }

@@ -3,9 +3,12 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Domain.Configuration;
 using Domain.Entities;
 using Domain.IRepository;
+using Messaging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -25,27 +28,32 @@ public static class Program
     private const string OriginsKey = "Origins";
     private const string SqlConnectionString = "SqlServerConnection";
     private const string JwtTokenConfigKey = "jwtTokenConfig";
-    private const string SmtpKey = "SmtpConfig";
+    private const string SmtpKey = "EmailConfiguration";
 
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        
         AddControllers(builder);
         AddCompressionMethod(builder);
         AddSwagger(builder);
         AddCors(builder.Services, builder.Configuration);
         AddDbContext(builder.Services, builder.Configuration);
+        AddHttpContext(builder.Services);
         AddIdentity(builder.Services, builder.Configuration);
         AddJwtTokenAuthentication(builder.Services, builder.Configuration);
         AddRepository(builder.Services);
         AddService(builder.Services);
 
+        builder.Services.Configure<FormOptions>(o => {
+            o.ValueLengthLimit = int.MaxValue;
+            o.MultipartBodyLengthLimit = int.MaxValue;
+            o.MemoryBufferThreshold = int.MaxValue;
+        });
+
         builder.Services.AddTransient<ExceptionHandlingMiddleware>();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddHttpContextAccessor();
-        builder.Services.AddHttpClient();
-        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        
 
         var app = builder.Build();
 
@@ -78,6 +86,10 @@ public static class Program
 
     private static void AddControllers(WebApplicationBuilder builder)
     {
+        var emailConfig = builder.Configuration.GetSection(SmtpKey)
+            .Get<EmailConfiguration>();
+        builder.Services.AddSingleton(emailConfig);
+        
         builder.Services
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
@@ -108,6 +120,8 @@ public static class Program
                     .Local;
                 opts.UseCamelCasing(false);
             });
+        
+        
     }
 
     private static void AddCompressionMethod(WebApplicationBuilder builder)
@@ -216,6 +230,13 @@ public static class Program
         services.AddDbContext<RosaFiestaContext>(ContextBuilder);
         services.AddScoped<DbContext, RosaFiestaContext>();
     }
+    
+    private static void AddHttpContext(IServiceCollection builderServices)
+    {
+        builderServices.AddHttpContextAccessor();
+        builderServices.AddHttpClient();
+        builderServices.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+    }
 
     private static void AddIdentity(IServiceCollection services, ConfigurationManager configuration)
     {
@@ -228,7 +249,6 @@ public static class Program
                 opts.Password.RequireLowercase = true;
                 opts.Password.RequireNonAlphanumeric = true;
                 opts.Password.RequireUppercase = true;
-                opts.SignIn.RequireConfirmedAccount = true;
                 opts.SignIn.RequireConfirmedEmail = true;
                 opts.User.RequireUniqueEmail = true;
                 opts.Lockout.AllowedForNewUsers = true;
@@ -277,13 +297,12 @@ public static class Program
 
     private static void AddRepository(IServiceCollection services)
     {
-        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 
     private static void AddService(IServiceCollection services)
     {
-        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IServiceManager, ServiceManager>();
+        services.AddScoped<IEmailSender, EmailSender>();
     }
 }

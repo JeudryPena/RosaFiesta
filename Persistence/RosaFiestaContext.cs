@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Persistence.Configurations;
 
 namespace Persistence;
 
@@ -20,10 +21,8 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
         modelBuilder.HasDefaultSchema(DefaultSchema);
-        
         modelBuilder.Entity<UserEntity>();
         base.OnModelCreating(modelBuilder);
-        
     }
 
     public DbSet<ProductEntity> Products { get; }
