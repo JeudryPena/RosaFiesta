@@ -37,18 +37,7 @@ public class UserController : ControllerBase
         return Ok(userDto);
     }
 
-    [HttpPost]
-    public async Task<RegisterResponse> RegisterResponse(
-        PreRegisterDto preRegisterDto,
-        CancellationToken cancellationToken
-    )
-    {
-        RegisterResponse response = await _serviceManager.UserService.RegisterAsync(
-            preRegisterDto,
-            cancellationToken
-        );
-        return response;
-    }
+    
     
     [HttpPut("{userId:guid}")]
     public async Task<IActionResult> UpdateUser(

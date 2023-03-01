@@ -8,10 +8,7 @@ public interface IUserService
     Task<IEnumerable<UserDto>> GetAllUserAsync(CancellationToken cancellationToken = default);
     Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
-    Task<RegisterResponse> RegisterAsync(
-        PreRegisterDto preRegisterDto,
-        CancellationToken cancellationToken = default
-    );
+    
 
     Task UpdateAsync(Guid userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken = default);
 }

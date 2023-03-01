@@ -46,7 +46,8 @@ namespace Persistence.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsLockedOut = table.Column<bool>(type: "bit", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -247,6 +248,18 @@ namespace Persistence.Migrations
                     { "2301D884-221A-4E7D-B509-0113DCC043E1", null, "Admin", "ADMIN" },
                     { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", null, "User", "USER" }
                 });
+
+            migrationBuilder.InsertData(
+                schema: "RosaFiesta",
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "Age", "BirthDate", "City", "CivilStatus", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "State", "TwoFactorEnabled", "UpdatedAt", "UserName" },
+                values: new object[] { "B22698B8-42A2-4115-9631-1C2D1E2AC5F7", 0, "Calle 1", 45, new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), "Santo Domingo", 1, "1630b243-9192-4b2d-92d9-17055bc80a73", new DateTimeOffset(new DateTime(2023, 2, 28, 20, 19, 35, 732, DateTimeKind.Unspecified).AddTicks(5802), new TimeSpan(0, -4, 0, 0, 0)), "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "USER@EXAMPLE.COM", "AQAAAAIAAYagAAAAEEvIWNRNtzgwTRiS+cG7tYM8YchUnu8Iu3/Obj0vlDg1er3bGZsn0+kPWCd3QNciOA==", "18497505944", true, null, null, "2178bf20-cc9f-465d-bf24-e67cde9079d8", "Distrito Nacional", false, null, "user@example.com" });
+
+            migrationBuilder.InsertData(
+                schema: "RosaFiesta",
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "2301D884-221A-4E7D-B509-0113DCC043E1", "B22698B8-42A2-4115-9631-1C2D1E2AC5F7" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountEntity_OwnerId",

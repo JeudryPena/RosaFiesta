@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    [Migration("20230227214134_Initial")]
+    [Migration("20230301001935_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -143,9 +143,6 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsLockedOut")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -168,6 +165,12 @@ namespace Persistence.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -196,6 +199,33 @@ namespace Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7",
+                            AccessFailedCount = 0,
+                            Address = "Calle 1",
+                            Age = 45,
+                            BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
+                            City = "Santo Domingo",
+                            CivilStatus = 1,
+                            ConcurrencyStamp = "1630b243-9192-4b2d-92d9-17055bc80a73",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 2, 28, 20, 19, 35, 732, DateTimeKind.Unspecified).AddTicks(5802), new TimeSpan(0, -4, 0, 0, 0)),
+                            Email = "user@example.com",
+                            EmailConfirmed = true,
+                            FullName = "Rosalba Pena",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER@EXAMPLE.COM",
+                            NormalizedUserName = "USER@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEvIWNRNtzgwTRiS+cG7tYM8YchUnu8Iu3/Obj0vlDg1er3bGZsn0+kPWCd3QNciOA==",
+                            PhoneNumber = "18497505944",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "2178bf20-cc9f-465d-bf24-e67cde9079d8",
+                            State = "Distrito Nacional",
+                            TwoFactorEnabled = false,
+                            UserName = "user@example.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -324,6 +354,13 @@ namespace Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7",
+                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

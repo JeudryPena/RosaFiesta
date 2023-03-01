@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Contracts.Model;
 
-public class PreRegisterDto
+public class RegisterDto
 {
     public string UserName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -13,6 +13,4 @@ public class PreRegisterDto
     public DateTimeOffset BirthDate { get; set; } = DateTimeOffset.Now;
     
     public string PhoneNumber { get; set; } = string.Empty;
-    
-    public string? ClientUri { get; set; }
 }

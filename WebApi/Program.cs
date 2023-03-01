@@ -283,12 +283,12 @@ public static class Program
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ValidAudience = configuration["jwtTokenConfig:audience"],
-                    ValidIssuer = configuration["jwtTokenConfig:issuer"],
+                    ValidAudience = configuration["JWT:ValidAudience "],
+                    ValidIssuer = configuration["JWT:ValidIssuer"],
                     ValidateIssuerSigningKey = true,
                     RequireExpirationTime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configuration["jwtTokenConfig:secret"])
+                        Encoding.UTF8.GetBytes(configuration["JWT:Secret"])
                     ),
                     ClockSkew = TimeSpan.FromMinutes(5)
                 };
