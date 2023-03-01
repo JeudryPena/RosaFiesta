@@ -1,6 +1,7 @@
 using Contracts.Model;
-using Contracts.Response;
+using Contracts.Model.Security;
 using Domain.Entities;
+using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
 using Mapster;
@@ -62,6 +63,15 @@ public class UserService : IUserService
         
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
-    
-    
+
+    public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
+            userId,
+            cancellationToken
+        ) ?? throw new UserNotFoundException(userId.ToString());
+        
+        _repositoryManager.UserRepository.Delete(user);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
 }

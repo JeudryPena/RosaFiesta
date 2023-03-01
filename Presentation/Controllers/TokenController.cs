@@ -1,5 +1,6 @@
 ﻿using Contracts.Model;
-using Contracts.Response;
+using Contracts.Model.Security;
+using Contracts.Model.Security.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;

@@ -84,7 +84,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductEntity",
+                name: "ProductDetailEntity",
                 schema: "RosaFiesta",
                 columns: table => new
                 {
@@ -342,7 +342,7 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
-                name: "ProductEntity",
+                name: "ProductDetailEntity",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(

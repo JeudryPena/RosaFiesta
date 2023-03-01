@@ -71,7 +71,7 @@ namespace Persistence.Migrations
                     b.ToTable("OwnerEntity", "RosaFiesta");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ProductEntity", b =>
+            modelBuilder.Entity("Domain.Entities.ProductDetailEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +96,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductEntity", "RosaFiesta");
+                    b.ToTable("ProductDetailEntity", "RosaFiesta");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntity", b =>

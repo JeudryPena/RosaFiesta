@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Domain.Configuration;
 using Domain.Entities;
+using Domain.Entities.Security;
 using Domain.IRepository;
 using Messaging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

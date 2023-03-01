@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Entities.Security;
 using Domain.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,4 +22,9 @@ public class UserRepository : IUserRepository
         await _context.Users.FirstOrDefaultAsync(x => x.Id == userId.ToString(), cancellationToken) ?? throw new InvalidOperationException();
 
     public void Insert(UserEntity user) => _context.Users.Add(user);
+
+    public void Delete(UserEntity user)
+    {
+        _context.Users.Remove(user);
+    }
 }

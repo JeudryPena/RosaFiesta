@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Product;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,6 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.Property(owner => owner.Description).HasMaxLength(100);
         builder.Property(owner => owner.Price).IsRequired();
         builder.Property(owner => owner.IsAvailable).IsRequired();
-        builder.Property(owner => owner.AddedAt).IsRequired();
+        builder.Property(owner => owner.CreatedAt).IsRequired();
     }
 }

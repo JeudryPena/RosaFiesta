@@ -1,5 +1,6 @@
 ﻿using Contracts.Model;
 using Domain.Entities;
+using Domain.Entities.Product;
 using Domain.IRepository;
 using Mapster;
 using Services.Abstractions;

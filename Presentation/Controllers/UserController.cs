@@ -1,5 +1,5 @@
 using Contracts.Model;
-using Contracts.Response;
+using Contracts.Model.Security;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 
@@ -49,6 +49,16 @@ public class UserController : ControllerBase
         await _serviceManager.UserService.UpdateAsync(
             userId,
             userForUpdateDto,
+            cancellationToken
+        );
+        return NoContent();
+    }
+    
+    [HttpDelete("{userId:guid}")]
+    public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
+    {
+        await _serviceManager.UserService.DeleteAsync(
+            userId,
             cancellationToken
         );
         return NoContent();

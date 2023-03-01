@@ -1,4 +1,6 @@
 using Domain.Entities;
+using Domain.Entities.Product;
+using Domain.Entities.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Persistence.Configurations;
@@ -13,8 +15,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         : base(options)
     {
         Products = Set<ProductEntity>();
-        Owners = Set<OwnerEntity>();
-        Accounts = Set<AccountEntity>();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,6 +26,4 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     }
 
     public DbSet<ProductEntity> Products { get; }
-    public DbSet<OwnerEntity> Owners { get; set; }
-    public DbSet<AccountEntity> Accounts { get; set; }
 }

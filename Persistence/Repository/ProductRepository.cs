@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Product;
 using Domain.IRepository;
 
 namespace Persistence.Repository;
