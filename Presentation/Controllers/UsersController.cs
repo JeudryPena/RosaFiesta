@@ -1,5 +1,7 @@
 using Contracts.Model;
 using Contracts.Model.Security;
+using Contracts.Model.Security.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 
@@ -17,9 +19,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
     {
-        IEnumerable<UserDto> users = await _serviceManager.UserService.GetAllUserAsync(
+        IEnumerable<UsersResponse> users = await _serviceManager.UserService.GetAllUserAsync(
             cancellationToken
         );
 
@@ -29,12 +32,12 @@ public class UserController : ControllerBase
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken)
     {
-        UserDto userDto = await _serviceManager.UserService.GetUserByIdAsync(
+        UsersResponse usersResponse = await _serviceManager.UserService.GetUserByIdAsync(
             userId,
             cancellationToken
         );
 
-        return Ok(userDto);
+        return Ok(usersResponse);
     }
 
     

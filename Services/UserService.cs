@@ -1,5 +1,6 @@
 using Contracts.Model;
 using Contracts.Model.Security;
+using Contracts.Model.Security.Response;
 using Domain.Entities;
 using Domain.Entities.Security;
 using Domain.Exceptions;
@@ -22,18 +23,18 @@ public class UserService : IUserService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllUserAsync(
+    public async Task<IEnumerable<UsersResponse>> GetAllUserAsync(
         CancellationToken cancellationToken = default
     )
     {
         IEnumerable<UserEntity> users = await _repositoryManager.UserRepository.GetAllAsync(
             cancellationToken
         );
-        var usersDto = users.Adapt<IEnumerable<UserDto>>();
+        var usersDto = users.Adapt<IEnumerable<UsersResponse>>();
         return usersDto;
     }
 
-    public async Task<UserDto> GetUserByIdAsync(
+    public async Task<UsersResponse> GetUserByIdAsync(
         Guid userId,
         CancellationToken cancellationToken = default
     )
@@ -42,8 +43,8 @@ public class UserService : IUserService
             userId,
             cancellationToken
         ) ?? throw new UserNotFoundException(userId.ToString());
-        UserDto userDto = user.Adapt<UserDto>();
-        return userDto;
+        UsersResponse usersResponse = user.Adapt<UsersResponse>();
+        return usersResponse;
     }
     
     public async Task UpdateAsync(Guid userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken = default)
@@ -59,7 +60,7 @@ public class UserService : IUserService
         user.Address = userForUpdateDto.Address;
         user.City = userForUpdateDto.City;
         user.State = userForUpdateDto.State;
-        user.UpdatedAt = DateTime.Now;
+        user.UpdatedAt = DateTimeOffset.UtcNow;
         
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }

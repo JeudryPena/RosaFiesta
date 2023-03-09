@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Product;
+﻿namespace Domain.Entities.Product.Helpers;
 
 public enum MaterialType
 {
@@ -7,5 +7,6 @@ public enum MaterialType
     Glass = 3,
     Metal = 4,
     Wood = 5,
-    Other = 6
+    Cotton = 6,
+    Other = 7
 }

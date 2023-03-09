@@ -45,6 +45,10 @@ public static class Program
         AddJwtTokenAuthentication(builder.Services, builder.Configuration);
         AddRepository(builder.Services);
         AddService(builder.Services);
+        
+        // sql connection
+        builder.Services.AddDbContext<RosaFiestaContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString(SqlConnectionString)));
 
         builder.Services.Configure<FormOptions>(o => {
             o.ValueLengthLimit = int.MaxValue;
@@ -284,7 +288,7 @@ public static class Program
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ValidAudience = configuration["JWT:ValidAudience "],
+                    ValidAudience = configuration["JWT:ValidAudience"],
                     ValidIssuer = configuration["JWT:ValidIssuer"],
                     ValidateIssuerSigningKey = true,
                     RequireExpirationTime = true,

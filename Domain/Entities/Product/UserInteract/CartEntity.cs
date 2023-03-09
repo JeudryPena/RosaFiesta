@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Security;
 
-namespace Domain.Entities.Product;
+namespace Domain.Entities.Product.UserInteract;
 
 public class CartEntity
 {
@@ -9,10 +9,11 @@ public class CartEntity
     public string Description { get; set; } = string.Empty;
     public int Quantity { get; set; } 
     public double TotalPrice { get; set; }
-    public Guid? ProductId { get; set; }
-    public ProductEntity? ProductEntity { get; set; } = new();
-    public Guid UserId { get; set; } 
-    public UserEntity UserEntity { get; set; } = new();
     public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset? UpdatedDate { get; set; }
+    
+    public string? ProductId { get; set; }
+    public ProductEntity? ProductEntity { get; set; } 
+    public string UserId { get; set; } = string.Empty;
+    public UserEntity UserEntity { get; set; } 
 }

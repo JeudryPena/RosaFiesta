@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Product;
+﻿namespace Domain.Entities.Product.Helpers;
 
 public enum PurchaseStatusType
 {

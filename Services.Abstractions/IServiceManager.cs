@@ -1,3 +1,5 @@
+using Contracts.Model.Product.Response;
+
 namespace Services.Abstractions;
 
 public interface IServiceManager
@@ -7,4 +9,7 @@ public interface IServiceManager
     IProductService ProductService { get; }
     
     IAuthenticateService AuthenticateService { get; }
+    
+    ICategoryService CategoryService { get; }
+    
 }

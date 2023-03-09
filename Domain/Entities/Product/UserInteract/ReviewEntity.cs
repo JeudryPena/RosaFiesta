@@ -1,8 +1,9 @@
-﻿using Domain.Entities.Security;
+﻿using Domain.Entities.Product.Helpers;
+using Domain.Entities.Security;
 
-namespace Domain.Entities.Product;
+namespace Domain.Entities.Product.UserInteract;
 
-public class ReviewsEntity
+public class ReviewEntity
 {
     public Guid Id { get; set; }
     public string? ReviewDescription { get; set; }
@@ -10,9 +11,9 @@ public class ReviewsEntity
     public DateTimeOffset ReviewDate { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset? ReviewUpdateDate { get; set; }
     public bool ConfirmedAdquisition { get; set; }
-    public Guid PurchaseDetailId { get; set; }
-    public PurchaseDetailEntity PurchaseDetailEntity { get; set; } = new();
     public string? ReviewTittle { get; set; }
-    public Guid UserReviewerId { get; set; }
-    public UserEntity UserEntity { get; set; } = new();
+    public string UserReviewerId { get; set; } = string.Empty;
+    public UserEntity UserEntity { get; set; } 
+    /*public string? ProductId { get; set; }
+    public ProductEntity ProductEntity { get; set; } */
 }

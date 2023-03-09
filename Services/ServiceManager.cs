@@ -14,12 +14,14 @@ public sealed class ServiceManager: IServiceManager
     private readonly Lazy<IUserService> _lazyUserService;
     private readonly Lazy<IProductService> _lazyProductService;
     private readonly Lazy<IAuthenticateService> _lazyAuthenticateService;
-
+    private readonly Lazy<ICategoryService> _lazyCategoryService;
+    
     public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor contextAccessor, SignInManager<UserEntity> signInManager, IConfiguration configuration)
     {
         _lazyUserService = new Lazy<IUserService>(() => new UserService(repositoryManager));
         _lazyProductService = new Lazy<IProductService>(() => new ProductService(repositoryManager));
         _lazyAuthenticateService = new Lazy<IAuthenticateService>(() => new AuthenticateService(userManager, emailSender, contextAccessor, signInManager, configuration));
+        _lazyCategoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager));
     }
 
     public IUserService UserService => _lazyUserService.Value;
@@ -27,4 +29,6 @@ public sealed class ServiceManager: IServiceManager
     public IProductService ProductService => _lazyProductService.Value;
     
     public IAuthenticateService AuthenticateService => _lazyAuthenticateService.Value;
+    
+    public ICategoryService CategoryService => _lazyCategoryService.Value;
 }

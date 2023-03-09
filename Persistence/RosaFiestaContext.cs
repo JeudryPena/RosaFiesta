@@ -1,5 +1,7 @@
 using Domain.Entities;
 using Domain.Entities.Product;
+using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,8 +17,19 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         : base(options)
     {
         Products = Set<ProductEntity>();
+        Carts = Set<CartEntity>();
+        Discounts = Set<DiscountEntity>();
+        Bills = Set<BillEntity>();
+        PurchaseDetails = Set<PurchaseDetailEntity>();
+        Categories = Set<CategoryEntity>();
+        PayMethods = Set<PayMethodEntity>();
+        Reviews = Set<ReviewEntity>(); 
+        SubCategories = Set<SubCategoryEntity>();
+        Suppliers = Set<SupplierEntity>();
+        Warranties = Set<WarrantyEntity>();
+        WishesList = Set<WishListEntity>();
     }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
@@ -24,6 +37,26 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         modelBuilder.Entity<UserEntity>();
         base.OnModelCreating(modelBuilder);
     }
-
     public DbSet<ProductEntity> Products { get; }
+    public DbSet<CartEntity> Carts { get; set; }
+    
+    public DbSet<DiscountEntity> Discounts { get; set; }
+    
+    public DbSet<WishListEntity> WishesList { get; set; }
+
+    public DbSet<WarrantyEntity> Warranties { get; set; }
+
+    public DbSet<SupplierEntity> Suppliers { get; set; }
+
+    public DbSet<SubCategoryEntity> SubCategories { get; set; }
+
+    public DbSet<ReviewEntity> Reviews { get; set; }
+
+    public DbSet<PayMethodEntity> PayMethods { get; set; }
+
+    public DbSet<CategoryEntity> Categories { get; set; }
+
+    public DbSet<PurchaseDetailEntity> PurchaseDetails { get; set; }
+
+    public DbSet<BillEntity> Bills { get; set; }
 }

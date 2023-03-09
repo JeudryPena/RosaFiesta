@@ -1,6 +1,6 @@
-namespace Contracts.Model.Security;
+namespace Contracts.Model.Security.Response;
 
-public class UserDto
+public class UsersResponse
 {
     public Guid Id { get; set; }
     

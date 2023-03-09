@@ -8,5 +8,5 @@ public class DepartmentEntity
     public string Description { get; set; } = String.Empty;
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public ICollection<EmployeeEntity> Employees { get; set; } = new List<EmployeeEntity>();
+    public ICollection<EmployeeEntity>? Employees { get; set; } 
 }
