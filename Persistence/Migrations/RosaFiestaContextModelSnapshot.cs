@@ -23,31 +23,317 @@ namespace Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.AccountEntity", b =>
+            modelBuilder.Entity("Domain.Entities.Products.CategoryEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<string>("AccountType")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.ToTable("CategoryEntity", "RosaFiesta");
 
-                    b.ToTable("AccountEntity", "RosaFiesta");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 228, DateTimeKind.Unspecified).AddTicks(1043), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedBy = "System",
+                            Description = "Electronics",
+                            Icon = "https://i.imgur.com/0jQYs1R.png",
+                            Image = "https://i.imgur.com/0jQYs1R.png",
+                            IsActive = true,
+                            Name = "Electronics",
+                            Slug = "electronics",
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 228, DateTimeKind.Unspecified).AddTicks(1046), new TimeSpan(0, -4, 0, 0, 0)),
+                            UpdatedBy = "System"
+                        });
                 });
 
-            modelBuilder.Entity("Domain.Entities.OwnerEntity", b =>
+            modelBuilder.Entity("Domain.Entities.Products.DiscountEntity", b =>
+                {
+                    b.Property<string>("DiscountCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountCodeImage")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DiscountDescription")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset>("DiscountEndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DiscountImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<float>("DiscountPercentage")
+                        .HasColumnType("real");
+
+                    b.Property<DateTimeOffset>("DiscountStartDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("DiscountTotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DiscountCode");
+
+                    b.ToTable("DiscountEntity", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.ProductEntity", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Brand")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("Condition")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("DiscountAppliedId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("EndedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("GenderFor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("Material")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuantityAvaliable")
+                        .HasColumnType("int");
+
+                    b.Property<float?>("Size")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("WarrantyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("DiscountAppliedId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("WarrantyId");
+
+                    b.ToTable("ProductEntity", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "SDA01",
+                            Brand = "Champion",
+                            CategoryId = 1,
+                            Color = "White",
+                            Condition = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 234, DateTimeKind.Unspecified).AddTicks(5023), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedBy = "Admin",
+                            Description = "Polo de manga corta",
+                            GenderFor = 3,
+                            Image = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
+                            Material = 6,
+                            Name = "Polo",
+                            Price = 1000,
+                            QuantityAvaliable = 1,
+                            Size = 1.5f,
+                            Stock = 1,
+                            SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
+                            Type = 1,
+                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6")
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.SubCategoryEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategoryEntity", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 235, DateTimeKind.Unspecified).AddTicks(1959), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedBy = "System",
+                            Description = "Electronics",
+                            Icon = "https://i.imgur.com/0jQYs1R.png",
+                            Image = "https://i.imgur.com/0jQYs1R.png",
+                            IsActive = true,
+                            Name = "Electronics",
+                            Slug = "electronics",
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 235, DateTimeKind.Unspecified).AddTicks(1962), new TimeSpan(0, -4, 0, 0, 0)),
+                            UpdatedBy = "System"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.SupplierEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,48 +344,353 @@ namespace Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("OwnerEntity", "RosaFiesta");
+                    b.ToTable("SupplierEntity", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
+                            Address = "La Capital",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 235, DateTimeKind.Unspecified).AddTicks(4211), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedBy = "System",
+                            Email = "suplidor@hotmail.com",
+                            IsActive = true,
+                            Name = "Supplier 1",
+                            Phone = "8095395539",
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 235, DateTimeKind.Unspecified).AddTicks(4214), new TimeSpan(0, -4, 0, 0, 0)),
+                            UpdatedBy = "System"
+                        });
                 });
 
-            modelBuilder.Entity("Domain.Entities.ProductDetailEntity", b =>
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.BillEntity", b =>
+                {
+                    b.Property<int>("NumFactura")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NumFactura"));
+
+                    b.Property<double>("AmmountPaid")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("PayMethodId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("PaymentDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("NumFactura");
+
+                    b.HasIndex("PayMethodId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BillEntity", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.CartEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset?>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CartEntity", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.PayMethodEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset?>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductDetailEntity", "RosaFiesta");
+                    b.ToTable("PayMethodEntity", "RosaFiesta");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.PurchaseDetailEntity", b =>
+                {
+                    b.Property<int>("PurchaseNumber")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("BillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("BillNumFactura")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("PurchasePrice")
+                        .HasColumnType("float");
+
+                    b.Property<int>("PurchaseStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PurchaseNumber", "BillId");
+
+                    b.HasIndex("BillNumFactura");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("PurchaseDetailEntity", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.ReviewEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("ConfirmedAdquisition")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("ReviewDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ReviewDescription")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ReviewRating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewTittle")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("ReviewUpdateDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserReviewerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserReviewerId");
+
+                    b.ToTable("ReviewEntity", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.WishListEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTimeOffset?>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WishesList", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.WarrantyEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Conditions")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Period")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ScopeType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Status")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Warranties", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
+                            Conditions = "Warranty 1",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 311, DateTimeKind.Unspecified).AddTicks(5244), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedBy = "System",
+                            Description = "Warranty 1",
+                            Name = "Warranty 1",
+                            Period = "1 year",
+                            ScopeType = 2,
+                            Status = 1,
+                            Type = 3
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -108,16 +699,23 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTimeOffset>("BirthDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("CivilStatus")
                         .HasColumnType("int");
@@ -138,7 +736,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -164,7 +763,8 @@ namespace Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<DateTimeOffset?>("RefreshTokenExpiryTime")
                         .HasColumnType("datetimeoffset");
@@ -173,7 +773,8 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -204,21 +805,22 @@ namespace Persistence.Migrations
                             AccessFailedCount = 0,
                             Address = "Calle 1",
                             Age = 45,
+                            Avatar = "https://i.imgur.com/1Q1Z1Zm.jpg",
                             BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
                             City = "Santo Domingo",
                             CivilStatus = 1,
-                            ConcurrencyStamp = "1630b243-9192-4b2d-92d9-17055bc80a73",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 2, 28, 20, 19, 35, 732, DateTimeKind.Unspecified).AddTicks(5802), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "fe453ba8-ad25-4867-af07-03fd15c0189a",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 9, 12, 6, 13, 236, DateTimeKind.Unspecified).AddTicks(4402), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "USER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEvIWNRNtzgwTRiS+cG7tYM8YchUnu8Iu3/Obj0vlDg1er3bGZsn0+kPWCd3QNciOA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED09X/IClVQTrgEY62kuceaUyjpZ50bsCAlFaOiYsuZDSY0kM/1lujeS9cSDz6hM8A==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "2178bf20-cc9f-465d-bf24-e67cde9079d8",
+                            SecurityStamp = "6952d040-9024-47a2-9936-0dd0cf125490",
                             State = "Distrito Nacional",
                             TwoFactorEnabled = false,
                             UserName = "user@example.com"
@@ -379,13 +981,141 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", "RosaFiesta");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AccountEntity", b =>
+            modelBuilder.Entity("ProductWishList", b =>
                 {
-                    b.HasOne("Domain.Entities.OwnerEntity", null)
-                        .WithMany("Accounts")
-                        .HasForeignKey("OwnerId")
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("WishListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "WishListId");
+
+                    b.HasIndex("WishListId");
+
+                    b.ToTable("ProductWishList", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.ProductEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Products.CategoryEntity", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Entities.Products.DiscountEntity", "DiscountApplied")
+                        .WithMany("DiscountProducts")
+                        .HasForeignKey("DiscountAppliedId");
+
+                    b.HasOne("Domain.Entities.Products.SupplierEntity", "Supplier")
+                        .WithMany("ProductsSupplied")
+                        .HasForeignKey("SupplierId");
+
+                    b.HasOne("Domain.Entities.Products.WarrantyEntity", "Warranty")
+                        .WithMany("Products")
+                        .HasForeignKey("WarrantyId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("DiscountApplied");
+
+                    b.Navigation("Supplier");
+
+                    b.Navigation("Warranty");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.SubCategoryEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Products.CategoryEntity", "Category")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.BillEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Products.UserInteract.PayMethodEntity", "PayMethod")
+                        .WithMany("Bills")
+                        .HasForeignKey("PayMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Security.UserEntity", "User")
+                        .WithMany("Bills")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("PayMethod");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.CartEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Products.ProductEntity", "ProductEntity")
+                        .WithMany("CartProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
+                        .WithMany("CartProducts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductEntity");
+
+                    b.Navigation("UserEntity");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.PurchaseDetailEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Products.UserInteract.BillEntity", "Bill")
+                        .WithMany()
+                        .HasForeignKey("BillNumFactura")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Products.DiscountEntity", "DiscountApplied")
+                        .WithMany("DiscountPurchases")
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("Domain.Entities.Products.ProductEntity", "Products")
+                        .WithMany("Details")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bill");
+
+                    b.Navigation("DiscountApplied");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.ReviewEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserEntity");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.WishListEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
+                        .WithMany("WishLists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -399,7 +1129,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntity", null)
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,7 +1138,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntity", null)
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -423,7 +1153,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.UserEntity", null)
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -432,16 +1162,73 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntity", null)
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.OwnerEntity", b =>
+            modelBuilder.Entity("ProductWishList", b =>
                 {
-                    b.Navigation("Accounts");
+                    b.HasOne("Domain.Entities.Products.ProductEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Products.UserInteract.WishListEntity", null)
+                        .WithMany()
+                        .HasForeignKey("WishListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.CategoryEntity", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.DiscountEntity", b =>
+                {
+                    b.Navigation("DiscountProducts");
+
+                    b.Navigation("DiscountPurchases");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.ProductEntity", b =>
+                {
+                    b.Navigation("CartProducts");
+
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.SupplierEntity", b =>
+                {
+                    b.Navigation("ProductsSupplied");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.UserInteract.PayMethodEntity", b =>
+                {
+                    b.Navigation("Bills");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Products.WarrantyEntity", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
+                {
+                    b.Navigation("Bills");
+
+                    b.Navigation("CartProducts");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("WishLists");
                 });
 #pragma warning restore 612, 618
         }
