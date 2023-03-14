@@ -22,7 +22,7 @@ public class CategoryConfig: IEntityTypeConfiguration<CategoryEntity>
             builder.Property(x => x.UpdatedAt);
             builder.Property(x => x.CreatedBy).IsRequired();
             builder.Property(x => x.UpdatedBy);
-            builder.HasMany(x => x.SubCategories).WithOne(x => x.Category).HasForeignKey(x => x.CategoryId);
+            builder.HasMany(x => x.SubCategories).WithOne(x => x.Category).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Cascade);
             builder.HasData( new CategoryEntity { 
                 Id = CategoryId, 
                 Name = "Electronics", 

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Product.Helpers;
 
-public enum PurchaseStatusType
+public enum OrderStatusType
 {
     Pending = 1,
     Processing = 2,

@@ -18,18 +18,19 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     {
         Products = Set<ProductEntity>();
         Carts = Set<CartEntity>();
+        CartsProducts = Set<CartProductsEntity>();
         Discounts = Set<DiscountEntity>();
-        Bills = Set<BillEntity>();
+        Orders = Set<OrderEntity>();
         PurchaseDetails = Set<PurchaseDetailEntity>();
         Categories = Set<CategoryEntity>();
         PayMethods = Set<PayMethodEntity>();
-        Reviews = Set<ReviewEntity>(); 
+        Reviews = Set<ReviewEntity>();
         SubCategories = Set<SubCategoryEntity>();
         Suppliers = Set<SupplierEntity>();
         Warranties = Set<WarrantyEntity>();
         WishesList = Set<WishListEntity>();
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
@@ -39,7 +40,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     }
     public DbSet<ProductEntity> Products { get; }
     public DbSet<CartEntity> Carts { get; set; }
-    
+    public DbSet<CartProductsEntity> CartsProducts { get; set; }
     public DbSet<DiscountEntity> Discounts { get; set; }
     
     public DbSet<WishListEntity> WishesList { get; set; }
@@ -58,5 +59,5 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 
     public DbSet<PurchaseDetailEntity> PurchaseDetails { get; set; }
 
-    public DbSet<BillEntity> Bills { get; set; }
+    public DbSet<OrderEntity> Orders { get; set; }
 }

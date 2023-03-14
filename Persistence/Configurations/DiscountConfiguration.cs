@@ -11,11 +11,11 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         builder.ToTable(nameof(DiscountEntity));
         builder.HasKey(x => x.DiscountCode);
         builder.Property(x => x.DiscountName).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.DiscountTotalPrice).IsRequired();
+        builder.Property(x => x.DiscountType).IsRequired();
         builder.Property(x => x.DiscountImage);
         builder.Property(x => x.DiscountCodeImage).HasMaxLength(10);
         builder.Property(x => x.DiscountDescription).HasMaxLength(100);
-        builder.Property(x => x.DiscountPercentage).IsRequired();
+        builder.Property(x => x.Discount).IsRequired();
         builder.Property(x => x.DiscountStartDate).IsRequired();
         builder.Property(x => x.DiscountEndDate).IsRequired();
         

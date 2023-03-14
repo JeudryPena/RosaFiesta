@@ -10,5 +10,5 @@ public class WarrantyResponse: BaseResponse
     public string Period { get; set; } = "Period";
     public string Description { get; set; } = "Description";
     public string Conditions { get; set; } = "Conditions";
-    public ICollection<ProductsResponse>? Products { get; set; } 
+    public ICollection<ProductsResponse>? Products { get; set; }
 }

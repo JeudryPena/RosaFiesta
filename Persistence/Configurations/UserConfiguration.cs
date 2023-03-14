@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.CivilStatus).IsRequired();
         builder.Property(user => user.CreatedAt).IsRequired();
         builder.Property(user => user.UpdatedAt);
+        builder.Property(user => user.UpdatedBy);
         builder.Property(user => user.BirthDate).IsRequired();
         builder.Property(user => user.Address).HasMaxLength(60);
         builder.Property(user => user.City).HasMaxLength(60);
@@ -26,9 +28,10 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.RefreshToken).HasMaxLength(60);
         builder.Property(user => user.RefreshTokenExpiryTime);
         builder.Property(user => user.Avatar).HasMaxLength(200);
-        builder.HasMany(owner => owner.CartProducts)
+        builder.Property(user => user.PromotionalMails).IsRequired();
+        builder.HasOne(user => user.Cart)
             .WithOne(cart => cart.UserEntity)
-            .HasForeignKey(cart => cart.UserId)
+            .HasForeignKey<CartEntity>(cart => cart.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(owner => owner.Reviews)
             .WithOne(review => review.UserEntity)
@@ -54,7 +57,9 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             Age = 45,
             CivilStatus = CivilType.Married,
             CreatedAt = DateTimeOffset.UtcNow,
+            CreatedBy = "System",
             UpdatedAt = null,
+            UpdatedBy = null,
             Address = "Calle 1",
             City = "Santo Domingo",
             State = "Distrito Nacional",
@@ -62,6 +67,7 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             PhoneNumberConfirmed = true,
             TwoFactorEnabled = false,
             LockoutEnd = null,
+            PromotionalMails = false,
             BirthDate = new DateTime(1996, 10, 10),
             Avatar = "https://i.imgur.com/1Q1Z1Zm.jpg"
         };

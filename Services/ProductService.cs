@@ -20,7 +20,7 @@ internal sealed class ProductService : IProductService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<ProductsResponse> CreateAsync(string? username, ProductEntityDto productForCreationDto,
+    public async Task<ProductsResponse> CreateAsync(string? username, ProductDto productForCreationDto,
         CancellationToken cancellationToken = default)
     {
         var product = new ProductEntity
@@ -29,7 +29,6 @@ internal sealed class ProductService : IProductService
             Name = productForCreationDto.Name,
             Description = productForCreationDto.Description,
             Price = productForCreationDto.Price,
-            Stock = 1.Adapt<StockStatusType>(),
             QuantityAvaliable = productForCreationDto.Quantity,
             Brand = productForCreationDto.Brand,
             Color = productForCreationDto.Color,
@@ -41,8 +40,10 @@ internal sealed class ProductService : IProductService
             WarrantyId = productForCreationDto.WarrantyId,
             SupplierId = productForCreationDto.SupplierId,
         };
+        product.Stock = productStock(product.QuantityAvaliable);
         product.GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>();
         product.Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>();
+
         if (productForCreationDto.Category != null)
         {
             var category = new CategoryEntity
@@ -81,5 +82,67 @@ internal sealed class ProductService : IProductService
         IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetAllAsync(cancellationToken);
         var productsDto = products.Adapt<IEnumerable<ProductsResponse>>();
         return productsDto;
+    }
+
+    public async Task<ProductsResponse> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        var productDto = product.Adapt<ProductsResponse>();
+        return productDto;
+    }
+
+    public async Task<ProductsResponse> UpdateAsync(string? username, string productId,
+        ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        product.Code = productForUpdateDto.Code;
+        product.Name = productForUpdateDto.Name;
+        product.Description = productForUpdateDto.Description;
+        product.Price = productForUpdateDto.Price;
+        product.Brand = productForUpdateDto.Brand;
+        product.Color = productForUpdateDto.Color;
+        product.Size = productForUpdateDto.Size;
+        product.Type = productForUpdateDto.Type.Adapt<ProductType>();
+        product.Condition = productForUpdateDto.Condition.Adapt<ConditionType>();
+        product.UpdatedAt = DateTimeOffset.UtcNow;
+        product.UpdatedBy = username;
+        product.WarrantyId = productForUpdateDto.WarrantyId;
+        product.GenderFor = (productForUpdateDto.GenderFor ?? 0).Adapt<GenderType>();
+        product.Material = (productForUpdateDto.Material ?? 0).Adapt<MaterialType>();
+
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        ProductsResponse productsResponse = product.Adapt<ProductsResponse>();
+        return productsResponse;
+        
+    }
+
+    public async Task DeleteAsync(string productId, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        _repositoryManager.ProductRepository.Delete(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<ProductAdjustResponse> AdjustProductQuantityAsync(string? username, string productId, int count, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        product.QuantityAvaliable += count;
+        product.UpdatedAt = DateTimeOffset.UtcNow;
+        product.UpdatedBy = username;
+        product.Stock = productStock(product.QuantityAvaliable);
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        ProductAdjustResponse productAdjustResponse = product.Adapt<ProductAdjustResponse>();
+        return productAdjustResponse;
+    }
+    
+    private StockStatusType productStock(int? productQuantityAvaliable)
+    {
+        if (productQuantityAvaliable <= 0)
+            return StockStatusType.OutOfStock;
+        if (productQuantityAvaliable <= 5)
+            return StockStatusType.LowStock;
+        return StockStatusType.InStock;
     }
 }

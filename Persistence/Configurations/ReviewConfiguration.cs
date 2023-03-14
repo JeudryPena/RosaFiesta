@@ -15,8 +15,6 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
         builder.Property(x => x.ReviewRating).IsRequired();
         builder.Property(x => x.ReviewDate).IsRequired();
         builder.Property(x => x.ReviewUpdateDate);
-        builder.Property(x => x.ConfirmedAdquisition).IsRequired();
         builder.Property(x => x.ReviewTittle).HasMaxLength(100);
-        /*builder.HasOne(x => x.ProductEntity).WithOne(x => x.Review).HasForeignKey<ReviewEntity>(x => x.ProductId);*/
     }
 }

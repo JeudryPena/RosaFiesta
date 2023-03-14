@@ -13,18 +13,24 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<UserEntity>> GetAllAsync(
         CancellationToken cancellationToken = default
-    ) => await _context.Users.ToListAsync(cancellationToken);
+    ) => await _context.Users.Include(x => x.Bills).ToListAsync(cancellationToken);
 
     public async Task<UserEntity> GetByIdAsync(
-        Guid userId,
+        string userId,
         CancellationToken cancellationToken = default
     ) =>
-        await _context.Users.FirstOrDefaultAsync(x => x.Id == userId.ToString(), cancellationToken) ?? throw new InvalidOperationException();
+        await _context.Users.Include(x => x.Bills)
+            .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken) ?? throw new InvalidOperationException();
 
     public void Insert(UserEntity user) => _context.Users.Add(user);
 
     public void Delete(UserEntity user)
     {
         _context.Users.Remove(user);
+    }
+
+    public void CreateAsync(UserEntity user)
+    {
+        _context.Users.Add(user);
     }
 }

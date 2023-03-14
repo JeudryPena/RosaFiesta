@@ -13,11 +13,15 @@ public class ProductEntity: BaseEntity
     public int Price { get; set; }
     public DateTimeOffset? EndedAt { get; set; } 
     public string? Image { get; set; } = string.Empty;
+    
+    public string? thumbnail { get; set; }
     public StockStatusType Stock { get; set; } = StockStatusType.InStock;
     public int? QuantityAvaliable { get; set; } = 1;
     public string? Brand { get; set; } 
     public string? Color { get; set; }
     public float? Size { get; set; }
+    
+    public float Weight { get; set; } 
     public GenderType? GenderFor { get; set; }
     public MaterialType? Material { get; set; } = MaterialType.Other;
     public ProductType Type { get; set; } = ProductType.Physical;
@@ -27,8 +31,8 @@ public class ProductEntity: BaseEntity
     public string? DiscountAppliedId { get; set; }
     public DiscountEntity? DiscountApplied { get; set; } 
     public Guid? WarrantyId { get; set; }
-    public WarrantyEntity? Warranty { get; set; } 
-    /*public ReviewEntity Review { get; set; } = new();*/
+    public WarrantyEntity? Warranty { get; set; }
+    public ICollection<ReviewEntity>? Reviews { get; set; }
     public ICollection<CartEntity>? CartProducts { get; set; } 
     public ICollection<WishListEntity>? WishListProducts { get; set; } 
     public Guid? SupplierId { get; set; }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Product.UserInteract;
+﻿using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 
 namespace Domain.Entities.Product;
 
@@ -6,8 +7,8 @@ public class DiscountEntity: BaseEntity
 {
     public string DiscountCode { get; set; } = string.Empty;
     public string DiscountName { get; set; } = string.Empty;
-    public double DiscountTotalPrice { get; set; }
-    public float DiscountPercentage { get; set; }
+    public DiscountType DiscountType { get; set; } 
+    public double Discount { get; set; }
     public DateTimeOffset DiscountStartDate { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset DiscountEndDate { get; set; } = DateTimeOffset.Now;
     public string? DiscountDescription { get; set; }

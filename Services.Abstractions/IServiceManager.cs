@@ -12,4 +12,21 @@ public interface IServiceManager
     
     ICategoryService CategoryService { get; }
     
+    ISupplierService SupplierService { get; }
+    
+    IWarrantyService WarrantyService { get; }
+    
+    IDiscountService DiscountService { get; }
+    
+    IPurchaseDetailService PurchaseDetailService { get; }
+    
+    ICartService CartService { get; }
+    
+    IPayMethodService PayMethodService { get; }
+    
+    IReviewService ReviewService { get; }
+    
+    IWishListService WishListService { get; }
+    
+    IOrderService OrderService { get; }
 }

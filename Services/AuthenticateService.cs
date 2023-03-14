@@ -9,6 +9,7 @@ using Contracts.Model;
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
 using Domain.Entities;
+using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Exceptions;
 using Mapster;
@@ -27,15 +28,13 @@ internal sealed class AuthenticateService: IAuthenticateService
     private readonly UserManager<UserEntity> _userManager;
     private readonly IEmailSender _emailSender;
     private readonly IHttpContextAccessor _httpContext;
-    private readonly SignInManager<UserEntity> _signInManager;
     private readonly IConfiguration _configuration;
 
-    public AuthenticateService(UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor httpContext, SignInManager<UserEntity> signInManager, IConfiguration configuration)
+    public AuthenticateService(UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor httpContext, IConfiguration configuration)
     {
         _userManager = userManager;
         _emailSender = emailSender;
         _httpContext = httpContext;
-        _signInManager = signInManager;
         _configuration = configuration;
     }
     
@@ -107,7 +106,8 @@ internal sealed class AuthenticateService: IAuthenticateService
         user.Address = finishRegisterDto.Address;
         user.City = finishRegisterDto.City;
         user.State = finishRegisterDto.State;
-        user.UpdatedAt = DateTime.Now;
+        user.UpdatedAt = DateTimeOffset.UtcNow;
+        user.Cart = new CartEntity();
         
         await _userManager.UpdateAsync(user).ConfigureAwait(false);
         return new FinishRegisterResponse
@@ -173,25 +173,32 @@ internal sealed class AuthenticateService: IAuthenticateService
 
     public async Task LogoutAsync()
     {
-        await _signInManager.SignOutAsync(); 
+        var userId = CurrentUserId();
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException(userId);
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryTime = null;
+        await _userManager.UpdateAsync(user).ConfigureAwait(false);
     }
 
     public async Task<LoginResponse> LoginAsync(LogingDto logingDto)
     {
-        var result = await _signInManager.PasswordSignInAsync(logingDto.Username, logingDto.Password, logingDto.RememberMe, true);
-        var user = await _userManager.FindByNameAsync(logingDto.Username);
-        
+        var user = await _userManager.FindByEmailAsync(logingDto.Username);
         if (user == null)
         {
             return new LoginResponse { Message = "Invalid username or password"};
         }
-
+        var result = await _userManager.CheckPasswordAsync(user, logingDto.Password);
+        if (!result)
+        {
+            await _userManager.AccessFailedAsync(user);
+            return new LoginResponse { Message = "Invalid username or password"};
+        }
         if(!await _userManager.IsEmailConfirmedAsync(user))
         {
             return new LoginResponse { Message = "Email is not confirmed"};
         }
         
-        if (result.Succeeded)
+        if (result)
         {
             var accessToken = GenerateAccessToken(user);
             var refreshToken = GenerateRefreshToken();
@@ -253,7 +260,7 @@ internal sealed class AuthenticateService: IAuthenticateService
         var principal = GetPrincipalFromExpiredToken(accessToken);
         var username = principal.Identity?.Name;
         var user = _userManager.Users.SingleOrDefault(x => x.UserName == username);
-        if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+        if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTimeOffset.Now)
             throw new SecurityTokenException("Invalid refresh token");
         var newAccessToken = GenerateAccessToken(user);
         var newRefreshToken = GenerateRefreshToken();

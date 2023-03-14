@@ -38,30 +38,22 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.Property(product => product.UpdatedBy);
         builder.HasOne(product => product.Category)
             .WithMany(category => category.Products)
-            .HasForeignKey(product => product.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(product => product.CategoryId);
         builder.HasOne(product => product.DiscountApplied)
             .WithMany(discount => discount.DiscountProducts)
             .HasForeignKey(product => product.DiscountAppliedId);
         builder.HasOne(product => product.Warranty)
             .WithMany(warranty => warranty.Products)
             .HasForeignKey(product => product.WarrantyId);
-        builder.HasMany(product => product.CartProducts)
-            .WithOne(cart => cart.ProductEntity)
-            .HasForeignKey(cart => cart.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
-        builder.HasMany(product => product.WishListProducts)
-            .WithMany(wishList => wishList.Products)
-            .UsingEntity<Dictionary<string, object>>(
-                "ProductWishList",
-                product => product.HasOne<WishListEntity>().WithMany().HasForeignKey("WishListId"),
-                supplier => supplier.HasOne<ProductEntity>().WithMany().HasForeignKey("ProductId"));
         builder.HasMany(product => product.Details)
             .WithOne(detail => detail.Product)
             .HasForeignKey(detail => detail.ProductId);
         builder.HasOne(product => product.Supplier)
             .WithMany(supplier => supplier.ProductsSupplied)
             .HasForeignKey(product => product.SupplierId);
+        builder.HasMany(product => product.Reviews)
+            .WithOne(review => review.ProductEntity)
+            .HasForeignKey(review => review.ProductId);
         builder.HasData(
             new ProductEntity
             {
@@ -82,6 +74,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Condition = ConditionType.New,
                 CategoryId = CategoryId,
                 DiscountAppliedId = null,
+                Reviews = null,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
                 CreatedAt = DateTime.UtcNow,

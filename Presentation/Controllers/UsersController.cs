@@ -19,7 +19,6 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
     {
         IEnumerable<UsersResponse> users = await _serviceManager.UserService.GetAllUserAsync(
@@ -29,8 +28,8 @@ public class UserController : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet("{userId:guid}")]
-    public async Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken)
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken)
     {
         UsersResponse usersResponse = await _serviceManager.UserService.GetUserByIdAsync(
             userId,
@@ -39,12 +38,41 @@ public class UserController : ControllerBase
 
         return Ok(usersResponse);
     }
+    
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> CreateUser(
+        [FromBody] UserForCreationDto userForCreationDto,
+        CancellationToken cancellationToken
+    )
+    {
+        string? username = User.Identity?.Name;
+        UsersResponse user = await _serviceManager.UserService.CreateAsync(
+            userForCreationDto,
+            username,
+            cancellationToken
+        );
 
+        return Ok(user);
+    }
     
+    [HttpGet("{userId}")]
+    [Authorize]
+    public async Task<IActionResult> UnlockUser(string userId, CancellationToken cancellationToken)
+    {
+        string? username = User.Identity?.Name;
+        await _serviceManager.UserService.UnlockUserAsync(
+            userId,
+            username,
+            cancellationToken
+        );
+
+        return Ok();
+    }
     
-    [HttpPut("{userId:guid}")]
+    [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateUser(
-        Guid userId,
+        string userId,
         [FromBody] UserForUpdateDto userForUpdateDto,
         CancellationToken cancellationToken
     )
@@ -57,8 +85,8 @@ public class UserController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete("{userId:guid}")]
-    public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
+    [HttpDelete("{userId}")]
+    public async Task<IActionResult> DeleteUser(string userId, CancellationToken cancellationToken)
     {
         await _serviceManager.UserService.DeleteAsync(
             userId,

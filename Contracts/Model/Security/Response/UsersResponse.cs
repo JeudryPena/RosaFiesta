@@ -43,4 +43,6 @@ public class UsersResponse
     public string? State { get; set; }
 
     public bool IsLockedOut { get; set; } 
+    
+    public bool PromotionalMails { get; set; }
 }

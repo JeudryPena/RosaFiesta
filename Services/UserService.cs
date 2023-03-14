@@ -2,6 +2,7 @@ using Contracts.Model;
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
 using Domain.Entities;
+using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
@@ -14,7 +15,7 @@ using Services.Abstractions;
 
 namespace Services;
 
-public class UserService : IUserService
+internal sealed class UserService : IUserService
 {
     private readonly IRepositoryManager _repositoryManager;
 
@@ -35,7 +36,7 @@ public class UserService : IUserService
     }
 
     public async Task<UsersResponse> GetUserByIdAsync(
-        Guid userId,
+        string userId,
         CancellationToken cancellationToken = default
     )
     {
@@ -47,7 +48,7 @@ public class UserService : IUserService
         return usersResponse;
     }
     
-    public async Task UpdateAsync(Guid userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(string userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken = default)
     {
         UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
             userId,
@@ -65,7 +66,7 @@ public class UserService : IUserService
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(string userId, CancellationToken cancellationToken = default)
     {
         UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
             userId,
@@ -74,5 +75,47 @@ public class UserService : IUserService
         
         _repositoryManager.UserRepository.Delete(user);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UnlockUserAsync(string userId, string? username, CancellationToken cancellationToken)
+    {
+        UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
+            userId,
+            cancellationToken
+        ) ?? throw new UserNotFoundException(userId.ToString());
+        
+        user.LockoutEnd = null;
+        user.AccessFailedCount = 0;
+        user.UpdatedAt = DateTimeOffset.UtcNow;
+        user.UpdatedBy = username;
+        
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<UsersResponse> CreateAsync(UserForCreationDto userForCreationDto, string? username, CancellationToken cancellationToken = default)
+    {
+        UserEntity user = userForCreationDto.Adapt<UserEntity>();
+        user.FullName = userForCreationDto.Name + " " + userForCreationDto.LastName;
+        user.CreatedAt = DateTimeOffset.UtcNow;
+        user.CreatedBy = username;
+        user.UpdatedAt = DateTimeOffset.UtcNow;
+        user.UpdatedBy = username;
+        user.UserName = userForCreationDto.Email;
+        user.Email = userForCreationDto.Email;
+        user.EmailConfirmed = true;
+        user.LockoutEnabled = true;
+        user.LockoutEnd = null;
+        user.AccessFailedCount = 0;
+        user.NormalizedEmail = userForCreationDto.Email.ToUpper();
+        user.NormalizedUserName = userForCreationDto.Email.ToUpper();
+        user.SecurityStamp = Guid.NewGuid().ToString();
+        user.PasswordHash = new PasswordHasher<UserEntity>().HashPassword(user, userForCreationDto.Password);
+        user.Cart = new CartEntity();
+        
+        _repositoryManager.UserRepository.CreateAsync(user);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        
+        UsersResponse usersResponse = user.Adapt<UsersResponse>();
+        return usersResponse;
     }
 }

@@ -13,4 +13,6 @@ public class RegisterDto
     public DateTimeOffset BirthDate { get; set; } = DateTimeOffset.Now;
     
     public string PhoneNumber { get; set; } = string.Empty;
+    
+    public bool TermsAndConditionsAccepted { get; set; } = false;
 }

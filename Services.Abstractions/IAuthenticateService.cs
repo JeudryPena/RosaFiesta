@@ -19,4 +19,5 @@ public interface IAuthenticateService
     Task<LoginResponse> LoginAsync(LogingDto logingDto);
     LoginResponse RefreshToken(TokenApiDto tokenApiDto);
     void RevokeToken(string username);
+    string CurrentUserId();
 }
