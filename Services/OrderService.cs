@@ -17,34 +17,34 @@ internal sealed class OrderService : IOrderService {
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<IEnumerable<BillResponse>> GetAllAsync(CancellationToken cancellationToken = default) {
+    public async Task<IEnumerable<OrderResponse>> GetAllAsync(CancellationToken cancellationToken = default) {
         IEnumerable<OrderEntity> orders = await _repositoryManager.OrderRepository.GetAllAsync(cancellationToken);
-        IEnumerable<BillResponse> billResponse = orders.Adapt<IEnumerable<BillResponse>>();
+        IEnumerable<OrderResponse> billResponse = orders.Adapt<IEnumerable<OrderResponse>>();
         return billResponse;
     }
 
-    public async Task<BillResponse> GetByIdAsync(int billId, CancellationToken cancellationToken = default) {
+    public async Task<OrderResponse> GetByIdAsync(int billId, CancellationToken cancellationToken = default) {
         OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(billId, cancellationToken);
-        BillResponse billResponse = order.Adapt<BillResponse>();
+        OrderResponse billResponse = order.Adapt<OrderResponse>();
         return billResponse;
     }
 
-    public async Task<BillResponse> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken = default) {
+    public async Task<OrderResponse> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken = default) {
         OrderEntity order = orderDto.Adapt<OrderEntity>();
         order.PaymentDate = DateTimeOffset.UtcNow;
         _repositoryManager.OrderRepository.CreateAsync(order);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        BillResponse billResponse = order.Adapt<BillResponse>();
+        OrderResponse billResponse = order.Adapt<OrderResponse>();
         return billResponse;
     }
 
-    public async Task<BillResponse> UpdateAsync(int billId, OrderDto orderDto,
+    public async Task<OrderResponse> UpdateAsync(int billId, OrderDto orderDto,
         CancellationToken cancellationToken = default) {
         OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(billId, cancellationToken);
         order = orderDto.Adapt(order);
         _repositoryManager.OrderRepository.Update(order);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        BillResponse billResponse = order.Adapt<BillResponse>();
+        OrderResponse billResponse = order.Adapt<OrderResponse>();
         return billResponse;
     }
 
@@ -64,21 +64,28 @@ internal sealed class OrderService : IOrderService {
         order.PayMethodId = payMethod.Id;
         order.UserId = userId;
         CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-        order.Details = cart.Details;
-        if (cart.Details == null) throw new Exception("Cart is empty");
-        foreach (PurchaseDetailEntity detail in cart.Details) {
-            var product = await _repositoryManager.ProductRepository.GetByIdAsync(detail.ProductId, cancellationToken);
-            if(detail.ProductId == null) throw new Exception("Product not found");
-            if (product.QuantityAvaliable < detail.Quantity)
+        if (cart.Details != null)
+        {
+            order.Details = cart.Details;
+            if (cart.Details == null) throw new Exception("Cart is empty");
+            foreach (PurchaseDetailEntity detail in cart.Details)
             {
-                throw new Exception("You can't add more than the quantity available");
+                var product =
+                    await _repositoryManager.ProductRepository.GetByIdAsync(detail.ProductId, cancellationToken);
+                if (detail.ProductId == null) throw new Exception("Product not found");
+                if (product.QuantityAvaliable < detail.Quantity)
+                {
+                    throw new Exception("You can't add more than the quantity available");
+                }
+
+                product.QuantityAvaliable -= detail.Quantity;
+                product.Stock = productStock(detail.Product.QuantityAvaliable);
+                _repositoryManager.ProductRepository.Update(product);
+                await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
             }
-            product.QuantityAvaliable -= detail.Quantity;
-            product.Stock = productStock(detail.Product.QuantityAvaliable);
-            _repositoryManager.ProductRepository.Update(product);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+            _repositoryManager.CartRepository.DeleteDetails(cart.Details);
         }
-        _repositoryManager.CartRepository.DeleteDetails(cart.Details);
+
         _repositoryManager.OrderRepository.CreateAsync(order);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         OrderResponse orderResponse = order.Adapt<OrderResponse>();

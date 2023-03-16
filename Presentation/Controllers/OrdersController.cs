@@ -20,14 +20,14 @@ public class OrdersController: ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetBills(CancellationToken cancellationToken)
     {
-        IEnumerable<BillResponse> bills = await _serviceManager.OrderService.GetAllAsync(cancellationToken);
+        IEnumerable<OrderResponse> bills = await _serviceManager.OrderService.GetAllAsync(cancellationToken);
         return Ok(bills);
     }
     
     [HttpGet("{billId}")]
     public async Task<IActionResult> GetBillById(int billId, CancellationToken cancellationToken)
     {
-        BillResponse bill = await _serviceManager.OrderService.GetByIdAsync(billId, cancellationToken);
+        OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(billId, cancellationToken);
         return Ok(bill);
     }
     
@@ -35,7 +35,7 @@ public class OrdersController: ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateBill([FromBody] OrderDto orderDto, CancellationToken cancellationToken)
     {
-        BillResponse billResponse = await _serviceManager.OrderService.CreateAsync(orderDto, cancellationToken);
+        OrderResponse billResponse = await _serviceManager.OrderService.CreateAsync(orderDto, cancellationToken);
         return Ok(billResponse);
     }
     
@@ -43,7 +43,7 @@ public class OrdersController: ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateBill(int billId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
     {
-        BillResponse billResponse = await _serviceManager.OrderService.UpdateAsync(billId, orderDto, cancellationToken);
+        OrderResponse billResponse = await _serviceManager.OrderService.UpdateAsync(billId, orderDto, cancellationToken);
         return Ok(billResponse);
     }
     

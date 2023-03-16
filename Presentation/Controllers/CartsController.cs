@@ -28,7 +28,7 @@ public class CartsController : ControllerBase {
         return Ok(cart);
     }
 
-    [HttpPost("{userId}")]
+    [HttpPut("{userId}")]
     public async Task<IActionResult> AddToCartAsync(string userId, [FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken) {
         CartResponse cart = await _serviceManager.CartService.AddToCartAsync(userId, cartItemsItems, cancellationToken);
         return Ok(cart);

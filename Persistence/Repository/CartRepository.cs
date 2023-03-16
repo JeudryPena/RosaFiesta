@@ -32,13 +32,14 @@ internal sealed class CartRepository: ICartRepository
         return cart;
     }
 
-    public void Insert(CartEntity cart) =>
-        _context.Carts.Add(cart);
-
     public void UpdateCartItem(PurchaseDetailEntity cartItem) =>
         _context.PurchaseDetails.Update(cartItem);
 
     public void DeleteDetails(ICollection<PurchaseDetailEntity> cartDetails) =>
     _context.PurchaseDetails.RemoveRange(cartDetails);
-    
+
+    public void UpdateCart(CartEntity cart)
+    {
+        _context.Carts.Update(cart);
+    }
 }

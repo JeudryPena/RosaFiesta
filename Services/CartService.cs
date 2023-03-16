@@ -42,13 +42,30 @@ internal sealed class CartService : ICartService {
                  throw new Exception("You can't add more than the quantity available");
              }
          }
+         List<PurchaseDetailEntity> cartDetails = cartItems.Adapt<List<PurchaseDetailEntity>>();
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-         cartItems.ForEach(cp =>
-         {
-             cp.CartId = cart.CartId;
-         });
-         cart.Details = cartItems.Adapt<List<PurchaseDetailEntity>>();
-         _repositoryManager.CartRepository.Insert(cart);
+          
+            if (cart.Details == null)
+            {
+                cart.Details = cartDetails;
+            }
+            else
+            {
+                foreach (var item in cartDetails)
+                {
+                    PurchaseDetailEntity? cartItem = cart.Details.FirstOrDefault(cp => cp.ProductId == item.ProductId);
+                    if (cartItem == null)
+                    {
+                        cart.Details.Add(item);
+                    }
+                    else
+                    {
+                        cartItem.Quantity += item.Quantity;
+                    }
+                }
+            }
+         
+         _repositoryManager.CartRepository.UpdateCart(cart);
          await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
          var cartResponse = cart.Adapt<CartResponse>();
          return cartResponse;

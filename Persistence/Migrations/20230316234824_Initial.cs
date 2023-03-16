@@ -508,7 +508,8 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    PurchaseNumber = table.Column<int>(type: "int", nullable: false),
+                    PurchaseNumber = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<double>(type: "float", nullable: false),
@@ -627,37 +628,37 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Age", "Avatar", "BirthDate", "City", "CivilStatus", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "State", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName" },
-                values: new object[] { "B22698B8-42A2-4115-9631-1C2D1E2AC5F7", 0, "Calle 1", 45, "https://i.imgur.com/1Q1Z1Zm.jpg", new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), "Santo Domingo", 1, "07891c4e-b40e-42fe-b873-f9250749dd86", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 718, DateTimeKind.Unspecified).AddTicks(395), new TimeSpan(0, 0, 0, 0, 0)), "System", "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEO4vejDSoWrlwTfoC348aWibV9NyTpVLedPwMx29g6Slf/jO2cxkufkfb4jNjvPgnA==", "18497505944", true, false, null, null, "ecc76aaa-52ef-4a4e-b938-0ab60e214cb7", "Distrito Nacional", false, null, null, "Rosalba" });
+                values: new object[] { "B22698B8-42A2-4115-9631-1C2D1E2AC5F7", 0, "Calle 1", 45, "https://i.imgur.com/1Q1Z1Zm.jpg", new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), "Santo Domingo", 1, "a745c674-175c-4a53-beff-1c29aa337ea5", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 496, DateTimeKind.Unspecified).AddTicks(8836), new TimeSpan(0, 0, 0, 0, 0)), "System", "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEMjMig6OFM/vBg7hUTKzbUhUVgaE810nG1RYJeJ/JsRDzbQw/gcNAYTx5UO4NQ+XDw==", "18497505944", true, false, null, null, "3ad13622-1c2e-4896-83f3-53582bc655e6", "Distrito Nacional", false, null, null, "Rosalba" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "CategoryEntity",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Icon", "Image", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 709, DateTimeKind.Unspecified).AddTicks(2140), new TimeSpan(0, 0, 0, 0, 0)), "System", "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", "https://i.imgur.com/0jQYs1R.png", true, "Peluches", "peluches", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 709, DateTimeKind.Unspecified).AddTicks(2142), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 490, DateTimeKind.Unspecified).AddTicks(8654), new TimeSpan(0, 0, 0, 0, 0)), "System", "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", "https://i.imgur.com/0jQYs1R.png", true, "Peluches", "peluches", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 490, DateTimeKind.Unspecified).AddTicks(8658), new TimeSpan(0, 0, 0, 0, 0)), "System" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
                 columns: new[] { "DiscountCode", "CreatedAt", "CreatedBy", "Discount", "DiscountCodeImage", "DiscountDescription", "DiscountEndDate", "DiscountImage", "DiscountName", "DiscountStartDate", "DiscountType", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { "ROSA", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 710, DateTimeKind.Unspecified).AddTicks(3507), new TimeSpan(0, 0, 0, 0, 0)), "System", 10.0, "https://i.imgur.com/1ZQZ1Zm.png", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 710, DateTimeKind.Unspecified).AddTicks(3511), new TimeSpan(0, 0, 0, 0, 0)), 0, null, null });
+                values: new object[] { "ROSA", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 491, DateTimeKind.Unspecified).AddTicks(6130), new TimeSpan(0, 0, 0, 0, 0)), "System", 10.0, "https://i.imgur.com/1ZQZ1Zm.png", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 491, DateTimeKind.Unspecified).AddTicks(6133), new TimeSpan(0, 0, 0, 0, 0)), 0, null, null });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "PayMethodEntity",
                 columns: new[] { "Id", "CreatedDate", "Description", "Name", "PayMethodType", "UpdatedDate" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 3, 16, 18, 49, 20, 711, DateTimeKind.Unspecified).AddTicks(4203), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", "Cash", 2, null });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 3, 16, 19, 48, 24, 492, DateTimeKind.Unspecified).AddTicks(3840), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", "Cash", 2, null });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "SupplierEntity",
                 columns: new[] { "Id", "Address", "CreatedAt", "CreatedBy", "Description", "Email", "IsActive", "Name", "Phone", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 716, DateTimeKind.Unspecified).AddTicks(8438), new TimeSpan(0, 0, 0, 0, 0)), "System", null, "suplidor@hotmail.com", true, "Supplier 1", "8095395539", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 716, DateTimeKind.Unspecified).AddTicks(8439), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 496, DateTimeKind.Unspecified).AddTicks(307), new TimeSpan(0, 0, 0, 0, 0)), "System", null, "suplidor@hotmail.com", true, "Supplier 1", "8095395539", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 496, DateTimeKind.Unspecified).AddTicks(310), new TimeSpan(0, 0, 0, 0, 0)), "System" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "Warranties",
                 columns: new[] { "Id", "Conditions", "CreatedAt", "CreatedBy", "Description", "Name", "Period", "ScopeType", "Status", "Type", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 824, DateTimeKind.Unspecified).AddTicks(1780), new TimeSpan(0, 0, 0, 0, 0)), "System", "Warranty 1", "Warranty 1", "1 year", 2, 1, 3, null, null });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 577, DateTimeKind.Unspecified).AddTicks(8581), new TimeSpan(0, 0, 0, 0, 0)), "System", "Warranty 1", "Warranty 1", "1 year", 2, 1, 3, null, null });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -669,13 +670,13 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "CartEntity",
                 columns: new[] { "CartId", "CreatedDate", "UpdatedDate", "UserId" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 708, DateTimeKind.Unspecified).AddTicks(7020), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 708, DateTimeKind.Unspecified).AddTicks(7023), new TimeSpan(0, 0, 0, 0, 0)), "B22698B8-42A2-4115-9631-1C2D1E2AC5F7" });
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 490, DateTimeKind.Unspecified).AddTicks(5510), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 490, DateTimeKind.Unspecified).AddTicks(5513), new TimeSpan(0, 0, 0, 0, 0)), "B22698B8-42A2-4115-9631-1C2D1E2AC5F7" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "OrderEntity",
                 columns: new[] { "SKU", "AmmountPaid", "OrderAddress", "OrderEmail", "OrderPhone", "OrderStatus", "PayMethodId", "PaymentDate", "ShippingAddress", "ShippingCost", "UserId", "VoucherNumber", "VoucherSeries", "VoucherType" },
-                values: new object[] { 1, 1.0, "1", "1", "1", 8, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 3, 16, 18, 49, 20, 711, DateTimeKind.Unspecified).AddTicks(1363), new TimeSpan(0, -4, 0, 0, 0)), "1", 1.0, "B22698B8-42A2-4115-9631-1C2D1E2AC5F7", 1, "1", 1 });
+                values: new object[] { 1, 1.0, "1", "1", "1", 8, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 3, 16, 19, 48, 24, 492, DateTimeKind.Unspecified).AddTicks(1762), new TimeSpan(0, -4, 0, 0, 0)), "1", 1.0, "B22698B8-42A2-4115-9631-1C2D1E2AC5F7", 1, "1", 1 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -683,21 +684,21 @@ namespace Persistence.Migrations
                 columns: new[] { "Code", "Brand", "CategoryId", "Color", "Condition", "CreatedAt", "CreatedBy", "Description", "DiscountAppliedId", "EndedAt", "GenderFor", "Image", "Material", "Name", "Price", "QuantityAvaliable", "Size", "Stock", "SupplierId", "Thumbnail", "Type", "UpdatedAt", "UpdatedBy", "WarrantyId", "Weight" },
                 values: new object[,]
                 {
-                    { "SDA01", "Champion", 1, "White", 1, new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 715, DateTimeKind.Unspecified).AddTicks(417), new TimeSpan(0, 0, 0, 0, 0)), "System", "Polo de manga corta", null, null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 6, "Polo", 1000, 10, 1.5f, 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), null, 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), 0.5f },
-                    { "SDA02", "Flores", 1, "Rosas", 1, new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 715, DateTimeKind.Unspecified).AddTicks(432), new TimeSpan(0, 0, 0, 0, 0)), "System", "Flores de rosas", null, null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 7, "Flores", 500, 1, 1.5f, 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), null, 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), 0.5f }
+                    { "SDA01", "Champion", 1, "White", 1, new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 494, DateTimeKind.Unspecified).AddTicks(7595), new TimeSpan(0, 0, 0, 0, 0)), "System", "Polo de manga corta", null, null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 6, "Polo", 1000, 10, 1.5f, 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), null, 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), 0.5f },
+                    { "SDA02", "Flores", 1, "Rosas", 1, new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 494, DateTimeKind.Unspecified).AddTicks(7607), new TimeSpan(0, 0, 0, 0, 0)), "System", "Flores de rosas", null, null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 7, "Flores", 500, 1, 1.5f, 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), null, 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), 0.5f }
                 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "SubCategoryEntity",
                 columns: new[] { "Id", "CategoryId", "CreatedAt", "CreatedBy", "Description", "Icon", "Image", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, 1, new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 716, DateTimeKind.Unspecified).AddTicks(6133), new TimeSpan(0, 0, 0, 0, 0)), "System", "Electronics", "https://i.imgur.com/0jQYs1R.png", "https://i.imgur.com/0jQYs1R.png", true, "Electronics", "electronics", new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 716, DateTimeKind.Unspecified).AddTicks(6135), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                values: new object[] { 1, 1, new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 495, DateTimeKind.Unspecified).AddTicks(8547), new TimeSpan(0, 0, 0, 0, 0)), "System", "Electronics", "https://i.imgur.com/0jQYs1R.png", "https://i.imgur.com/0jQYs1R.png", true, "Electronics", "electronics", new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 495, DateTimeKind.Unspecified).AddTicks(8550), new TimeSpan(0, 0, 0, 0, 0)), "System" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "PurchaseDetailEntity",
                 columns: new[] { "ProductId", "PurchaseNumber", "CartId", "CreatedAt", "CreatedBy", "DiscountId", "OrderEntitySKU", "Quantity", "UnitPrice", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { "SDA01", 1, 1, new DateTimeOffset(new DateTime(2023, 3, 16, 22, 49, 20, 715, DateTimeKind.Unspecified).AddTicks(9262), new TimeSpan(0, 0, 0, 0, 0)), "System", "ROSA", null, 2, 1000.0, null, null });
+                values: new object[] { "SDA01", 1, 1, new DateTimeOffset(new DateTime(2023, 3, 16, 23, 48, 24, 495, DateTimeKind.Unspecified).AddTicks(3694), new TimeSpan(0, 0, 0, 0, 0)), "System", "ROSA", null, 2, 1000.0, null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -18,6 +18,7 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
     {
         builder.ToTable(nameof(PurchaseDetailEntity));
         builder.HasKey(x => new { x.PurchaseNumber, x.ProductId});
+        builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
         builder.Property(x => x.Quantity).IsRequired();
         builder.Property(x => x.UnitPrice);
         builder.Property(x => x.DiscountId);

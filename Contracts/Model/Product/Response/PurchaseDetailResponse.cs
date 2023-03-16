@@ -3,7 +3,6 @@
 public class PurchaseDetailResponse: BaseResponse
 {
     public int PurchaseNumber { get; set; }
-    public int OrderSKU { get; set; }
     public string? ProductId { get; set; }
     public int Quantity { get; set; }
     public double UnitPrice { get; set; }
