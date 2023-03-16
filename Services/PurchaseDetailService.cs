@@ -14,9 +14,9 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService {
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<PurchaseDetailResponse> GetAllAsync(CancellationToken cancellationToken = default) {
+    public async Task<IEnumerable<PurchaseDetailResponse>> GetAllAsync(CancellationToken cancellationToken = default) {
         IEnumerable<PurchaseDetailEntity> purchaseDetails = await _repositoryManager.PurchaseDetailRepository.GetAllAsync(cancellationToken);
-        var purchaseDetailResponse = purchaseDetails.Adapt<PurchaseDetailResponse>();
+        IEnumerable<PurchaseDetailResponse> purchaseDetailResponse = purchaseDetails.Adapt<IEnumerable<PurchaseDetailResponse>>();
         return purchaseDetailResponse;
     }
 
@@ -43,7 +43,7 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService {
         PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
         purchaseDetail.Quantity = purchaseDetailDto.Quantity;
         purchaseDetail.UnitPrice = purchaseDetailDto.UnitPrice;
-        purchaseDetail.DiscountId = purchaseDetailDto.DiscountApplied;
+        purchaseDetail.DiscountId = purchaseDetailDto.DiscountId;
         purchaseDetail.UpdatedBy = userId;
         purchaseDetail.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);

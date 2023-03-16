@@ -27,6 +27,10 @@ public class ProductRepository: IProductRepository
 
     public void Update(ProductEntity product) => _dbContext.Products.Update(product);
     public void Delete(ProductEntity product) => _dbContext.Products.Remove(product);
+    public void UpdateRange(List<ProductEntity> listProducts)
+    {
+        _dbContext.Products.UpdateRange(listProducts);
+    }
 
     public void Insert(ProductEntity product) => _dbContext.Products.Add(product);
 }

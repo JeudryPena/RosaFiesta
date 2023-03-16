@@ -6,5 +6,7 @@ public interface ICartRepository
 {
     Task<IEnumerable<CartEntity>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<CartEntity> GetByIdAsync(string id, CancellationToken cancellationToken = default);
-    void Insert(List<CartProductsEntity> cartProducts);
+    void Insert(CartEntity cart);
+    void UpdateCartItem(PurchaseDetailEntity cartItem);
+    void DeleteDetails(ICollection<PurchaseDetailEntity> cartDetails);
 }

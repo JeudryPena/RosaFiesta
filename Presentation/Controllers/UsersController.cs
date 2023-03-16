@@ -56,7 +56,7 @@ public class UserController : ControllerBase
         return Ok(user);
     }
     
-    [HttpGet("{userId}")]
+    [HttpGet("{userId}/unlock")]
     [Authorize]
     public async Task<IActionResult> UnlockUser(string userId, CancellationToken cancellationToken)
     {

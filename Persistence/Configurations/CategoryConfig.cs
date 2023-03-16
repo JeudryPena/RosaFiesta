@@ -25,13 +25,12 @@ public class CategoryConfig: IEntityTypeConfiguration<CategoryEntity>
             builder.HasMany(x => x.SubCategories).WithOne(x => x.Category).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Cascade);
             builder.HasData( new CategoryEntity { 
                 Id = CategoryId, 
-                Name = "Electronics", 
-                Description = "Electronics", 
+                Name = "Peluches", 
+                Description = "Peluches de todos los tipos", 
                 Image = "https://i.imgur.com/0jQYs1R.png", 
                 Icon = "https://i.imgur.com/0jQYs1R.png",
-                Slug = "electronics",
+                Slug = "peluches",
                 IsActive = true,
-                Products = null,
                 CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = "System",
                 UpdatedAt = DateTimeOffset.UtcNow,

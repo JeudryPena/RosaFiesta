@@ -33,6 +33,9 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             .WithOne(cart => cart.UserEntity)
             .HasForeignKey<CartEntity>(cart => cart.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(user => user.Orders)
+            .WithOne(order => order.User)
+            .HasForeignKey(order => order.UserId);
         builder.HasMany(owner => owner.Reviews)
             .WithOne(review => review.UserEntity)
             .HasForeignKey(review => review.UserReviewerId)

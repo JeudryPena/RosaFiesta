@@ -5,12 +5,12 @@ namespace Domain.Entities.Product;
 
 public class DiscountEntity: BaseEntity
 {
-    public string DiscountCode { get; set; } = string.Empty;
-    public string DiscountName { get; set; } = string.Empty;
+    public string DiscountCode { get; set; } 
+    public string DiscountName { get; set; } 
     public DiscountType DiscountType { get; set; } 
     public double Discount { get; set; }
-    public DateTimeOffset DiscountStartDate { get; set; } = DateTimeOffset.Now;
-    public DateTimeOffset DiscountEndDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset DiscountStartDate { get; set; } 
+    public DateTimeOffset DiscountEndDate { get; set; }
     public string? DiscountDescription { get; set; }
     public string? DiscountImage { get; set; }
     public string? DiscountCodeImage { get; set; }

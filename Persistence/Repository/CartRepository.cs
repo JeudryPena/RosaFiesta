@@ -15,14 +15,14 @@ internal sealed class CartRepository: ICartRepository
 
     public async Task<IEnumerable<CartEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await _context.Carts
-            .Include(c => c.Products)
+            .Include(c => c.Details)
             .Include(c => c.UserEntity)
             .ToListAsync(cancellationToken);
 
     public async Task<CartEntity> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
         CartEntity? cart = await _context.Carts
-            .Include(c => c.Products)
+            .Include(c => c.Details)
             .Include(c => c.UserEntity)
             .FirstOrDefaultAsync(c => c.UserId == id, cancellationToken);
         if (cart == null)
@@ -32,6 +32,13 @@ internal sealed class CartRepository: ICartRepository
         return cart;
     }
 
-    public void Insert(List<CartProductsEntity> cartProducts) => _context.CartsProducts.AddRange(cartProducts);
- 
+    public void Insert(CartEntity cart) =>
+        _context.Carts.Add(cart);
+
+    public void UpdateCartItem(PurchaseDetailEntity cartItem) =>
+        _context.PurchaseDetails.Update(cartItem);
+
+    public void DeleteDetails(ICollection<PurchaseDetailEntity> cartDetails) =>
+    _context.PurchaseDetails.RemoveRange(cartDetails);
+    
 }

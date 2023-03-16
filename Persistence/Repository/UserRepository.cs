@@ -13,13 +13,13 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<UserEntity>> GetAllAsync(
         CancellationToken cancellationToken = default
-    ) => await _context.Users.Include(x => x.Bills).ToListAsync(cancellationToken);
+    ) => await _context.Users.Include(x => x.Orders).ToListAsync(cancellationToken);
 
     public async Task<UserEntity> GetByIdAsync(
         string userId,
         CancellationToken cancellationToken = default
     ) =>
-        await _context.Users.Include(x => x.Bills)
+        await _context.Users.Include(x => x.Orders)
             .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken) ?? throw new InvalidOperationException();
 
     public void Insert(UserEntity user) => _context.Users.Add(user);

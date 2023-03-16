@@ -5,7 +5,7 @@ namespace Services.Abstractions;
 
 public interface IPurchaseDetailService
 {
-    Task<PurchaseDetailResponse> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<PurchaseDetailResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<PurchaseDetailResponse> GetByIdAsync(int detailId, CancellationToken cancellationToken = default);
 
     Task<PurchaseDetailResponse> CreateAsync(PurchaseDetailDto purchaseDetailDto, string? userId, CancellationToken cancellationToken = default);

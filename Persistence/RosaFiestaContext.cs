@@ -18,7 +18,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     {
         Products = Set<ProductEntity>();
         Carts = Set<CartEntity>();
-        CartsProducts = Set<CartProductsEntity>();
         Discounts = Set<DiscountEntity>();
         Orders = Set<OrderEntity>();
         PurchaseDetails = Set<PurchaseDetailEntity>();
@@ -40,7 +39,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     }
     public DbSet<ProductEntity> Products { get; }
     public DbSet<CartEntity> Carts { get; set; }
-    public DbSet<CartProductsEntity> CartsProducts { get; set; }
     public DbSet<DiscountEntity> Discounts { get; set; }
     
     public DbSet<WishListEntity> WishesList { get; set; }

@@ -29,8 +29,14 @@ public class CartsController : ControllerBase {
     }
 
     [HttpPost("{userId}")]
-    public async Task<IActionResult> AddToCartAsync(string userId, [FromBody] List<CartItemsDto> cartItemsItems, CancellationToken cancellationToken) {
+    public async Task<IActionResult> AddToCartAsync(string userId, [FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken) {
         CartResponse cart = await _serviceManager.CartService.AddToCartAsync(userId, cartItemsItems, cancellationToken);
+        return Ok(cart);
+    }
+    
+    [HttpPut("{userId}/product/{productId}/adjust")]
+    public async Task<IActionResult> AdjustCartItemQuantityAsync(string userId, string productId, int decrease, CancellationToken cancellationToken) {
+        CartResponse cart = await _serviceManager.CartService.AdjustCartItemQuantityAsync(userId, productId, decrease, cancellationToken);
         return Ok(cart);
     }
 }

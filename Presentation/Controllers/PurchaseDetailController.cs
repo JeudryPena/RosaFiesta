@@ -22,7 +22,7 @@ public class PurchaseDetailController: ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPurchaseDetails(CancellationToken cancellationToken)
     {
-        PurchaseDetailResponse purchaseDetails = await _serviceManager.PurchaseDetailService.GetAllAsync(cancellationToken);
+        IEnumerable<PurchaseDetailResponse> purchaseDetails = await _serviceManager.PurchaseDetailService.GetAllAsync(cancellationToken);
         return Ok(purchaseDetails);
     }
     

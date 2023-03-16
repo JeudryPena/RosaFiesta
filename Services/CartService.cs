@@ -31,7 +31,7 @@ internal sealed class CartService : ICartService {
         return cartResponse;
      }
 
-     public async Task<CartResponse> AddToCartAsync(string userId, List<CartItemsDto> cartItems,
+     public async Task<CartResponse> AddToCartAsync(string userId, List<PurchaseDetailDto> cartItems,
          CancellationToken cancellationToken = default)
      {
          foreach (var item in cartItems)
@@ -39,27 +39,37 @@ internal sealed class CartService : ICartService {
              var product = await _repositoryManager.ProductRepository.GetByIdAsync(item.ProductId, cancellationToken);
              if (product.QuantityAvaliable < item.Quantity)
              {
-                 throw new Exception("Not enough quantity available");
-             } 
-             product.QuantityAvaliable -= item.Quantity;
-             product.Stock = productStock(product.QuantityAvaliable);
-             _repositoryManager.ProductRepository.Update(product);
+                 throw new Exception("You can't add more than the quantity available");
+             }
          }
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-         List<CartProductsEntity> cartProducts = cartItems.Adapt<List<CartProductsEntity>>();
-         cartProducts.ForEach(cp => cp.CartId = cart.CartId);
-         _repositoryManager.CartRepository.Insert(cartProducts);
+         cartItems.ForEach(cp =>
+         {
+             cp.CartId = cart.CartId;
+         });
+         cart.Details = cartItems.Adapt<List<PurchaseDetailEntity>>();
+         _repositoryManager.CartRepository.Insert(cart);
          await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
          var cartResponse = cart.Adapt<CartResponse>();
          return cartResponse;
      }
-     
-     private StockStatusType productStock(int? productQuantityAvaliable)
+
+     public async Task<CartResponse> AdjustCartItemQuantityAsync(string userId, string productId, int decrease,
+         CancellationToken cancellationToken = default)
      {
-         if (productQuantityAvaliable <= 0)
-             return StockStatusType.OutOfStock;
-         if (productQuantityAvaliable <= 5)
-             return StockStatusType.LowStock;
-         return StockStatusType.InStock;
+         var product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+         if (product.QuantityAvaliable < decrease)
+         {
+             throw new Exception("Not enough quantity available");
+         } 
+         CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
+         if (cart.Details == null) throw new Exception("Cart is empty");
+         PurchaseDetailEntity? cartItem = cart.Details.FirstOrDefault(cp => cp.ProductId == productId);
+         if (cartItem == null) throw new Exception("Product not found in cart");
+         cartItem.Quantity -= decrease;
+         _repositoryManager.CartRepository.UpdateCartItem(cartItem);
+         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+         var cartResponse = cart.Adapt<CartResponse>();
+         return cartResponse;
      }
 }

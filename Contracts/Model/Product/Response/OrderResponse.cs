@@ -1,16 +1,9 @@
-﻿using Domain.Entities.Product.Helpers;
-using Domain.Entities.Security;
+﻿namespace Contracts.Model.Product.Response;
 
-namespace Domain.Entities.Product.UserInteract;
-
-public class OrderEntity 
+public class OrderResponse
 {
     public int SKU { get; set; }
-    public string? UserId { get; set; }
-    public UserEntity? User { get; set; }
     public Guid PayMethodId { get; set; }
-    public ICollection<PurchaseDetailEntity> Details { get; set; }
-    public PayMethodEntity? PayMethod { get; set; }
     public DateTimeOffset PaymentDate { get; set; }
     public string ShippingAddress { get; set; }
     public string OrderAddress { get; set; }
@@ -18,8 +11,8 @@ public class OrderEntity
     public string OrderEmail { get; set; }
     public double AmmountPaid { get; set; }
     public double ShippingCost { get; set; }
-    public VoucherType VoucherType { get; set; }
+    public string VoucherType { get; set; }
     public int VoucherNumber { get; set; }
     public string VoucherSeries { get; set; }
-    public OrderStatusType OrderStatus { get; set; }
+    public string OrderStatus { get; set; }
 }
