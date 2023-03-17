@@ -1,5 +1,6 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
@@ -28,15 +29,7 @@ internal sealed class OrderService : IOrderService {
         OrderResponse billResponse = order.Adapt<OrderResponse>();
         return billResponse;
     }
-
-    public async Task<OrderResponse> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken = default) {
-        OrderEntity order = orderDto.Adapt<OrderEntity>();
-        order.PaymentDate = DateTimeOffset.UtcNow;
-        _repositoryManager.OrderRepository.CreateAsync(order);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        OrderResponse billResponse = order.Adapt<OrderResponse>();
-        return billResponse;
-    }
+    
 
     public async Task<OrderResponse> UpdateAsync(int billId, OrderDto orderDto,
         CancellationToken cancellationToken = default) {
@@ -64,6 +57,7 @@ internal sealed class OrderService : IOrderService {
         order.PayMethodId = payMethod.Id;
         order.UserId = userId;
         CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
+        List<ProductEntity> products = new();
         if (cart.Details != null)
         {
             order.Details = cart.Details;
@@ -77,18 +71,21 @@ internal sealed class OrderService : IOrderService {
                 {
                     throw new Exception("You can't add more than the quantity available");
                 }
-
+                
                 product.QuantityAvaliable -= detail.Quantity;
                 product.Stock = productStock(detail.Product.QuantityAvaliable);
-                _repositoryManager.ProductRepository.Update(product);
-                await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+                products.Add(product);
             }
             _repositoryManager.CartRepository.DeleteDetails(cart.Details);
         }
-
+        _repositoryManager.ProductRepository.UpdateRange(products);
         _repositoryManager.OrderRepository.CreateAsync(order);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         OrderResponse orderResponse = order.Adapt<OrderResponse>();
+        foreach (var e in order.Details)
+        {
+            orderResponse.AmmountPaid += e.UnitPrice * e.Quantity;
+        }
         return orderResponse;
     }
     

@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Model.Product.Response;
 
-public class PurchaseDetailResponse: BaseResponse
+public class PurchaseDetailResponse
 {
     public int PurchaseNumber { get; set; }
     public string? ProductId { get; set; }

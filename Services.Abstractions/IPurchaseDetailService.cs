@@ -7,8 +7,6 @@ public interface IPurchaseDetailService
 {
     Task<IEnumerable<PurchaseDetailResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<PurchaseDetailResponse> GetByIdAsync(int detailId, CancellationToken cancellationToken = default);
-
-    Task<PurchaseDetailResponse> CreateAsync(PurchaseDetailDto purchaseDetailDto, string? userId, CancellationToken cancellationToken = default);
     Task<PurchaseDetailResponse> UpdateAsync(int detailId, PurchaseDetailDto purchaseDetailDto, string? userId, CancellationToken cancellationToken = default);
     Task DeleteAsync(int detailId, CancellationToken cancellationToken = default);
 }

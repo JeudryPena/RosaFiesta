@@ -23,6 +23,8 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
         builder.Property(x => x.UnitPrice);
         builder.Property(x => x.DiscountId);
         builder.Property(x => x.CartId).IsRequired();
+        builder.Property(x => x.CreatedAt).IsRequired();
+        builder.Property(x => x.UpdatedAt);
         builder.HasOne(x => x.DiscountApplied).WithMany(x => x.DiscountPurchases).HasForeignKey(x => x.DiscountId);
         builder.HasOne(x => x.Product).WithMany(x => x.Details).HasForeignKey(x => x.ProductId);
         builder.HasOne(x => x.Cart).WithMany(x => x.Details).HasForeignKey(x => x.CartId);
@@ -35,7 +37,8 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
                 Quantity = 2,
                 UnitPrice = 1000,
                 DiscountId = DefaultDiscountCode,
-                CartId = 1
+                CartId = 1,
+                CreatedAt = DateTimeOffset.UtcNow,
             }
         );
     }

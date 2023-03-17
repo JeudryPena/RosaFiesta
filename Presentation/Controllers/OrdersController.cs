@@ -30,15 +30,7 @@ public class OrdersController: ControllerBase
         OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(billId, cancellationToken);
         return Ok(bill);
     }
-    
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> CreateBill([FromBody] OrderDto orderDto, CancellationToken cancellationToken)
-    {
-        OrderResponse billResponse = await _serviceManager.OrderService.CreateAsync(orderDto, cancellationToken);
-        return Ok(billResponse);
-    }
-    
+
     [HttpPut("{billId}")]
     [Authorize]
     public async Task<IActionResult> UpdateBill(int billId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)

@@ -34,6 +34,7 @@ internal sealed class CartService : ICartService {
      public async Task<CartResponse> AddToCartAsync(string userId, List<PurchaseDetailDto> cartItems,
          CancellationToken cancellationToken = default)
      {
+         List<double> priceUnit = new();
          foreach (var item in cartItems)
          {
              var product = await _repositoryManager.ProductRepository.GetByIdAsync(item.ProductId, cancellationToken);
@@ -41,10 +42,11 @@ internal sealed class CartService : ICartService {
              {
                  throw new Exception("You can't add more than the quantity available");
              }
+            priceUnit.Add(product.Price);
          }
          List<PurchaseDetailEntity> cartDetails = cartItems.Adapt<List<PurchaseDetailEntity>>();
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-          
+         
             if (cart.Details == null)
             {
                 cart.Details = cartDetails;
@@ -64,10 +66,17 @@ internal sealed class CartService : ICartService {
                     }
                 }
             }
-         
-         _repositoryManager.CartRepository.UpdateCart(cart);
+
+            foreach (var item in cart.Details)
+            {
+                item.CreatedAt = DateTimeOffset.UtcNow;
+                item.UnitPrice = priceUnit[cartDetails.IndexOf(item)];
+            }
+            _repositoryManager.CartRepository.UpdateCart(cart);
          await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
          var cartResponse = cart.Adapt<CartResponse>();
+         if (cartResponse.Details != null)
+             cartResponse.TotalPrice = cartResponse.Details.Sum(cp => cp.UnitPrice * cp.Quantity);
          return cartResponse;
      }
 

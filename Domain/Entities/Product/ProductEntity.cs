@@ -10,7 +10,7 @@ public class ProductEntity: BaseEntity
     public string? Code { get; set; }
     public string Name { get; set; } 
     public string? Description { get; set; }
-    public int Price { get; set; }
+    public double Price { get; set; }
     public DateTimeOffset? EndedAt { get; set; } 
     public string? Image { get; set; }
     public string? Thumbnail { get; set; }
