@@ -18,16 +18,16 @@ public class DiscountsController: ControllerBase
      }
      
      [HttpGet]
-     public async Task<IActionResult> GetDiscount(CancellationToken cancellationToken)
+     public async Task<IActionResult> GetDiscounts(CancellationToken cancellationToken)
      {
           IEnumerable<DiscountResponse> discounts = await _serviceManager.DiscountService.GetAllAsync(cancellationToken);
           return Ok(discounts);
      }
     
-     [HttpGet("{discountId:guid}")]
-     public async Task<IActionResult> GetDiscount(Guid discountId, CancellationToken cancellationToken)
+     [HttpGet("{discountCode}")]
+     public async Task<IActionResult> GetDiscount(string discountCode, CancellationToken cancellationToken)
      {
-          DiscountResponse discount = await _serviceManager.DiscountService.GetDiscountAsync(discountId, cancellationToken);
+          DiscountResponse discount = await _serviceManager.DiscountService.GetDiscountAsync(discountCode, cancellationToken);
           return Ok(discount);
      }
     
@@ -40,19 +40,19 @@ public class DiscountsController: ControllerBase
           return Ok(discountResponse);
      }
 
-     [HttpPut("{discountId:guid}")]
+     [HttpPut("{discountCode}")]
      [Authorize]
-     public async Task<IActionResult> UpdateDiscount(Guid discountId,[FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
+     public async Task<IActionResult> UpdateDiscount(string discountCode,[FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
      {
           string? username = User.Identity?.Name;
-          DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(username, discountId, discountDto, cancellationToken);
+          DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(username, discountCode, discountDto, cancellationToken);
           return Ok(discountResponse);
      }
     
-     [HttpDelete("{discountId:guid}")]
-     public async Task<IActionResult> DeleteDiscount(Guid discountId, CancellationToken cancellationToken)
+     [HttpDelete("{discountCode}")]
+     public async Task<IActionResult> DeleteDiscount(string discountCode, CancellationToken cancellationToken)
      {
-          await _serviceManager.DiscountService.DeleteDiscountAsync(discountId, cancellationToken);
+          await _serviceManager.DiscountService.DeleteDiscountAsync(discountCode, cancellationToken);
           return Ok();
      }
 }

@@ -13,14 +13,10 @@ public class CartConfiguration: IEntityTypeConfiguration<CartEntity>
     {
         builder.ToTable(nameof(CartEntity));
         builder.HasKey(x => x.CartId);
-        builder.Property(x => x.CreatedDate).IsRequired();
-        builder.Property(x => x.UpdatedDate);
         builder.Property(x => x.UserId).IsRequired();
         builder.HasMany(x => x.Details).WithOne(x => x.Cart).HasForeignKey(x => x.CartId);
         builder.HasData( new CartEntity { 
-            CartId = CartId, 
-            CreatedDate = DateTimeOffset.UtcNow,
-            UpdatedDate = DateTimeOffset.UtcNow,
+            CartId = CartId,
             UserId = AdminId,
         });
     }

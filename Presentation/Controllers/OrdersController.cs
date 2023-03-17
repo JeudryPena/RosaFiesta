@@ -18,14 +18,14 @@ public class OrdersController: ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetBills(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
     {
         IEnumerable<OrderResponse> bills = await _serviceManager.OrderService.GetAllAsync(cancellationToken);
         return Ok(bills);
     }
     
     [HttpGet("{billId}")]
-    public async Task<IActionResult> GetBillById(int billId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetOrderById(int billId, CancellationToken cancellationToken)
     {
         OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(billId, cancellationToken);
         return Ok(bill);
@@ -33,7 +33,7 @@ public class OrdersController: ControllerBase
 
     [HttpPut("{billId}")]
     [Authorize]
-    public async Task<IActionResult> UpdateBill(int billId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateOrder(int billId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
     {
         OrderResponse billResponse = await _serviceManager.OrderService.UpdateAsync(billId, orderDto, cancellationToken);
         return Ok(billResponse);
@@ -41,7 +41,7 @@ public class OrdersController: ControllerBase
     
     [HttpDelete("{billId}")]
     [Authorize]
-    public async Task<IActionResult> DeleteBill(int billId, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteOrder(int billId, CancellationToken cancellationToken)
     {
         await _serviceManager.OrderService.DeleteAsync(billId, cancellationToken);
         return Ok();

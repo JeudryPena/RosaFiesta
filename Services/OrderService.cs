@@ -47,7 +47,8 @@ internal sealed class OrderService : IOrderService {
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<OrderResponse> OrderPurchaseAsync(string userId, Guid payMethodId, OrderDto orderDto,
+    public async Task<OrderResponse> OrderPurchaseAsync(string userId, Guid payMethodId, string? discountCode,
+        OrderDto orderDto,
         CancellationToken cancellationToken = default)
     {
         PayMethodEntity payMethod = await _repositoryManager.PayMethodRepository.GetByIdAsync(payMethodId, cancellationToken);
@@ -60,20 +61,36 @@ internal sealed class OrderService : IOrderService {
         List<ProductEntity> products = new();
         if (cart.Details != null)
         {
-            order.Details = cart.Details;
-            if (cart.Details == null) throw new Exception("Cart is empty");
+            if (discountCode != null)
+            {
+                DiscountEntity discount =
+                    await _repositoryManager.DiscountRepository.GetByIdAsync(discountCode, cancellationToken);
+                cart.Details = cart.Details.Where(x => x.DiscountId == discountCode).Select(x =>
+                {
+                    x.UnitPrice = x.Product.Price - discount.Discount;
+                    return x;
+                }).ToList();
+                if (discount.AppliedDiscounts == null)
+                    throw new Exception("Discount not found");
+                var appliedDiscounts = discount.AppliedDiscounts
+                    .FirstOrDefault(x => x.UserId == userId && x.DiscountCode == discountCode) ?? throw new Exception("Discount not found");
+                if (appliedDiscounts.TimesApplied >= discount.MaxTimesApply)
+                    throw new Exception("You can't apply this discount anymore");
+                appliedDiscounts.TimesApplied ++;
+                _repositoryManager.DiscountRepository.UpdateAppliedDiscount(appliedDiscounts);
+            }
+
             foreach (PurchaseDetailEntity detail in cart.Details)
             {
-                var product =
+                ProductEntity product =
                     await _repositoryManager.ProductRepository.GetByIdAsync(detail.ProductId, cancellationToken);
                 if (detail.ProductId == null) throw new Exception("Product not found");
                 if (product.QuantityAvaliable < detail.Quantity)
                 {
                     throw new Exception("You can't add more than the quantity available");
                 }
-                
                 product.QuantityAvaliable -= detail.Quantity;
-                product.Stock = productStock(detail.Product.QuantityAvaliable);
+                product.Stock = ProductStock(detail.Product.QuantityAvaliable);
                 products.Add(product);
             }
             _repositoryManager.CartRepository.DeleteDetails(cart.Details);
@@ -82,14 +99,31 @@ internal sealed class OrderService : IOrderService {
         _repositoryManager.OrderRepository.CreateAsync(order);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         OrderResponse orderResponse = order.Adapt<OrderResponse>();
-        foreach (var e in order.Details)
-        {
-            orderResponse.AmmountPaid += e.UnitPrice * e.Quantity;
-        }
         return orderResponse;
     }
-    
-    private StockStatusType productStock(int? productQuantityAvaliable)
+
+    public async Task<ValidDiscountResponse> ApplyDiscountAsync(string userId, string productId, string discountCode, CancellationToken cancellationToken)
+    {
+        DiscountEntity discount = await _repositoryManager.DiscountRepository.GetValidDiscountAsync(discountCode, productId, cancellationToken) ?? throw new Exception("Discount not found");
+        AppliedDiscountEntity discountApplied =
+            await _repositoryManager.DiscountRepository.GetAppliedDiscount(userId, discountCode, cancellationToken);
+        if (discountApplied.TimesApplied >= discount.MaxTimesApply)
+            throw new Exception("You have already exhausted the maximum use of this discount");
+        CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
+        if (cart.Details == null) throw new Exception("Cart is empty");
+        cart.Details = cart.Details.Where(x => x.ProductId == productId).Select(x =>
+        {
+            x.DiscountId = discountCode;
+            return x;
+        }).ToList();
+        _repositoryManager.PurchaseDetailRepository.UpdateRange(cart.Details);
+        _repositoryManager.DiscountRepository.UpdateAppliedDiscount(discountApplied);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        ValidDiscountResponse validDiscountResponse = discount.Adapt<ValidDiscountResponse>();
+        return validDiscountResponse;
+    }
+
+    private StockStatusType ProductStock(int? productQuantityAvaliable)
     {
         if (productQuantityAvaliable <= 0)
             return StockStatusType.OutOfStock;

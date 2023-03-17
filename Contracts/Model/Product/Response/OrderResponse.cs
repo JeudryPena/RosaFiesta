@@ -9,7 +9,6 @@ public class OrderResponse
     public string OrderAddress { get; set; }
     public string OrderPhone { get; set; }
     public string OrderEmail { get; set; }
-    public double AmmountPaid { get; set; }
     public double ShippingCost { get; set; }
     public string VoucherType { get; set; }
     public int VoucherNumber { get; set; }

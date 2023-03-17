@@ -8,4 +8,5 @@ public interface IPurchaseDetailRepository
     Task<PurchaseDetailEntity> GetByIdAsync(int detailId, CancellationToken cancellationToken);
     void Update(PurchaseDetailEntity purchaseDetail);
     void Delete(PurchaseDetailEntity purchaseDetail);
+    void UpdateRange(ICollection<PurchaseDetailEntity> cartDetails);
 }

@@ -6,6 +6,8 @@ using Services.Abstractions;
 
 namespace Presentation.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class PurchaseController: ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -15,14 +17,6 @@ public class PurchaseController: ControllerBase
         _serviceManager = serviceManager;
     }
     
-    // Order purchase
-    [HttpPost("{userId}/payMethod/{payMethodId:guid}")]
-    public async Task<IActionResult> OrderPurchaseAsync(string userId, Guid payMethodId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
-    {
-        OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, payMethodId, orderDto, cancellationToken);
-        return Ok(cart);
-    }
-    
     [HttpGet]
     public async Task<IActionResult> GetPurchaseDetails(CancellationToken cancellationToken)
     {
@@ -30,6 +24,21 @@ public class PurchaseController: ControllerBase
         return Ok(purchaseDetails);
     }
     
+    [HttpPost("{userId}/products/{productsId}")]
+    public async Task<IActionResult> ApplyDiscountAsync(string userId, string productsId,
+        string discountCode, CancellationToken cancellationToken)
+    {
+        ValidDiscountResponse cart = await _serviceManager.OrderService.ApplyDiscountAsync(userId, productsId, discountCode, cancellationToken);
+        return Ok(cart);
+    }
+    
+    [HttpPost("{userId}/discountCode/{discountCode}/payMethod/{payMethodId:guid}")]
+    public async Task<IActionResult> OrderPurchaseAsync(string userId, Guid payMethodId, string? discountCode, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
+    {
+        OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, payMethodId, discountCode, orderDto, cancellationToken);
+        return Ok(cart);
+    }
+
     [HttpGet("{detailId}")]
     public async Task<IActionResult> GetPurchaseDetailById(int detailId, CancellationToken cancellationToken)
     {
@@ -51,5 +60,4 @@ public class PurchaseController: ControllerBase
         await _serviceManager.PurchaseDetailService.DeleteAsync(detailId,  cancellationToken);
         return Ok();
     }
-    
 }

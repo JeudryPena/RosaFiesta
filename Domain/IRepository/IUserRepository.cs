@@ -10,4 +10,5 @@ public interface IUserRepository
     void Insert(UserEntity user);
     void Delete(UserEntity user);
     void CreateAsync(UserEntity user);
+    void Update(UserEntity user);
 }

@@ -9,6 +9,8 @@ public class PurchaseDetailEntity
     public int PurchaseNumber { get; set; }
     public string? ProductId { get; set; }
     public ProductEntity Product { get; set; }
+    public int? OrderSku { get; set; }
+    public OrderEntity? Order { get; set; }
     public int Quantity { get; set; }
     public double UnitPrice { get; set; }
     public string? DiscountId { get; set; }

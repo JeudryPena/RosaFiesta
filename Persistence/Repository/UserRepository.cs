@@ -24,13 +24,13 @@ public class UserRepository : IUserRepository
 
     public void Insert(UserEntity user) => _context.Users.Add(user);
 
-    public void Delete(UserEntity user)
-    {
-        _context.Users.Remove(user);
-    }
-
-    public void CreateAsync(UserEntity user)
-    {
-        _context.Users.Add(user);
-    }
+    public void Delete(UserEntity user) =>
+    _context.Users.Remove(user);
+    
+    public void CreateAsync(UserEntity user) =>
+    _context.Users.Add(user);
+    
+    public void Update(UserEntity user) =>
+    _context.Users.Update(user);
+    
 }

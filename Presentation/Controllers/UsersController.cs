@@ -70,6 +70,20 @@ public class UserController : ControllerBase
         return Ok();
     }
     
+    [HttpGet("{userId}/lock")]
+    [Authorize]
+    public async Task<IActionResult> LockUser(string userId, CancellationToken cancellationToken)
+    {
+        string? username = User.Identity?.Name;
+        await _serviceManager.UserService.LockUserAsync(
+            userId,
+            username,
+            cancellationToken
+        );
+
+        return Ok();
+    }
+    
     [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateUser(
         string userId,
@@ -77,7 +91,9 @@ public class UserController : ControllerBase
         CancellationToken cancellationToken
     )
     {
+        string? username = User.Identity?.Name;
         await _serviceManager.UserService.UpdateAsync(
+            username,
             userId,
             userForUpdateDto,
             cancellationToken

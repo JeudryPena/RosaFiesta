@@ -25,4 +25,6 @@ public class UserEntity : IdentityUser
     public ICollection<ReviewEntity>? Reviews { get; set; } 
     public ICollection<WishListEntity>? WishLists { get; set; }
     public ICollection<OrderEntity>? Orders { get; set; }
+    
+    public ICollection<AppliedDiscountEntity>? AppliedDiscounts { get; set; }
 }

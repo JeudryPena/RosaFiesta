@@ -48,12 +48,13 @@ internal sealed class UserService : IUserService
         return usersResponse;
     }
     
-    public async Task UpdateAsync(string userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(string? username, string userId, UserForUpdateDto userForUpdateDto,
+        CancellationToken cancellationToken = default)
     {
         UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
             userId,
             cancellationToken
-        ) ?? throw new UserNotFoundException(userId.ToString());
+        ) ?? throw new UserNotFoundException(userId);
         
         user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
         user.CivilStatus = userForUpdateDto.CivilStatus.Adapt<CivilType>();
@@ -62,7 +63,9 @@ internal sealed class UserService : IUserService
         user.City = userForUpdateDto.City;
         user.State = userForUpdateDto.State;
         user.UpdatedAt = DateTimeOffset.UtcNow;
-        
+        user.UpdatedBy = username;
+
+        _repositoryManager.UserRepository.Update(user);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
@@ -88,7 +91,7 @@ internal sealed class UserService : IUserService
         user.AccessFailedCount = 0;
         user.UpdatedAt = DateTimeOffset.UtcNow;
         user.UpdatedBy = username;
-        
+        _repositoryManager.UserRepository.Update(user);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
@@ -117,5 +120,21 @@ internal sealed class UserService : IUserService
         
         UsersResponse usersResponse = user.Adapt<UsersResponse>();
         return usersResponse;
+    }
+
+    public async Task LockUserAsync(string userId, string? username, CancellationToken cancellationToken = default)
+    {
+        UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
+            userId,
+            cancellationToken
+        ) ?? throw new UserNotFoundException(userId);
+        
+        user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
+        user.UpdatedAt = DateTimeOffset.UtcNow;
+        user.UpdatedBy = username;
+        user.AccessFailedCount = 0;
+        _repositoryManager.UserRepository.Update(user);
+        
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

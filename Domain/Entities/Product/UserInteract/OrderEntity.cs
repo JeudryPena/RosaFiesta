@@ -16,10 +16,10 @@ public class OrderEntity
     public string OrderAddress { get; set; }
     public string OrderPhone { get; set; }
     public string OrderEmail { get; set; }
-    public double AmmountPaid { get; set; }
     public double ShippingCost { get; set; }
     public VoucherType VoucherType { get; set; }
     public int VoucherNumber { get; set; }
     public string VoucherSeries { get; set; }
     public OrderStatusType OrderStatus { get; set; }
+    public ICollection<AppliedDiscountEntity>? AppliedDiscounts { get; set; }
 }

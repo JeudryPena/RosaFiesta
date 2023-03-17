@@ -26,4 +26,7 @@ internal sealed class PurchaseDetailRepository: IPurchaseDetailRepository
     public void Update(PurchaseDetailEntity purchaseDetail) => _rosaFiestaContext.PurchaseDetails.Update(purchaseDetail);
 
     public void Delete(PurchaseDetailEntity purchaseDetail) => _rosaFiestaContext.PurchaseDetails.Remove(purchaseDetail);
+    public void UpdateRange(ICollection<PurchaseDetailEntity> cartDetails) =>
+    _rosaFiestaContext.PurchaseDetails.UpdateRange(cartDetails);
+    
 }

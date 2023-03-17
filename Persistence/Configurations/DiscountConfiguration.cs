@@ -14,8 +14,8 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         builder.ToTable(nameof(DiscountEntity));
         builder.HasKey(x => x.DiscountCode);
         builder.Property(x => x.DiscountName).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.DiscountType).IsRequired();
         builder.Property(x => x.Discount).IsRequired();
+        builder.Property(x => x.MaxTimesApply).IsRequired();
         builder.Property(x => x.DiscountStartDate).IsRequired();
         builder.Property(x => x.DiscountEndDate).IsRequired();
         builder.Property(x => x.DiscountDescription).HasMaxLength(100);
@@ -25,7 +25,6 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         {
             DiscountCode = DefaultDiscountCode,
             DiscountName = "Descuento Inicial",
-            DiscountType = DiscountType.Percentage,
             Discount = 10,
             DiscountStartDate = DateTimeOffset.UtcNow,
             DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),

@@ -23,7 +23,6 @@ public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
         builder.Property(bill => bill.OrderEmail).IsRequired();
         builder.Property(bill => bill.OrderPhone).IsRequired();
         builder.Property(bill => bill.OrderAddress).IsRequired();
-        builder.Property(bill => bill.AmmountPaid).IsRequired();
         builder.Property(bill => bill.ShippingCost).IsRequired();
         builder.Property(bill => bill.VoucherNumber).IsRequired();
         builder.Property(bill => bill.VoucherSeries).IsRequired();
@@ -43,7 +42,6 @@ public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
             OrderEmail = "1",
             OrderPhone = "1",
             OrderAddress = "1",
-            AmmountPaid = 1,
             ShippingCost = 1,
             VoucherNumber = 1,
             VoucherSeries = "1",

@@ -24,7 +24,8 @@ internal sealed class DiscountService : IDiscountService {
         return discountResponse;
     }
 
-    public async Task<DiscountResponse> GetDiscountAsync(Guid discountId, CancellationToken cancellationToken = default) {
+    public async Task<DiscountResponse> GetDiscountAsync(string discountId,
+        CancellationToken cancellationToken = default) {
         DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
         var discountResponse = discount.Adapt<DiscountResponse>();
         return discountResponse;
@@ -41,7 +42,8 @@ internal sealed class DiscountService : IDiscountService {
         return discountResponse;
     }
 
-    public async Task<DiscountResponse> UpdateDiscountAsync(string? username, Guid discountId, DiscountDto discountDto,
+    public async Task<DiscountResponse> UpdateDiscountAsync(string? username, string discountId,
+        DiscountDto discountDto,
         CancellationToken cancellationToken = default) {
         DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
         discount.DiscountCode = discountDto.DiscountCode;
@@ -58,7 +60,7 @@ internal sealed class DiscountService : IDiscountService {
         return discount.Adapt<DiscountResponse>();
     }
 
-    public async Task DeleteDiscountAsync(Guid discountId, CancellationToken cancellationToken = default) {
+    public async Task DeleteDiscountAsync(string discountId, CancellationToken cancellationToken = default) {
         DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
         _repositoryManager.DiscountRepository.Delete(discount);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);

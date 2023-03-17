@@ -28,6 +28,7 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
         builder.HasOne(x => x.DiscountApplied).WithMany(x => x.DiscountPurchases).HasForeignKey(x => x.DiscountId);
         builder.HasOne(x => x.Product).WithMany(x => x.Details).HasForeignKey(x => x.ProductId);
         builder.HasOne(x => x.Cart).WithMany(x => x.Details).HasForeignKey(x => x.CartId);
+        builder.HasOne(x => x.Order).WithMany(x => x.Details).HasForeignKey(x => x.PurchaseNumber);
 
         builder.HasData(
             new PurchaseDetailEntity
