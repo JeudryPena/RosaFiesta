@@ -14,8 +14,8 @@ public class ProductEntity: BaseEntity
     public DateTimeOffset? EndedAt { get; set; } 
     public string? Image { get; set; }
     public string? Thumbnail { get; set; }
-    public StockStatusType Stock { get; set; } 
-    public int? QuantityAvaliable { get; set; }
+    public StockStatusType Stock => StockCalculate();
+    public int QuantityAvaliable { get; set; }
     public string? Brand { get; set; } 
     public string? Color { get; set; }
     public float? Size { get; set; }
@@ -34,5 +34,16 @@ public class ProductEntity: BaseEntity
     public ICollection<WishListEntity>? WishListProducts { get; set; } 
     public Guid? SupplierId { get; set; }
     public SupplierEntity? Supplier { get; set; } 
-    public ICollection<PurchaseDetailEntity>? Details { get; set; } 
+    public ICollection<PurchaseDetailEntity>? Details { get; set; }
+    
+    private StockStatusType StockCalculate()
+    {
+        if (QuantityAvaliable == 0)
+            return StockStatusType.OutOfStock;
+        if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
+            return StockStatusType.LowStock;
+        if (QuantityAvaliable >= 10)
+            return StockStatusType.InStock;
+        return StockStatusType.InStock;
+    }
 }

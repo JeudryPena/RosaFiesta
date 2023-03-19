@@ -10,6 +10,6 @@ public class WishListEntity
     public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset? UpdatedDate { get; set; }
     public ICollection<ProductEntity>? Products { get; set; }
-    public string UserId { get; set; } = string.Empty;
+    public string UserId { get; set; }
     public UserEntity UserEntity { get; set; } 
 }

@@ -19,10 +19,10 @@ internal sealed class DiscountRepository: IDiscountRepository
 => await _dbContext.Discounts.ToListAsync(cancellationToken);
     public async Task<DiscountEntity> GetByIdAsync(string discountId, CancellationToken cancellationToken = default)
     {
-        DiscountEntity? discount = await _dbContext.Discounts.FindAsync(discountId, cancellationToken);
+        DiscountEntity? discount = await _dbContext.Discounts.Include(x => x.AppliedDiscounts).Include(x => x.DiscountProducts).Include(x => x.DiscountPurchases)  .FirstOrDefaultAsync(x => x.DiscountCode == discountId, cancellationToken);
         if (discount == null)
         {
-            throw new NullReferenceException("Discount not found");
+            throw new NullReferenceException("DiscountValue not found");
         }
         return discount;
     }
@@ -43,7 +43,7 @@ internal sealed class DiscountRepository: IDiscountRepository
             .Include(d => d.DiscountProducts).Include(d => d.AppliedDiscounts)
             .FirstOrDefaultAsync(d => d.DiscountCode == discountCode && d.DiscountStartDate <= DateTimeOffset.UtcNow && d.DiscountEndDate >= DateTimeOffset.UtcNow, cancellationToken);
         if (discount == null)
-            throw new NullReferenceException("Discount not found");
+            throw new NullReferenceException("DiscountValue not found");
         if (discount.DiscountProducts != null && discount.DiscountProducts.All(dp => dp.DiscountAppliedId != productId))
             throw new NullReferenceException("The discount does not apply for this product");
         return discount;

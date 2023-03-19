@@ -7,7 +7,8 @@ public class DiscountEntity: BaseEntity
 {
     public string DiscountCode { get; set; } 
     public string DiscountName { get; set; }
-    public double Discount { get; set; }
+    public DiscountType DiscountType { get; set; }
+    public double DiscountValue { get; set; }
     public int MaxTimesApply { get; set; }
     public DateTimeOffset DiscountStartDate { get; set; } 
     public DateTimeOffset DiscountEndDate { get; set; }

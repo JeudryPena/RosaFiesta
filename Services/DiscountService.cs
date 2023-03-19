@@ -48,8 +48,7 @@ internal sealed class DiscountService : IDiscountService {
         DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
         discount.DiscountCode = discountDto.DiscountCode;
         discount.DiscountName = discountDto.DiscountName;
-        discount.DiscountType = discountDto.DiscountType.Adapt<DiscountType>();
-        discount.Discount = discountDto.Discount;
+        discount.DiscountValue = discountDto.Discount;
         discount.DiscountStartDate = discountDto.DiscountStartDate;
         discount.DiscountEndDate = discountDto.DiscountEndDate;
         discount.DiscountDescription = discountDto.DiscountDescription;

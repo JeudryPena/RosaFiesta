@@ -8,7 +8,7 @@ public class ProductsResponse: BaseResponse
     public double Price { get; set; }
     public string? Image { get; set; } = string.Empty;
     public string Stock { get; set; } 
-    public int? QuantityAvaliable { get; set; }
+    public int QuantityAvaliable { get; set; }
     public string? Brand { get; set; } 
     public string? Color { get; set; }
     public float? Size { get; set; }

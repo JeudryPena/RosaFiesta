@@ -24,7 +24,7 @@ public class PurchaseController: ControllerBase
         return Ok(purchaseDetails);
     }
     
-    [HttpPost("{userId}/products/{productsId}")]
+    [HttpPost("{userId}/products/{productsId}/Discount/{discountCode}")]
     public async Task<IActionResult> ApplyDiscountAsync(string userId, string productsId,
         string discountCode, CancellationToken cancellationToken)
     {
@@ -32,10 +32,10 @@ public class PurchaseController: ControllerBase
         return Ok(cart);
     }
     
-    [HttpPost("{userId}/discountCode/{discountCode}/payMethod/{payMethodId:guid}")]
-    public async Task<IActionResult> OrderPurchaseAsync(string userId, Guid payMethodId, string? discountCode, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
+    [HttpPost("{userId}/payMethod/{payMethodId:guid}/Purchase")]
+    public async Task<IActionResult> OrderPurchaseAsync(string userId, Guid payMethodId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
     {
-        OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, payMethodId, discountCode, orderDto, cancellationToken);
+        OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, payMethodId, orderDto, cancellationToken);
         return Ok(cart);
     }
 

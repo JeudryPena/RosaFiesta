@@ -7,6 +7,6 @@ public class PurchaseDetailResponse
     public int Quantity { get; set; }
     public double UnitPrice { get; set; }
     public string? DiscountId { get; set; } 
-    public double PurchaseTotal { get; set; }
+    public double TotalPrice => UnitPrice * Quantity;
     public int CartId { get; set; }
 }

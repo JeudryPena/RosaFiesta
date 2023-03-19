@@ -2,10 +2,9 @@
 
 public enum StockStatusType
 {
-    InStock = 1,
-    OutOfStock = 2,
-    LowStock = 3,
+    OutOfStock = 1,
+    LowStock = 2,
+    InStock = 3,
     BackOrder = 4,
     Discontinued = 5,
-
 }

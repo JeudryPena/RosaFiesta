@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;
 
-internal sealed class CartRepository: ICartRepository
+internal sealed class CartRepository : ICartRepository
 {
     private readonly RosaFiestaContext _context;
-    
+
     public CartRepository(RosaFiestaContext context)
     {
         _context = context;
@@ -15,15 +15,12 @@ internal sealed class CartRepository: ICartRepository
 
     public async Task<IEnumerable<CartEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await _context.Carts
-            .Include(c => c.Details)
-            .Include(c => c.UserEntity)
-            .ToListAsync(cancellationToken);
+            .Include(c => c.Details.Where(cd => cd.OrderSku == null)).Include(c => c.UserEntity).ToListAsync();
 
     public async Task<CartEntity> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
         CartEntity? cart = await _context.Carts
-            .Include(c => c.Details)
-            .Include(c => c.UserEntity)
+            .Include(c => c.Details.Where(cd => cd.OrderSku == null)).Include(c => c.UserEntity)
             .FirstOrDefaultAsync(c => c.UserId == id, cancellationToken);
         if (cart == null)
         {

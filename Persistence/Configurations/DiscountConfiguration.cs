@@ -8,13 +8,15 @@ namespace Persistence.Configurations;
 public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
 {
     private const string DefaultDiscountCode = "ROSA";
-    
+    private const string DefaultDiscountCode1 = "WELCOME";
+
     public void Configure(EntityTypeBuilder<DiscountEntity> builder)
     {
         builder.ToTable(nameof(DiscountEntity));
         builder.HasKey(x => x.DiscountCode);
         builder.Property(x => x.DiscountName).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.Discount).IsRequired();
+         builder.Property(x => x.DiscountType).IsRequired();
+        builder.Property(x => x.DiscountValue).IsRequired();
         builder.Property(x => x.MaxTimesApply).IsRequired();
         builder.Property(x => x.DiscountStartDate).IsRequired();
         builder.Property(x => x.DiscountEndDate).IsRequired();
@@ -25,12 +27,27 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         {
             DiscountCode = DefaultDiscountCode,
             DiscountName = "Descuento Inicial",
-            Discount = 10,
+            DiscountValue = 200,
+            DiscountType = DiscountType.Amount,
             DiscountStartDate = DateTimeOffset.UtcNow,
             DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
             DiscountDescription = "10% de descuento en todos los productos",
             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
-            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png"
-        });
-    }
+            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
+            MaxTimesApply = 5,
+        }, new DiscountEntity {
+            DiscountCode = DefaultDiscountCode1,
+            DiscountName = "Descuento de Bienvenida",
+            DiscountValue = 10,
+            DiscountType = DiscountType.Percentage,
+            DiscountStartDate = DateTimeOffset.UtcNow,
+            DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
+            DiscountDescription = "100$ de descuento en todos los productos",
+            DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
+            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
+            MaxTimesApply = 1,         
+        }
+
+    );
+}
 }

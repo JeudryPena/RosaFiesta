@@ -9,6 +9,8 @@ namespace Persistence.Configurations;
 
 internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEntity>
 {
+    private const string DefaultDiscountCode = "ROSA";
+    private const string DefaultDiscountCode1 = "WELCOME";
     private const string ProductId = "SDA01";
     private const string ProductId2 = "SDA02";
     private const int CategoryId = 1;
@@ -25,7 +27,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.Property(product => product.EndedAt);
         builder.Property(product => product.Image).HasMaxLength(500);
         builder.Property(product => product.Stock).IsRequired();
-        builder.Property(product => product.QuantityAvaliable);
+        builder.Property(product => product.QuantityAvaliable).IsRequired();
         builder.Property(product => product.Brand).HasMaxLength(40);
         builder.Property(product => product.Color).HasMaxLength(15);
         builder.Property(product => product.Size);
@@ -66,7 +68,6 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Price = 1000,
                 EndedAt = null, 
                 Image =  "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
-                Stock = StockStatusType.InStock,
                 QuantityAvaliable = 10,
                 Brand = "Champion",
                 Color = "White",
@@ -77,7 +78,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Type = ProductType.Physical,
                 Condition = ConditionType.New,
                 CategoryId = CategoryId,
-                DiscountAppliedId = null,
+                DiscountAppliedId = DefaultDiscountCode,
                 Reviews = null,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
@@ -94,12 +95,12 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Price = 500,
                 EndedAt = null, 
                 Image = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
-                Stock = StockStatusType.InStock,
-                QuantityAvaliable = 1,
+                QuantityAvaliable = 3,
                 Brand = "Flores",
                 Color = "Rosas",
                 Size = 1.5f,
                 Weight = 0.5f,
+                DiscountAppliedId = DefaultDiscountCode1,
                 GenderFor = GenderType.Both,
                 Material = MaterialType.Other,
                 Type = ProductType.Physical,

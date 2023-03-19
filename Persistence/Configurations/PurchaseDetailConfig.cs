@@ -12,8 +12,9 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
     private const string ProductId = "SDA01";
     private const string ProductId2 = "SDA02";
     private const string DefaultDiscountCode = "ROSA";
-    public const int OrderSku = 1;
-    
+    private const string DefaultDiscountCode1 = "WELCOME";
+    public const int CartId = 1;
+
     public void Configure(EntityTypeBuilder<PurchaseDetailEntity> builder)
     {
         builder.ToTable(nameof(PurchaseDetailEntity));
@@ -21,15 +22,14 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
         builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
         builder.Property(x => x.Quantity).IsRequired();
         builder.Property(x => x.UnitPrice);
-        builder.Property(x => x.DiscountId);
+        builder.Property(x => x.DiscountCode);
         builder.Property(x => x.CartId).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
         builder.Property(x => x.UpdatedAt);
-        builder.HasOne(x => x.DiscountApplied).WithMany(x => x.DiscountPurchases).HasForeignKey(x => x.DiscountId);
+        builder.Property(x => x.OrderSku);
+        builder.HasOne(x => x.DiscountApplied).WithMany(x => x.DiscountPurchases).HasForeignKey(x => x.DiscountCode);
         builder.HasOne(x => x.Product).WithMany(x => x.Details).HasForeignKey(x => x.ProductId);
-        builder.HasOne(x => x.Cart).WithMany(x => x.Details).HasForeignKey(x => x.CartId);
-        builder.HasOne(x => x.Order).WithMany(x => x.Details).HasForeignKey(x => x.PurchaseNumber);
-
+        builder.HasOne(x => x.Order).WithMany(x => x.Details).HasForeignKey(x => x.OrderSku);
         builder.HasData(
             new PurchaseDetailEntity
             {
@@ -37,8 +37,18 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
                 ProductId = ProductId,
                 Quantity = 2,
                 UnitPrice = 1000,
-                DiscountId = DefaultDiscountCode,
-                CartId = 1,
+                DiscountCode = DefaultDiscountCode,
+                CartId = CartId,
+                CreatedAt = DateTimeOffset.UtcNow,
+            },
+            new PurchaseDetailEntity
+            {
+                PurchaseNumber = PurchaseNumber2,
+                ProductId = ProductId2,
+                Quantity = 1,
+                UnitPrice = 500,
+                DiscountCode = DefaultDiscountCode1,
+                CartId = CartId,
                 CreatedAt = DateTimeOffset.UtcNow,
             }
         );

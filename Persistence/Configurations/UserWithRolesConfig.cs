@@ -6,7 +6,7 @@ namespace Persistence.Configurations;
 
 public class UserWithRolesConfig : IEntityTypeConfiguration<IdentityUserRole<string>>
 {
-    private const string adminUserId = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7";
+    private const string adminUserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
     private const string adminRoleId = "2301D884-221A-4E7D-B509-0113DCC043E1";
 
     public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)

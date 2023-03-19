@@ -4,10 +4,10 @@ public enum OrderStatusType
 {
     Pending = 1,
     Processing = 2,
-    Shipped = 3,
-    Delivered = 4,
-    Cancelled = 5,
-    Returned = 6,
-    Refunded = 7,
-    Paid = 8,
+    Paid = 3,
+    Cancelled = 4,
+    Shipped = 5,
+    Delivered = 6,
+    Returned = 7,
+    Refunded = 8,
 }

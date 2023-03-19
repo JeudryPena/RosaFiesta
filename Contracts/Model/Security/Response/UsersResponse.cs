@@ -1,3 +1,5 @@
+using Contracts.Model.Product.Response;
+
 namespace Contracts.Model.Security.Response;
 
 public class UsersResponse
@@ -45,4 +47,12 @@ public class UsersResponse
     public bool IsLockedOut { get; set; } 
     
     public bool PromotionalMails { get; set; }
+    
+    public ICollection<OrderResponse>? Orders { get; set; } 
+    
+    public ICollection<ReviewResponse>? Reviews { get; set; }
+    
+    public ICollection<WishListResponse>? WishLists { get; set; }
+    
+    public ICollection<AppliedDiscountResponse>? AppliedDiscounts { get; set; }
 }

@@ -22,16 +22,6 @@ internal sealed class CartService : ICartService {
      {
         IEnumerable<CartEntity> cart = await _repositoryManager.CartRepository.GetAllAsync(cancellationToken);
         IEnumerable<CartResponse> cartResponse = cart.Adapt<IEnumerable<CartResponse>>();
-        cartResponse = cartResponse.Select(c => {
-            if (c.Details != null)
-            {
-                c.Details = c.Details.Select(cd => {
-                    cd.PurchaseTotal = cd.UnitPrice * cd.Quantity;
-                    return cd;
-                });
-            }
-            return c;
-        });
         return cartResponse;
      }
 
@@ -39,11 +29,6 @@ internal sealed class CartService : ICartService {
      {
         CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(id, cancellationToken);
         var cartResponse = cart.Adapt<CartResponse>();
-        if (cartResponse.Details != null)
-            cartResponse.Details = cartResponse.Details.Select(cd => {
-                cd.PurchaseTotal = cd.UnitPrice * cd.Quantity;
-                return cd;
-            });
         return cartResponse;
      }
 
@@ -77,11 +62,6 @@ internal sealed class CartService : ICartService {
         _repositoryManager.CartRepository.UpdateCart(cart);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var cartResponse = cart.Adapt<CartResponse>();
-        if (cartResponse.Details != null)
-            cartResponse.Details = cartResponse.Details.Select(cd => {
-             cd.PurchaseTotal = cd.UnitPrice * cd.Quantity;
-             return cd;
-        });
         return cartResponse;
      }
 
@@ -101,11 +81,6 @@ internal sealed class CartService : ICartService {
          _repositoryManager.CartRepository.UpdateCartItem(cartItem);
          await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
          var cartResponse = cart.Adapt<CartResponse>();
-            if (cartResponse.Details != null)
-                cartResponse.Details = cartResponse.Details.Select(cd => {
-                    cd.PurchaseTotal = cd.UnitPrice * cd.Quantity;
-                    return cd;
-                });
          return cartResponse;
      }
 
@@ -118,11 +93,6 @@ internal sealed class CartService : ICartService {
         _repositoryManager.CartRepository.UpdateCart(cart);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var cartResponse = cart.Adapt<CartResponse>();
-        if (cartResponse.Details != null)
-            cartResponse.Details = cartResponse.Details.Select(cd => {
-                cd.PurchaseTotal = cd.UnitPrice * cd.Quantity;
-                return cd;
-            });
         return cartResponse;
      }
 
@@ -156,11 +126,6 @@ internal sealed class CartService : ICartService {
          _repositoryManager.CartRepository.UpdateCart(cart);
          await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
          var cartResponse = cart.Adapt<CartResponse>();
-         if (cartResponse.Details != null)
-             cartResponse.Details = cartResponse.Details.Select(cd => {
-                 cd.PurchaseTotal = cd.UnitPrice * cd.Quantity;
-                 return cd;
-             });
          return cartResponse;
      }
 }

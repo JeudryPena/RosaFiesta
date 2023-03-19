@@ -40,7 +40,6 @@ internal sealed class ProductService : IProductService
             WarrantyId = productForCreationDto.WarrantyId,
             SupplierId = productForCreationDto.SupplierId,
         };
-        product.Stock = productStock(product.QuantityAvaliable);
         product.GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>();
         product.Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>();
 
@@ -130,19 +129,9 @@ internal sealed class ProductService : IProductService
         product.QuantityAvaliable += count;
         product.UpdatedAt = DateTimeOffset.UtcNow;
         product.UpdatedBy = username;
-        product.Stock = productStock(product.QuantityAvaliable);
         _repositoryManager.ProductRepository.Update(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ProductAdjustResponse productAdjustResponse = product.Adapt<ProductAdjustResponse>();
         return productAdjustResponse;
-    }
-    
-    private StockStatusType productStock(int? productQuantityAvaliable)
-    {
-        if (productQuantityAvaliable <= 0)
-            return StockStatusType.OutOfStock;
-        if (productQuantityAvaliable <= 5)
-            return StockStatusType.LowStock;
-        return StockStatusType.InStock;
     }
 }

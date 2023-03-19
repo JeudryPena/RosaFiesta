@@ -9,7 +9,7 @@ namespace Persistence.Configurations;
 
 public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
 {
-    private const string AdminId = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7";
+    private const string AdminId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
 
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {

@@ -30,12 +30,10 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService {
          CancellationToken cancellationToken = default) {
         PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
         purchaseDetail.Quantity = purchaseDetailDto.Quantity;
-        purchaseDetail.DiscountId = purchaseDetailDto.DiscountId;
         purchaseDetail.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var purchaseDetailResponse = purchaseDetail.Adapt<PurchaseDetailResponse>();
-        purchaseDetailResponse.PurchaseTotal = purchaseDetail.UnitPrice * purchaseDetail.Quantity;
         return purchaseDetailResponse;
     }
 
