@@ -19,10 +19,17 @@ public class ProductsController: ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetProducts(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductsPreview(CancellationToken cancellationToken)
     {
-        IEnumerable<ProductsResponse> products = await _serviceManager.ProductService.GetAllAsync(cancellationToken);
+        ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.GetAllAsyncPreview(cancellationToken);
         return Ok(products);
+    }
+    
+    [HttpGet("{productCode}/productDetail")]
+    public async Task<IActionResult> GetProductDetail(string productCode, CancellationToken cancellationToken)
+    {
+        ProductDetailResponse product = await _serviceManager.ProductService.GetProductDetail(productCode, cancellationToken);
+        return Ok(product);
     }
     
     [HttpGet("{productId}")]

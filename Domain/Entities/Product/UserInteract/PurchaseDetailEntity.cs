@@ -13,11 +13,10 @@ public class PurchaseDetailEntity
     public OrderEntity? Order { get; set; }
     public int Quantity { get; set; }
     public double UnitPrice { get; set; }
-    public string? DiscountCode { get; set; }
-    public DiscountEntity? DiscountApplied { get; set; }
+    public int? AppliedId { get; set; }
+    public AppliedDiscountEntity? DiscountApplied { get; set; }
     public int? CartId { get; set; }
     public CartEntity? Cart { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public bool IsDiscounted => DiscountCode != null;
 }

@@ -15,11 +15,11 @@ public class ProductRepository: IProductRepository
     }
     
     public async Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-    await _dbContext.Products.Include(p => p.Category).Include(p => p.Supplier).Include(p => p.Warranty).ToListAsync(cancellationToken);
+    await _dbContext.Products.Include(p => p.Category).Include(x => x.Reviews).ToListAsync(cancellationToken);
 
     public async Task<ProductEntity> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
     {
-        var product = await _dbContext.Products.Include(p => p.Category).Include(p => p.Supplier).Include(p => p.Warranty).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
+        var product = await _dbContext.Products.Include(p => p.Category).Include(p => p.Supplier).Include(x => x.Reviews).Include(x => x.Details).Include(p => p.Warranty).Include(x => x.Reviews).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
         if (product == null)
             throw new ArgumentNullException(nameof(product));
         return product;

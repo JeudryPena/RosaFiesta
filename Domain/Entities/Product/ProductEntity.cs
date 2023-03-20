@@ -7,14 +7,19 @@ namespace Domain.Entities.Product;
 
 public class ProductEntity: BaseEntity
 {
+    public ProductEntity()
+    {
+        Stock = StockCalculate();
+    }
+
     public string? Code { get; set; }
-    public string Name { get; set; } 
+    public string Tittle { get; set; } 
     public string? Description { get; set; }
     public double Price { get; set; }
     public DateTimeOffset? EndedAt { get; set; } 
     public string? Image { get; set; }
     public string? Thumbnail { get; set; }
-    public StockStatusType Stock => StockCalculate();
+    public StockStatusType Stock { get; set; }
     public int QuantityAvaliable { get; set; }
     public string? Brand { get; set; } 
     public string? Color { get; set; }
@@ -26,15 +31,14 @@ public class ProductEntity: BaseEntity
     public ConditionType Condition { get; set; } 
     public int? CategoryId { get; set; } 
     public CategoryEntity? Category { get; set; } 
-    public string? DiscountAppliedId { get; set; }
-    public DiscountEntity? DiscountApplied { get; set; } 
+    public ICollection<ProductsDiscountsEntity>? Discounts { get; set; }
     public Guid? WarrantyId { get; set; }
     public WarrantyEntity? Warranty { get; set; }
     public ICollection<ReviewEntity>? Reviews { get; set; }
-    public ICollection<WishListEntity>? WishListProducts { get; set; } 
+    public ICollection<WishListEntity>? WishListProducts { get; set; }
+    public ICollection<PurchaseDetailEntity>? Details { get; set; }
     public Guid? SupplierId { get; set; }
     public SupplierEntity? Supplier { get; set; } 
-    public ICollection<PurchaseDetailEntity>? Details { get; set; }
     
     private StockStatusType StockCalculate()
     {

@@ -9,6 +9,7 @@ public class AppliedDiscountEntity
     public UserEntity User { get; set; }
     public string DiscountCode { get; set; }
     public DiscountEntity Discount { get; set; }
-    public int TimesApplied { get; set; }
+    public int PurchaseNumber { get; set; }
+    public PurchaseDetailEntity PurchaseDetail { get; set; }
     public DateTimeOffset AppliedDate { get; set; }
 }

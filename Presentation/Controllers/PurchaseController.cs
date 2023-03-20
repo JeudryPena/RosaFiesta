@@ -17,6 +17,20 @@ public class PurchaseController: ControllerBase
         _serviceManager = serviceManager;
     }
     
+    [HttpGet("{userId}/orders")]
+    public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
+    {
+        IEnumerable<OrderResponse> bills = await _serviceManager.OrderService.GetAllAsync(cancellationToken);
+        return Ok(bills);
+    }
+    
+    [HttpGet("{billId}")]
+    public async Task<IActionResult> GetOrderById(int billId, CancellationToken cancellationToken)
+    {
+        OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(billId, cancellationToken);
+        return Ok(bill);
+    }
+    
     [HttpGet]
     public async Task<IActionResult> GetPurchaseDetails(CancellationToken cancellationToken)
     {
@@ -24,14 +38,28 @@ public class PurchaseController: ControllerBase
         return Ok(purchaseDetails);
     }
     
-    [HttpPost("{userId}/products/{productsId}/Discount/{discountCode}")]
-    public async Task<IActionResult> ApplyDiscountAsync(string userId, string productsId,
+    [HttpPost("{userId}/purchase/{purchaseNumber}/Discount/{discountCode}/ApplyDiscount")]
+    public async Task<IActionResult> ApplyDiscountAsync(int purchaseNumber, string userId,
         string discountCode, CancellationToken cancellationToken)
     {
-        ValidDiscountResponse cart = await _serviceManager.OrderService.ApplyDiscountAsync(userId, productsId, discountCode, cancellationToken);
+        ValidDiscountResponse cart = await _serviceManager.OrderService.ApplyDiscountAsync(purchaseNumber, userId, discountCode, cancellationToken);
         return Ok(cart);
     }
     
+    [HttpPut("{userId}/purchase/{purchaseNumber}/Discount/{discountCode}/UpdateDiscount")]
+    public async Task<IActionResult> UpdateDiscountAsync(string userId, int purchaseNumber, string discountCode, CancellationToken cancellationToken)
+    {
+        ValidDiscountResponse cart = await _serviceManager.OrderService.UpdateDiscountAsync(userId, purchaseNumber, discountCode, cancellationToken);
+        return Ok(cart);
+    }
+    
+    [HttpPost("{userId}/purchase/{purchaseNumber}")]
+    public async Task<IActionResult> RemoveDiscountAsync(int purchaseNumber, CancellationToken cancellationToken)
+    {
+        await _serviceManager.OrderService.RemoveDiscountAsync(purchaseNumber, cancellationToken);
+        return Ok();
+    }
+
     [HttpPost("{userId}/payMethod/{payMethodId:guid}/Purchase")]
     public async Task<IActionResult> OrderPurchaseAsync(string userId, Guid payMethodId, [FromBody] OrderDto orderDto, CancellationToken cancellationToken)
     {

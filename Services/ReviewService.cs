@@ -50,7 +50,7 @@ internal sealed class ReviewService: IReviewService
     {
         ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
         review.ReviewDescription = reviewDto.ReviewDescription;
-        review.ReviewRating = reviewDto.ReviewRating.Adapt<RatingType>();
+        review.ReviewRating = reviewDto.ReviewRating;
         review.ReviewUpdateDate = DateTimeOffset.Now;
         review.ReviewTittle = reviewDto.ReviewTittle;
 

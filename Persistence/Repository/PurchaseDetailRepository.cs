@@ -13,11 +13,11 @@ internal sealed class PurchaseDetailRepository: IPurchaseDetailRepository
         _rosaFiestaContext = rosaFiestaContext;
     }
 
-    public async Task<IEnumerable<PurchaseDetailEntity>> GetAllAsync(CancellationToken cancellationToken) => await _rosaFiestaContext.PurchaseDetails.Include(x => x.Product).Include(x => x.DiscountApplied).ToListAsync(cancellationToken);
+    public async Task<IEnumerable<PurchaseDetailEntity>> GetAllAsync(CancellationToken cancellationToken) => await _rosaFiestaContext.PurchaseDetails.ToListAsync(cancellationToken);
 
     public async Task<PurchaseDetailEntity> GetByIdAsync(int detailId, CancellationToken cancellationToken)
     {
-        PurchaseDetailEntity? purchaseDetail = await _rosaFiestaContext.PurchaseDetails.Include(x => x.Product).Include(x => x.DiscountApplied).FirstOrDefaultAsync(x => x.PurchaseNumber == detailId, cancellationToken);
+        PurchaseDetailEntity? purchaseDetail = await _rosaFiestaContext.PurchaseDetails.FirstOrDefaultAsync(x => x.PurchaseNumber == detailId, cancellationToken);
         if(purchaseDetail == null)
             throw new NullReferenceException(nameof(PurchaseDetailEntity));
         return purchaseDetail;
@@ -28,5 +28,4 @@ internal sealed class PurchaseDetailRepository: IPurchaseDetailRepository
     public void Delete(PurchaseDetailEntity purchaseDetail) => _rosaFiestaContext.PurchaseDetails.Remove(purchaseDetail);
     public void UpdateRange(ICollection<PurchaseDetailEntity> cartDetails) =>
     _rosaFiestaContext.PurchaseDetails.UpdateRange(cartDetails);
-    
 }

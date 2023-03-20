@@ -15,7 +15,6 @@ public class DiscountEntity: BaseEntity
     public string? DiscountDescription { get; set; }
     public string? DiscountImage { get; set; }
     public string? DiscountCodeImage { get; set; }
-    public ICollection<ProductEntity>? DiscountProducts { get; set; } 
-    public ICollection<PurchaseDetailEntity>? DiscountPurchases { get; set; }
+    public ICollection<ProductsDiscountsEntity>? Products { get; set; }
     public ICollection<AppliedDiscountEntity>? AppliedDiscounts { get; set; }
 }

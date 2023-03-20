@@ -69,20 +69,15 @@ internal sealed class OrderService : IOrderService {
                 await _repositoryManager.ProductRepository.GetByIdAsync(detail.ProductId, cancellationToken);
             if (product.QuantityAvaliable < detail.Quantity)
                 throw new Exception("You can't add more than the quantity available");
-            if (detail.DiscountCode != null && detail.DiscountCode == product.DiscountAppliedId)
+            if (detail.AppliedId != null)
             {
-                DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(detail.DiscountCode, cancellationToken);
-                if (discount.AppliedDiscounts == null)
-                    throw new Exception("DiscountValue not found");
-                var appliedDiscounts = discount.AppliedDiscounts.FirstOrDefault(x => x.DiscountCode == detail.DiscountCode);
-                if (appliedDiscounts != null && appliedDiscounts.TimesApplied < discount.MaxTimesApply){
-                    appliedDiscounts.TimesApplied ++;
+                DiscountEntity discount =
+                    await _repositoryManager.DiscountRepository.GetByAppliedId(detail.AppliedId, cancellationToken);
+                if(discount.AppliedDiscounts != null && discount.AppliedDiscounts.Count(x => x.UserId == userId) >= discount.MaxTimesApply)
                     if (discount.DiscountType == DiscountType.Percentage)
                         detail.UnitPrice -= detail.UnitPrice * discount.DiscountValue / 100;
                     else
                         detail.UnitPrice -= discount.DiscountValue;
-                    _repositoryManager.DiscountRepository.UpdateAppliedDiscount(appliedDiscounts);
-                }
             }
             detail.OrderSku = order.SKU;
             detail.CartId = null;
@@ -96,22 +91,50 @@ internal sealed class OrderService : IOrderService {
         return orderResponse;
     }
 
-    public async Task<ValidDiscountResponse> ApplyDiscountAsync(string userId, string productId, string discountCode, CancellationToken cancellationToken)
+    public async Task<ValidDiscountResponse> ApplyDiscountAsync(int purchaseNumber, string userId, string discountCode, CancellationToken cancellationToken)
     {
-        DiscountEntity discount = await _repositoryManager.DiscountRepository.GetValidDiscountAsync(discountCode, productId, cancellationToken) ?? throw new Exception("DiscountValue not found");
-        AppliedDiscountEntity discountApplied =
-            await _repositoryManager.DiscountRepository.GetAppliedDiscount(userId, discountCode, cancellationToken);
-        if (discountApplied.TimesApplied >= discount.MaxTimesApply)
+        PurchaseDetailEntity detail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(purchaseNumber, cancellationToken);
+        if (detail.ProductId == null) throw new Exception("Product not found");
+        DiscountEntity discount =
+            await _repositoryManager.DiscountRepository.GetValidDiscountAsync(discountCode, detail.ProductId,
+                cancellationToken);
+        if(discount.AppliedDiscounts != null && discount.AppliedDiscounts.Count(x => x.UserId == userId) * detail.Quantity >= discount.MaxTimesApply)
             throw new Exception("You have already exhausted the maximum use of this discount");
-        CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-        if (cart.Details == null) throw new Exception("Cart is empty");
-        cart.Details = cart.Details.Where(x => x.ProductId == productId).Select(x =>
+        AppliedDiscountEntity appliedDiscount = new AppliedDiscountEntity
         {
-            x.DiscountCode = discountCode;
-            return x;
-        }).ToList();
-        _repositoryManager.PurchaseDetailRepository.UpdateRange(cart.Details);
-        _repositoryManager.DiscountRepository.UpdateAppliedDiscount(discountApplied);
+            DiscountCode = discountCode,
+            UserId = userId,
+            PurchaseNumber = purchaseNumber,
+            AppliedDate = DateTimeOffset.UtcNow
+        };
+        _repositoryManager.DiscountRepository.CreateAppliedDiscount(appliedDiscount);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        ValidDiscountResponse validDiscountResponse = discount.Adapt<ValidDiscountResponse>();
+        return validDiscountResponse;
+    }
+
+    public async Task RemoveDiscountAsync(int purchaseNumber, CancellationToken cancellationToken = default)
+    {
+        AppliedDiscountEntity appliedDiscount = await _repositoryManager.DiscountRepository.GetAppliedDiscount(purchaseNumber, cancellationToken);
+        _repositoryManager.DiscountRepository.DeleteAppliedDiscount(appliedDiscount);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<ValidDiscountResponse> UpdateDiscountAsync(string userId, int purchaseNumber, string discountCode,
+        CancellationToken cancellationToken)
+    {
+        PurchaseDetailEntity detail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(purchaseNumber, cancellationToken);
+        if (detail.ProductId == null) throw new Exception("Product not found");
+        DiscountEntity discount = await _repositoryManager.DiscountRepository.GetValidDiscountAsync(discountCode, detail.ProductId, cancellationToken);
+        if (discount.AppliedDiscounts == null || discount.AppliedDiscounts.Count(x => x.UserId == userId) * detail.Quantity >= discount.MaxTimesApply)
+        {
+            throw new Exception("You have already exhausted the maximum use of this discount");
+        }
+        AppliedDiscountEntity appliedDiscount =
+            discount.AppliedDiscounts.FirstOrDefault(x => x.PurchaseNumber == purchaseNumber) ?? throw new Exception("Discount not found");
+        appliedDiscount.DiscountCode = discountCode;
+        appliedDiscount.AppliedDate = DateTimeOffset.UtcNow;
+        _repositoryManager.DiscountRepository.UpdateAppliedDiscount(appliedDiscount);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ValidDiscountResponse validDiscountResponse = discount.Adapt<ValidDiscountResponse>();
         return validDiscountResponse;

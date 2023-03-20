@@ -7,10 +7,12 @@ public interface IOrderService
 {
     Task<IEnumerable<OrderResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<OrderResponse> GetByIdAsync(int billId, CancellationToken cancellationToken = default);
-    Task<OrderResponse> UpdateAsync(int billId, OrderDto orderDto, CancellationToken cancellationToken = default);
-    Task DeleteAsync(int billId, CancellationToken cancellationToken = default);
     Task<OrderResponse> OrderPurchaseAsync(string userId, Guid payMethodId, OrderDto orderDto,
         CancellationToken cancellationToken = default);
 
-    Task<ValidDiscountResponse> ApplyDiscountAsync(string userId, string productId, string discountCode, CancellationToken cancellationToken);
+    Task<ValidDiscountResponse> ApplyDiscountAsync(int purchaseNumber, string userId, string discountCode,
+        CancellationToken cancellationToken);
+    Task RemoveDiscountAsync(int purchaseNumber, CancellationToken cancellationToken = default);
+    Task<ValidDiscountResponse> UpdateDiscountAsync(string userId, int purchaseNumber, string discountCode,
+        CancellationToken cancellationToken);
 }

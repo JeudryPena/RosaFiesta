@@ -20,13 +20,38 @@ internal sealed class ProductService : IProductService
         _repositoryManager = repositoryManager;
     }
 
+    public async Task<ICollection<ProductPreviewResponse>> GetAllAsyncPreview(CancellationToken cancellationToken = default)
+    {
+        IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetAllAsync(cancellationToken);
+        ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
+        foreach (var pr in productPreviewResponse)
+        {
+            foreach (var p in products)
+            {
+                if (p.Code == pr.Code)
+                {
+                    pr.AverageRating = p.Reviews.Average(r => r.ReviewRating);
+                    pr.TotalReviews = p.Reviews.Count;
+                }
+            } 
+        }
+        return productPreviewResponse;
+    }
+
+    public async Task<ProductsResponse> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        ProductsResponse productResponse = product.Adapt<ProductsResponse>();
+        return productResponse;
+    }
+    
     public async Task<ProductsResponse> CreateAsync(string? username, ProductDto productForCreationDto,
         CancellationToken cancellationToken = default)
     {
         var product = new ProductEntity
         {
             Code = productForCreationDto.Code,
-            Name = productForCreationDto.Name,
+            Tittle = productForCreationDto.Name,
             Description = productForCreationDto.Description,
             Price = productForCreationDto.Price,
             QuantityAvaliable = productForCreationDto.Quantity,
@@ -73,21 +98,8 @@ internal sealed class ProductService : IProductService
         
         _repositoryManager.ProductRepository.Insert(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        return product.Adapt<ProductsResponse>();
-    }
-
-    public async Task<IEnumerable<ProductsResponse>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetAllAsync(cancellationToken);
-        var productsDto = products.Adapt<IEnumerable<ProductsResponse>>();
-        return productsDto;
-    }
-
-    public async Task<ProductsResponse> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        var productDto = product.Adapt<ProductsResponse>();
-        return productDto;
+        var productResponse = product.Adapt<ProductsResponse>();
+        return productResponse;
     }
 
     public async Task<ProductsResponse> UpdateAsync(string? username, string productId,
@@ -95,7 +107,7 @@ internal sealed class ProductService : IProductService
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
         product.Code = productForUpdateDto.Code;
-        product.Name = productForUpdateDto.Name;
+        product.Tittle = productForUpdateDto.Name;
         product.Description = productForUpdateDto.Description;
         product.Price = productForUpdateDto.Price;
         product.Brand = productForUpdateDto.Brand;
@@ -133,5 +145,12 @@ internal sealed class ProductService : IProductService
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ProductAdjustResponse productAdjustResponse = product.Adapt<ProductAdjustResponse>();
         return productAdjustResponse;
+    }
+
+    public async Task<ProductDetailResponse> GetProductDetail(string productCode, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productCode, cancellationToken);
+        ProductDetailResponse productResponse = product.Adapt<ProductDetailResponse>();
+        return productResponse;
     }
 }

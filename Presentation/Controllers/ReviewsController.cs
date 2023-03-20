@@ -23,7 +23,7 @@ public class ReviewController: ControllerBase
         IEnumerable<ReviewResponse> reviews = await _serviceManager.ReviewService.GetAllAsync(cancellationToken);
         return Ok(reviews);
     }
-    
+
     [HttpGet("{reviewId:guid}")]
     public async Task<IActionResult> GetReviewById(Guid reviewId, CancellationToken cancellationToken)
     {

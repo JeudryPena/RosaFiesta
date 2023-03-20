@@ -9,8 +9,6 @@ namespace Persistence.Configurations;
 
 internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEntity>
 {
-    private const string DefaultDiscountCode = "ROSA";
-    private const string DefaultDiscountCode1 = "WELCOME";
     private const string ProductId = "SDA01";
     private const string ProductId2 = "SDA02";
     private const int CategoryId = 1;
@@ -21,7 +19,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
     {
         builder.ToTable(nameof(ProductEntity));
         builder.HasKey(product => product.Code);
-        builder.Property(product => product.Name).HasMaxLength(40).IsRequired();
+        builder.Property(product => product.Tittle).HasMaxLength(40).IsRequired();
         builder.Property(product => product.Description).HasMaxLength(200);
         builder.Property(product => product.Price).IsRequired();
         builder.Property(product => product.EndedAt);
@@ -44,9 +42,6 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.HasOne(product => product.Category)
             .WithMany(category => category.Products)
             .HasForeignKey(product => product.CategoryId);
-        builder.HasOne(product => product.DiscountApplied)
-            .WithMany(discount => discount.DiscountProducts)
-            .HasForeignKey(product => product.DiscountAppliedId);
         builder.HasOne(product => product.Warranty)
             .WithMany(warranty => warranty.Products)
             .HasForeignKey(product => product.WarrantyId);
@@ -63,7 +58,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
             new ProductEntity
             {
                 Code = ProductId,
-                Name = "Polo",
+                Tittle = "Polo",
                 Description = "Polo de manga corta",
                 Price = 1000,
                 EndedAt = null, 
@@ -78,7 +73,6 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Type = ProductType.Physical,
                 Condition = ConditionType.New,
                 CategoryId = CategoryId,
-                DiscountAppliedId = DefaultDiscountCode,
                 Reviews = null,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
@@ -90,7 +84,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
             new ProductEntity
             {
                 Code = ProductId2,
-                Name = "Flores",
+                Tittle = "Flores",
                 Description = "Flores de rosas",
                 Price = 500,
                 EndedAt = null, 
@@ -100,7 +94,6 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Color = "Rosas",
                 Size = 1.5f,
                 Weight = 0.5f,
-                DiscountAppliedId = DefaultDiscountCode1,
                 GenderFor = GenderType.Both,
                 Material = MaterialType.Other,
                 Type = ProductType.Physical,

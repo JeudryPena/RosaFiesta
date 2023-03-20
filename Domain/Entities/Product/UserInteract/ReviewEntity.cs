@@ -7,7 +7,7 @@ public class ReviewEntity
 {
     public Guid Id { get; set; }
     public string? ReviewDescription { get; set; }
-    public RatingType ReviewRating { get; set; }
+    public float ReviewRating { get; set; }
     public DateTimeOffset ReviewDate { get; set; } 
     public DateTimeOffset? ReviewUpdateDate { get; set; }
     public string? ReviewTittle { get; set; }

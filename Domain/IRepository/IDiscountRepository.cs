@@ -12,6 +12,9 @@ public interface IDiscountRepository
     void Delete(DiscountEntity discount);
     Task<DiscountEntity> GetValidDiscountAsync(string discountCode, string productId,
         CancellationToken cancellationToken = default);
-    Task<AppliedDiscountEntity> GetAppliedDiscount(string userId, string discountCode, CancellationToken cancellationToken = default);
+    Task<AppliedDiscountEntity> GetAppliedDiscount(int purchaseNumber, CancellationToken cancellationToken = default);
     void UpdateAppliedDiscount(AppliedDiscountEntity discountApplied);
+    void CreateAppliedDiscount(AppliedDiscountEntity discountApplied);
+    void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount);
+    Task<DiscountEntity> GetByAppliedId(int? detailAppliedId, CancellationToken cancellationToken = default);
 }

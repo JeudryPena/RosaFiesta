@@ -9,5 +9,4 @@ public interface IReviewRepository
     void Insert(ReviewEntity review);
     void Update(ReviewEntity review);
     void Delete(ReviewEntity review);
-    
 }
