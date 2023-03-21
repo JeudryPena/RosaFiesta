@@ -9,7 +9,7 @@ public class WishListEntity
     public string? Description { get; set; }
     public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset? UpdatedDate { get; set; }
-    public ICollection<ProductEntity>? Products { get; set; }
+    public ICollection<WishListProductsEntity>? ProductsWish { get; set; }
     public string UserId { get; set; }
     public UserEntity UserEntity { get; set; } 
 }

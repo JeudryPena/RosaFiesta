@@ -29,7 +29,9 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         Suppliers = Set<SupplierEntity>();
         Warranties = Set<WarrantyEntity>();
         WishesList = Set<WishListEntity>();
+        WishesListProducts = Set<WishListProductsEntity>();
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
@@ -59,4 +61,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<PurchaseDetailEntity> PurchaseDetails { get; set; }
 
     public DbSet<OrderEntity> Orders { get; set; }
+    
+    public DbSet<WishListProductsEntity> WishesListProducts { get; set; }
 }

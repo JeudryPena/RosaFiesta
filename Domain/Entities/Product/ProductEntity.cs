@@ -35,7 +35,7 @@ public class ProductEntity: BaseEntity
     public Guid? WarrantyId { get; set; }
     public WarrantyEntity? Warranty { get; set; }
     public ICollection<ReviewEntity>? Reviews { get; set; }
-    public ICollection<WishListEntity>? WishListProducts { get; set; }
+    public ICollection<WishListProductsEntity>? ProductsWish { get; set; }
     public ICollection<PurchaseDetailEntity>? Details { get; set; }
     public Guid? SupplierId { get; set; }
     public SupplierEntity? Supplier { get; set; } 

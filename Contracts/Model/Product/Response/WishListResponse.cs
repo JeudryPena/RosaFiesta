@@ -8,5 +8,5 @@ public class WishListResponse
     public string UserId { get; set; }
     public DateTimeOffset CreatedDate { get; set; } 
     public DateTimeOffset? UpdatedDate { get; set; }
-    public ICollection<ProductsResponse>? Products { get; set; }
+    public ICollection<ProductCartResponse>? Products { get; set; }
 }
