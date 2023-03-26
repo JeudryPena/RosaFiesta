@@ -1,6 +1,6 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
-
+using Contracts.Model.Product.UserInteract;
 using Microsoft.AspNetCore.Mvc;
 
 using Services.Abstractions;

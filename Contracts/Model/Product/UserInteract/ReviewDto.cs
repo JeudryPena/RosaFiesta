@@ -1,4 +1,4 @@
-﻿namespace Contracts.Model.Product;
+﻿namespace Contracts.Model.Product.UserInteract;
 
 public class ReviewDto
 {

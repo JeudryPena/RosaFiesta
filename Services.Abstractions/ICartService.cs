@@ -1,5 +1,6 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+using Contracts.Model.Product.UserInteract;
 
 namespace Services.Abstractions;
 

@@ -12,7 +12,9 @@ public class ReviewEntity
     public DateTimeOffset? ReviewUpdateDate { get; set; }
     public string? ReviewTittle { get; set; }
     public string UserReviewerId { get; set; } 
-    public UserEntity UserEntity { get; set; } 
-    public string? ProductId { get; set; }
-    public ProductEntity ProductEntity { get; set; } 
+    public UserEntity UserEntity { get; set; }
+    public string ProductId { get; set; }
+    public ProductEntity ProductEntity { get; set; }
+    public int OptionId { get; set; }
+    public OptionEntity OptionEntity { get; set; }
 }

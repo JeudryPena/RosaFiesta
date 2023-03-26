@@ -1,4 +1,5 @@
 using Contracts.Model.Product.Response;
+using Contracts.Model.Product.UserInteract.Response;
 
 namespace Contracts.Model.Security.Response;
 

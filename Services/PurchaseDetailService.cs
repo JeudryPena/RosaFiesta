@@ -1,5 +1,7 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+using Contracts.Model.Product.UserInteract;
+using Contracts.Model.Product.UserInteract.Response;
 using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 using Mapster;

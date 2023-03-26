@@ -1,6 +1,4 @@
-﻿using Contracts.Model.Product.Response;
-
-namespace Contracts.Model.Product;
+﻿namespace Contracts.Model.Product.UserInteract;
 
 public class WishListDto
 {

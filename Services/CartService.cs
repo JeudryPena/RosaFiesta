@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+using Contracts.Model.Product.UserInteract;
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;

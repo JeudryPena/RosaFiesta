@@ -717,7 +717,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "ProductEntity",
-                columns: new[] { "Code", "Brand", "CategoryId", "Color", "Condition", "CreatedAt", "CreatedBy", "Description", "DiscountApplied", "EndedAt", "GenderFor", "Image", "Material", "Price", "QuantityAvaliable", "Size", "Stock", "SupplierId", "Thumbnail", "Tittle", "Type", "UpdatedAt", "UpdatedBy", "WarrantyId", "Weight" },
+                columns: new[] { "Code", "Brand", "CategoryId", "Color", "Condition", "CreatedAt", "CreatedBy", "Description", "DiscountApplied", "EndedAt", "GenderFor", "Image", "Material", "Price", "QuantityAvaliable", "Size", "Stock", "SupplierId", "Thumbnail", "Title", "Type", "UpdatedAt", "UpdatedBy", "WarrantyId", "Weight" },
                 values: new object[,]
                 {
                     { "SDA01", "Champion", 1, "White", 1, new DateTimeOffset(new DateTime(2023, 3, 20, 15, 41, 5, 101, DateTimeKind.Unspecified).AddTicks(6773), new TimeSpan(0, 0, 0, 0, 0)), "System", "Polo de manga corta", "ROSA", null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 6, 1000.0, 10, 1.5f, 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), null, "Polo", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), 0.5f },
@@ -733,7 +733,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "PurchaseDetailEntity",
-                columns: new[] { "ProductId", "PurchaseNumber", "CartId", "CreatedAt", "DiscountCode", "OrderSku", "Quantity", "UnitPrice", "UpdatedAt" },
+                columns: new[] { "ProductCode", "PurchaseNumber", "CartId", "CreatedAt", "DiscountCode", "OrderSku", "Quantity", "UnitPrice", "UpdatedAt" },
                 values: new object[,]
                 {
                     { "SDA01", 1, 1, new DateTimeOffset(new DateTime(2023, 3, 20, 15, 41, 5, 102, DateTimeKind.Unspecified).AddTicks(6040), new TimeSpan(0, 0, 0, 0, 0)), "ROSA", null, 2, 1000.0, null },
@@ -743,7 +743,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "ReviewEntity",
-                columns: new[] { "Id", "ProductId", "ReviewDate", "ReviewDescription", "ReviewRating", "ReviewTittle", "ReviewUpdateDate", "UserReviewerId" },
+                columns: new[] { "Id", "ProductCode", "ReviewDate", "ReviewDescription", "ReviewRating", "ReviewTittle", "ReviewUpdateDate", "UserReviewerId" },
                 values: new object[] { new Guid("7a351784-c351-4edd-8c66-6e32a7ea79d7"), "SDA01", new DateTimeOffset(new DateTime(2023, 3, 20, 15, 41, 5, 102, DateTimeKind.Unspecified).AddTicks(8342), new TimeSpan(0, 0, 0, 0, 0)), "Excellent", 5, "Nice product", new DateTimeOffset(new DateTime(2023, 3, 20, 15, 41, 5, 102, DateTimeKind.Unspecified).AddTicks(8343), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" });
 
             migrationBuilder.CreateIndex(
@@ -875,13 +875,13 @@ namespace Persistence.Migrations
                 name: "IX_PurchaseDetailEntity_ProductId",
                 schema: "RosaFiesta",
                 table: "PurchaseDetailEntity",
-                column: "ProductId");
+                column: "ProductCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReviewEntity_ProductId",
                 schema: "RosaFiesta",
                 table: "ReviewEntity",
-                column: "ProductId");
+                column: "ProductCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReviewEntity_UserReviewerId",

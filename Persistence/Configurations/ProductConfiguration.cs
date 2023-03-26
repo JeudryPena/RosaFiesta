@@ -19,7 +19,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
     {
         builder.ToTable(nameof(ProductEntity));
         builder.HasKey(product => product.Code);
-        builder.Property(product => product.Tittle).HasMaxLength(40).IsRequired();
+        builder.Property(product => product.Title).HasMaxLength(40).IsRequired();
         builder.Property(product => product.Description).HasMaxLength(200);
         builder.Property(product => product.Price).IsRequired();
         builder.Property(product => product.EndedAt);
@@ -33,8 +33,8 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.Property(product => product.GenderFor);
         builder.Property(product => product.Material);
         builder.Property(product => product.Thumbnail).HasMaxLength(500);
-        builder.Property(product => product.Type).IsRequired();
         builder.Property(product => product.Condition).IsRequired();
+        builder.Property(product => product.Type).IsRequired();
         builder.Property(product => product.CreatedAt).IsRequired();
         builder.Property(product => product.UpdatedAt);
         builder.Property(product => product.CreatedBy);
@@ -58,7 +58,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
             new ProductEntity
             {
                 Code = ProductId,
-                Tittle = "Polo",
+                Title = "Polo",
                 Description = "Polo de manga corta",
                 Price = 1000,
                 EndedAt = null, 
@@ -84,7 +84,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
             new ProductEntity
             {
                 Code = ProductId2,
-                Tittle = "Flores",
+                Title = "Flores",
                 Description = "Flores de rosas",
                 Price = 500,
                 EndedAt = null, 

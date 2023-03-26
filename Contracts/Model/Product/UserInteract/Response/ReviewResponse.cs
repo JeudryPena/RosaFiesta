@@ -1,4 +1,4 @@
-﻿namespace Contracts.Model.Product.Response;
+﻿namespace Contracts.Model.Product.UserInteract.Response;
 
 public class ReviewResponse
 {

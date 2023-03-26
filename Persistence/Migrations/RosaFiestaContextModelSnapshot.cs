@@ -242,7 +242,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Tittle")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
@@ -648,7 +648,7 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseNumber"));
 
-                    b.Property<string>("ProductId")
+                    b.Property<string>("ProductCode")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("CartId")
@@ -673,7 +673,7 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("PurchaseNumber", "ProductId");
+                    b.HasKey("PurchaseNumber", "ProductCode");
 
                     b.HasIndex("CartId");
 
@@ -681,7 +681,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OrderSku");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductCode");
 
                     b.ToTable("PurchaseDetailEntity", "RosaFiesta");
 
@@ -714,7 +714,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductId")
+                    b.Property<string>("ProductCode")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("ReviewDate")
@@ -740,7 +740,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductCode");
 
                     b.HasIndex("UserReviewerId");
 
@@ -798,7 +798,7 @@ namespace Persistence.Migrations
                     b.Property<int>("WishListId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductCode")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -811,7 +811,7 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("WishListId", "ProductId");
+                    b.HasKey("WishListId", "ProductCode");
 
                     b.HasIndex("ProductCode");
 
@@ -1305,7 +1305,7 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Product.ProductEntity", "Product")
                         .WithMany("Details")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1322,7 +1322,7 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Product.ProductEntity", "ProductEntity")
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductCode");
 
                     b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
                         .WithMany("Reviews")

@@ -51,7 +51,7 @@ internal sealed class ProductService : IProductService
         var product = new ProductEntity
         {
             Code = productForCreationDto.Code,
-            Tittle = productForCreationDto.Name,
+            Title = productForCreationDto.Name,
             Description = productForCreationDto.Description,
             Price = productForCreationDto.Price,
             QuantityAvaliable = productForCreationDto.Quantity,
@@ -107,7 +107,7 @@ internal sealed class ProductService : IProductService
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
         product.Code = productForUpdateDto.Code;
-        product.Tittle = productForUpdateDto.Name;
+        product.Title = productForUpdateDto.Name;
         product.Description = productForUpdateDto.Description;
         product.Price = productForUpdateDto.Price;
         product.Brand = productForUpdateDto.Brand;

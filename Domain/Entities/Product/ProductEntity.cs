@@ -11,9 +11,8 @@ public class ProductEntity: BaseEntity
     {
         Stock = StockCalculate();
     }
-
     public string? Code { get; set; }
-    public string Tittle { get; set; } 
+    public string Title { get; set; } 
     public string? Description { get; set; }
     public double Price { get; set; }
     public DateTimeOffset? EndedAt { get; set; } 
@@ -38,8 +37,9 @@ public class ProductEntity: BaseEntity
     public ICollection<WishListProductsEntity>? ProductsWish { get; set; }
     public ICollection<PurchaseDetailEntity>? Details { get; set; }
     public Guid? SupplierId { get; set; }
-    public SupplierEntity? Supplier { get; set; } 
-    
+    public SupplierEntity? Supplier { get; set; }
+    public ICollection<OptionEntity>? Options { get; set; }
+
     private StockStatusType StockCalculate()
     {
         if (QuantityAvaliable == 0)
