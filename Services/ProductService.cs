@@ -5,6 +5,7 @@ using Domain.Entities;
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Security;
+using Domain.Exceptions;
 using Domain.IRepository;
 using Mapster;
 using Services.Abstractions;
@@ -51,22 +52,41 @@ internal sealed class ProductService : IProductService
         var product = new ProductEntity
         {
             Code = productForCreationDto.Code,
-            Title = productForCreationDto.Name,
+            Type = productForCreationDto.Type.Adapt<ProductType>(),
+            WarrantyId = productForCreationDto.WarrantyId,
+            SupplierId = productForCreationDto.SupplierId,
+            CreatedAt = DateTimeOffset.UtcNow,
+            CreatedBy = username,
+            QuantityAvaliable = productForCreationDto.QuantityAvaliable,
+            Title = productForCreationDto.Tittle,
             Description = productForCreationDto.Description,
             Price = productForCreationDto.Price,
-            QuantityAvaliable = productForCreationDto.Quantity,
             Brand = productForCreationDto.Brand,
             Color = productForCreationDto.Color,
             Size = productForCreationDto.Size,
-            Type = productForCreationDto.Type.Adapt<ProductType>(),
+            Weight = productForCreationDto.Weight,
             Condition = productForCreationDto.Condition.Adapt<ConditionType>(),
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = username,
-            WarrantyId = productForCreationDto.WarrantyId,
-            SupplierId = productForCreationDto.SupplierId,
+            Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>(),
+            GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>(),
         };
-        product.GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>();
-        product.Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>();
+        if (productForCreationDto.Options != null)
+        {
+            product.Options = productForCreationDto.Options.Adapt<List<OptionEntity>>();
+            foreach (var option in product.Options)
+            {
+                option.Title = productForCreationDto.Tittle;
+                option.Description = productForCreationDto.Description;
+                option.Price = productForCreationDto.Price;
+                option.QuantityAvaliable = productForCreationDto.QuantityAvaliable;
+                option.Brand = productForCreationDto.Brand;
+                option.Color = productForCreationDto.Color;
+                option.Size = productForCreationDto.Size;
+                option.Condition = productForCreationDto.Condition.Adapt<ConditionType>();
+                option.Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>();
+                option.GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>();
+                option.ProductCode = productForCreationDto.Code;
+            }
+        }
 
         if (productForCreationDto.Category != null)
         {
@@ -107,19 +127,23 @@ internal sealed class ProductService : IProductService
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
         product.Code = productForUpdateDto.Code;
-        product.Title = productForUpdateDto.Name;
         product.Description = productForUpdateDto.Description;
-        product.Price = productForUpdateDto.Price;
         product.Brand = productForUpdateDto.Brand;
         product.Color = productForUpdateDto.Color;
         product.Size = productForUpdateDto.Size;
-        product.Type = productForUpdateDto.Type.Adapt<ProductType>();
-        product.Condition = productForUpdateDto.Condition.Adapt<ConditionType>();
         product.UpdatedAt = DateTimeOffset.UtcNow;
         product.UpdatedBy = username;
         product.WarrantyId = productForUpdateDto.WarrantyId;
         product.GenderFor = (productForUpdateDto.GenderFor ?? 0).Adapt<GenderType>();
         product.Material = (productForUpdateDto.Material ?? 0).Adapt<MaterialType>();
+        
+        
+        product.Title = productForUpdateDto.Tittle ?? product.Title;
+        product.Price = productForUpdateDto.Price ?? product.Price;
+
+        if (productForUpdateDto.Type != null) product.Type = productForUpdateDto.Type.Adapt<ProductType>();
+        if (productForUpdateDto.Condition != null)
+            product.Condition = productForUpdateDto.Condition.Adapt<ConditionType>();
 
         _repositoryManager.ProductRepository.Update(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -152,5 +176,86 @@ internal sealed class ProductService : IProductService
         ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productCode, cancellationToken);
         ProductDetailResponse productResponse = product.Adapt<ProductDetailResponse>();
         return productResponse;
+    }
+
+    public async Task DeleteOptionAsync(string productId, int optionId, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        if (product.Options == null)
+            throw new Exception("Product has no options");
+        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+        if (option == null)
+            throw new Exception("Option not found");
+        product.Options.Remove(option);
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteOptionsAsync(string productId, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        if (product.Options == null)
+            throw new Exception("Product has no options");
+        product.Options.Clear();
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string? username, int optionId, string productId, int count,
+        CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        if(product.Options == null)
+            throw new Exception("Product has no options");
+        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+        if (option == null)
+            throw new Exception("Option not found");
+        option.QuantityAvaliable += count;
+        product.UpdatedBy = username;
+        product.UpdatedAt = DateTimeOffset.UtcNow;
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        OptionAdjustResponse optionAdjustResponse = option.Adapt<OptionAdjustResponse>();
+        return optionAdjustResponse;
+    }
+
+    public async Task<OptionResponse> UpdateOptionAsync(string? username, int optionId, string productId,
+        OptionUpdateDto optionForCreationDto,
+        CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        if (product.Options == null)
+            throw new Exception("Product has no options");
+        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+        if (option == null)
+            throw new Exception("Option not found");
+        option.Description = optionForCreationDto.Description;
+        option.Brand = optionForCreationDto.Brand;
+        option.Color = optionForCreationDto.Color;
+        option.Size = optionForCreationDto.Size;
+        product.UpdatedBy = username;
+        product.UpdatedAt = DateTimeOffset.UtcNow;
+        if (optionForCreationDto.GenderFor != null)
+            option.GenderFor = optionForCreationDto.GenderFor.Adapt<GenderType>();
+        if (optionForCreationDto.Material != null)
+            option.Material = optionForCreationDto.Material.Adapt<MaterialType>();
+        if (optionForCreationDto.Condition != null)
+            option.Condition = optionForCreationDto.Condition.Adapt<ConditionType>();
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        OptionResponse optionResponse = option.Adapt<OptionResponse>();
+        return optionResponse;
+    }
+
+    public async Task<OptionResponse> CreateOptionAsync(string? username, string productId, OptionDto optionForCreationDto,
+        CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        var option = optionForCreationDto.Adapt<OptionEntity>();
+        product.Options.Add(option);
+        _repositoryManager.ProductRepository.Update(product);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        OptionResponse optionResponse = option.Adapt<OptionResponse>();
+        return optionResponse;
     }
 }

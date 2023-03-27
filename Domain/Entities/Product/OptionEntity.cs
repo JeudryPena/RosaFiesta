@@ -11,7 +11,7 @@ public class OptionEntity
     }
     public int Id { get; set; }
     public ProductEntity Product { get; set; }
-    public int ProductCode { get; set; }
+    public string ProductCode { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
     public double Price { get; set; }

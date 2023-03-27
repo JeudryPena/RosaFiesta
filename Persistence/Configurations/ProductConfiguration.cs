@@ -39,6 +39,10 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.Property(product => product.UpdatedAt);
         builder.Property(product => product.CreatedBy);
         builder.Property(product => product.UpdatedBy);
+        builder.HasMany(product => product.Options)
+            .WithOne(option => option.Product)
+            .HasForeignKey(option => option.ProductCode)
+            .OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(product => product.Category)
             .WithMany(category => category.Products)
             .HasForeignKey(product => product.CategoryId);
@@ -73,13 +77,10 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
                 Type = ProductType.Physical,
                 Condition = ConditionType.New,
                 CategoryId = CategoryId,
-                Reviews = null,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = null,
                 CreatedBy = "System",
-                UpdatedBy = null
             },
             new ProductEntity
             {

@@ -15,4 +15,10 @@ public interface IProductService
     Task DeleteAsync(string productId, CancellationToken cancellationToken = default);
     Task<ProductAdjustResponse> AdjustProductQuantityAsync(string? username, string productId, int count, CancellationToken cancellationToken = default);
     Task<ProductDetailResponse> GetProductDetail(string productCode, CancellationToken cancellationToken = default);
+    Task DeleteOptionAsync(string productId, int optionId, CancellationToken cancellationToken = default);
+    Task DeleteOptionsAsync(string productId, CancellationToken cancellationToken = default);
+    Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string? username, int optionId, string productId, int count, CancellationToken cancellationToken = default);
+    Task<OptionResponse> UpdateOptionAsync(string? username, int optionId, string productId,
+        OptionUpdateDto optionForCreationDto, CancellationToken cancellationToken = default);
+    Task<OptionResponse> CreateOptionAsync(string? username, string productId, OptionDto optionForCreationDto, CancellationToken cancellationToken);
 }

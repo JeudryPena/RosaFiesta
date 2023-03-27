@@ -26,4 +26,5 @@ public class ProductsResponse: BaseResponse
     public float AverageRating => Reviews.Average(x => x.ReviewRating);
     public int TotalReviews => Reviews.Count;
     public ICollection<ReviewResponse>? Reviews { get; set; }
+    public ICollection<OptionResponse>? Options { get; set; }
 }

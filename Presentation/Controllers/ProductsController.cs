@@ -48,12 +48,48 @@ public class ProductsController: ControllerBase
         return Ok(productDto);
     }
     
+    [HttpPost("{productId}/option")]
+    [Authorize]
+    public async Task<IActionResult> CreateOption(string productId, [FromBody] OptionDto optionForCreationDto, CancellationToken cancellationToken)
+    {
+        string? username = User.Identity?.Name;
+        OptionResponse option = await _serviceManager.ProductService.CreateOptionAsync(username, productId, optionForCreationDto, cancellationToken);
+        return Ok(option);
+    }
+    
     [HttpPut("{productId}")]
     [Authorize]
     public async Task<IActionResult> UpdateProduct(string productId, [FromBody] ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken)
     {
         string? username = User.Identity?.Name;
         ProductsResponse products = await _serviceManager.ProductService.UpdateAsync(username, productId, productForUpdateDto, cancellationToken);
+        return Ok(products);
+    }
+    
+    [HttpPut("{productId}/option/{optionId}")]
+    [Authorize]
+    public async Task<IActionResult> UpdateOption(string productId, int optionId, [FromBody] OptionUpdateDto optionForCreationDto, CancellationToken cancellationToken)
+    {
+        string? username = User.Identity?.Name;
+        OptionResponse option = await _serviceManager.ProductService.UpdateOptionAsync(username, optionId, productId, optionForCreationDto, cancellationToken);
+        return Ok(option);
+    }
+
+    [HttpPut("{productId}/options/{optionId}")]
+    [Authorize]
+    public async Task<IActionResult> AdjustOptionQuantity(string productId, int optionId, int count, CancellationToken cancellationToken)
+    {
+        string? username = User.Identity?.Name;
+        OptionAdjustResponse products = await _serviceManager.ProductService.AdjustOptionQuantityAsync(username, optionId, productId, count, cancellationToken);
+        return Ok(products);
+    }
+    
+    [HttpPut("{productId}")]
+    [Authorize]
+    public async Task<IActionResult> AdjustProductQuantity(string productId, int count, CancellationToken cancellationToken)
+    {
+        string? username = User.Identity?.Name;
+        ProductAdjustResponse products = await _serviceManager.ProductService.AdjustProductQuantityAsync(username, productId, count, cancellationToken);
         return Ok(products);
     }
     
@@ -65,12 +101,19 @@ public class ProductsController: ControllerBase
         return Ok();
     }
     
-    [HttpPatch("{productId}")]
+    [HttpDelete("{productId}/option/{optionId}")]
     [Authorize]
-    public async Task<IActionResult> AdjustProductQuantity(string productId, int count, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteOption(string productId, int optionId, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        ProductAdjustResponse products = await _serviceManager.ProductService.AdjustProductQuantityAsync(username, productId, count, cancellationToken);
-        return Ok(products);
+        await _serviceManager.ProductService.DeleteOptionAsync(productId, optionId, cancellationToken);
+        return Ok();
+    }
+    
+    [HttpDelete("{productId}/options")]
+    [Authorize]
+    public async Task<IActionResult> DeleteAllProductOptions(string productId, CancellationToken cancellationToken)
+    {
+        await _serviceManager.ProductService.DeleteOptionsAsync(productId, cancellationToken);
+        return Ok();
     }
 }
