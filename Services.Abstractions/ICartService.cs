@@ -13,5 +13,7 @@ public interface ICartService
     Task<CartResponse> AdjustCartItemQuantityAsync(string userId, string productId, int adjust, CancellationToken cancellationToken = default);
     Task<CartResponse> RemoveCartItemAsync(string userId, string productId, CancellationToken cancellationToken = default);
     Task<CartResponse> ClearCartAsync(string userId, CancellationToken cancellationToken = default);
-    Task<CartResponse> AddProductToCartAsync(string userId, PurchaseDetailDto cartItem, CancellationToken cancellationToken = default);
+    Task<CartResponse> AddProductToCartAsync(string userId, string? discountCode, PurchaseDetailDto cartItem,
+        CancellationToken cancellationToken = default);
+    Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, string productCode, int? optionId, CancellationToken cancellationToken = default);
 } 

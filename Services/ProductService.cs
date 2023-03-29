@@ -4,6 +4,7 @@ using Contracts.Model.Product.Response;
 using Domain.Entities;
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
@@ -25,18 +26,14 @@ internal sealed class ProductService : IProductService
     {
         IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetAllAsync(cancellationToken);
         ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
-        foreach (var pr in productPreviewResponse)
-        {
-            foreach (var p in products)
-            {
-                if (p.Code == pr.Code)
-                {
-                    pr.AverageRating = p.Reviews.Average(r => r.ReviewRating);
-                    pr.TotalReviews = p.Reviews.Count;
-                }
-            } 
-        }
         return productPreviewResponse;
+    }
+    
+    public async Task<ICollection<OptionPreviewResponse>> GetAllOptionsPreview(CancellationToken cancellationToken = default)
+    {
+        IEnumerable<OptionEntity> options = await _repositoryManager.ProductRepository.GetAllOptionAsync(cancellationToken);
+        ICollection<OptionPreviewResponse> optionPreviewResponse = options.Adapt<ICollection<OptionPreviewResponse>>();
+        return optionPreviewResponse;
     }
 
     public async Task<ProductsResponse> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
@@ -49,57 +46,16 @@ internal sealed class ProductService : IProductService
     public async Task<ProductsResponse> CreateAsync(string? username, ProductDto productForCreationDto,
         CancellationToken cancellationToken = default)
     {
-        var product = new ProductEntity
-        {
-            Code = productForCreationDto.Code,
-            Type = productForCreationDto.Type.Adapt<ProductType>(),
-            WarrantyId = productForCreationDto.WarrantyId,
-            SupplierId = productForCreationDto.SupplierId,
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = username,
-            QuantityAvaliable = productForCreationDto.QuantityAvaliable,
-            Title = productForCreationDto.Tittle,
-            Description = productForCreationDto.Description,
-            Price = productForCreationDto.Price,
-            Brand = productForCreationDto.Brand,
-            Color = productForCreationDto.Color,
-            Size = productForCreationDto.Size,
-            Weight = productForCreationDto.Weight,
-            Condition = productForCreationDto.Condition.Adapt<ConditionType>(),
-            Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>(),
-            GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>(),
-        };
+        ProductEntity product = productForCreationDto.Adapt<ProductEntity>();
+        product.CreatedAt = DateTimeOffset.UtcNow;
+        product.CreatedBy = username;
         if (productForCreationDto.Options != null)
-        {
             product.Options = productForCreationDto.Options.Adapt<List<OptionEntity>>();
-            foreach (var option in product.Options)
-            {
-                option.Title = productForCreationDto.Tittle;
-                option.Description = productForCreationDto.Description;
-                option.Price = productForCreationDto.Price;
-                option.QuantityAvaliable = productForCreationDto.QuantityAvaliable;
-                option.Brand = productForCreationDto.Brand;
-                option.Color = productForCreationDto.Color;
-                option.Size = productForCreationDto.Size;
-                option.Condition = productForCreationDto.Condition.Adapt<ConditionType>();
-                option.Material = (productForCreationDto.Material ?? 0).Adapt<MaterialType>();
-                option.GenderFor = (productForCreationDto.GenderFor ?? 0).Adapt<GenderType>();
-                option.ProductCode = productForCreationDto.Code;
-            }
-        }
-
         if (productForCreationDto.Category != null)
         {
-            var category = new CategoryEntity
-            {
-                Name = productForCreationDto.Category.Name,
-                Description = productForCreationDto.Category.Description,
-                CreatedAt = DateTimeOffset.UtcNow,
-                CreatedBy = username,
-                Icon = productForCreationDto.Category.Icon,
-                Slug = productForCreationDto.Category.Slug,
-                IsActive = productForCreationDto.Category.IsActive,
-            };
+            CategoryEntity category = productForCreationDto.Category.Adapt<CategoryEntity>();
+            category.CreatedAt = DateTimeOffset.UtcNow;
+            category.CreatedBy = username;
             if (productForCreationDto.Category.SubCategories != null)
             {
                 category.SubCategories = productForCreationDto.Category.SubCategories.Adapt<List<SubCategoryEntity>>();
@@ -126,21 +82,11 @@ internal sealed class ProductService : IProductService
         ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken = default)
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        product.Code = productForUpdateDto.Code;
-        product.Description = productForUpdateDto.Description;
-        product.Brand = productForUpdateDto.Brand;
-        product.Color = productForUpdateDto.Color;
-        product.Size = productForUpdateDto.Size;
-        product.UpdatedAt = DateTimeOffset.UtcNow;
-        product.UpdatedBy = username;
-        product.WarrantyId = productForUpdateDto.WarrantyId;
-        product.GenderFor = (productForUpdateDto.GenderFor ?? 0).Adapt<GenderType>();
-        product.Material = (productForUpdateDto.Material ?? 0).Adapt<MaterialType>();
-        
-        
         product.Title = productForUpdateDto.Tittle ?? product.Title;
         product.Price = productForUpdateDto.Price ?? product.Price;
-
+        product.Adapt<ProductUpdateDto>();
+        product.UpdatedAt = DateTimeOffset.UtcNow;
+        product.UpdatedBy = username;
         if (productForUpdateDto.Type != null) product.Type = productForUpdateDto.Type.Adapt<ProductType>();
         if (productForUpdateDto.Condition != null)
             product.Condition = productForUpdateDto.Condition.Adapt<ConditionType>();
@@ -257,5 +203,54 @@ internal sealed class ProductService : IProductService
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         OptionResponse optionResponse = option.Adapt<OptionResponse>();
         return optionResponse;
+    }
+
+    public async Task<ProductsResponse> GetOptionByIdAsync(string productId, int optionId, CancellationToken cancellationToken)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        if (product.Options == null)
+            throw new Exception("Product has no options");
+        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+        if (option == null)
+            throw new Exception("Option not found");
+        product.Title = option.Title;
+        product.Description = option.Description;
+        product.EndedAt = option.EndedAt;
+        product.Price = option.Price;
+        product.Brand = option.Brand;
+        product.Color = option.Color;
+        product.Size = option.Size;
+        product.Weight = option.Weight;
+        product.GenderFor = option.GenderFor;
+        product.Condition = option.Condition;
+        product.Material = option.Material;
+        product.QuantityAvaliable = option.QuantityAvaliable;
+        ProductsResponse productsResponse = option.Adapt<ProductsResponse>();
+        return productsResponse;
+    }
+
+    public async Task<ProductDetailResponse> GetOptionDetailAsync(string productId, int optionId, CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        if (product.Options == null)
+            throw new Exception("Product has no options");
+        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+        if (option == null)
+            throw new Exception("Option not found");
+        product.Title = option.Title;
+        product.Description = option.Description;
+        product.EndedAt = option.EndedAt;
+        product.Price = option.Price;
+        product.Brand = option.Brand;
+        product.Color = option.Color;
+        product.Size = option.Size;
+        product.Weight = option.Weight;
+        product.GenderFor = option.GenderFor;
+        product.Condition = option.Condition;
+        product.Material = option.Material;
+        product.QuantityAvaliable = option.QuantityAvaliable;
+        ProductDetailResponse productDetailResponse = option.Adapt<ProductDetailResponse>();
+        productDetailResponse.OptionId = option.Id;
+        return productDetailResponse;
     }
 }

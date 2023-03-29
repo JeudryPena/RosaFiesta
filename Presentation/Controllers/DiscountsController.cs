@@ -8,6 +8,7 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize (Roles = "Admin")]
 public class DiscountsController: ControllerBase
 {
      private readonly IServiceManager _serviceManager;
@@ -23,7 +24,7 @@ public class DiscountsController: ControllerBase
           IEnumerable<DiscountResponse> discounts = await _serviceManager.DiscountService.GetAllAsync(cancellationToken);
           return Ok(discounts);
      }
-    
+     
      [HttpGet("{discountCode}")]
      public async Task<IActionResult> GetDiscount(string discountCode, CancellationToken cancellationToken)
      {
@@ -32,7 +33,6 @@ public class DiscountsController: ControllerBase
      }
     
      [HttpPost]
-     [Authorize]
      public async Task<IActionResult> CreateDiscount([FromBody] DiscountDto discount, CancellationToken cancellationToken)
      {
           string? username = User.Identity?.Name;
@@ -41,7 +41,6 @@ public class DiscountsController: ControllerBase
      }
 
      [HttpPut("{discountCode}")]
-     [Authorize]
      public async Task<IActionResult> UpdateDiscount(string discountCode,[FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
      {
           string? username = User.Identity?.Name;

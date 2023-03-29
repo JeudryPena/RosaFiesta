@@ -19,7 +19,7 @@ public class ProductDto
     public int Type { get; set; } 
     public int Condition { get; set; }
     public int? CategoryId { get; set; }
-    public CategoryDto? Category { get; set; }
+    public CategoryDto? Category { get; set; } 
     public Guid? WarrantyId { get; set; } 
     public Guid? SupplierId { get; set; }
 }

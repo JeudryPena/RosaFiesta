@@ -9,4 +9,6 @@ public interface IPurchaseDetailRepository
     void Update(PurchaseDetailEntity purchaseDetail);
     void Delete(PurchaseDetailEntity purchaseDetail);
     void UpdateRange(ICollection<PurchaseDetailEntity> cartDetails);
+    Task<PurchaseDetailEntity> GetDetailByProduct(string productCode, int? optionId,
+        CancellationToken cancellationToken);
 }

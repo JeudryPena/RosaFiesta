@@ -2,8 +2,7 @@
 
 public class ValidDiscountResponse
 {
-    public string DiscountCode { get; set; } = string.Empty;
-    public string DiscountName { get; set; } = string.Empty;
+    public string DiscountCode { get; set; }
     public string DiscountType { get; set; }
     public float Discount { get; set; }
     public DateTimeOffset DiscountStartDate { get; set; } = DateTimeOffset.Now;

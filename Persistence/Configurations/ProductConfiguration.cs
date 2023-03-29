@@ -24,7 +24,6 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.Property(product => product.Price).IsRequired();
         builder.Property(product => product.EndedAt);
         builder.Property(product => product.Image).HasMaxLength(500);
-        builder.Property(product => product.Stock).IsRequired();
         builder.Property(product => product.QuantityAvaliable).IsRequired();
         builder.Property(product => product.Brand).HasMaxLength(40);
         builder.Property(product => product.Color).HasMaxLength(15);
@@ -52,12 +51,17 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.HasMany(product => product.Details)
             .WithOne(detail => detail.Product)
             .HasForeignKey(detail => detail.ProductId);
+        builder.HasMany(product => product.Reviews)
+            .WithOne(review => review.Product)
+            .HasForeignKey(review => review.ProductCode)
+            .OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(product => product.Supplier)
             .WithMany(supplier => supplier.ProductsSupplied)
             .HasForeignKey(product => product.SupplierId);
-        builder.HasMany(product => product.Reviews)
-            .WithOne(review => review.ProductEntity)
+        builder.HasMany(product => product.ProductsWish)
+            .WithOne(review => review.Product)
             .HasForeignKey(review => review.ProductId);
+
         builder.HasData(
             new ProductEntity
             {

@@ -15,6 +15,13 @@ internal sealed class CategoryService: ICategoryService
         _repositoryManager = repositoryManager;
     }
 
+    public async Task<IEnumerable<CategoryPreviewResponse>> GetAllCategoriesPreviewAsync(CancellationToken cancellationToken = default)
+    {
+        IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
+        var categoryResponse = categories.Adapt<IEnumerable<CategoryPreviewResponse>>();
+        return categoryResponse;
+    }
+
     public async Task<IEnumerable<CategoryResponse>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
@@ -61,7 +68,6 @@ internal sealed class CategoryService: ICategoryService
     {
         var category = new CategoryEntity
         {
-            Id = categoryDto.Id,
             Name = categoryDto.Name,
             Description = categoryDto.Description,
             CreatedAt = DateTimeOffset.UtcNow,

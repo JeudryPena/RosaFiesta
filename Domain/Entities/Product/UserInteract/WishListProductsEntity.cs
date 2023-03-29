@@ -6,6 +6,6 @@ public class WishListProductsEntity
     public WishListEntity WishList { get; set; }
     public string ProductId { get; set; }
     public ProductEntity Product { get; set; }
-    public int OptionId { get; set; }
-    public OptionEntity Option { get; set; }
+    public int? OptionId { get; set; }
+    public OptionEntity? Option { get; set; }
 }

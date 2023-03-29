@@ -7,7 +7,7 @@ public class LogingDto
     /// <summary>
     /// Represent the user name to login to the system.
     /// </summary>
-    [Required(ErrorMessage = "User Tittle is required")]
+    [Required(ErrorMessage = "User Title is required")]
     [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid")]
     [EmailAddress]
     public string Username { get; set; }

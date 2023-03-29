@@ -9,4 +9,6 @@ public class PurchaseDetailResponse
     public string? DiscountId { get; set; } 
     public double TotalPrice => UnitPrice * Quantity;
     public int CartId { get; set; }
+    public int? OptionId { get; set; }
+    public int? OrderSku { get; set; }
 }

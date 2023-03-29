@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Product;
+using Domain.Entities.Product.Helpers;
 using Domain.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,13 @@ public class ProductRepository: IProductRepository
     }
     
     public async Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-    await _dbContext.Products.Include(p => p.Category).Include(x => x.Reviews).ToListAsync(cancellationToken);
+    await _dbContext.Products.Include(x => x.Reviews).ToListAsync(cancellationToken);
+    
+    public async Task<IEnumerable<OptionEntity>> GetAllOptionAsync(CancellationToken cancellationToken = default) => await _dbContext.Options.Include(x => x.ProductsDiscounts).ThenInclude(x => x.Discount).ToListAsync(cancellationToken);
 
     public async Task<ProductEntity> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
     {
-        var product = await _dbContext.Products.Include(p => p.Category).Include(p => p.Supplier).Include(x => x.Reviews).Include(x => x.Details).Include(p => p.Warranty).Include(x => x.Reviews).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
+        var product = await _dbContext.Products.Include(p => p.Category).Include(p => p.Supplier).Include(x => x.Reviews).Include(x => x.Details).Include(p => p.Warranty).Include(x => x.Options).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
         if (product == null)
             throw new ArgumentNullException(nameof(product));
         return product;
@@ -45,6 +48,9 @@ public class ProductRepository: IProductRepository
 
     public void DeleteOption(OptionEntity option)
     => _dbContext.Options.Remove(option);
+
+    public void UpdateOption(OptionEntity detailOption)
+    => _dbContext.Options.Update(detailOption);
 
     public void Insert(ProductEntity product) 
         => _dbContext.Products.Add(product);

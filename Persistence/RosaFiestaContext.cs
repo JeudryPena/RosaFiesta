@@ -20,6 +20,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         Options = Set<OptionEntity>();
         Carts = Set<CartEntity>();
         Discounts = Set<DiscountEntity>();
+        ProductsDiscounts = Set<ProductsDiscountsEntity>();
         AppliedDiscounts = Set<AppliedDiscountEntity>();
         Orders = Set<OrderEntity>();
         PurchaseDetails = Set<PurchaseDetailEntity>();
@@ -45,6 +46,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<CartEntity> Carts { get; set; }
     public DbSet<DiscountEntity> Discounts { get; set; }
     public DbSet<AppliedDiscountEntity> AppliedDiscounts { get; set; }
+    public DbSet<ProductsDiscountsEntity> ProductsDiscounts { get; set; }
     public DbSet<WishListEntity> WishesList { get; set; }
     public DbSet<WarrantyEntity> Warranties { get; set; }
     public DbSet<SupplierEntity> Suppliers { get; set; }

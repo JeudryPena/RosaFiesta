@@ -1,5 +1,5 @@
-﻿using Contracts.Model.Product;
-using Contracts.Model.Product.Response;
+﻿using System.Net;
+using System.Security.Claims;
 using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -33,12 +33,16 @@ public class ReviewController: ControllerBase
         return Ok(supplier);
     }
     
-    [HttpPost("{productCode}")]
+    [HttpPost("{productCode}/option/{optionId:int?}")]
     [Authorize]
-    public async Task<IActionResult> CreateReview(Guid productCode, [FromBody] ReviewDto reviewDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateReview(string productCode, [FromBody] ReviewDto reviewDto, CancellationToken cancellationToken, int? optionId = 0)
     {
-        string userId = _serviceManager.AuthenticateService.CurrentUserId();
-        ReviewResponse reviewResponse = await _serviceManager.ReviewService.CreateAsync(userId, productCode, reviewDto, cancellationToken);
+        if(optionId == 0)
+            optionId = null;
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        ReviewResponse reviewResponse = await _serviceManager.ReviewService.CreateAsync(userId, productCode, optionId, reviewDto, cancellationToken);
         return Ok(reviewResponse);
     }
     

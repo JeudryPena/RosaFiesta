@@ -11,10 +11,13 @@ public interface IDiscountRepository
     void Update(DiscountEntity discount);
     void Delete(DiscountEntity discount);
     Task<DiscountEntity> GetValidDiscountAsync(string discountCode, string productId,
+        int? detailOptionId,
         CancellationToken cancellationToken = default);
     Task<AppliedDiscountEntity> GetAppliedDiscount(int purchaseNumber, CancellationToken cancellationToken = default);
     void UpdateAppliedDiscount(AppliedDiscountEntity discountApplied);
     void CreateAppliedDiscount(AppliedDiscountEntity discountApplied);
     void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount);
     Task<DiscountEntity> GetByAppliedId(int? detailAppliedId, CancellationToken cancellationToken = default);
+    Task<ICollection<ProductsDiscountsEntity>> GetDiscountPreviewsAsync(string productCode, int? optionId,
+        CancellationToken cancellationToken = default);
 }

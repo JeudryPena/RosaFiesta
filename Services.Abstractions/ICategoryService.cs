@@ -5,11 +5,11 @@ namespace Services.Abstractions;
 
 public interface ICategoryService
 {
+    Task<IEnumerable<CategoryPreviewResponse>> GetAllCategoriesPreviewAsync(CancellationToken cancellationToken = default);
     Task<IEnumerable<CategoryResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<CategoryResponse> CreateAsync(string? username, CategoryDto categoryDto, CancellationToken cancellationToken = default);
     Task<List<SubCategoryResponse>> CreateSubCategoryAsync(string? username, List<SubCategoryDto> subCategoryDto,
         CancellationToken cancellationToken = default);
-
     Task<IEnumerable<SubCategoryResponse>> GetAllSubCategoriesAsync(CancellationToken cancellationToken = default);
     Task<SubCategoryResponse> GetSubCategoryByIdAsync(int categoryId, int subCategoryId, CancellationToken cancellationToken = default);
     Task<CategoryResponse> GetByIdAsync(int categoryId, CancellationToken cancellationToken = default);

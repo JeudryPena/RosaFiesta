@@ -35,8 +35,10 @@ internal sealed class WishListRepository: IWishListRepository
     public async Task<WishListEntity> GetWishWithProducts(int wishListId, CancellationToken cancellationToken = default)
     {
         WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList
-            .Include(wl => wl.ProductsWish)!
+            .Include(wl => wl.ProductsWish)
             .ThenInclude(pw => pw.Product)
+            .Include(wl => wl.ProductsWish)
+            .ThenInclude(pw => pw.Option)
             .FirstOrDefaultAsync(wl => wl.Id == wishListId, cancellationToken);
         if (wishListEntity == null)
             throw new Exception("WishList not found");

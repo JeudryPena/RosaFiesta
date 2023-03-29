@@ -25,6 +25,21 @@ internal sealed class CartService : ICartService {
         IEnumerable<CartResponse> cartResponse = cart.Adapt<IEnumerable<CartResponse>>();
         return cartResponse;
      }
+    
+    public async Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, string productCode,
+        int? optionId,
+        CancellationToken cancellationToken)
+    {
+        PurchaseDetailEntity detail = await _repositoryManager.PurchaseDetailRepository.GetDetailByProduct(productCode, optionId, cancellationToken);
+        ICollection<ProductsDiscountsEntity> discounts = await _repositoryManager.DiscountRepository.GetDiscountPreviewsAsync(productCode, optionId, cancellationToken);
+        foreach (var d in discounts)
+        {
+            if(d.Discount.AppliedDiscounts != null && d.Discount.AppliedDiscounts.Count(x => x.UserId == userId && x.DiscountCode == d.DiscountCode) * detail.Quantity >= d.Discount.MaxTimesApply)
+                discounts.Remove(d);
+        }
+        IEnumerable<ProductsDiscountResponse> discountPreviews = discounts.Adapt<IEnumerable<ProductsDiscountResponse>>();
+        return discountPreviews;
+    }
 
      public async Task<CartResponse> GetByIdAsync(string id, CancellationToken cancellationToken = default)
      {
@@ -108,25 +123,53 @@ internal sealed class CartService : ICartService {
         return cartResponse;
      }
 
-     public async Task<CartResponse> AddProductToCartAsync(string userId, PurchaseDetailDto cartItem, CancellationToken cancellationToken = default)
+     public async Task<CartResponse> AddProductToCartAsync(string userId, string? discountCode, PurchaseDetailDto cartItem,
+         CancellationToken cancellationToken = default)
      {
-         PurchaseDetailEntity cartDetail = cartItem.Adapt<PurchaseDetailEntity>();
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
          ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(cartItem.ProductId, cancellationToken);
          cart.Details ??= new List<PurchaseDetailEntity>();
-         var itemQuantity = cartItem.Quantity + cart.Details.Where(cd => cd.ProductId == cartItem.ProductId).Sum(cd => cd.Quantity);
-         if (product.QuantityAvaliable < itemQuantity)
-             throw new Exception($"You are adding {itemQuantity - product.QuantityAvaliable} more items than the quantity available");
-         cartDetail.UnitPrice = product.Price;
-         cartDetail.CreatedAt = DateTimeOffset.UtcNow;
-         PurchaseDetailEntity? existingCart = cart.Details.FirstOrDefault(cp => cp.ProductId == cartDetail.ProductId);
-         if (existingCart == null) 
-             cart.Details.Add(cartDetail);
-         else 
-             existingCart.Quantity += cartDetail.Quantity;
-         _repositoryManager.CartRepository.UpdateCart(cart);
-         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-         var cartResponse = cart.Adapt<CartResponse>();
-         return cartResponse;
+         PurchaseDetailEntity? detail = cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
+         if(cartItem.OptionId != null)
+         {
+             if (product.Options == null)
+                 throw new Exception("Product has no options");
+             var option = product.Options.FirstOrDefault(o => o.Id == cartItem.OptionId) ?? throw new Exception("Option not found");
+             product = option.Adapt<ProductEntity>();
+         } 
+         if (detail == null || detail.OptionId == null)
+        {
+            if (product.QuantityAvaliable < cartItem.Quantity)
+                throw new Exception($"You are adding {cartItem.Quantity - product.QuantityAvaliable} more items than the quantity available");
+            detail = new PurchaseDetailEntity
+            {
+                Quantity = cartItem.Quantity,
+                UnitPrice = cartItem.Quantity * product.Price,
+                CreatedAt = DateTimeOffset.UtcNow,
+                ProductId = cartItem.ProductId,
+                OptionId = cartItem.OptionId ?? null
+            };
+            cart.Details.Add(detail);
+        }
+        else
+        {
+            var itemQuantity = cartItem.Quantity + detail.Quantity;
+            if (product.QuantityAvaliable < itemQuantity)
+                throw new Exception($"You are adding {itemQuantity - product.QuantityAvaliable} more items than the quantity available");
+            detail.Quantity += cartItem.Quantity;
+        }
+        if (discountCode != null && detail.AppliedId == null)
+        {
+            detail.DiscountApplied = new AppliedDiscountEntity
+            {
+                DiscountCode = discountCode,
+                UserId = userId,
+                AppliedDate = DateTimeOffset.UtcNow,
+            }; 
+        }
+        _repositoryManager.CartRepository.UpdateCartItem(detail);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        var cartResponse = cart.Adapt<CartResponse>();
+        return cartResponse;
      }
 }

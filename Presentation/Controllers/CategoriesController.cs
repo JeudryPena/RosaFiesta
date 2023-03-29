@@ -17,6 +17,13 @@ public class CategoryController: ControllerBase
         _serviceManager = serviceManager;
     }
     
+    [HttpGet("CategoriesPreview")]
+    public async Task<IActionResult> GetCategoriesPreview(CancellationToken cancellationToken)
+    {
+        IEnumerable<CategoryPreviewResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesPreviewAsync(cancellationToken);
+        return Ok(categories);
+    }
+    
     [HttpGet]
     public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
     {

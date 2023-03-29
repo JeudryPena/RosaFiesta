@@ -9,4 +9,5 @@ public interface IOrderRepository
     void CreateAsync(OrderEntity order);
     void Update(OrderEntity order);
     void Delete(OrderEntity order);
+    Task<IEnumerable<OrderEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken);
 }

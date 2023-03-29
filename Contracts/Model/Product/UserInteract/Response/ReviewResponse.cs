@@ -9,4 +9,6 @@ public class ReviewResponse
     public DateTimeOffset? ReviewUpdateDate { get; set; }
     public string? ReviewTittle { get; set; }
     public string UserReviewerId { get; set; }
+    public string ProductCode { get; set; } 
+    public int? OptionId { get; set; } 
 }

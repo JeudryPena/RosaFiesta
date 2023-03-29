@@ -1,6 +1,7 @@
 ﻿using Contracts.Model;
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 
@@ -71,6 +72,7 @@ public class AuthenticateController: ControllerBase
     }
 
     [HttpPost("ChangePassword")]
+    [Authorize]
     public async Task<IActionResult> ChangePassword(changePasswordDto changePasswordDto)
     {
         await _serviceManager.AuthenticateService.ChangePasswordAsync(changePasswordDto);
@@ -79,6 +81,7 @@ public class AuthenticateController: ControllerBase
     
     // Logout
     [HttpPost("Logout")]
+    [Authorize]
     public async Task<IActionResult> Logout()
     {
         await _serviceManager.AuthenticateService.LogoutAsync();

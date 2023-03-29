@@ -14,4 +14,6 @@ public interface IProductRepository
     void UpdateRange(List<ProductEntity> listProducts);
     void InsertOptions(OptionEntity option);
     void DeleteOption(OptionEntity option);
+    void UpdateOption(OptionEntity detailOption);
+    Task<IEnumerable<OptionEntity>> GetAllOptionAsync(CancellationToken cancellationToken = default);
 }

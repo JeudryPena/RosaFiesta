@@ -9,7 +9,7 @@ public class ProductDetailResponse
     public string? Description { get; set; }
     public double Price { get; set; }
     public string? Image { get; set; } 
-    public string Stock { get; set; } 
+    public string Stock => StockCalculate().ToString(); 
     public int QuantityAvaliable { get; set; }
     public string? Brand { get; set; } 
     public string? Color { get; set; }
@@ -25,4 +25,18 @@ public class ProductDetailResponse
     public int TotalReviews => Reviews.Count;
     public int TotalSales { get; set; }
     public ICollection<ReviewResponse>? Reviews { get; set; }
+    public int? TotalOptions => Options.Count;
+    public ICollection<OptionResponse>? Options { get; set; }
+    public int? OptionId { get; set; }
+    
+    private StockStatusType StockCalculate()
+    {
+        if (QuantityAvaliable == 0)
+            return StockStatusType.OutOfStock;
+        if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
+            return StockStatusType.LowStock;
+        if (QuantityAvaliable >= 10)
+            return StockStatusType.InStock;
+        return StockStatusType.InStock;
+    }
 }

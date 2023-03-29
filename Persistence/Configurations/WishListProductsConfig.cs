@@ -10,7 +10,7 @@ public class WishListProductsConfig: IEntityTypeConfiguration<WishListProductsEn
     {
         builder.ToTable(nameof(WishListProductsEntity));
         builder.HasKey(x => new { x.WishListId, x.ProductId });
+        builder.Property(x => x.OptionId);
         builder.HasOne(x => x.WishList).WithMany(x => x.ProductsWish).HasForeignKey(x => x.WishListId);
-        builder.HasOne(x => x.Product).WithMany(x => x.ProductsWish).HasForeignKey(x => x.ProductId);
     }
 }

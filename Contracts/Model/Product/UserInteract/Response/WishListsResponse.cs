@@ -3,5 +3,5 @@
 public class WishListsResponse
 {
     public int WishListCount => WishLists?.Count ?? 0;
-    ICollection<WishListResponse>? WishLists { get; set; }
+    ICollection<WishListPreviewResponse>? WishLists { get; set; }
 }

@@ -36,6 +36,7 @@ internal sealed class DiscountRepository: IDiscountRepository
     => _dbContext.Discounts.Remove(discount);
 
     public async Task<DiscountEntity> GetValidDiscountAsync(string discountCode, string productId,
+        int? detailOptionId,
         CancellationToken cancellationToken = default)
     {
         DiscountEntity? discount = await _dbContext.Discounts
@@ -44,15 +45,18 @@ internal sealed class DiscountRepository: IDiscountRepository
             throw new NullReferenceException("DiscountValue not found");
         if (discount.Products == null || discount.Products.All(p => p.ProductCode != productId))
             throw new NullReferenceException("The discount does not apply for this product");
+        if (detailOptionId != null && discount.Products.Any(p => p.ProductCode == productId && p.OptionId != detailOptionId))
+            throw new NullReferenceException("The discount does not apply for this option");
+
         return discount;
     }
 
     public async Task<AppliedDiscountEntity> GetAppliedDiscount(int purchaseNumber, CancellationToken cancellationToken = default)
     {
         AppliedDiscountEntity? appliedDiscount = await _dbContext.AppliedDiscounts
-            .FirstOrDefaultAsync(ad => ad.PurchaseNumber == purchaseNumber, cancellationToken);
+            .FirstOrDefaultAsync(d => d.PurchaseDetail.PurchaseNumber == purchaseNumber, cancellationToken);
         if (appliedDiscount == null)
-            throw new NullReferenceException("AppliedDiscount not found");
+            throw new NullReferenceException("DiscountValue not found");
         return appliedDiscount;
     }
 
@@ -72,5 +76,16 @@ internal sealed class DiscountRepository: IDiscountRepository
         if (discount == null)
             throw new NullReferenceException("DiscountValue not found");
         return discount;
+    }
+
+    public async Task<ICollection<ProductsDiscountsEntity>> GetDiscountPreviewsAsync(string productCode, int? optionId, CancellationToken cancellationToken = default)
+    {
+        ICollection<ProductsDiscountsEntity> discounts = await _dbContext.ProductsDiscounts
+            .Include(x => x.Discount)
+            .Where(x => x.ProductCode == productCode && x.Discount.DiscountStartDate <= DateTimeOffset.UtcNow && x.Discount.DiscountEndDate >= DateTimeOffset.UtcNow)
+            .ToListAsync(cancellationToken);
+        if (optionId != null)
+            discounts = discounts.Where(x => x.OptionId == optionId).ToList();
+        return discounts;
     }
 }

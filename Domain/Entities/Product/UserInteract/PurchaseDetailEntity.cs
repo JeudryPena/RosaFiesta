@@ -7,10 +7,10 @@ namespace Domain.Entities.Product.UserInteract;
 public class PurchaseDetailEntity
 {
     public int PurchaseNumber { get; set; }
-    public string? ProductId { get; set; }
+    public string ProductId { get; set; }
     public ProductEntity Product { get; set; }
-    public int OptionId { get; set; }
-    public OptionEntity Option { get; set; }
+    public int? OptionId { get; set; }
+    public OptionEntity? Option { get; set; }
     public int? OrderSku { get; set; }
     public OrderEntity? Order { get; set; }
     public int Quantity { get; set; }

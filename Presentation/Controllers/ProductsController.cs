@@ -25,6 +25,13 @@ public class ProductsController: ControllerBase
         return Ok(products);
     }
     
+    [HttpGet("options")]
+    public async Task<IActionResult> GetOptionsPreview(CancellationToken cancellationToken)
+    {
+        ICollection<OptionPreviewResponse> options = await _serviceManager.ProductService.GetAllOptionsPreview(cancellationToken);
+        return Ok(options);
+    }
+    
     [HttpGet("{productCode}/productDetail")]
     public async Task<IActionResult> GetProductDetail(string productCode, CancellationToken cancellationToken)
     {
@@ -32,11 +39,25 @@ public class ProductsController: ControllerBase
         return Ok(product);
     }
     
+    [HttpGet("{productId}/optionDetail/{optionId}")]
+    public async Task<IActionResult> GetOptionDetailById(string productId, int optionId, CancellationToken cancellationToken)
+    {
+        ProductDetailResponse option = await _serviceManager.ProductService.GetOptionDetailAsync(productId, optionId, cancellationToken);
+        return Ok(option);
+    }
+    
     [HttpGet("{productId}")]
     public async Task<IActionResult> GetProductById(string productId, CancellationToken cancellationToken)
     {
         ProductsResponse product = await _serviceManager.ProductService.GetByIdAsync(productId, cancellationToken);
         return Ok(product);
+    }
+    
+    [HttpGet("{productId}/option/{optionId}")]
+    public async Task<IActionResult> GetOptionById(string productId, int optionId, CancellationToken cancellationToken)
+    {
+        ProductsResponse option = await _serviceManager.ProductService.GetOptionByIdAsync(productId, optionId, cancellationToken);
+        return Ok(option);
     }
     
     [HttpPost]
@@ -84,7 +105,7 @@ public class ProductsController: ControllerBase
         return Ok(products);
     }
     
-    [HttpPut("{productId}")]
+    [HttpPut("{productId}/adjustQuantity")]
     [Authorize]
     public async Task<IActionResult> AdjustProductQuantity(string productId, int count, CancellationToken cancellationToken)
     {

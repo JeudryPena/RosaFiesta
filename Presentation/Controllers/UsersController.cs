@@ -9,6 +9,7 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class UserController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -40,7 +41,6 @@ public class UserController : ControllerBase
     }
     
     [HttpPost]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateUser(
         [FromBody] UserForCreationDto userForCreationDto,
         CancellationToken cancellationToken
@@ -57,7 +57,6 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("{userId}/unlock")]
-    [Authorize]
     public async Task<IActionResult> UnlockUser(string userId, CancellationToken cancellationToken)
     {
         string? username = User.Identity?.Name;
@@ -71,7 +70,6 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("{userId}/lock")]
-    [Authorize]
     public async Task<IActionResult> LockUser(string userId, CancellationToken cancellationToken)
     {
         string? username = User.Identity?.Name;

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Claims;
 using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
@@ -24,10 +25,9 @@ public class WishListController: ControllerBase
     [Authorize]
     public async Task<IActionResult> GetWishListsAsync(CancellationToken cancellationToken)
     {
-        var value = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-        if (value == null)
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        string userId = value;
         IEnumerable<WishListPreviewResponse> wishListResponse = await _serviceManager.WishListService.GetWishListsAsync(userId, cancellationToken);
         return Ok(wishListResponse);
     }
@@ -39,17 +39,20 @@ public class WishListController: ControllerBase
         return Ok(wishListResponse);
     }
     
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> CreateWishListAsync([FromBody] WishListDto wishList, string userId, CancellationToken cancellationToken)
+    [HttpPost("createWishList")]
+    public async Task<IActionResult> CreateWishListAsync([FromBody] WishListDto wishList, CancellationToken cancellationToken)
     {
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
         WishListResponse wishListResponse = await _serviceManager.WishListService.CreateWishListAsync(wishList, userId, cancellationToken);
         return Ok(wishListResponse);
     }
     
     [HttpPost("{wishListId}/products")]
-    public async Task<IActionResult> AddProductsToWishListAsync(int wishListId, List<string> productsId, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddProductsToWishListAsync(int wishListId, List<ProductsWishListDto> productsWishListDto, CancellationToken cancellationToken)
     {
-        WishListProductsResponse wishListProductResponse = await _serviceManager.WishListService.AddProductToWishListAsync(wishListId, productsId, cancellationToken);
+        WishListProductsResponse wishListProductResponse = await _serviceManager.WishListService.AddProductToWishListAsync(wishListId, productsWishListDto, cancellationToken);
         return Ok(wishListProductResponse);
     }
     
@@ -59,14 +62,7 @@ public class WishListController: ControllerBase
         WishListProductsResponse wishListProductResponse = await _serviceManager.WishListService.DeleteProductFromWishListAsync(wishListId, productId, cancellationToken);
         return Ok(wishListProductResponse);
     }
-    
-    [HttpDelete("{wishListId}")]
-    public async Task<IActionResult> DeleteAllProductsFromWishListAsync(int wishListId, CancellationToken cancellationToken)
-    {
-        await _serviceManager.WishListService.DeleteAllProductsFromWishListAsync(wishListId, cancellationToken);
-        return Ok();
-    }
-    
+
     [HttpDelete("{wishListId}")]
     public async Task<IActionResult> DeleteWishListAsync(int wishListId, CancellationToken cancellationToken)
     {
@@ -74,13 +70,20 @@ public class WishListController: ControllerBase
         return Ok();
     }
     
+    [HttpDelete("{wishListId}/deleteAll")]
+    public async Task<IActionResult> DeleteAllProductsFromWishListAsync(int wishListId, CancellationToken cancellationToken)
+    {
+        await _serviceManager.WishListService.DeleteAllProductsFromWishListAsync(wishListId, cancellationToken);
+        return Ok();
+    }
+    
     [HttpDelete("deleteAll")]
+    [Authorize]
     public async Task<IActionResult> DeleteAllWishListsAsync(CancellationToken cancellationToken)
     {
-        var value = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-        if (value == null)
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        string userId = value;
         await _serviceManager.WishListService.DeleteAllWishListsAsync(userId, cancellationToken);
         return Ok();
     }
@@ -88,10 +91,9 @@ public class WishListController: ControllerBase
     [HttpPut("{wishListId}")]
     public async Task<IActionResult> UpdateWishListAsync(int wishListId, [FromBody] WishListDto wishList, CancellationToken cancellationToken)
     {
-        var value = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-        if (value == null)
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        string userId = value;
         WishListResponse wishListResponse = await _serviceManager.WishListService.UpdateWishListAsync(userId, wishListId, wishList, cancellationToken);
         return Ok(wishListResponse);
     }

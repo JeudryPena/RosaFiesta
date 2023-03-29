@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Product.Helpers;
+﻿namespace Contracts.Model.Product;
 
 public enum StockStatusType
 {

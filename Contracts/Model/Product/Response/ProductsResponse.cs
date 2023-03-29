@@ -9,7 +9,7 @@ public class ProductsResponse: BaseResponse
     public string? Description { get; set; }
     public double Price { get; set; }
     public string? Image { get; set; } = string.Empty;
-    public string Stock { get; set; } 
+    public string Stock => StockCalculate().ToString();
     public int QuantityAvaliable { get; set; }
     public string? Brand { get; set; } 
     public string? Color { get; set; }
@@ -22,9 +22,21 @@ public class ProductsResponse: BaseResponse
     public int? CategoryId { get; set; }
     public Guid? WarrantyId { get; set; }
     public Guid? SupplierId { get; set; }
-    public DateTimeOffset LastReviewDate => Reviews.Max(x => x.ReviewDate);
-    public float AverageRating => Reviews.Average(x => x.ReviewRating);
-    public int TotalReviews => Reviews.Count;
+    public DateTimeOffset? LastReviewDate => Reviews == null || Reviews.Count == 0 ? null : Reviews.Max(r => r.ReviewDate);
+    public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.ReviewRating);
+    public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
     public ICollection<ReviewResponse>? Reviews { get; set; }
+    public int? TotalOptions => Options == null || Options.Count == 0 ? null : Options.Count;
     public ICollection<OptionResponse>? Options { get; set; }
+    
+    private StockStatusType StockCalculate()
+    {
+        if (QuantityAvaliable == 0)
+            return StockStatusType.OutOfStock;
+        if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
+            return StockStatusType.LowStock;
+        if (QuantityAvaliable >= 10)
+            return StockStatusType.InStock;
+        return StockStatusType.InStock;
+    }
 }

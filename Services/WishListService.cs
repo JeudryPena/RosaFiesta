@@ -2,6 +2,7 @@
 using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
+using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
@@ -24,7 +25,13 @@ internal sealed class WishListService: IWishListService
         WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishWithProducts(wishListId, cancellationToken);
         WishListResponse wishListResponse = wishListEntity.Adapt<WishListResponse>();
         if(wishListEntity.ProductsWish != null)
-            wishListResponse.Products = wishListEntity.ProductsWish.Adapt<ICollection<ProductCartResponse>>();
+        {
+            wishListResponse.Products = new List<ProductPreviewResponse>();
+            foreach (var i in wishListEntity.ProductsWish)
+                wishListResponse.Products.Add(i.Option != null
+                    ? i.Option.Adapt<ProductPreviewResponse>()
+                    : i.Product.Adapt<ProductPreviewResponse>());
+        }
         return wishListResponse;    
     }
     
@@ -65,17 +72,21 @@ internal sealed class WishListService: IWishListService
         return wishListResponse;
     }
 
-    public async Task<WishListProductsResponse> AddProductToWishListAsync(int wishListId, List<string> productsId, CancellationToken cancellationToken = default)
+    public async Task<WishListProductsResponse> AddProductToWishListAsync(int wishListId,
+        List<ProductsWishListDto> wishListDto, CancellationToken cancellationToken = default)
     {
         WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListByIdAsync(wishListId, cancellationToken);
         if (wishListEntity.ProductsWish == null)
             wishListEntity.ProductsWish = new List<WishListProductsEntity>();
-        foreach (var i in productsId)
+        foreach (var i in wishListDto) 
         {
+            if (wishListEntity.ProductsWish.Any(x => x.ProductId == i.ProductId || (x.OptionId != null && x.OptionId == i.OptionId)))
+                throw new Exception("Product already exists in wish list");
             wishListEntity.ProductsWish.Add(new()
             {
-                WishListId = wishListEntity.Id,
-                ProductId = i,
+                WishListId = wishListId,
+                ProductId = i.ProductId,
+                OptionId = i.OptionId ?? null,
             });
         }
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);

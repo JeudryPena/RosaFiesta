@@ -3,6 +3,7 @@ using Contracts.Model.Product.Response;
 
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 
 using Mapster;
@@ -64,4 +65,6 @@ internal sealed class DiscountService : IDiscountService {
         _repositoryManager.DiscountRepository.Delete(discount);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
+
+    
 }

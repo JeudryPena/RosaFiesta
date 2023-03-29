@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using Domain.Entities.Product;
+﻿using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +8,8 @@ namespace Persistence.Configurations;
 public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
 {
     private const string ProductId = "SDA01";
+    private const int OptionId = 1;
+    private const int OptionId2 = 2;
     public void Configure(EntityTypeBuilder<OptionEntity> builder)
     {
         builder.HasKey(x => x.Id);
@@ -18,7 +19,6 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
         builder.Property(product => product.Price).IsRequired();
         builder.Property(product => product.EndedAt);
         builder.Property(product => product.Image).HasMaxLength(500);
-        builder.Property(product => product.Stock).IsRequired();
         builder.Property(product => product.QuantityAvaliable).IsRequired();
         builder.Property(product => product.Brand).HasMaxLength(40);
         builder.Property(product => product.Color).HasMaxLength(15);
@@ -28,12 +28,16 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
         builder.Property(product => product.Material);
         builder.Property(product => product.Thumbnail).HasMaxLength(500);
         builder.Property(product => product.Condition).IsRequired();
-        builder.HasMany(x => x.PurchaseDetails).WithOne(x => x.Option).HasForeignKey(x => x.OptionId);
-        builder.HasMany(x => x.WishListsProducts).WithOne(x => x.Option).HasForeignKey(x => x.OptionId);
-        builder.HasMany(x => x.Reviews).WithOne(x => x.OptionEntity).HasForeignKey(x => x.OptionId);
+        builder.HasMany(product => product.WishListProducts)
+            .WithOne(wish => wish.Option)
+            .HasForeignKey(wish => wish.OptionId);
+        builder.HasMany(product => product.Reviews)
+            .WithOne(review => review.Option)
+            .HasForeignKey(review => review.OptionId);
 
         builder.HasData(new OptionEntity
         {
+            Id = OptionId,
             Title = "Polo plus",
             Description = "Polo de manga larga",
             Price = 1200,
@@ -51,9 +55,10 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
             ProductCode = ProductId,
         }, new OptionEntity
         {
+            Id = OptionId2,
             Title = "Polo",
             Description = "Polo de manga corta",
-            Price = 1000,
+            Price = 800,
             EndedAt = null,
             Image =
                 "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",

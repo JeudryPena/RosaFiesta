@@ -30,4 +30,6 @@ internal sealed class OrderRepository: IOrderRepository
     public void Update(OrderEntity order) => _context.Orders.Update(order);
     
     public void Delete(OrderEntity order) => _context.Orders.Remove(order);
+    public async Task<IEnumerable<OrderEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken)
+    => await _context.Orders.Where(x => x.UserId == userId).ToListAsync(cancellationToken);
 }
