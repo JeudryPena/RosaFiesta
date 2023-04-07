@@ -1,4 +1,6 @@
-﻿using Contracts.Model.Product;
+﻿using System.Net;
+using System.Security.Claims;
+using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,16 +37,20 @@ public class DiscountsController: ControllerBase
      [HttpPost]
      public async Task<IActionResult> CreateDiscount([FromBody] DiscountDto discount, CancellationToken cancellationToken)
      {
-          string? username = User.Identity?.Name;
-          DiscountResponse discountResponse = await _serviceManager.DiscountService.CreateDiscountAsync(username, discount, cancellationToken);
+          string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          if (userId == null)
+               return StatusCode((int) HttpStatusCode.Unauthorized);
+          DiscountResponse discountResponse = await _serviceManager.DiscountService.CreateDiscountAsync(userId, discount, cancellationToken);
           return Ok(discountResponse);
      }
 
      [HttpPut("{discountCode}")]
      public async Task<IActionResult> UpdateDiscount(string discountCode,[FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
      {
-          string? username = User.Identity?.Name;
-          DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(username, discountCode, discountDto, cancellationToken);
+          string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          if (userId == null)
+               return StatusCode((int) HttpStatusCode.Unauthorized);
+          DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(userId, discountCode, discountDto, cancellationToken);
           return Ok(discountResponse);
      }
     

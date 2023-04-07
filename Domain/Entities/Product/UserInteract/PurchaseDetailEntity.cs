@@ -8,17 +8,7 @@ public class PurchaseDetailEntity
 {
     public int PurchaseNumber { get; set; }
     public string ProductId { get; set; }
-    public ProductEntity Product { get; set; }
-    public int? OptionId { get; set; }
-    public OptionEntity? Option { get; set; }
     public int? OrderSku { get; set; }
-    public OrderEntity? Order { get; set; }
-    public int Quantity { get; set; }
-    public double UnitPrice { get; set; }
-    public int? AppliedId { get; set; }
-    public AppliedDiscountEntity? DiscountApplied { get; set; }
+    public ICollection<PurchaseDetailOptions> PurchaseOptions { get; set; }
     public int? CartId { get; set; }
-    public CartEntity? Cart { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset? UpdatedAt { get; set; }
 }

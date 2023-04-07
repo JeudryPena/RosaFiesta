@@ -38,12 +38,6 @@ public class UsersResponse
     public DateTimeOffset? LockoutEnd { get; set; }
 
     public string? PasswordHash { get; set; }
-    
-    public string? Address { get; set; }
-    
-    public string? City { get; set; }
-    
-    public string? State { get; set; }
 
     public bool IsLockedOut { get; set; } 
     

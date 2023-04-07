@@ -8,5 +8,5 @@ public class SupplierResponse: BaseResponse
     public string? Description { get; set; }
     public string? Phone { get; set; } 
     public string Address { get; set; } 
-    public ICollection<ProductsResponse>? ProductsSupplied { get; set; }
+    public ICollection<ProductAndOptionResponse>? ProductsSupplied { get; set; }
 }

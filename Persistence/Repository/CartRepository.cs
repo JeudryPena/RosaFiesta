@@ -15,12 +15,12 @@ internal sealed class CartRepository : ICartRepository
 
     public async Task<IEnumerable<CartEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await _context.Carts
-            .Include(c => c.Details.Where(cd => cd.OrderSku == null)).Include(c => c.UserEntity).ToListAsync();
+            .Include(c => c.Details.Where(cd => cd.OrderSku == null)).ThenInclude(x => x.PurchaseOptions).ToListAsync();
 
     public async Task<CartEntity> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
         CartEntity? cart = await _context.Carts
-            .Include(c => c.Details.Where(cd => cd.OrderSku == null)).Include(c => c.UserEntity)
+            .Include(c => c.Details.Where(cd => cd.OrderSku == null)).ThenInclude(cd => cd.PurchaseOptions)
             .FirstOrDefaultAsync(c => c.UserId == id, cancellationToken);
         if (cart == null )
             throw new Exception("Cart not found");
@@ -29,37 +29,21 @@ internal sealed class CartRepository : ICartRepository
 
     public void UpdateCartItem(PurchaseDetailEntity cartItem) =>
         _context.PurchaseDetails.Update(cartItem);
-
-    public void DeleteDetails(ICollection<PurchaseDetailEntity> cartDetails) =>
-    _context.PurchaseDetails.RemoveRange(cartDetails);
-
+    
     public void UpdateCart(CartEntity cart)
-    {
-        _context.Carts.Update(cart);
-    }
-
-    public async Task<CartEntity> GetCartWithProductAndOption(string userId, CancellationToken cancellationToken)
-    {
-        CartEntity? cart = await _context.Carts
-            .Include(c => c.Details.Where(cd => cd.OrderSku == null))
-            .ThenInclude(cd => cd.Product)
-            .Include(c => c.Details.Where(cd => cd.OrderSku == null))
-            .ThenInclude(cd => cd.Option)
-            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
-        if (cart == null)
-            throw new Exception("Cart not found");
-        return cart;
-    }
+    => _context.Carts.Update(cart);
 
     public async Task<ICollection<PurchaseDetailEntity>> GetCartDetails(string userId, CancellationToken cancellationToken = default)
     {
         CartEntity? cart = await _context.Carts
-            .Include(c => c.Details.Where(cd => cd.OrderSku == null))
-            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
+            .Include(c => (c.Details ?? new List<PurchaseDetailEntity>()).Where(cd => cd.OrderSku == null)).FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
         if (cart == null)
             throw new Exception("Cart not found");
-        if (cart.Details == null)
+        if (cart.Details == null || cart.Details.Count == 0)
             throw new Exception("Cart is empty");
         return cart.Details;
     }
+
+    public void UpdateDetailOption(PurchaseDetailOptions optionDetail) =>
+    _context.PurchaseDetailsOptions.Update(optionDetail);
 }

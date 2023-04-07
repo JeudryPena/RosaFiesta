@@ -4,5 +4,5 @@ public class PurchaseDetailDto
 {
     public string ProductId { get; set; }
     public int Quantity { get; set; }
-    public int? OptionId { get; set; }
+    public int OptionId { get; set; }
 }

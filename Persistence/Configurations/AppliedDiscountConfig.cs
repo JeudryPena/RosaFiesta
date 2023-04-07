@@ -11,7 +11,7 @@ public class AppliedDiscountConfig : IEntityTypeConfiguration<AppliedDiscountEnt
     private const string DefaultDiscountCode1 = "WELCOME";
     private const int AppliedId = 1;
     private const int AppliedId1 = 2;
-    
+    private const int AppliedId2 = 3;
     public void Configure(EntityTypeBuilder<AppliedDiscountEntity> builder)
     {
         builder.HasKey(ad => ad.Id);
@@ -19,8 +19,6 @@ public class AppliedDiscountConfig : IEntityTypeConfiguration<AppliedDiscountEnt
         builder.Property(ad => ad.AppliedDate).IsRequired();
         builder.Property(ad => ad.UserId).IsRequired();
         builder.Property(ad => ad.DiscountCode).IsRequired();
-        builder.HasOne(ad => ad.User).WithMany(u => u.AppliedDiscounts).HasForeignKey(ad => ad.UserId);
-        builder.HasOne(ad => ad.Discount).WithMany(d => d.AppliedDiscounts).HasForeignKey(ad => ad.DiscountCode);
 
         builder.HasData(new AppliedDiscountEntity
         {
@@ -29,12 +27,18 @@ public class AppliedDiscountConfig : IEntityTypeConfiguration<AppliedDiscountEnt
             DiscountCode = DefaultDiscountCode,
             AppliedDate = DateTimeOffset.Now,
         }, new AppliedDiscountEntity
-            {
-                Id = AppliedId1,
-                UserId = AdminId,
-                DiscountCode = DefaultDiscountCode1,
-                AppliedDate = DateTimeOffset.Now,
-            }
-        );
+        {
+            Id = AppliedId1,
+            UserId = AdminId,
+            DiscountCode = DefaultDiscountCode1,
+            AppliedDate = DateTimeOffset.Now,
+        },
+        new AppliedDiscountEntity
+        {
+            Id = AppliedId2,
+            UserId = AdminId,
+            DiscountCode = DefaultDiscountCode1,
+            AppliedDate = DateTimeOffset.Now,
+        });
     }
 }

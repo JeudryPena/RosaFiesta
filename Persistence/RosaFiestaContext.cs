@@ -16,6 +16,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public RosaFiestaContext(DbContextOptions<RosaFiestaContext> options)
         : base(options)
     {
+        Addresses = Set<AddressEntity>();
         Products = Set<ProductEntity>();
         Options = Set<OptionEntity>();
         Carts = Set<CartEntity>();
@@ -24,6 +25,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         AppliedDiscounts = Set<AppliedDiscountEntity>();
         Orders = Set<OrderEntity>();
         PurchaseDetails = Set<PurchaseDetailEntity>();
+        PurchaseDetailsOptions = Set<PurchaseDetailOptions>();
         Categories = Set<CategoryEntity>();
         PayMethods = Set<PayMethodEntity>();
         Reviews = Set<ReviewEntity>();
@@ -41,6 +43,8 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         modelBuilder.Entity<UserEntity>();
         base.OnModelCreating(modelBuilder);
     }
+    
+    public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ProductEntity> Products { get; }
     public DbSet<OptionEntity> Options { get; set; }
     public DbSet<CartEntity> Carts { get; set; }
@@ -55,6 +59,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<PayMethodEntity> PayMethods { get; set; }
     public DbSet<CategoryEntity> Categories { get; set; }
     public DbSet<PurchaseDetailEntity> PurchaseDetails { get; set; }
+    public DbSet<PurchaseDetailOptions> PurchaseDetailsOptions { get; set; }
     public DbSet<OrderEntity> Orders { get; set; }
     public DbSet<WishListProductsEntity> WishesListProducts { get; set; }
 }

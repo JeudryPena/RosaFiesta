@@ -11,5 +11,4 @@ public class WishListEntity
     public DateTimeOffset? UpdatedDate { get; set; }
     public ICollection<WishListProductsEntity>? ProductsWish { get; set; }
     public string UserId { get; set; }
-    public UserEntity UserEntity { get; set; } 
 }

@@ -32,28 +32,29 @@ internal sealed class DiscountService : IDiscountService {
         return discountResponse;
     }
 
-    public async Task<DiscountResponse> CreateDiscountAsync(string? username, DiscountDto discount, CancellationToken cancellationToken = default) {
+    public async Task<DiscountResponse> CreateDiscountAsync(string? userId, DiscountDto discount, CancellationToken cancellationToken = default) {
         var discountEntity = discount.Adapt<DiscountEntity>();
-        discountEntity.CreatedBy = username;
+        discountEntity.CreatedBy = userId;
         discountEntity.CreatedAt = DateTimeOffset.UtcNow;
-
+        discountEntity.ProductsDiscounts = discount.ProductsDiscount.Select(d => new ProductsDiscountsEntity()
+        {
+            DiscountCode = discountEntity.DiscountCode,
+            ProductId = d.ProductCode ?? null,
+            OptionId = d.OptionId ?? null
+        }).ToList();
+        
         _repositoryManager.DiscountRepository.Insert(discountEntity);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var discountResponse = discountEntity.Adapt<DiscountResponse>();
         return discountResponse;
     }
 
-    public async Task<DiscountResponse> UpdateDiscountAsync(string? username, string discountId,
+    public async Task<DiscountResponse> UpdateDiscountAsync(string? userId, string discountId,
         DiscountDto discountDto,
         CancellationToken cancellationToken = default) {
         DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
-        discount.DiscountCode = discountDto.DiscountCode;
-        discount.DiscountName = discountDto.DiscountName;
-        discount.DiscountValue = discountDto.Discount;
-        discount.DiscountStartDate = discountDto.DiscountStartDate;
-        discount.DiscountEndDate = discountDto.DiscountEndDate;
-        discount.DiscountDescription = discountDto.DiscountDescription;
-        discount.UpdatedBy = username;
+        discount.Adapt(discountDto);
+        discount.UpdatedBy = userId;
         discount.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.DiscountRepository.Update(discount);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -61,10 +62,8 @@ internal sealed class DiscountService : IDiscountService {
     }
 
     public async Task DeleteDiscountAsync(string discountId, CancellationToken cancellationToken = default) {
-        DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
+        DiscountEntity discount = await _repositoryManager.DiscountRepository.GetDiscountAsync(discountId, cancellationToken);
         _repositoryManager.DiscountRepository.Delete(discount);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
-
-    
 }

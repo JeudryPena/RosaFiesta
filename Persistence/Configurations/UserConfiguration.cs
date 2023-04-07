@@ -22,28 +22,38 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.UpdatedAt);
         builder.Property(user => user.UpdatedBy);
         builder.Property(user => user.BirthDate).IsRequired();
-        builder.Property(user => user.Address).HasMaxLength(60);
-        builder.Property(user => user.City).HasMaxLength(60);
-        builder.Property(user => user.State).HasMaxLength(60);
         builder.Property(user => user.RefreshToken).HasMaxLength(60);
         builder.Property(user => user.RefreshTokenExpiryTime);
         builder.Property(user => user.Avatar).HasMaxLength(200);
         builder.Property(user => user.PromotionalMails).IsRequired();
         builder.HasOne(user => user.Cart)
-            .WithOne(cart => cart.UserEntity)
+            .WithOne()
             .HasForeignKey<CartEntity>(cart => cart.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(user => user.Orders)
             .WithOne(order => order.User)
             .HasForeignKey(order => order.UserId);
         builder.HasMany(owner => owner.Reviews)
-            .WithOne(review => review.UserEntity)
+            .WithOne()
             .HasForeignKey(review => review.UserReviewerId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(owner => owner.WishLists)
-            .WithOne(wishList => wishList.UserEntity)
+            .WithOne()
             .HasForeignKey(wishList => wishList.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(user => user.Addresses)
+            .WithOne(address => address.User)
+            .HasForeignKey(address => address.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(user => user.DefaultAddress)
+            .WithMany()
+            .HasForeignKey(user => user.DefaultAddressId)
+            .OnDelete(DeleteBehavior.SetNull);
+        builder.HasMany(user => user.AppliedDiscounts)
+            .WithOne()
+            .HasForeignKey(appliedDiscount => appliedDiscount.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
 
         var admin = new UserEntity
         {
@@ -63,9 +73,6 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             CreatedBy = "System",
             UpdatedAt = null,
             UpdatedBy = null,
-            Address = "Calle 1",
-            City = "Santo Domingo",
-            State = "Distrito Nacional",
             PhoneNumber = "18497505944",
             PhoneNumberConfirmed = true,
             TwoFactorEnabled = false,

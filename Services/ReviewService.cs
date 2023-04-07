@@ -33,15 +33,14 @@ internal sealed class ReviewService: IReviewService
         return reviewResponse;
     }
 
-    public async Task<ReviewResponse> CreateAsync(string userId, string productCode, int? optionId, ReviewDto reviewDto,
+    public async Task<ReviewResponse> CreateAsync(string userId, int optionId, ReviewDto reviewDto,
         CancellationToken cancellationToken = default)
     {
         var review = reviewDto.Adapt<ReviewEntity>();
-        await _repositoryManager.ReviewRepository.AlredyExistAsync(productCode, optionId, userId, cancellationToken); 
+        await _repositoryManager.ReviewRepository.AlredyExistAsync(optionId, userId, cancellationToken); 
         review.ReviewDate = DateTimeOffset.UtcNow;
-        review.ProductCode = productCode;
         review.UserReviewerId = userId;
-        review.OptionId = optionId ?? null;
+        review.OptionId = optionId;
         _repositoryManager.ReviewRepository.Insert(review);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var reviewResponse = review.Adapt<ReviewResponse>();

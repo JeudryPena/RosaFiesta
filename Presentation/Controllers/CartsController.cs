@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
+using Contracts.Model.Product.UserInteract.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ public class CartsController : ControllerBase {
     }
     
     [HttpGet("product/{productCode}/option/{optionId}/discountPreviews")]
-    public async Task<IActionResult> GetDiscountPreviews(string productCode, int? optionId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDiscountPreviews(string productCode, CancellationToken cancellationToken, int optionId)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
@@ -53,39 +54,43 @@ public class CartsController : ControllerBase {
         return Ok(cart);
     }
     
-    [HttpPut("discount/{discountCode}/AddProductToCart")]
-    public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, string? discountCode, CancellationToken cancellationToken) {
+    [HttpPut("discount/{discountCode?}/AddProductToCart")]
+    public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken, string? discountCode = " ") {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
+        if(discountCode == " ")
+            discountCode = null;
         CartResponse cart = await _serviceManager.CartService.AddProductToCartAsync(userId, discountCode, cartItem, cancellationToken);
         return Ok(cart);
     }
 
-    [HttpPut("AddPackToCart")]
-    public async Task<IActionResult> AddPackToCartAsync([FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken) {
+    [HttpPut("/option/{optionId}/discount/{discountCode?}/AddPackToCart")]
+    public async Task<IActionResult> AddPackToCartAsync([FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken, int optionId, string? discountCode = " ") {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        CartResponse cart = await _serviceManager.CartService.AddPackToCartAsync(userId, cartItemsItems, cancellationToken);
+        if(discountCode == " ")
+            discountCode = null;
+        CartResponse cart = await _serviceManager.CartService.AddPackToCartAsync(userId, optionId, discountCode, cartItemsItems, cancellationToken);
         return Ok(cart);
     }
     
-    [HttpPut("product/{productId}/adjust")]
-    public async Task<IActionResult> AdjustCartItemQuantityAsync(string productId, int adjust, CancellationToken cancellationToken) {
-        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userId == null)
-            return StatusCode((int) HttpStatusCode.Unauthorized);
-        CartResponse cart = await _serviceManager.CartService.AdjustCartItemQuantityAsync(userId, productId, adjust, cancellationToken);
-        return Ok(cart);
+    [HttpPut("detail/{purchaseNumber}/option/{optionId}/adjust")]
+    public async Task<IActionResult> AdjustCartItemQuantityAsync(int adjust, CancellationToken cancellationToken, int purchaseNumber, int optionId)
+    {
+        OptionDetailResponse optionResponse = await _serviceManager.CartService.AdjustCartItemQuantityAsync(purchaseNumber, optionId, adjust, cancellationToken);
+        return Ok(optionResponse);
     }
     
-    [HttpPut("product/{productId}/remove")]
-    public async Task<IActionResult> RemoveCartItemAsync(string productId, CancellationToken cancellationToken) {
+    [HttpPut("product/{productId}/option/{optionId?}/remove")]
+    public async Task<IActionResult> RemoveCartItemAsync(string productId,  CancellationToken cancellationToken, int? optionId = 0){
+        if(optionId == 0)
+            optionId = null;
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        CartResponse cart = await _serviceManager.CartService.RemoveCartItemAsync(userId, productId, cancellationToken);
+        CartResponse cart = await _serviceManager.CartService.RemoveCartItemAsync(userId,  productId, optionId, cancellationToken);
         return Ok(cart);
     }
     

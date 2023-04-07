@@ -2,12 +2,14 @@
 
 namespace Contracts.Model.Product.Response;
 
-public class ProductDetailResponse
+public class ProductAndOptionDetailResponse
 {
     public string Code { get; set; }
     public string Tittle { get; set; } 
     public string? Description { get; set; }
     public double Price { get; set; }
+    public double? OfferPrice => Discount == null ? null : Discount.DiscountType == 1 ? Price - Price * Discount.DiscountValue / 100 : Price - Discount.DiscountValue;
+    public float? DiscountSave { get; set; }
     public string? Image { get; set; } 
     public string Stock => StockCalculate().ToString(); 
     public int QuantityAvaliable { get; set; }
@@ -26,9 +28,13 @@ public class ProductDetailResponse
     public int TotalSales { get; set; }
     public ICollection<ReviewResponse>? Reviews { get; set; }
     public int? TotalOptions => Options.Count;
-    public ICollection<OptionResponse>? Options { get; set; }
+    public ICollection<OptionPreviewResponse> Options { get; set; }
     public int? OptionId { get; set; }
     
+    public Guid WarrantyId { get; set; }
+    public DiscountPreviewResponse? Discount { get; set; }
+    public string? WarrantyName { get; set; }
+
     private StockStatusType StockCalculate()
     {
         if (QuantityAvaliable == 0)

@@ -9,7 +9,6 @@ namespace Persistence.Configurations;
 public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
 {
     private const string AdminId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
-    private const string ProductId = "SDA01";
     private const int OptionId = 1;
     private const string ReviewId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f8";
     private const string ReviewId2 = "b22698b8-42a2-4115-9631-1c2d1e2ac5f2";
@@ -23,8 +22,6 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
         builder.Property(x => x.ReviewUpdateDate);
         builder.Property(x => x.ReviewTittle).HasMaxLength(100);
         builder.Property(x => x.UserReviewerId).IsRequired();
-        builder.Property(x => x.ProductCode).IsRequired();
-
         builder.HasData(new ReviewEntity
         {
             Id = Guid.Parse(ReviewId),
@@ -34,7 +31,6 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
             ReviewUpdateDate = DateTimeOffset.UtcNow,
             ReviewTittle = "Nice product",
             UserReviewerId = AdminId,
-            ProductCode = ProductId,
         }, new ReviewEntity
         {
             Id = Guid.Parse(ReviewId2),
@@ -44,7 +40,6 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
             ReviewUpdateDate = DateTimeOffset.UtcNow,
             ReviewTittle = "Kinda love it",
             UserReviewerId = AdminId,
-            ProductCode = ProductId,
             OptionId = OptionId
         });
     }

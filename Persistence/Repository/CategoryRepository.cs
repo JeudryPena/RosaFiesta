@@ -18,7 +18,7 @@ public class CategoryRepository: ICategoryRepository
         await _rosaFiestaContext.Categories.Include(x => x.SubCategories).Include(x => x.Products).ToListAsync(cancellationToken);
 
     public async Task<IEnumerable<SubCategoryEntity>> GetAllSubCategoriesAsync(CancellationToken cancellationToken = default) => 
-        await _rosaFiestaContext.SubCategories.Include(x => x.Category).ToListAsync(cancellationToken);
+        await _rosaFiestaContext.SubCategories.ToListAsync(cancellationToken);
 
     public void Insert(CategoryEntity category) =>
     _rosaFiestaContext.Categories.Add(category);
@@ -28,7 +28,7 @@ public class CategoryRepository: ICategoryRepository
 
     public async Task<SubCategoryEntity> GetSubCategoryByIdAsync(int categoryId, int subCategoryId, CancellationToken cancellationToken = default)
     {
-        var subCategory = await _rosaFiestaContext.SubCategories.Include(x => x.Category)
+        var subCategory = await _rosaFiestaContext.SubCategories
             .FirstOrDefaultAsync(x => x.Id == subCategoryId && x.CategoryId == categoryId, cancellationToken); 
         if (subCategory == null)
             throw new ArgumentNullException(nameof(subCategory));
@@ -66,7 +66,7 @@ public class CategoryRepository: ICategoryRepository
 
     public async Task<List<SubCategoryEntity>> GetSubCategoriesByIdsAsync(List<int> toList, CancellationToken cancellationToken = default)
     {
-        var subCategories = await _rosaFiestaContext.SubCategories.Include(x => x.Category)
+        var subCategories = await _rosaFiestaContext.SubCategories
             .Where(x => toList.Contains(x.Id)).ToListAsync(cancellationToken);
         if (subCategories == null)
             throw new ArgumentNullException(nameof(subCategories));
@@ -76,5 +76,14 @@ public class CategoryRepository: ICategoryRepository
     public void UpdateSubCategories(List<SubCategoryEntity> subCategories)
     {
         _rosaFiestaContext.SubCategories.UpdateRange(subCategories);
+    }
+
+    public async Task<CategoryEntity> GetCategoryAndSubCategoryAsync(int categoryId, CancellationToken cancellationToken)
+    {
+        var category = await _rosaFiestaContext.Categories
+            .FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
+        if (category == null)
+            throw new ArgumentNullException(nameof(category), "Category not found");
+        return category;
     }
 }

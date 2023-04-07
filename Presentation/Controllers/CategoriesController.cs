@@ -46,7 +46,7 @@ public class CategoryController: ControllerBase
     }
     
     [HttpGet("{categoryId}/sub-category/{subCategoryId}")]
-    public async Task <IActionResult> GetSubCategoriesByCategoryId(int categoryId, int subCategoryId, CancellationToken cancellationToken)
+    public async Task <IActionResult> GetSubCategoryByCategoryId(int categoryId, int subCategoryId, CancellationToken cancellationToken)
     {
         SubCategoryResponse products = await _serviceManager.CategoryService.GetSubCategoryByIdAsync(categoryId, subCategoryId, cancellationToken);
         return Ok(products);
@@ -106,17 +106,12 @@ public class CategoryController: ControllerBase
         return Ok(subCategoryResponse);
     }
     
-    [HttpDelete("{categoryId}")]
-    public async Task<IActionResult> DeleteCategory(int categoryId, CancellationToken cancellationToken)
+    [HttpDelete("{categoryId}/sub-category/{subCategoryId?}")]
+    public async Task<IActionResult> DeleteCategoryOrSubcategory(int categoryId, CancellationToken cancellationToken, int? subCategoryId = 0)
     {
-        await _serviceManager.CategoryService.DeleteAsync(categoryId, cancellationToken);
-        return Ok();
-    }
-    
-    [HttpDelete("{categoryId}/sub-category/{subCategoryId}")]
-    public async Task<IActionResult> DeleteSubCategory(int categoryId, int subCategoryId, CancellationToken cancellationToken)
-    {
-        await _serviceManager.CategoryService.DeleteSubCategoryAsync(categoryId, subCategoryId, cancellationToken);
+        if(subCategoryId != 0)
+            subCategoryId = null;
+        await _serviceManager.CategoryService.DeleteAsync(categoryId, subCategoryId, cancellationToken);
         return Ok();
     }
 }

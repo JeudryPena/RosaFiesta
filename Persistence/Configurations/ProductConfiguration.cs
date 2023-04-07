@@ -20,89 +20,51 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
         builder.ToTable(nameof(ProductEntity));
         builder.HasKey(product => product.Code);
         builder.Property(product => product.Title).HasMaxLength(40).IsRequired();
-        builder.Property(product => product.Description).HasMaxLength(200);
-        builder.Property(product => product.Price).IsRequired();
-        builder.Property(product => product.EndedAt);
-        builder.Property(product => product.Image).HasMaxLength(500);
-        builder.Property(product => product.QuantityAvaliable).IsRequired();
         builder.Property(product => product.Brand).HasMaxLength(40);
-        builder.Property(product => product.Color).HasMaxLength(15);
-        builder.Property(product => product.Size);
-        builder.Property(product => product.Weight);
-        builder.Property(product => product.GenderFor);
-        builder.Property(product => product.Material);
-        builder.Property(product => product.Thumbnail).HasMaxLength(500);
-        builder.Property(product => product.Condition).IsRequired();
         builder.Property(product => product.Type).IsRequired();
         builder.Property(product => product.CreatedAt).IsRequired();
         builder.Property(product => product.UpdatedAt);
         builder.Property(product => product.CreatedBy);
         builder.Property(product => product.UpdatedBy);
         builder.HasMany(product => product.Options)
-            .WithOne(option => option.Product)
+            .WithOne()
             .HasForeignKey(option => option.ProductCode)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(product => product.Category)
             .WithMany(category => category.Products)
             .HasForeignKey(product => product.CategoryId);
         builder.HasOne(product => product.Warranty)
-            .WithMany(warranty => warranty.Products)
+            .WithMany()
             .HasForeignKey(product => product.WarrantyId);
         builder.HasMany(product => product.Details)
-            .WithOne(detail => detail.Product)
+            .WithOne()
             .HasForeignKey(detail => detail.ProductId);
-        builder.HasMany(product => product.Reviews)
-            .WithOne(review => review.Product)
-            .HasForeignKey(review => review.ProductCode)
-            .OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(product => product.Supplier)
             .WithMany(supplier => supplier.ProductsSupplied)
             .HasForeignKey(product => product.SupplierId);
-        builder.HasMany(product => product.ProductsWish)
-            .WithOne(review => review.Product)
-            .HasForeignKey(review => review.ProductId);
+        builder.HasMany(product => product.Discounts)
+            .WithOne()
+            .HasForeignKey(discount => discount.ProductId);
 
         builder.HasData(
             new ProductEntity
             {
                 Code = ProductId,
                 Title = "Polo",
-                Description = "Polo de manga corta",
-                Price = 1000,
-                EndedAt = null, 
-                Image =  "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
-                QuantityAvaliable = 10,
                 Brand = "Champion",
-                Color = "White",
-                Size = 1.5f,
-                Weight = 0.5f,
-                GenderFor = GenderType.Both,
-                Material = MaterialType.Cotton,
                 Type = ProductType.Physical,
-                Condition = ConditionType.New,
                 CategoryId = CategoryId,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = "System",
             },
             new ProductEntity
             {
                 Code = ProductId2,
                 Title = "Flores",
-                Description = "Flores de rosas",
-                Price = 500,
-                EndedAt = null, 
-                Image = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
-                QuantityAvaliable = 3,
                 Brand = "Flores",
-                Color = "Rosas",
-                Size = 1.5f,
-                Weight = 0.5f,
-                GenderFor = GenderType.Both,
-                Material = MaterialType.Other,
                 Type = ProductType.Physical,
-                Condition = ConditionType.New,
                 CategoryId = CategoryId,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),

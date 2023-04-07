@@ -13,7 +13,7 @@ public interface IWishListService
         CancellationToken cancellationToken = default);
     Task<WishListProductsResponse> AddProductToWishListAsync(int wishListId, List<ProductsWishListDto> wishListDto,
         CancellationToken cancellationToken = default);
-    Task<WishListProductsResponse> DeleteProductFromWishListAsync(int wishListId, string productId, CancellationToken cancellationToken = default);
+    Task<WishListProductsResponse> DeleteProductFromWishListAsync(int wishListId,  int optionId, CancellationToken cancellationToken = default);
     Task DeleteAllProductsFromWishListAsync(int wishListId, CancellationToken cancellationToken = default);
     Task DeleteWishListAsync(int wishListId, CancellationToken cancellationToken = default);
     Task<WishListResponse> UpdateWishListAsync(string userId, int wishListId, WishListDto wishList, CancellationToken cancellationToken);

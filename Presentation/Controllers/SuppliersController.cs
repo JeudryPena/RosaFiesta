@@ -8,6 +8,7 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class SuppliersController: ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -32,7 +33,6 @@ public class SuppliersController: ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> CreateSupplier([FromBody] SupplierDto supplierDto, CancellationToken cancellationToken)
     {
         string? username = User.Identity?.Name;
@@ -41,7 +41,6 @@ public class SuppliersController: ControllerBase
     }
     
     [HttpPut("{supplierId:guid}")]
-    [Authorize]
     public async Task<IActionResult> UpdateSupplier(Guid supplierId, [FromBody] SupplierDto supplierDto, CancellationToken cancellationToken)
     {
         string? username = User.Identity?.Name;
@@ -50,7 +49,6 @@ public class SuppliersController: ControllerBase
     }
     
     [HttpDelete("{supplierId:guid}")]
-    [Authorize]
     public async Task<IActionResult> DeleteSupplier(Guid supplierId, CancellationToken cancellationToken)
     {
         await _serviceManager.SupplierService.DeleteAsync(supplierId, cancellationToken);

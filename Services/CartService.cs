@@ -2,6 +2,7 @@
 using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
+using Contracts.Model.Product.UserInteract.Response;
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
@@ -26,17 +27,9 @@ internal sealed class CartService : ICartService {
         return cartResponse;
      }
     
-    public async Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, string productCode,
-        int? optionId,
-        CancellationToken cancellationToken)
+    public async Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, string productCode, int optionId, CancellationToken cancellationToken = default)
     {
-        PurchaseDetailEntity detail = await _repositoryManager.PurchaseDetailRepository.GetDetailByProduct(productCode, optionId, cancellationToken);
-        ICollection<ProductsDiscountsEntity> discounts = await _repositoryManager.DiscountRepository.GetDiscountPreviewsAsync(productCode, optionId, cancellationToken);
-        foreach (var d in discounts)
-        {
-            if(d.Discount.AppliedDiscounts != null && d.Discount.AppliedDiscounts.Count(x => x.UserId == userId && x.DiscountCode == d.DiscountCode) * detail.Quantity >= d.Discount.MaxTimesApply)
-                discounts.Remove(d);
-        }
+        ICollection<DiscountEntity> discounts = await _repositoryManager.DiscountRepository.GetValidDiscountsPreview(userId, productCode, optionId, cancellationToken);
         IEnumerable<ProductsDiscountResponse> discountPreviews = discounts.Adapt<IEnumerable<ProductsDiscountResponse>>();
         return discountPreviews;
     }
@@ -48,64 +41,84 @@ internal sealed class CartService : ICartService {
         return cartResponse;
      }
 
-     public async Task<CartResponse> AddPackToCartAsync(string userId, List<PurchaseDetailDto> cartItems,
+     public async Task<CartResponse> AddPackToCartAsync(string userId, int optionId, string? discountCode, List<PurchaseDetailDto> cartItems,
          CancellationToken cancellationToken = default)
-     {
+     { 
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
         cart.Details ??= new List<PurchaseDetailEntity>();
         foreach (var cartItem in cartItems)
         {
-            var product = await _repositoryManager.ProductRepository.GetByIdAsync(cartItem.ProductId, cancellationToken);
-            if (product.QuantityAvaliable < cartItem.Quantity + cart.Details.Where(cd => cd.ProductId == cartItem.ProductId).Sum(cd => cd.Quantity))
+            var product = await _repositoryManager.ProductRepository.GetProductDetail(cartItem.ProductId, cartItem.OptionId, cancellationToken);
+            var productOption = product.Options[0];
+            if (productOption.QuantityAvaliable < cartItem.Quantity + cart.Details.Where(cd => cd.ProductId == cartItem.ProductId).Sum(cd => cd.PurchaseOptions.Sum(po => po.Quantity)))
                 throw new Exception("Not enough quantity available");
-            PurchaseDetailEntity? cartItemEntity = cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
+            PurchaseDetailEntity? cartItemEntity =
+                cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
             if (cartItemEntity == null)
             {
                 cartItemEntity = new PurchaseDetailEntity
                 {
                     ProductId = cartItem.ProductId,
-                    Quantity = cartItem.Quantity,
-                    UnitPrice = cartItem.Quantity * product.Price
                 };
+                cartItemEntity.PurchaseOptions.Add(new PurchaseDetailOptions
+                {
+                    OptionId = cartItem.OptionId,
+                    Quantity = cartItem.Quantity,
+                    CreatedAt = DateTimeOffset.UtcNow,
+                    UnitPrice = cartItem.Quantity * productOption.Price,
+                    DiscountApplied = discountCode != null ? new AppliedDiscountEntity
+                    {
+                        DiscountCode = discountCode,
+                        UserId = userId,
+                        AppliedDate = DateTimeOffset.UtcNow,
+                    } : null,
+                });
                 cart.Details.Add(cartItemEntity);
             }
             else
             {
-                cartItemEntity.Quantity += cartItem.Quantity;
+                var purchaseOption = cartItemEntity.PurchaseOptions.FirstOrDefault(po => po.OptionId == cartItem.OptionId);
+                if (purchaseOption == null)
+                    throw new Exception("Option not found");
+                purchaseOption.Quantity += cartItem.Quantity;
+                if (discountCode != null && purchaseOption.AppliedId == null)
+                    purchaseOption.DiscountApplied = new AppliedDiscountEntity
+                    {
+                        DiscountCode = discountCode,
+                        UserId = userId,
+                        AppliedDate = DateTimeOffset.UtcNow,
+                    };
             }
         }
-        
         _repositoryManager.CartRepository.UpdateCart(cart);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var cartResponse = cart.Adapt<CartResponse>();
         return cartResponse;
      }
 
-     public async Task<CartResponse> AdjustCartItemQuantityAsync(string userId, string productId, int adjust,
-         CancellationToken cancellationToken = default)
+     public async Task<OptionDetailResponse> AdjustCartItemQuantityAsync(int purchaseNumber, int optionId, int adjust, CancellationToken cancellationToken = default)
      {
-         var product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-         if (product.QuantityAvaliable < adjust)
-         {
+         PurchaseDetailOptions optionDetail = await _repositoryManager.PurchaseDetailRepository.GetOptionDetailAsync(optionId, purchaseNumber, cancellationToken);
+         OptionEntity option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionId, cancellationToken);
+         if (option.QuantityAvaliable < optionDetail.Quantity + adjust)
              throw new Exception("Not enough quantity available");
-         } 
-         CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-         if (cart.Details == null) throw new Exception("Cart is empty");
-         PurchaseDetailEntity? cartItem = cart.Details.FirstOrDefault(cp => cp.ProductId == productId);
-         if (cartItem == null) throw new Exception("Product not found in cart");
-         cartItem.Quantity -= adjust;
-         _repositoryManager.CartRepository.UpdateCartItem(cartItem);
+         optionDetail.Quantity -= adjust;
+         _repositoryManager.CartRepository.UpdateDetailOption(optionDetail);
          await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-         var cartResponse = cart.Adapt<CartResponse>();
-         return cartResponse;
+         OptionDetailResponse optionResponse = option.Adapt<OptionDetailResponse>();
+         return optionResponse;
      }
 
-     public async Task<CartResponse> RemoveCartItemAsync(string userId, string productId, CancellationToken cancellationToken = default)
+     public async Task<CartResponse> RemoveCartItemAsync(string userId, string productId, int? optionId,
+         CancellationToken cancellationToken = default)
      {
         CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
         if (cart.Details == null) throw new Exception("Cart is empty");
-        PurchaseDetailEntity cartItem = cart.Details.FirstOrDefault(cp => cp.ProductId == productId) ?? throw new Exception("Product not found in cart");
-        cart.Details.Remove(cartItem);
+        PurchaseDetailEntity cartItem = cart.Details.FirstOrDefault(cp => cp.ProductId == productId) ?? throw new Exception("Product not found in cart"); 
+        if(optionId != null)
+            cartItem.PurchaseOptions.Remove(cartItem.PurchaseOptions.FirstOrDefault(po => po.OptionId == optionId) ?? throw new Exception("Option not found in cart"));
+        else
+            cart.Details.Remove(cartItem);
         _repositoryManager.CartRepository.UpdateCart(cart);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var cartResponse = cart.Adapt<CartResponse>();
@@ -127,46 +140,46 @@ internal sealed class CartService : ICartService {
          CancellationToken cancellationToken = default)
      {
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
-         ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(cartItem.ProductId, cancellationToken);
          cart.Details ??= new List<PurchaseDetailEntity>();
          PurchaseDetailEntity? detail = cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
-         if(cartItem.OptionId != null)
+         var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(cartItem.OptionId, cancellationToken);
+         if (detail == null)
          {
-             if (product.Options == null)
-                 throw new Exception("Product has no options");
-             var option = product.Options.FirstOrDefault(o => o.Id == cartItem.OptionId) ?? throw new Exception("Option not found");
-             product = option.Adapt<ProductEntity>();
-         } 
-         if (detail == null || detail.OptionId == null)
-        {
-            if (product.QuantityAvaliable < cartItem.Quantity)
-                throw new Exception($"You are adding {cartItem.Quantity - product.QuantityAvaliable} more items than the quantity available");
-            detail = new PurchaseDetailEntity
-            {
-                Quantity = cartItem.Quantity,
-                UnitPrice = cartItem.Quantity * product.Price,
-                CreatedAt = DateTimeOffset.UtcNow,
-                ProductId = cartItem.ProductId,
-                OptionId = cartItem.OptionId ?? null
-            };
-            cart.Details.Add(detail);
+             if (option.QuantityAvaliable < cartItem.Quantity)
+                throw new Exception($"You are adding {cartItem.Quantity - option.QuantityAvaliable} more items than the quantity available");
+             detail = new PurchaseDetailEntity();
+             detail.ProductId = cartItem.ProductId;
+             detail.PurchaseOptions.Add(new PurchaseDetailOptions
+             {
+                 OptionId = cartItem.OptionId,
+                 Quantity = cartItem.Quantity,
+                 CreatedAt = DateTimeOffset.UtcNow,
+                 UnitPrice = cartItem.Quantity * option.Price,
+                 DiscountApplied = discountCode != null ? new AppliedDiscountEntity
+                 {
+                     DiscountCode = discountCode,
+                     UserId = userId,
+                     AppliedDate = DateTimeOffset.UtcNow,
+                 } : null,
+             });
+             cart.Details.Add(detail);
         }
         else
         {
-            var itemQuantity = cartItem.Quantity + detail.Quantity;
-            if (product.QuantityAvaliable < itemQuantity)
-                throw new Exception($"You are adding {itemQuantity - product.QuantityAvaliable} more items than the quantity available");
-            detail.Quantity += cartItem.Quantity;
-        }
-        if (discountCode != null && detail.AppliedId == null)
-        {
-            detail.DiscountApplied = new AppliedDiscountEntity
+            PurchaseDetailOptions optionDetail = detail.PurchaseOptions.FirstOrDefault(po => po.OptionId == cartItem.OptionId) ?? throw new Exception("Option not found");
+            optionDetail.Quantity += cartItem.Quantity;
+            if (optionDetail.Quantity < option.QuantityAvaliable)
+                throw new Exception($"You are adding {optionDetail.Quantity - option.QuantityAvaliable} more items than the quantity available");
+            if (discountCode != null && optionDetail.AppliedId == null)
             {
-                DiscountCode = discountCode,
-                UserId = userId,
-                AppliedDate = DateTimeOffset.UtcNow,
-            }; 
-        }
+                optionDetail.DiscountApplied = new AppliedDiscountEntity
+                {
+                    DiscountCode = discountCode,
+                    UserId = userId,
+                    AppliedDate = DateTimeOffset.UtcNow,
+                }; 
+            }
+        } 
         _repositoryManager.CartRepository.UpdateCartItem(detail);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var cartResponse = cart.Adapt<CartResponse>();

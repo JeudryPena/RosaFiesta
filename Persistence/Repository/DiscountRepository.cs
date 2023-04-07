@@ -15,14 +15,12 @@ internal sealed class DiscountRepository: IDiscountRepository
     }
     
     public async Task<IEnumerable<DiscountEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-    => await _dbContext.Discounts.ToListAsync(cancellationToken);
+    => await _dbContext.Discounts.Include(x => x.ProductsDiscounts).ToListAsync(cancellationToken);
     public async Task<DiscountEntity> GetByIdAsync(string discountId, CancellationToken cancellationToken = default)
     {
-        DiscountEntity? discount = await _dbContext.Discounts.Include(x => x.AppliedDiscounts).Include(x => x.Products).FirstOrDefaultAsync(x => x.DiscountCode == discountId, cancellationToken);
+        DiscountEntity? discount = await _dbContext.Discounts.Include(x => x.ProductsDiscounts).FirstOrDefaultAsync(x => x.DiscountCode == discountId, cancellationToken);
         if (discount == null)
-        {
             throw new NullReferenceException("DiscountValue not found");
-        }
         return discount;
     }
 
@@ -34,38 +32,16 @@ internal sealed class DiscountRepository: IDiscountRepository
 
     public void Delete(DiscountEntity discount)
     => _dbContext.Discounts.Remove(discount);
-
-    public async Task<DiscountEntity> GetValidDiscountAsync(string discountCode, string productId,
-        int? detailOptionId,
-        CancellationToken cancellationToken = default)
-    {
-        DiscountEntity? discount = await _dbContext.Discounts
-            .FirstOrDefaultAsync(d => d.DiscountCode == discountCode && d.DiscountStartDate <= DateTimeOffset.UtcNow && d.DiscountEndDate >= DateTimeOffset.UtcNow, cancellationToken);
-        if (discount == null)
-            throw new NullReferenceException("DiscountValue not found");
-        if (discount.Products == null || discount.Products.All(p => p.ProductCode != productId))
-            throw new NullReferenceException("The discount does not apply for this product");
-        if (detailOptionId != null && discount.Products.Any(p => p.ProductCode == productId && p.OptionId != detailOptionId))
-            throw new NullReferenceException("The discount does not apply for this option");
-
-        return discount;
-    }
-
+    
     public async Task<AppliedDiscountEntity> GetAppliedDiscount(int purchaseNumber, CancellationToken cancellationToken = default)
     {
         AppliedDiscountEntity? appliedDiscount = await _dbContext.AppliedDiscounts
-            .FirstOrDefaultAsync(d => d.PurchaseDetail.PurchaseNumber == purchaseNumber, cancellationToken);
+            .FirstOrDefaultAsync(d => d.PurchaseOption.PurchaseNumber == purchaseNumber, cancellationToken);
         if (appliedDiscount == null)
             throw new NullReferenceException("DiscountValue not found");
         return appliedDiscount;
     }
-
-    public void UpdateAppliedDiscount(AppliedDiscountEntity discountApplied)
-    => _dbContext.AppliedDiscounts.Update(discountApplied);
-
-    public void CreateAppliedDiscount(AppliedDiscountEntity discountApplied)
-    => _dbContext.AppliedDiscounts.Add(discountApplied);
-
+    
     public void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount)
     => _dbContext.AppliedDiscounts.Remove(appliedDiscount);
 
@@ -78,14 +54,35 @@ internal sealed class DiscountRepository: IDiscountRepository
         return discount;
     }
 
-    public async Task<ICollection<ProductsDiscountsEntity>> GetDiscountPreviewsAsync(string productCode, int? optionId, CancellationToken cancellationToken = default)
+    public async Task<ICollection<DiscountEntity>> GetValidDiscountsPreview(string userId, string productCode,
+        int optionId, CancellationToken cancellationToken)
     {
-        ICollection<ProductsDiscountsEntity> discounts = await _dbContext.ProductsDiscounts
-            .Include(x => x.Discount)
-            .Where(x => x.ProductCode == productCode && x.Discount.DiscountStartDate <= DateTimeOffset.UtcNow && x.Discount.DiscountEndDate >= DateTimeOffset.UtcNow)
-            .ToListAsync(cancellationToken);
-        if (optionId != null)
-            discounts = discounts.Where(x => x.OptionId == optionId).ToList();
+        ICollection<DiscountEntity> discounts = await _dbContext.Discounts.Where(
+            x => x.AppliedDiscounts != null && x.ProductsDiscounts != null &&
+                 x.DiscountStartDate <= DateTimeOffset.UtcNow && x.DiscountEndDate >= DateTimeOffset.UtcNow &&
+                 x.ProductsDiscounts.Any(p => p.DiscountCode == x.DiscountCode &&
+                                         ((p.OptionId == optionId || p.ProductId == productCode) || (p.OptionId == null && p.ProductId == null))) &&
+                 x.AppliedDiscounts.Any(d =>
+                     x.AppliedDiscounts.Count(a => a.UserId == userId && a.DiscountCode == d.DiscountCode) *
+                     d.PurchaseOption.Quantity <= x.MaxTimesApply)).ToListAsync( cancellationToken);
         return discounts;
+    }
+
+    public async Task<DiscountEntity> GetDiscountAsync(string discountId, CancellationToken cancellationToken = default)
+    {
+        DiscountEntity? discount = await _dbContext.Discounts.FirstOrDefaultAsync(x => x.DiscountCode == discountId, cancellationToken);
+        if (discount == null)
+            throw new NullReferenceException("DiscountValue not found");
+        return discount;
+    }
+
+    public async Task<DiscountEntity> GetValidDiscount(string productCode, int optionId, string userId,
+        CancellationToken cancellationToken = default)
+    {
+        DiscountEntity? discount = await _dbContext.Discounts
+            .FirstOrDefaultAsync(x => x.AppliedDiscounts != null && x.ProductsDiscounts != null && x.DiscountStartDate <= DateTimeOffset.UtcNow && x.DiscountEndDate >= DateTimeOffset.UtcNow && x.ProductsDiscounts.Any(p => p.DiscountCode == x.DiscountCode && ((p.OptionId == optionId || p.ProductId == productCode) || (p.OptionId == null && p.ProductId == null))) && x.AppliedDiscounts.Any(d => x.AppliedDiscounts.Count(a => a.UserId == userId && a.DiscountCode == d.DiscountCode) * d.PurchaseOption.Quantity <= x.MaxTimesApply), cancellationToken);
+        if (discount == null)
+            throw new NullReferenceException("DiscountValue not found");
+        return discount;
     }
 }

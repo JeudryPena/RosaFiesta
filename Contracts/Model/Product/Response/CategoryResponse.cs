@@ -10,5 +10,5 @@ public class CategoryResponse: BaseResponse
     public string Slug { get; set; }
     public bool IsActive { get; set; }
     public ICollection<SubCategoryResponse>? SubCategories { get; set; } 
-    public ICollection<ProductsResponse>? Products { get; set; }
+    public ICollection<ProductAndOptionResponse>? Products { get; set; }
 }

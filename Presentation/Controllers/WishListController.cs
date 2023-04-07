@@ -12,6 +12,7 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class WishListController: ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -22,7 +23,6 @@ public class WishListController: ControllerBase
     }
     
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetWishListsAsync(CancellationToken cancellationToken)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -56,10 +56,10 @@ public class WishListController: ControllerBase
         return Ok(wishListProductResponse);
     }
     
-    [HttpDelete("{wishListId}/products/{productId}")]
-    public async Task<IActionResult> DeleteProductFromWishListAsync(int wishListId, string productId, CancellationToken cancellationToken)
+    [HttpDelete("{wishListId}/option/{optionId:int}")]
+    public async Task<IActionResult> DeleteProductFromWishListAsync(int wishListId,  CancellationToken cancellationToken, int optionId)
     {
-        WishListProductsResponse wishListProductResponse = await _serviceManager.WishListService.DeleteProductFromWishListAsync(wishListId, productId, cancellationToken);
+        WishListProductsResponse wishListProductResponse = await _serviceManager.WishListService.DeleteProductFromWishListAsync(wishListId,  optionId, cancellationToken);
         return Ok(wishListProductResponse);
     }
 
@@ -78,7 +78,6 @@ public class WishListController: ControllerBase
     }
     
     [HttpDelete("deleteAll")]
-    [Authorize]
     public async Task<IActionResult> DeleteAllWishListsAsync(CancellationToken cancellationToken)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

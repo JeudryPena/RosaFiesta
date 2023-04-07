@@ -34,26 +34,13 @@ internal sealed class WishListRepository: IWishListRepository
 
     public async Task<WishListEntity> GetWishWithProducts(int wishListId, CancellationToken cancellationToken = default)
     {
-        WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList
-            .Include(wl => wl.ProductsWish)
-            .ThenInclude(pw => pw.Product)
-            .Include(wl => wl.ProductsWish)
-            .ThenInclude(pw => pw.Option)
+        WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList.Include(wl => wl.ProductsWish).ThenInclude(pw => pw.Option)
             .FirstOrDefaultAsync(wl => wl.Id == wishListId, cancellationToken);
         if (wishListEntity == null)
             throw new Exception("WishList not found");
         return wishListEntity;
     }
-
-    public async Task<WishListProductsEntity> GetWishListProduct(int wishListId, string productId, CancellationToken cancellationToken = default)
-    {
-        WishListProductsEntity? wishListProductsEntity = await _rosaFiestaContext.WishesListProducts
-                    .FirstOrDefaultAsync(wl => wl.WishListId == wishListId && wl.ProductId == productId, cancellationToken);
-        if (wishListProductsEntity == null)
-            throw new Exception("Product not found in this WishList");
-        return wishListProductsEntity;
-    }
-
+    
     public async Task ExistingName(string wishListTitle, string userId)
     {
         bool exist = await _rosaFiestaContext.WishesList.AnyAsync(wl => wl.Title == wishListTitle && wl.UserId == userId);
@@ -72,4 +59,13 @@ internal sealed class WishListRepository: IWishListRepository
 
     public void Delete(WishListEntity wishListEntity)
     => _rosaFiestaContext.WishesList.Remove(wishListEntity);
+
+    public async Task<WishListProductsEntity> GetWishListOption(int wishListId, int? optionId, CancellationToken cancellationToken)
+    {
+        WishListProductsEntity? wishListProductsEntity = await _rosaFiestaContext.WishesListProducts
+            .FirstOrDefaultAsync(wl => wl.WishListId == wishListId && wl.OptionId == optionId, cancellationToken);
+        if (wishListProductsEntity == null)
+            throw new Exception("Option not found in this WishList");
+        return wishListProductsEntity;
+    }
 }

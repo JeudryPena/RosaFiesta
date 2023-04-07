@@ -59,9 +59,6 @@ internal sealed class UserService : IUserService
         user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
         user.CivilStatus = userForUpdateDto.CivilStatus.Adapt<CivilType>();
         user.BirthDate = userForUpdateDto.BirthDate;
-        user.Address = userForUpdateDto.Address;
-        user.City = userForUpdateDto.City;
-        user.State = userForUpdateDto.State;
         user.UpdatedAt = DateTimeOffset.UtcNow;
         user.UpdatedBy = username;
 
@@ -136,5 +133,38 @@ internal sealed class UserService : IUserService
         _repositoryManager.UserRepository.Update(user);
         
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<AddressPreviewResponse>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        IEnumerable<AddressEntity> addresses = await _repositoryManager.UserRepository.GetAddressesAsync(
+            userId,
+            cancellationToken
+        );
+        var addressesDto = addresses.Adapt<IEnumerable<AddressPreviewResponse>>();
+        return addressesDto;
+    }
+
+    public async Task<AddressResponse> GetAddressByIdAsync(string userId, Guid addressId, CancellationToken cancellationToken = default)
+    {
+        AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(
+            userId,
+            addressId,
+            cancellationToken
+        );
+        AddressResponse addressDto = address.Adapt<AddressResponse>();
+        return addressDto;
+    }
+
+    public async Task<AddressResponse> CreateAddressAsync(string userId, AddressDto addressDto, CancellationToken cancellationToken = default)
+    {
+        AddressEntity address = addressDto.Adapt<AddressEntity>();
+        address.UserId = userId;
+        address.CreatedAt = DateTimeOffset.UtcNow;
+        address.UpdatedAt = DateTimeOffset.UtcNow;
+        /*_repositoryManager.UserRepository.CreateAddress(address);*/
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        AddressResponse addressResponse = address.Adapt<AddressResponse>();
+        return addressResponse;
     }
 }

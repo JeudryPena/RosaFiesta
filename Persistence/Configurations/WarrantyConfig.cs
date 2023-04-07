@@ -12,13 +12,18 @@ public class WarrantyConfig: IEntityTypeConfiguration<WarrantyEntity>
     public void Configure(EntityTypeBuilder<WarrantyEntity> builder)
     {
         builder.HasKey(w => w.Id);
-        builder.Property(w => w.Name).HasMaxLength(50);
+        builder.Property(w => w.Name).HasMaxLength(100);
         builder.Property(w => w.Type);
         builder.Property(w => w.ScopeType);
-        builder.Property(w => w.Period).HasMaxLength(50);
-        builder.Property(w => w.Description).HasMaxLength(50);
-        builder.Property(w => w.Conditions).HasMaxLength(50);
+        builder.Property(w => w.Period).HasMaxLength(70);
+        builder.Property(w => w.Description).HasMaxLength(500);
+        builder.Property(w => w.Conditions).HasMaxLength(1000);
         builder.Property(w => w.Status).HasMaxLength(50);
+        builder.Property(w => w.CreatedAt);
+        builder.Property(w => w.CreatedBy).HasMaxLength(50);
+        builder.Property(w => w.UpdatedAt);
+        builder.Property(w => w.UpdatedBy).HasMaxLength(50);
+
         builder.HasData( new WarrantyEntity
         {
             Id = Guid.Parse(WarrantyId),

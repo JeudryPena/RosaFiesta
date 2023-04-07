@@ -14,8 +14,7 @@ public class CartConfiguration: IEntityTypeConfiguration<CartEntity>
         builder.ToTable(nameof(CartEntity));
         builder.HasKey(x => x.CartId);
         builder.Property(x => x.UserId).IsRequired();
-        // i want my many to one realtion with details to not cascade delete
-        builder.HasMany(x => x.Details).WithOne(x => x.Cart).HasForeignKey(x => x.CartId);
+        builder.HasMany(x => x.Details).WithOne().HasForeignKey(x => x.CartId);
         builder.HasData( new CartEntity { 
             CartId = CartId,
             UserId = AdminId,

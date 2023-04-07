@@ -14,7 +14,6 @@ public class DiscountEntity: BaseEntity
     public DateTimeOffset DiscountEndDate { get; set; }
     public string? DiscountDescription { get; set; }
     public string? DiscountImage { get; set; }
-    public string? DiscountCodeImage { get; set; }
-    public ICollection<ProductsDiscountsEntity>? Products { get; set; }
+    public ICollection<ProductsDiscountsEntity>? ProductsDiscounts { get; set; }
     public ICollection<AppliedDiscountEntity>? AppliedDiscounts { get; set; }
 }

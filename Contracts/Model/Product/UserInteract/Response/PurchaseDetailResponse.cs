@@ -4,11 +4,9 @@ public class PurchaseDetailResponse
 {
     public int PurchaseNumber { get; set; }
     public string? ProductId { get; set; }
-    public int Quantity { get; set; }
-    public double UnitPrice { get; set; }
-    public string? DiscountId { get; set; } 
-    public double TotalPrice => UnitPrice * Quantity;
+    public double TotalOptionsPrice => PurchaseOptions.Sum(x => x.TotalPrice);
+    public ICollection<PurchaseDetailOptionResponse> PurchaseOptions { get; set; }
     public int CartId { get; set; }
-    public int? OptionId { get; set; }
+    
     public int? OrderSku { get; set; }
 }

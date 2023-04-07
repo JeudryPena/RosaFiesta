@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    [Migration("20230329183832_Initial")]
+    [Migration("20230402215218_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 272, DateTimeKind.Unspecified).AddTicks(8387), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(2465), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Peluches de todos los tipos",
                             Icon = "https://i.imgur.com/0jQYs1R.png",
@@ -90,7 +90,7 @@ namespace Persistence.Migrations
                             IsActive = true,
                             Name = "Peluches",
                             Slug = "peluches",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 272, DateTimeKind.Unspecified).AddTicks(8389), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(2467), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedBy = "System"
                         });
                 });
@@ -151,14 +151,14 @@ namespace Persistence.Migrations
                         new
                         {
                             DiscountCode = "ROSA",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 273, DateTimeKind.Unspecified).AddTicks(5104), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9638), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountDescription = "10% de descuento en todos los productos",
                             DiscountEndDate = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountName = "Descuento Inicial",
-                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 273, DateTimeKind.Unspecified).AddTicks(5108), new TimeSpan(0, 0, 0, 0, 0)),
+                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9642), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountType = 1,
                             DiscountValue = 200.0,
                             MaxTimesApply = 5
@@ -166,14 +166,14 @@ namespace Persistence.Migrations
                         new
                         {
                             DiscountCode = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 273, DateTimeKind.Unspecified).AddTicks(5114), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9655), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountDescription = "100$ de descuento en todos los productos",
                             DiscountEndDate = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountName = "Descuento de Bienvenida",
-                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 273, DateTimeKind.Unspecified).AddTicks(5115), new TimeSpan(0, 0, 0, 0, 0)),
+                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9656), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountType = 0,
                             DiscountValue = 10.0,
                             MaxTimesApply = 1
@@ -380,7 +380,7 @@ namespace Persistence.Migrations
                             CategoryId = 1,
                             Color = "White",
                             Condition = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 277, DateTimeKind.Unspecified).AddTicks(2531), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 996, DateTimeKind.Unspecified).AddTicks(6148), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Polo de manga corta",
                             GenderFor = 3,
@@ -402,7 +402,7 @@ namespace Persistence.Migrations
                             CategoryId = 1,
                             Color = "Rosas",
                             Condition = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 277, DateTimeKind.Unspecified).AddTicks(2543), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 996, DateTimeKind.Unspecified).AddTicks(6163), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Flores de rosas",
                             GenderFor = 3,
@@ -521,7 +521,7 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 280, DateTimeKind.Unspecified).AddTicks(563), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(1262), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Electronics",
                             Icon = "https://i.imgur.com/0jQYs1R.png",
@@ -529,7 +529,7 @@ namespace Persistence.Migrations
                             IsActive = true,
                             Name = "Electronics",
                             Slug = "electronics",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 280, DateTimeKind.Unspecified).AddTicks(565), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(1264), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedBy = "System"
                         });
                 });
@@ -585,13 +585,13 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Address = "La Capital",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 280, DateTimeKind.Unspecified).AddTicks(2547), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(4765), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Email = "suplidor@hotmail.com",
                             IsActive = true,
                             Name = "Supplier 1",
                             Phone = "8095395539",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 280, DateTimeKind.Unspecified).AddTicks(2547), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(4767), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedBy = "System"
                         });
                 });
@@ -627,14 +627,14 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 3, 29, 14, 38, 32, 271, DateTimeKind.Unspecified).AddTicks(9578), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 2, 17, 52, 17, 990, DateTimeKind.Unspecified).AddTicks(3168), new TimeSpan(0, -4, 0, 0, 0)),
                             DiscountCode = "ROSA",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = 2,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 3, 29, 14, 38, 32, 271, DateTimeKind.Unspecified).AddTicks(9616), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 2, 17, 52, 17, 990, DateTimeKind.Unspecified).AddTicks(3199), new TimeSpan(0, -4, 0, 0, 0)),
                             DiscountCode = "WELCOME",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
@@ -675,30 +675,17 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SKU"));
 
-                    b.Property<string>("OrderAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("OrderEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrderPhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
                     b.Property<Guid>("PayMethodId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ShippingAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("ShippingCost")
                         .HasColumnType("float");
@@ -720,6 +707,8 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("SKU");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("PayMethodId");
 
@@ -753,7 +742,13 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset?>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PayMethodEntity", "RosaFiesta");
 
@@ -761,10 +756,11 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2023, 3, 29, 14, 38, 32, 274, DateTimeKind.Unspecified).AddTicks(9240), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 4, 2, 17, 52, 17, 993, DateTimeKind.Unspecified).AddTicks(7881), new TimeSpan(0, -4, 0, 0, 0)),
                             Description = "Cash payment",
                             Name = "Cash",
-                            PayMethodType = 2
+                            PayMethodType = 2,
+                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
                 });
 
@@ -826,7 +822,7 @@ namespace Persistence.Migrations
                         {
                             PurchaseNumber = 1,
                             CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(5230), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4610), new TimeSpan(0, 0, 0, 0, 0)),
                             ProductId = "SDA01",
                             Quantity = 2,
                             UnitPrice = 1000.0
@@ -835,7 +831,7 @@ namespace Persistence.Migrations
                         {
                             PurchaseNumber = 2,
                             CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(5233), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4614), new TimeSpan(0, 0, 0, 0, 0)),
                             ProductId = "SDA02",
                             Quantity = 1,
                             UnitPrice = 500.0
@@ -844,7 +840,7 @@ namespace Persistence.Migrations
                         {
                             PurchaseNumber = 3,
                             CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(5234), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4615), new TimeSpan(0, 0, 0, 0, 0)),
                             OptionId = 1,
                             ProductId = "SDA01",
                             Quantity = 2,
@@ -854,7 +850,7 @@ namespace Persistence.Migrations
                         {
                             PurchaseNumber = 4,
                             CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(5236), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4618), new TimeSpan(0, 0, 0, 0, 0)),
                             OptionId = 2,
                             ProductId = "SDA01",
                             Quantity = 3,
@@ -911,11 +907,11 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
                             ProductCode = "SDA01",
-                            ReviewDate = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(7280), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7275), new TimeSpan(0, 0, 0, 0, 0)),
                             ReviewDescription = "Excellent",
                             ReviewRating = 5f,
                             ReviewTittle = "Nice product",
-                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(7281), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7276), new TimeSpan(0, 0, 0, 0, 0)),
                             UserReviewerId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
@@ -923,11 +919,11 @@ namespace Persistence.Migrations
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
                             OptionId = 1,
                             ProductCode = "SDA01",
-                            ReviewDate = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(7285), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7283), new TimeSpan(0, 0, 0, 0, 0)),
                             ReviewDescription = "So so i liked the expierience a bit",
                             ReviewRating = 3f,
                             ReviewTittle = "Kinda love it",
-                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 279, DateTimeKind.Unspecified).AddTicks(7286), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7283), new TimeSpan(0, 0, 0, 0, 0)),
                             UserReviewerId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
                 });
@@ -991,27 +987,43 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Conditions")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(230)
+                        .HasColumnType("nvarchar(230)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Period")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -1030,7 +1042,8 @@ namespace Persistence.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -1040,16 +1053,65 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
+                            Address = "Address 1",
                             Conditions = "Warranty 1",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 351, DateTimeKind.Unspecified).AddTicks(2294), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 96, DateTimeKind.Unspecified).AddTicks(2899), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Warranty 1",
+                            Email = "supplier@example.com",
                             Name = "Warranty 1",
                             Period = "1 year",
+                            PhoneNumber = "123456789",
                             ScopeType = 2,
                             Status = 1,
                             Type = 3
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.AddressEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tittle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Addresses", "RosaFiesta");
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
@@ -1059,10 +1121,6 @@ namespace Persistence.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -1074,10 +1132,6 @@ namespace Persistence.Migrations
 
                     b.Property<DateTimeOffset>("BirthDate")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("CivilStatus")
                         .HasColumnType("int");
@@ -1091,6 +1145,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DefaultAddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DefaultPayMethodId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -1140,10 +1200,6 @@ namespace Persistence.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -1158,6 +1214,8 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DefaultAddressId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -1174,14 +1232,12 @@ namespace Persistence.Migrations
                         {
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
-                            Address = "Calle 1",
                             Age = 45,
                             Avatar = "https://i.imgur.com/1Q1Z1Zm.jpg",
                             BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
-                            City = "Santo Domingo",
                             CivilStatus = 1,
-                            ConcurrencyStamp = "ffbd475e-7d10-442f-9a41-2cc489f9a1e5",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 3, 29, 18, 38, 32, 281, DateTimeKind.Unspecified).AddTicks(2313), new TimeSpan(0, 0, 0, 0, 0)),
+                            ConcurrencyStamp = "48fd9b8b-6370-444f-82bf-02ac4306036a",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 4, DateTimeKind.Unspecified).AddTicks(5280), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Email = "user@example.com",
                             EmailConfirmed = true,
@@ -1189,12 +1245,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIoYxrZuOlw6Fl7v7PViXm07B5i1Bq44CmVBk47JQqb6VWqnf/Sss1YqgjCUpckukg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP9UZe5DIxp6acUfRMdRBUWcqKJ5e6e76hzfhGEe8/MOkwSg27dgsfq1XISgcCOQPA==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "79868ac3-f6c2-437e-af29-196d6aaee742",
-                            State = "Distrito Nacional",
+                            SecurityStamp = "791dd155-2702-4d3c-9938-adbfca5ee328",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         });
@@ -1454,6 +1509,12 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.OrderEntity", b =>
                 {
+                    b.HasOne("Domain.Entities.Security.AddressEntity", "Address")
+                        .WithMany("Orders")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Product.UserInteract.PayMethodEntity", "PayMethod")
                         .WithMany("Orders")
                         .HasForeignKey("PayMethodId")
@@ -1464,7 +1525,20 @@ namespace Persistence.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
 
+                    b.Navigation("Address");
+
                     b.Navigation("PayMethod");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Product.UserInteract.PayMethodEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.UserEntity", "User")
+                        .WithMany("PayMethods")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1565,6 +1639,27 @@ namespace Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("WishList");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.AddressEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.UserEntity", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.AddressEntity", "DefaultAddress")
+                        .WithMany()
+                        .HasForeignKey("DefaultAddressId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("DefaultAddress");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1692,14 +1787,23 @@ namespace Persistence.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Security.AddressEntity", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("AppliedDiscounts");
 
                     b.Navigation("Cart")
                         .IsRequired();
 
                     b.Navigation("Orders");
+
+                    b.Navigation("PayMethods");
 
                     b.Navigation("Reviews");
 

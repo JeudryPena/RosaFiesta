@@ -103,9 +103,6 @@ internal sealed class AuthenticateService: IAuthenticateService
         
         user.FullName = finishRegisterDto.Name + " " + finishRegisterDto.LastName;
         user.CivilStatus = finishRegisterDto.CivilStatus.Adapt<CivilType>();
-        user.Address = finishRegisterDto.Address;
-        user.City = finishRegisterDto.City;
-        user.State = finishRegisterDto.State;
         user.UpdatedAt = DateTimeOffset.UtcNow;
         user.Cart = new CartEntity();
         
@@ -119,9 +116,6 @@ internal sealed class AuthenticateService: IAuthenticateService
             Email = user.Email ?? string.Empty,
             FullName = user.FullName,
             CivilStatus = user.CivilStatus.ToString(),
-            Address = user.Address,
-            City = user.City,
-            State = user.State,
         };
     }
 

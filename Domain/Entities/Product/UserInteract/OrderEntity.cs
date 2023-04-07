@@ -9,13 +9,11 @@ public class OrderEntity
     public string? UserId { get; set; }
     public UserEntity? User { get; set; }
     public Guid PayMethodId { get; set; }
-    public ICollection<PurchaseDetailEntity> Details { get; set; }
+    public ICollection<PurchaseDetailEntity>? Details { get; set; }
     public PayMethodEntity? PayMethod { get; set; }
     public DateTimeOffset OrderDate { get; set; }
-    public string ShippingAddress { get; set; }
-    public string OrderAddress { get; set; }
-    public string OrderPhone { get; set; }
-    public string OrderEmail { get; set; }
+    public Guid AddressId { get; set; }
+    public AddressEntity? Address { get; set; }
     public double ShippingCost { get; set; }
     public double TaxesCost { get; set; }
     public VoucherType VoucherType { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Contracts.Model.Product.Response;
 
-public class ProductsResponse: BaseResponse
+public class ProductAndOptionResponse: BaseResponse
 {
     public string? Code { get; set; }
     public string Tittle { get; set; } = string.Empty;
@@ -22,12 +22,13 @@ public class ProductsResponse: BaseResponse
     public int? CategoryId { get; set; }
     public Guid? WarrantyId { get; set; }
     public Guid? SupplierId { get; set; }
+    public int OptionId { get; set; }
     public DateTimeOffset? LastReviewDate => Reviews == null || Reviews.Count == 0 ? null : Reviews.Max(r => r.ReviewDate);
     public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.ReviewRating);
     public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
     public ICollection<ReviewResponse>? Reviews { get; set; }
-    public int? TotalOptions => Options == null || Options.Count == 0 ? null : Options.Count;
-    public ICollection<OptionResponse>? Options { get; set; }
+    public int TotalOptions => Options.Count;
+    public ICollection<OptionPreviewResponse> Options { get; set; }
     
     private StockStatusType StockCalculate()
     {

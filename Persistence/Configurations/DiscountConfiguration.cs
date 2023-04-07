@@ -22,7 +22,8 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         builder.Property(x => x.DiscountEndDate).IsRequired();
         builder.Property(x => x.DiscountDescription).HasMaxLength(100);
         builder.Property(x => x.DiscountImage);
-        builder.Property(x => x.DiscountCodeImage).HasMaxLength(500);
+        builder.HasMany(x => x.ProductsDiscounts).WithOne().HasForeignKey(x => x.DiscountCode);
+        builder.HasMany(x => x.AppliedDiscounts).WithOne().HasForeignKey(x => x.DiscountCode);
         builder.HasData(new DiscountEntity
         {
             DiscountCode = DefaultDiscountCode,
@@ -33,7 +34,6 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
             DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
             DiscountDescription = "10% de descuento en todos los productos",
             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
-            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
             MaxTimesApply = 5,
         }, new DiscountEntity {
             DiscountCode = DefaultDiscountCode1,
@@ -44,7 +44,6 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
             DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
             DiscountDescription = "100$ de descuento en todos los productos",
             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
-            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
             MaxTimesApply = 1,         
         }
 

@@ -72,4 +72,18 @@ internal sealed class WarrantyService: IWarrantyService
         _repositoryManager.WarrantyRepository.Delete(warranty);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<WarrantyResponse> UpdateWarrantyStatusAsync(string userId, Guid warrantyId, int warrantyStatus,
+        CancellationToken cancellationToken = default)
+    {
+        WarrantyEntity warranty = await _repositoryManager.WarrantyRepository.GetByIdAsync(warrantyId, cancellationToken);
+        warranty.Status = (WarrantyStatusType) warrantyStatus;
+        warranty.UpdatedBy = userId;
+        warranty.UpdatedAt = DateTimeOffset.UtcNow;
+        _repositoryManager.WarrantyRepository.Update(warranty);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        var warrantyResponse = warranty.Adapt<WarrantyResponse>();
+        return warrantyResponse;
+    }
+    
 }

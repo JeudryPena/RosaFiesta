@@ -2,11 +2,13 @@
 
 public class DiscountDto
 {
-    public string DiscountCode { get; set; } = string.Empty;
-    public string DiscountName { get; set; } = string.Empty;
+    public string DiscountCode { get; set; } 
+    public string DiscountName { get; set; } 
     public int DiscountType { get; set; }
     public float Discount { get; set; }
-    public DateTimeOffset DiscountStartDate { get; set; } = DateTimeOffset.Now;
-    public DateTimeOffset DiscountEndDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset DiscountStartDate { get; set; } 
+    public DateTimeOffset DiscountEndDate { get; set; } 
     public string? DiscountDescription { get; set; }
+    public string? DiscountImage { get; set; }
+    public ICollection<ProductsDiscountDto> ProductsDiscount { get; set; }
 }

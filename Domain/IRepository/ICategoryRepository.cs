@@ -16,4 +16,5 @@ public interface ICategoryRepository
     void UpdateSubCategory(SubCategoryEntity subCategory);
     Task<List<SubCategoryEntity>> GetSubCategoriesByIdsAsync(List<int> toList, CancellationToken cancellationToken = default);
     void UpdateSubCategories(List<SubCategoryEntity> subCategories);
+    Task<CategoryEntity> GetCategoryAndSubCategoryAsync(int categoryId, CancellationToken cancellationToken);
 }

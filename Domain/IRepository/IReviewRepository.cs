@@ -9,5 +9,5 @@ public interface IReviewRepository
     void Insert(ReviewEntity review);
     void Update(ReviewEntity review);
     void Delete(ReviewEntity review);
-    Task AlredyExistAsync(string productCode, int? optionId, string userId, CancellationToken cancellationToken = default);
+    Task AlredyExistAsync(int optionId, string userId, CancellationToken cancellationToken = default);
 }

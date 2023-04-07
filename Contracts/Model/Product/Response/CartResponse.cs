@@ -8,7 +8,7 @@ public class CartResponse
     public DateTimeOffset CreatedDate { get; set; }
     public DateTimeOffset? UpdatedDate { get; set; }
     public string? UserId { get; set; }
-    public int TotalCartQuantity => Details?.Sum(x => x.Quantity) ?? 0;
-    public double TotalCartPrice => Details?.Sum(x => x.TotalPrice) ?? 0;
+    public int TotalCartQuantity => Details?.Sum(x => x.PurchaseOptions.Count) ?? 0;
+    public double TotalCartPrice => Details?.Sum(x => x.TotalOptionsPrice) ?? 0;
     public IEnumerable<PurchaseDetailResponse>? Details { get; set; }
 }

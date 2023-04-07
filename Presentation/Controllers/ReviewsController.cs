@@ -33,16 +33,14 @@ public class ReviewController: ControllerBase
         return Ok(supplier);
     }
     
-    [HttpPost("{productCode}/option/{optionId:int?}")]
+    [HttpPost("option/{optionId:int}")]
     [Authorize]
-    public async Task<IActionResult> CreateReview(string productCode, [FromBody] ReviewDto reviewDto, CancellationToken cancellationToken, int? optionId = 0)
+    public async Task<IActionResult> CreateReview([FromBody] ReviewDto reviewDto, CancellationToken cancellationToken, int optionId)
     {
-        if(optionId == 0)
-            optionId = null;
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        ReviewResponse reviewResponse = await _serviceManager.ReviewService.CreateAsync(userId, productCode, optionId, reviewDto, cancellationToken);
+        ReviewResponse reviewResponse = await _serviceManager.ReviewService.CreateAsync(userId, optionId, reviewDto, cancellationToken);
         return Ok(reviewResponse);
     }
     

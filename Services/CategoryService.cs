@@ -50,17 +50,18 @@ internal sealed class CategoryService: ICategoryService
         return categoryResponse;
     }
 
-    public async Task DeleteAsync(int categoryId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(int categoryId, int? subCategoryId, CancellationToken cancellationToken = default)
     {
-        CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
-        _repositoryManager.CategoryRepository.Delete(category);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task DeleteSubCategoryAsync(int categoryId, int subCategoryId, CancellationToken cancellationToken = default)
-    {
-        SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subCategoryId);
-        _repositoryManager.CategoryRepository.DeleteSubCategory(subCategory);
+        if (subCategoryId == null)
+        {
+            CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
+            _repositoryManager.CategoryRepository.Delete(category);
+        }
+        else
+        {
+            SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subCategoryId.Value, cancellationToken);
+            _repositoryManager.CategoryRepository.DeleteSubCategory(subCategory);
+        }
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

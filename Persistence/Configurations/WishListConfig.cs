@@ -15,5 +15,9 @@ public class WishListConfig : IEntityTypeConfiguration<WishListEntity>
         builder.Property(w => w.CreatedDate);
         builder.Property(w => w.UpdatedDate);
         builder.Property(w => w.UserId).IsRequired();
+        builder.HasMany(x => x.ProductsWish) 
+            .WithOne() 
+            .HasForeignKey(x => x.WishListId); 
+            
     }
 }

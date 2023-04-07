@@ -22,47 +22,59 @@ internal sealed class ProductService : IProductService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<ICollection<ProductPreviewResponse>> GetAllAsyncPreview(CancellationToken cancellationToken = default)
+    public async Task<ICollection<ProductAndOptionsPreviewResponse>> GetAllAsyncPreview(CancellationToken cancellationToken = default)
     {
         IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetAllAsync(cancellationToken);
-        ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
+        ICollection<ProductAndOptionsPreviewResponse> productPreviewResponse =
+            new List<ProductAndOptionsPreviewResponse>();
+        foreach (ProductEntity product in products)
+        {
+            if (product.Options == null)
+                throw new Exception("Product has no options");
+            foreach (OptionEntity option in product.Options)
+            {
+                ProductAndOptionsPreviewResponse productAndOptionsPreviewResponse = new();
+                productAndOptionsPreviewResponse.Adapt(product);
+                productAndOptionsPreviewResponse.Adapt(option);
+                productAndOptionsPreviewResponse.Adapt(option.Reviews);
+                productPreviewResponse.Add(productAndOptionsPreviewResponse);
+            }
+        }
         return productPreviewResponse;
     }
-    
-    public async Task<ICollection<OptionPreviewResponse>> GetAllOptionsPreview(CancellationToken cancellationToken = default)
-    {
-        IEnumerable<OptionEntity> options = await _repositoryManager.ProductRepository.GetAllOptionAsync(cancellationToken);
-        ICollection<OptionPreviewResponse> optionPreviewResponse = options.Adapt<ICollection<OptionPreviewResponse>>();
-        return optionPreviewResponse;
-    }
 
-    public async Task<ProductsResponse> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
+    public async Task<ProductAndOptionResponse> GetByIdAsync(string productId, int optionId,
+        CancellationToken cancellationToken = default)
     {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        ProductsResponse productResponse = product.Adapt<ProductsResponse>();
-        return productResponse;
+        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, optionId, cancellationToken);
+        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+        if (option == null)
+            throw new Exception("Option not found");
+        ProductAndOptionResponse productAndOptionResponse = new();
+        productAndOptionResponse.Adapt(product);
+        productAndOptionResponse.Adapt(option);
+        return productAndOptionResponse;
     }
     
-    public async Task<ProductsResponse> CreateAsync(string? username, ProductDto productForCreationDto,
+    public async Task<ProductAndOptionResponse> CreateAsync(string? userId, ProductDto productForCreationDto,
         CancellationToken cancellationToken = default)
     {
         ProductEntity product = productForCreationDto.Adapt<ProductEntity>();
         product.CreatedAt = DateTimeOffset.UtcNow;
-        product.CreatedBy = username;
-        if (productForCreationDto.Options != null)
-            product.Options = productForCreationDto.Options.Adapt<List<OptionEntity>>();
+        product.CreatedBy = userId;
+        product.Options = productForCreationDto.Options.Adapt<List<OptionEntity>>();
         if (productForCreationDto.Category != null)
         {
             CategoryEntity category = productForCreationDto.Category.Adapt<CategoryEntity>();
             category.CreatedAt = DateTimeOffset.UtcNow;
-            category.CreatedBy = username;
+            category.CreatedBy = userId;
             if (productForCreationDto.Category.SubCategories != null)
             {
                 category.SubCategories = productForCreationDto.Category.SubCategories.Adapt<List<SubCategoryEntity>>();
                 foreach (var subCategory in category.SubCategories)
                 {
                     subCategory.CreatedAt = DateTimeOffset.UtcNow;
-                    subCategory.CreatedBy = username;
+                    subCategory.CreatedBy = userId;
                 } 
             }
             _repositoryManager.CategoryRepository.Insert(category);
@@ -74,90 +86,66 @@ internal sealed class ProductService : IProductService
         
         _repositoryManager.ProductRepository.Insert(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        var productResponse = product.Adapt<ProductsResponse>();
+        ProductAndOptionResponse productResponse = new();
+        productResponse.Adapt(product);
+        productResponse.Adapt(product.Options.FirstOrDefault());
         return productResponse;
     }
 
-    public async Task<ProductsResponse> UpdateAsync(string? username, string productId,
+    public async Task<ProductAndOptionResponse> UpdateAsync(string? userId, int optionId, string productId,
         ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken = default)
     {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        product.Title = productForUpdateDto.Tittle ?? product.Title;
-        product.Price = productForUpdateDto.Price ?? product.Price;
-        product.Adapt<ProductUpdateDto>();
-        product.UpdatedAt = DateTimeOffset.UtcNow;
-        product.UpdatedBy = username;
-        if (productForUpdateDto.Type != null) product.Type = productForUpdateDto.Type.Adapt<ProductType>();
-        if (productForUpdateDto.Condition != null)
-            product.Condition = productForUpdateDto.Condition.Adapt<ConditionType>();
-
-        _repositoryManager.ProductRepository.Update(product);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        ProductsResponse productsResponse = product.Adapt<ProductsResponse>();
-        return productsResponse;
-        
-    }
-
-    public async Task DeleteAsync(string productId, CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        _repositoryManager.ProductRepository.Delete(product);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task<ProductAdjustResponse> AdjustProductQuantityAsync(string? username, string productId, int count, CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        product.QuantityAvaliable += count;
-        product.UpdatedAt = DateTimeOffset.UtcNow;
-        product.UpdatedBy = username;
-        _repositoryManager.ProductRepository.Update(product);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        ProductAdjustResponse productAdjustResponse = product.Adapt<ProductAdjustResponse>();
-        return productAdjustResponse;
-    }
-
-    public async Task<ProductDetailResponse> GetProductDetail(string productCode, CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productCode, cancellationToken);
-        ProductDetailResponse productResponse = product.Adapt<ProductDetailResponse>();
-        return productResponse;
-    }
-
-    public async Task DeleteOptionAsync(string productId, int optionId, CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        if (product.Options == null)
-            throw new Exception("Product has no options");
+        ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
         OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
         if (option == null)
             throw new Exception("Option not found");
-        product.Options.Remove(option);
+        // adapt productForUpdateDto to product and option
+        option.Adapt(productForUpdateDto);
+        product.Adapt(productForUpdateDto.Option);
+        product.UpdatedAt = DateTimeOffset.UtcNow;
+        product.UpdatedBy = userId;
         _repositoryManager.ProductRepository.Update(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        ProductAndOptionResponse productAndOptionResponse = product.Adapt<ProductAndOptionResponse>();
+        productAndOptionResponse.Adapt(option);
+        return productAndOptionResponse;
     }
 
-    public async Task DeleteOptionsAsync(string productId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(string productId, int? optionId, CancellationToken cancellationToken = default)
     {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        if (product.Options == null)
-            throw new Exception("Product has no options");
-        product.Options.Clear();
-        _repositoryManager.ProductRepository.Update(product);
+        ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
+        if (optionId == null)
+        {
+            OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
+            if (option == null)
+                throw new Exception("Option not found");
+            product.Options.Remove(option);
+            _repositoryManager.ProductRepository.Update(product);
+        }
+        else
+            _repositoryManager.ProductRepository.Delete(product);
+        
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
-
-    public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string? username, int optionId, string productId, int count,
+    
+    public async Task<ProductAndOptionDetailResponse> GetProductDetail(string productCode, int optionId,
         CancellationToken cancellationToken = default)
     {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        if(product.Options == null)
-            throw new Exception("Product has no options");
-        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
-        if (option == null)
-            throw new Exception("Option not found");
+        ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productCode, optionId, cancellationToken);
+        ProductAndOptionDetailResponse productAndOptionResponse = new();
+        productAndOptionResponse.Adapt(product);
+        productAndOptionResponse.Adapt(product.Options.FirstOrDefault(x => x.Id == optionId));
+        productAndOptionResponse.WarrantyName = product.Warranty?.Name;
+        return productAndOptionResponse;
+    }
+
+    public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string? userId, int optionId, string productId, int count,
+        CancellationToken cancellationToken = default)
+    {
+        ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
+        OptionEntity option = product.Options[0];
         option.QuantityAvaliable += count;
-        product.UpdatedBy = username;
+        product.UpdatedBy = userId;
         product.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.ProductRepository.Update(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -165,92 +153,17 @@ internal sealed class ProductService : IProductService
         return optionAdjustResponse;
     }
 
-    public async Task<OptionResponse> UpdateOptionAsync(string? username, int optionId, string productId,
-        OptionUpdateDto optionForCreationDto,
+    public async Task<ProductAndOptionResponse> CreateOptionAsync(string productId, OptionDto optionForCreationDto,
         CancellationToken cancellationToken = default)
     {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        if (product.Options == null)
-            throw new Exception("Product has no options");
-        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
-        if (option == null)
-            throw new Exception("Option not found");
-        option.Description = optionForCreationDto.Description;
-        option.Brand = optionForCreationDto.Brand;
-        option.Color = optionForCreationDto.Color;
-        option.Size = optionForCreationDto.Size;
-        product.UpdatedBy = username;
-        product.UpdatedAt = DateTimeOffset.UtcNow;
-        if (optionForCreationDto.GenderFor != null)
-            option.GenderFor = optionForCreationDto.GenderFor.Adapt<GenderType>();
-        if (optionForCreationDto.Material != null)
-            option.Material = optionForCreationDto.Material.Adapt<MaterialType>();
-        if (optionForCreationDto.Condition != null)
-            option.Condition = optionForCreationDto.Condition.Adapt<ConditionType>();
-        _repositoryManager.ProductRepository.Update(product);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        OptionResponse optionResponse = option.Adapt<OptionResponse>();
-        return optionResponse;
-    }
-
-    public async Task<OptionResponse> CreateOptionAsync(string? username, string productId, OptionDto optionForCreationDto,
-        CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+        ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId,  cancellationToken);
         var option = optionForCreationDto.Adapt<OptionEntity>();
         product.Options.Add(option);
         _repositoryManager.ProductRepository.Update(product);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        OptionResponse optionResponse = option.Adapt<OptionResponse>();
+        ProductAndOptionResponse optionResponse = new();
+        optionResponse.Adapt(product);
+        optionResponse.Adapt(option);
         return optionResponse;
-    }
-
-    public async Task<ProductsResponse> GetOptionByIdAsync(string productId, int optionId, CancellationToken cancellationToken)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        if (product.Options == null)
-            throw new Exception("Product has no options");
-        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
-        if (option == null)
-            throw new Exception("Option not found");
-        product.Title = option.Title;
-        product.Description = option.Description;
-        product.EndedAt = option.EndedAt;
-        product.Price = option.Price;
-        product.Brand = option.Brand;
-        product.Color = option.Color;
-        product.Size = option.Size;
-        product.Weight = option.Weight;
-        product.GenderFor = option.GenderFor;
-        product.Condition = option.Condition;
-        product.Material = option.Material;
-        product.QuantityAvaliable = option.QuantityAvaliable;
-        ProductsResponse productsResponse = option.Adapt<ProductsResponse>();
-        return productsResponse;
-    }
-
-    public async Task<ProductDetailResponse> GetOptionDetailAsync(string productId, int optionId, CancellationToken cancellationToken = default)
-    {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-        if (product.Options == null)
-            throw new Exception("Product has no options");
-        OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
-        if (option == null)
-            throw new Exception("Option not found");
-        product.Title = option.Title;
-        product.Description = option.Description;
-        product.EndedAt = option.EndedAt;
-        product.Price = option.Price;
-        product.Brand = option.Brand;
-        product.Color = option.Color;
-        product.Size = option.Size;
-        product.Weight = option.Weight;
-        product.GenderFor = option.GenderFor;
-        product.Condition = option.Condition;
-        product.Material = option.Material;
-        product.QuantityAvaliable = option.QuantityAvaliable;
-        ProductDetailResponse productDetailResponse = option.Adapt<ProductDetailResponse>();
-        productDetailResponse.OptionId = option.Id;
-        return productDetailResponse;
     }
 }

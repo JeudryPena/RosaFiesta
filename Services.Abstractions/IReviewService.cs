@@ -9,7 +9,7 @@ public interface IReviewService
 {
     Task<IEnumerable<ReviewResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<ReviewResponse> GetByIdAsync(Guid reviewId, CancellationToken cancellationToken = default);
-    Task<ReviewResponse> CreateAsync(string userId, string productCode, int? optionId, ReviewDto reviewDto,
+    Task<ReviewResponse> CreateAsync(string userId, int optionId, ReviewDto reviewDto,
         CancellationToken cancellationToken = default);
     Task<ReviewResponse> UpdateAsync(Guid reviewId, ReviewDto reviewDto, CancellationToken cancellationToken = default);
     Task DeleteAsync(Guid reviewId, CancellationToken cancellationToken = default);

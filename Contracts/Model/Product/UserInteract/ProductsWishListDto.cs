@@ -2,6 +2,5 @@
 
 public class ProductsWishListDto
 {
-    public string ProductId { get; set; }
-    public int? OptionId { get; set; }
+    public int OptionId { get; set; }
 }

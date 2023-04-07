@@ -1,4 +1,6 @@
-﻿using Contracts.Model;
+﻿using System.Net;
+using System.Security.Claims;
+using Contracts.Model;
 using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -18,123 +20,77 @@ public class ProductsController: ControllerBase
         _serviceManager = serviceManager;
     }
     
-    [HttpGet]
+    [HttpGet("options")]
     public async Task<IActionResult> GetProductsPreview(CancellationToken cancellationToken)
     {
-        ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.GetAllAsyncPreview(cancellationToken);
-        return Ok(products);
-    }
-    
-    [HttpGet("options")]
-    public async Task<IActionResult> GetOptionsPreview(CancellationToken cancellationToken)
-    {
-        ICollection<OptionPreviewResponse> options = await _serviceManager.ProductService.GetAllOptionsPreview(cancellationToken);
+        ICollection<ProductAndOptionsPreviewResponse> options = await _serviceManager.ProductService.GetAllAsyncPreview(cancellationToken);
         return Ok(options);
     }
     
-    [HttpGet("{productCode}/productDetail")]
-    public async Task<IActionResult> GetProductDetail(string productCode, CancellationToken cancellationToken)
+    [HttpGet("{productCode}/option/{optionId}/productDetail")]
+    [Authorize]
+    public async Task<IActionResult> GetProductDetail(string productCode, int optionId, CancellationToken cancellationToken)
     {
-        ProductDetailResponse product = await _serviceManager.ProductService.GetProductDetail(productCode, cancellationToken);
-        return Ok(product);
+        ProductAndOptionDetailResponse productAndOption = await _serviceManager.ProductService.GetProductDetail(productCode, optionId, cancellationToken);
+        return Ok(productAndOption);
     }
-    
-    [HttpGet("{productId}/optionDetail/{optionId}")]
-    public async Task<IActionResult> GetOptionDetailById(string productId, int optionId, CancellationToken cancellationToken)
+
+    [HttpGet("{productCode}/option/{optionId}")]
+    public async Task<IActionResult> GetProductById(string productCode, int optionId, CancellationToken cancellationToken)
     {
-        ProductDetailResponse option = await _serviceManager.ProductService.GetOptionDetailAsync(productId, optionId, cancellationToken);
-        return Ok(option);
-    }
-    
-    [HttpGet("{productId}")]
-    public async Task<IActionResult> GetProductById(string productId, CancellationToken cancellationToken)
-    {
-        ProductsResponse product = await _serviceManager.ProductService.GetByIdAsync(productId, cancellationToken);
-        return Ok(product);
-    }
-    
-    [HttpGet("{productId}/option/{optionId}")]
-    public async Task<IActionResult> GetOptionById(string productId, int optionId, CancellationToken cancellationToken)
-    {
-        ProductsResponse option = await _serviceManager.ProductService.GetOptionByIdAsync(productId, optionId, cancellationToken);
-        return Ok(option);
+        ProductAndOptionResponse productAndOption = await _serviceManager.ProductService.GetByIdAsync(productCode, optionId, cancellationToken);
+        return Ok(productAndOption);
     }
     
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateProduct([FromBody] ProductDto productForCreationDto, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        ProductsResponse productDto = await _serviceManager.ProductService.CreateAsync(username, productForCreationDto, cancellationToken);
-        return Ok(productDto);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        ProductAndOptionResponse productAndOptionDto = await _serviceManager.ProductService.CreateAsync(userId, productForCreationDto, cancellationToken);
+        return Ok(productAndOptionDto);
     }
     
     [HttpPost("{productId}/option")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateOption(string productId, [FromBody] OptionDto optionForCreationDto, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        OptionResponse option = await _serviceManager.ProductService.CreateOptionAsync(username, productId, optionForCreationDto, cancellationToken);
+        ProductAndOptionResponse option = await _serviceManager.ProductService.CreateOptionAsync(productId, optionForCreationDto, cancellationToken);
         return Ok(option);
-    }
-    
-    [HttpPut("{productId}")]
-    [Authorize]
-    public async Task<IActionResult> UpdateProduct(string productId, [FromBody] ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken)
-    {
-        string? username = User.Identity?.Name;
-        ProductsResponse products = await _serviceManager.ProductService.UpdateAsync(username, productId, productForUpdateDto, cancellationToken);
-        return Ok(products);
     }
     
     [HttpPut("{productId}/option/{optionId}")]
-    [Authorize]
-    public async Task<IActionResult> UpdateOption(string productId, int optionId, [FromBody] OptionUpdateDto optionForCreationDto, CancellationToken cancellationToken)
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateProduct(string productId, int optionId, [FromBody] ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        OptionResponse option = await _serviceManager.ProductService.UpdateOptionAsync(username, optionId, productId, optionForCreationDto, cancellationToken);
-        return Ok(option);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        ProductAndOptionResponse productAndOption = await _serviceManager.ProductService.UpdateAsync(userId, optionId, productId, productForUpdateDto, cancellationToken);
+        return Ok(productAndOption);
     }
+    
 
     [HttpPut("{productId}/options/{optionId}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AdjustOptionQuantity(string productId, int optionId, int count, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        OptionAdjustResponse products = await _serviceManager.ProductService.AdjustOptionQuantityAsync(username, optionId, productId, count, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        OptionAdjustResponse products = await _serviceManager.ProductService.AdjustOptionQuantityAsync(userId, optionId, productId, count, cancellationToken);
         return Ok(products);
     }
     
-    [HttpPut("{productId}/adjustQuantity")]
-    [Authorize]
-    public async Task<IActionResult> AdjustProductQuantity(string productId, int count, CancellationToken cancellationToken)
+    [HttpDelete("{productId}/option/{optionId?}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteProductOrOption(string productId, CancellationToken cancellationToken, int? optionId = 0)
     {
-        string? username = User.Identity?.Name;
-        ProductAdjustResponse products = await _serviceManager.ProductService.AdjustProductQuantityAsync(username, productId, count, cancellationToken);
-        return Ok(products);
-    }
-    
-    [HttpDelete("{productId}")]
-    [Authorize]
-    public async Task<IActionResult> DeleteProduct(string productId, CancellationToken cancellationToken)
-    {
-        await _serviceManager.ProductService.DeleteAsync(productId, cancellationToken);
-        return Ok();
-    }
-    
-    [HttpDelete("{productId}/option/{optionId}")]
-    [Authorize]
-    public async Task<IActionResult> DeleteOption(string productId, int optionId, CancellationToken cancellationToken)
-    {
-        await _serviceManager.ProductService.DeleteOptionAsync(productId, optionId, cancellationToken);
-        return Ok();
-    }
-    
-    [HttpDelete("{productId}/options")]
-    [Authorize]
-    public async Task<IActionResult> DeleteAllProductOptions(string productId, CancellationToken cancellationToken)
-    {
-        await _serviceManager.ProductService.DeleteOptionsAsync(productId, cancellationToken);
+        if (optionId != 0)
+            optionId = null;
+        await _serviceManager.ProductService.DeleteAsync(productId, optionId, cancellationToken);
         return Ok();
     }
 }

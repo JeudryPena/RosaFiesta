@@ -17,19 +17,14 @@ internal sealed class OrderRepository: IOrderRepository
 
     public async Task<OrderEntity> GetByIdAsync(int billId, CancellationToken cancellationToken = default)
     {
-        OrderEntity? order = await _context.Orders.FirstOrDefaultAsync(x => x.SKU == billId, cancellationToken);
+        OrderEntity? order = await _context.Orders.Include(x => x.Details).Include(x => x.Address).FirstOrDefaultAsync(x => x.SKU == billId, cancellationToken);
         if (order == null)
-        {
             throw new Exception("Order not found");
-        }
         return order;
     }
     
     public void CreateAsync(OrderEntity order) => _context.Orders.Add(order);
     
-    public void Update(OrderEntity order) => _context.Orders.Update(order);
-    
-    public void Delete(OrderEntity order) => _context.Orders.Remove(order);
     public async Task<IEnumerable<OrderEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken)
     => await _context.Orders.Where(x => x.UserId == userId).ToListAsync(cancellationToken);
 }

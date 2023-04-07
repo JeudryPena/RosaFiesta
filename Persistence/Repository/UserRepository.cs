@@ -32,5 +32,20 @@ public class UserRepository : IUserRepository
     
     public void Update(UserEntity user) =>
     _context.Users.Update(user);
-    
+
+    public async Task<IEnumerable<AddressEntity>> GetAddressesAsync(string userId, CancellationToken cancellationToken)
+    {
+        AddressEntity? address = await _context.Addresses.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+        if (address == null)
+            throw new InvalidOperationException();
+        return new List<AddressEntity> {address};
+    }
+
+    public async Task<AddressEntity> GetAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken)
+    {
+        AddressEntity? address = await _context.Addresses.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == addressId, cancellationToken);
+        if (address == null)
+            throw new InvalidOperationException();
+        return address;
+    }
 }

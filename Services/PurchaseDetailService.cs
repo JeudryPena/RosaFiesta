@@ -31,8 +31,7 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService {
     public async Task<PurchaseDetailResponse> UpdateAsync(int detailId, PurchaseDetailDto purchaseDetailDto,
          CancellationToken cancellationToken = default) {
         PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
-        purchaseDetail.Quantity = purchaseDetailDto.Quantity;
-        purchaseDetail.UpdatedAt = DateTimeOffset.UtcNow;
+        purchaseDetail = purchaseDetailDto.Adapt(purchaseDetail);
         _repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var purchaseDetailResponse = purchaseDetail.Adapt<PurchaseDetailResponse>();

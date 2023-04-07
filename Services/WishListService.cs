@@ -24,14 +24,6 @@ internal sealed class WishListService: IWishListService
     {
         WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishWithProducts(wishListId, cancellationToken);
         WishListResponse wishListResponse = wishListEntity.Adapt<WishListResponse>();
-        if(wishListEntity.ProductsWish != null)
-        {
-            wishListResponse.Products = new List<ProductPreviewResponse>();
-            foreach (var i in wishListEntity.ProductsWish)
-                wishListResponse.Products.Add(i.Option != null
-                    ? i.Option.Adapt<ProductPreviewResponse>()
-                    : i.Product.Adapt<ProductPreviewResponse>());
-        }
         return wishListResponse;    
     }
     
@@ -53,19 +45,18 @@ internal sealed class WishListService: IWishListService
             UserId = userId,
             CreatedDate = DateTimeOffset.Now,
         };
-        if(wishList.ProductsId != null)
+        if(wishList.OptionsId != null)
         {
             wishListEntity.ProductsWish = new List<WishListProductsEntity>();
-            foreach (var i in wishList.ProductsId)
+            foreach (var i in wishList.OptionsId)
             {
                 wishListEntity.ProductsWish.Add(new()
                 {
                     WishListId = wishListEntity.Id,
-                    ProductId = i,
+                    OptionId = i,
                 });
             }
         }
-        
         _repositoryManager.WishListRepository.Insert(wishListEntity);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         WishListResponse wishListResponse = wishListEntity.Adapt<WishListResponse>();
@@ -80,13 +71,12 @@ internal sealed class WishListService: IWishListService
             wishListEntity.ProductsWish = new List<WishListProductsEntity>();
         foreach (var i in wishListDto) 
         {
-            if (wishListEntity.ProductsWish.Any(x => x.ProductId == i.ProductId || (x.OptionId != null && x.OptionId == i.OptionId)))
+            if (wishListEntity.ProductsWish.Any(x => x.OptionId == i.OptionId))
                 throw new Exception("Product already exists in wish list");
-            wishListEntity.ProductsWish.Add(new()
+            wishListEntity.ProductsWish.Add(new()   
             {
                 WishListId = wishListId,
-                ProductId = i.ProductId,
-                OptionId = i.OptionId ?? null,
+                OptionId = i.OptionId,
             });
         }
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -94,9 +84,9 @@ internal sealed class WishListService: IWishListService
         return wishListProductsResponse;
     }
 
-    public async Task<WishListProductsResponse> DeleteProductFromWishListAsync(int wishListId, string productId, CancellationToken cancellationToken)
+    public async Task<WishListProductsResponse> DeleteProductFromWishListAsync(int wishListId, int optionId, CancellationToken cancellationToken)
     {
-        WishListProductsEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListProduct(wishListId, productId, cancellationToken);
+        WishListProductsEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListOption(wishListId, optionId, cancellationToken);
         _repositoryManager.WishListRepository.DeleteProduct(wishListEntity);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         WishListProductsResponse wishListProductsResponse = wishListEntity.Adapt<WishListProductsResponse>();

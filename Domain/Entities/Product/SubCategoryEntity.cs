@@ -9,6 +9,5 @@ public class SubCategoryEntity: BaseEntity
     public string Icon { get; set; } 
     public string Slug { get; set; }
     public bool IsActive { get; set; } = true;
-    public int CategoryId { get; set; } 
-    public CategoryEntity Category { get; set; } 
+    public int CategoryId { get; set; }
 } 
