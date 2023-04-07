@@ -19,20 +19,21 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
         builder.HasKey(x => new { x.PurchaseNumber});
         builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
         builder.Property(x => x.CartId).IsRequired();
-        builder.Property(x => x.OrderSku);
-        builder.HasMany(x => x.PurchaseOptions).WithOne().HasForeignKey(x => x.PurchaseNumber);
+        builder.HasMany(x => x.PurchaseOptions).WithOne().HasForeignKey(x => x.PurchaseNumber).OnDelete(DeleteBehavior.Restrict);
         builder.HasData(
             new PurchaseDetailEntity
             {
                 PurchaseNumber = PurchaseNumberDefault,
                 ProductId = ProductId,
                 CartId = CartId,
+                OrderSku = null,
             },
             new PurchaseDetailEntity
             {
                 PurchaseNumber = PurchaseNumber2,
                 ProductId = ProductId2,
                 CartId = CartId,
+                OrderSku = null,
             });
     }
 }

@@ -69,7 +69,7 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
             ProductCode = ProductId,
         }, new OptionEntity()
         {
-            Id = OptionId2,
+            Id = OptionId3,
             Description = "Polo XL",
             Price = 1400,
             EndedAt = null,

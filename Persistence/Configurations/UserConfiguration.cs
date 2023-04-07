@@ -49,6 +49,14 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             .WithMany()
             .HasForeignKey(user => user.DefaultAddressId)
             .OnDelete(DeleteBehavior.SetNull);
+        builder.HasOne(user => user.PayMethod)
+            .WithOne()
+            .HasForeignKey<UserEntity>(user => user.DefaultPayMethodId)
+            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasMany(user => user.PayMethods)
+            .WithOne(x => x.User)
+            .HasForeignKey(payMethod => payMethod.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(user => user.AppliedDiscounts)
             .WithOne()
             .HasForeignKey(appliedDiscount => appliedDiscount.UserId)

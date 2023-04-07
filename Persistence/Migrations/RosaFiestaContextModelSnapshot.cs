@@ -79,7 +79,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(2465), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 743, DateTimeKind.Unspecified).AddTicks(2152), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Peluches de todos los tipos",
                             Icon = "https://i.imgur.com/0jQYs1R.png",
@@ -87,7 +87,7 @@ namespace Persistence.Migrations
                             IsActive = true,
                             Name = "Peluches",
                             Slug = "peluches",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(2467), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 743, DateTimeKind.Unspecified).AddTicks(2154), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedBy = "System"
                         });
                 });
@@ -102,10 +102,6 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DiscountCodeImage")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("DiscountDescription")
                         .HasMaxLength(100)
@@ -148,14 +144,13 @@ namespace Persistence.Migrations
                         new
                         {
                             DiscountCode = "ROSA",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9638), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6671), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
-                            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountDescription = "10% de descuento en todos los productos",
                             DiscountEndDate = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountName = "Descuento Inicial",
-                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9642), new TimeSpan(0, 0, 0, 0, 0)),
+                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6675), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountType = 1,
                             DiscountValue = 200.0,
                             MaxTimesApply = 5
@@ -163,14 +158,13 @@ namespace Persistence.Migrations
                         new
                         {
                             DiscountCode = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9655), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6687), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
-                            DiscountCodeImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountDescription = "100$ de descuento en todos los productos",
                             DiscountEndDate = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
                             DiscountName = "Descuento de Bienvenida",
-                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 991, DateTimeKind.Unspecified).AddTicks(9656), new TimeSpan(0, 0, 0, 0, 0)),
+                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6688), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountType = 0,
                             DiscountValue = 10.0,
                             MaxTimesApply = 1
@@ -184,10 +178,6 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Brand")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Color")
                         .HasMaxLength(15)
@@ -230,11 +220,6 @@ namespace Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<float>("Weight")
                         .HasColumnType("real");
 
@@ -242,13 +227,12 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ProductCode");
 
-                    b.ToTable("PurchaseOptions", "RosaFiesta");
+                    b.ToTable("Options", "RosaFiesta");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Brand = "Champion",
                             Color = "Gold",
                             Condition = 1,
                             Description = "Polo de manga larga",
@@ -259,13 +243,11 @@ namespace Persistence.Migrations
                             ProductCode = "SDA01",
                             QuantityAvaliable = 8,
                             Size = 1.7f,
-                            Title = "Polo plus",
                             Weight = 0.7f
                         },
                         new
                         {
                             Id = 2,
-                            Brand = "Champion",
                             Color = "White",
                             Condition = 1,
                             Description = "Polo de manga corta",
@@ -276,8 +258,22 @@ namespace Persistence.Migrations
                             ProductCode = "SDA01",
                             QuantityAvaliable = 10,
                             Size = 1.5f,
-                            Title = "Polo",
                             Weight = 0.5f
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Color = "Green",
+                            Condition = 2,
+                            Description = "Polo XL",
+                            GenderFor = 3,
+                            Image = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
+                            Material = 6,
+                            Price = 1400.0,
+                            ProductCode = "SDA02",
+                            QuantityAvaliable = 10,
+                            Size = 2f,
+                            Weight = 1f
                         });
                 });
 
@@ -293,51 +289,14 @@ namespace Persistence.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Color")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<int>("Condition")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTimeOffset?>("EndedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int?>("GenderFor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Image")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int?>("Material")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("QuantityAvaliable")
-                        .HasColumnType("int");
-
-                    b.Property<float?>("Size")
-                        .HasColumnType("real");
-
                     b.Property<Guid?>("SupplierId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Thumbnail")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -356,9 +315,6 @@ namespace Persistence.Migrations
                     b.Property<Guid?>("WarrantyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
-
                     b.HasKey("Code");
 
                     b.HasIndex("CategoryId");
@@ -375,51 +331,31 @@ namespace Persistence.Migrations
                             Code = "SDA01",
                             Brand = "Champion",
                             CategoryId = 1,
-                            Color = "White",
-                            Condition = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 996, DateTimeKind.Unspecified).AddTicks(6148), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 750, DateTimeKind.Unspecified).AddTicks(4373), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
-                            Description = "Polo de manga corta",
-                            GenderFor = 3,
-                            Image = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
-                            Material = 6,
-                            Price = 1000.0,
-                            QuantityAvaliable = 10,
-                            Size = 1.5f,
                             SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Title = "Polo",
                             Type = 1,
-                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
-                            Weight = 0.5f
+                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6")
                         },
                         new
                         {
                             Code = "SDA02",
                             Brand = "Flores",
                             CategoryId = 1,
-                            Color = "Rosas",
-                            Condition = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 996, DateTimeKind.Unspecified).AddTicks(6163), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 750, DateTimeKind.Unspecified).AddTicks(4379), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
-                            Description = "Flores de rosas",
-                            GenderFor = 3,
-                            Image = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD",
-                            Material = 7,
-                            Price = 500.0,
-                            QuantityAvaliable = 3,
-                            Size = 1.5f,
                             SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Title = "Flores",
                             Type = 1,
-                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
-                            Weight = 0.5f
+                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6")
                         });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.ProductsDiscountsEntity", b =>
                 {
-                    b.Property<string>("ProductCode")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DiscountCode")
                         .HasColumnType("nvarchar(450)");
@@ -427,32 +363,40 @@ namespace Persistence.Migrations
                     b.Property<int?>("OptionId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductCode", "DiscountCode");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id", "DiscountCode");
 
                     b.HasIndex("DiscountCode");
 
                     b.HasIndex("OptionId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductsDiscountsEntity", "RosaFiesta");
 
                     b.HasData(
                         new
                         {
-                            ProductCode = "SDA01",
+                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
                             DiscountCode = "ROSA",
-                            OptionId = 1
+                            OptionId = 1,
+                            ProductId = "SDA01"
                         },
                         new
                         {
-                            ProductCode = "SDA01",
+                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f5"),
                             DiscountCode = "WELCOME",
-                            OptionId = 1
+                            OptionId = 2,
+                            ProductId = "SDA01"
                         },
                         new
                         {
-                            ProductCode = "SDA02",
+                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
                             DiscountCode = "WELCOME",
-                            OptionId = 2
+                            OptionId = 3,
+                            ProductId = "SDA02"
                         });
                 });
 
@@ -518,7 +462,7 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(1262), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(9646), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Electronics",
                             Icon = "https://i.imgur.com/0jQYs1R.png",
@@ -526,7 +470,7 @@ namespace Persistence.Migrations
                             IsActive = true,
                             Name = "Electronics",
                             Slug = "electronics",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(1264), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(9648), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedBy = "System"
                         });
                 });
@@ -582,13 +526,13 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Address = "La Capital",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(4765), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 754, DateTimeKind.Unspecified).AddTicks(2087), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Email = "suplidor@hotmail.com",
                             IsActive = true,
                             Name = "Supplier 1",
                             Phone = "8095395539",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 0, DateTimeKind.Unspecified).AddTicks(4767), new TimeSpan(0, 0, 0, 0, 0)),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 754, DateTimeKind.Unspecified).AddTicks(2089), new TimeSpan(0, 0, 0, 0, 0)),
                             UpdatedBy = "System"
                         });
                 });
@@ -624,14 +568,21 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 2, 17, 52, 17, 990, DateTimeKind.Unspecified).AddTicks(3168), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 741, DateTimeKind.Unspecified).AddTicks(4451), new TimeSpan(0, -4, 0, 0, 0)),
                             DiscountCode = "ROSA",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = 2,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 2, 17, 52, 17, 990, DateTimeKind.Unspecified).AddTicks(3199), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 741, DateTimeKind.Unspecified).AddTicks(4483), new TimeSpan(0, -4, 0, 0, 0)),
+                            DiscountCode = "WELCOME",
+                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 741, DateTimeKind.Unspecified).AddTicks(4485), new TimeSpan(0, -4, 0, 0, 0)),
                             DiscountCode = "WELCOME",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
@@ -753,7 +704,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2023, 4, 2, 17, 52, 17, 993, DateTimeKind.Unspecified).AddTicks(7881), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 748, DateTimeKind.Unspecified).AddTicks(3623), new TimeSpan(0, -4, 0, 0, 0)),
                             Description = "Cash payment",
                             Name = "Cash",
                             PayMethodType = 2,
@@ -769,17 +720,8 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseNumber"));
 
-                    b.Property<int?>("AppliedId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CartId")
                         .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int?>("OptionId")
                         .HasColumnType("int");
 
                     b.Property<int?>("OrderSku")
@@ -789,24 +731,9 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
                     b.HasKey("PurchaseNumber");
 
-                    b.HasIndex("AppliedId")
-                        .IsUnique()
-                        .HasFilter("[AppliedId] IS NOT NULL");
-
                     b.HasIndex("CartId");
-
-                    b.HasIndex("OptionId");
 
                     b.HasIndex("OrderSku");
 
@@ -819,38 +746,75 @@ namespace Persistence.Migrations
                         {
                             PurchaseNumber = 1,
                             CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4610), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductId = "SDA01",
-                            Quantity = 2,
-                            UnitPrice = 1000.0
+                            ProductId = "SDA01"
                         },
                         new
                         {
                             PurchaseNumber = 2,
                             CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4614), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProductId = "SDA02",
-                            Quantity = 1,
-                            UnitPrice = 500.0
-                        },
+                            ProductId = "SDA02"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailOptions", b =>
+                {
+                    b.Property<int>("PurchaseNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AppliedId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("PurchaseNumber", "OptionId");
+
+                    b.HasIndex("AppliedId")
+                        .IsUnique()
+                        .HasFilter("[AppliedId] IS NOT NULL");
+
+                    b.HasIndex("OptionId");
+
+                    b.ToTable("PurchaseDetailOptions", "RosaFiesta");
+
+                    b.HasData(
                         new
                         {
-                            PurchaseNumber = 3,
-                            CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4615), new TimeSpan(0, 0, 0, 0, 0)),
+                            PurchaseNumber = 1,
                             OptionId = 1,
-                            ProductId = "SDA01",
-                            Quantity = 2,
+                            AppliedId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(2978), new TimeSpan(0, -4, 0, 0, 0)),
+                            Quantity = 3,
                             UnitPrice = 1200.0
                         },
                         new
                         {
-                            PurchaseNumber = 4,
-                            CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(4618), new TimeSpan(0, 0, 0, 0, 0)),
+                            PurchaseNumber = 1,
                             OptionId = 2,
-                            ProductId = "SDA01",
-                            Quantity = 3,
+                            AppliedId = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(3001), new TimeSpan(0, -4, 0, 0, 0)),
+                            Quantity = 4,
+                            UnitPrice = 800.0
+                        },
+                        new
+                        {
+                            PurchaseNumber = 2,
+                            OptionId = 3,
+                            AppliedId = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(3003), new TimeSpan(0, -4, 0, 0, 0)),
+                            Quantity = 2,
                             UnitPrice = 800.0
                         });
                 });
@@ -861,12 +825,8 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("OptionId")
+                    b.Property<int>("OptionId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ProductCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("ReviewDate")
                         .HasColumnType("datetimeoffset");
@@ -893,8 +853,6 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OptionId");
 
-                    b.HasIndex("ProductCode");
-
                     b.HasIndex("UserReviewerId");
 
                     b.ToTable("ReviewEntity", "RosaFiesta");
@@ -903,24 +861,23 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
-                            ProductCode = "SDA01",
-                            ReviewDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7275), new TimeSpan(0, 0, 0, 0, 0)),
+                            OptionId = 1,
+                            ReviewDate = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5417), new TimeSpan(0, 0, 0, 0, 0)),
                             ReviewDescription = "Excellent",
                             ReviewRating = 5f,
                             ReviewTittle = "Nice product",
-                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7276), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5418), new TimeSpan(0, 0, 0, 0, 0)),
                             UserReviewerId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
                             OptionId = 1,
-                            ProductCode = "SDA01",
-                            ReviewDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7283), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewDate = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5425), new TimeSpan(0, 0, 0, 0, 0)),
                             ReviewDescription = "So so i liked the expierience a bit",
                             ReviewRating = 3f,
                             ReviewTittle = "Kinda love it",
-                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 17, 999, DateTimeKind.Unspecified).AddTicks(7283), new TimeSpan(0, 0, 0, 0, 0)),
+                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5426), new TimeSpan(0, 0, 0, 0, 0)),
                             UserReviewerId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
                 });
@@ -963,17 +920,12 @@ namespace Persistence.Migrations
                     b.Property<int>("WishListId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("OptionId")
+                    b.Property<int>("OptionId")
                         .HasColumnType("int");
 
-                    b.HasKey("WishListId", "ProductId");
+                    b.HasKey("WishListId", "OptionId");
 
                     b.HasIndex("OptionId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("WishListProductsEntity", "RosaFiesta");
                 });
@@ -983,11 +935,6 @@ namespace Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Conditions")
                         .IsRequired()
@@ -1006,11 +953,6 @@ namespace Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(230)
-                        .HasColumnType("nvarchar(230)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -1019,11 +961,6 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ScopeType")
                         .HasColumnType("int");
@@ -1050,15 +987,12 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
-                            Address = "Address 1",
                             Conditions = "Warranty 1",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 96, DateTimeKind.Unspecified).AddTicks(2899), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 839, DateTimeKind.Unspecified).AddTicks(7202), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Description = "Warranty 1",
-                            Email = "supplier@example.com",
                             Name = "Warranty 1",
                             Period = "1 year",
-                            PhoneNumber = "123456789",
                             ScopeType = 2,
                             Status = 1,
                             Type = 3
@@ -1214,6 +1148,10 @@ namespace Persistence.Migrations
 
                     b.HasIndex("DefaultAddressId");
 
+                    b.HasIndex("DefaultPayMethodId")
+                        .IsUnique()
+                        .HasFilter("[DefaultPayMethodId] IS NOT NULL");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -1233,8 +1171,8 @@ namespace Persistence.Migrations
                             Avatar = "https://i.imgur.com/1Q1Z1Zm.jpg",
                             BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
                             CivilStatus = 1,
-                            ConcurrencyStamp = "48fd9b8b-6370-444f-82bf-02ac4306036a",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 2, 21, 52, 18, 4, DateTimeKind.Unspecified).AddTicks(5280), new TimeSpan(0, 0, 0, 0, 0)),
+                            ConcurrencyStamp = "c477c9ea-683c-4258-94c4-e8a3fc9e0614",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 761, DateTimeKind.Unspecified).AddTicks(3907), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
                             Email = "user@example.com",
                             EmailConfirmed = true,
@@ -1242,11 +1180,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP9UZe5DIxp6acUfRMdRBUWcqKJ5e6e76hzfhGEe8/MOkwSg27dgsfq1XISgcCOQPA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDD2Z6EeOyqnXivkxiV48PdonpLDq2blf4yLldl2Jj8aKFfd1rolsK9OTVEXeeeaLQ==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "791dd155-2702-4d3c-9938-adbfca5ee328",
+                            SecurityStamp = "4682ebe6-fae1-40ac-8924-f5421b0a6038",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         });
@@ -1408,19 +1346,17 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.OptionEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Product.ProductEntity", "Product")
-                        .WithMany("PurchaseOptions")
+                    b.HasOne("Domain.Entities.Product.ProductEntity", null)
+                        .WithMany("Options")
                         .HasForeignKey("ProductCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.ProductEntity", b =>
                 {
                     b.HasOne("Domain.Entities.Product.CategoryEntity", "Category")
-                        .WithMany("ProductsDiscounts")
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("Domain.Entities.Product.SupplierEntity", "Supplier")
@@ -1428,7 +1364,7 @@ namespace Persistence.Migrations
                         .HasForeignKey("SupplierId");
 
                     b.HasOne("Domain.Entities.Product.WarrantyEntity", "Warranty")
-                        .WithMany("ProductsDiscounts")
+                        .WithMany()
                         .HasForeignKey("WarrantyId");
 
                     b.Navigation("Category");
@@ -1440,7 +1376,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.ProductsDiscountsEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Product.DiscountEntity", "Discount")
+                    b.HasOne("Domain.Entities.Product.DiscountEntity", null)
                         .WithMany("ProductsDiscounts")
                         .HasForeignKey("DiscountCode")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1450,70 +1386,56 @@ namespace Persistence.Migrations
                         .WithMany("ProductsDiscounts")
                         .HasForeignKey("OptionId");
 
-                    b.HasOne("Domain.Entities.Product.ProductEntity", "Product")
+                    b.HasOne("Domain.Entities.Product.ProductEntity", null)
                         .WithMany("Discounts")
-                        .HasForeignKey("ProductCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Discount");
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Option");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.SubCategoryEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Product.CategoryEntity", "Category")
+                    b.HasOne("Domain.Entities.Product.CategoryEntity", null)
                         .WithMany("SubCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.AppliedDiscountEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Product.DiscountEntity", "Discount")
+                    b.HasOne("Domain.Entities.Product.DiscountEntity", null)
                         .WithMany("AppliedDiscounts")
                         .HasForeignKey("DiscountCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Security.UserEntity", "User")
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany("AppliedDiscounts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Discount");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.CartEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithOne("Cart")
                         .HasForeignKey("Domain.Entities.Product.UserInteract.CartEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.OrderEntity", b =>
                 {
                     b.HasOne("Domain.Entities.Security.AddressEntity", "Address")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Product.UserInteract.PayMethodEntity", "PayMethod")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("PayMethodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1542,100 +1464,83 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Product.UserInteract.AppliedDiscountEntity", "DiscountApplied")
-                        .WithOne("PurchaseDetail")
-                        .HasForeignKey("Domain.Entities.Product.UserInteract.PurchaseDetailEntity", "AppliedId");
-
-                    b.HasOne("Domain.Entities.Product.UserInteract.CartEntity", "Cart")
+                    b.HasOne("Domain.Entities.Product.UserInteract.CartEntity", null)
                         .WithMany("Details")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Product.OptionEntity", "Option")
-                        .WithMany("Details")
-                        .HasForeignKey("OptionId");
-
-                    b.HasOne("Domain.Entities.Product.UserInteract.OrderEntity", "Order")
+                    b.HasOne("Domain.Entities.Product.UserInteract.OrderEntity", null)
                         .WithMany("Details")
                         .HasForeignKey("OrderSku");
 
-                    b.HasOne("Domain.Entities.Product.ProductEntity", "Product")
+                    b.HasOne("Domain.Entities.Product.ProductEntity", null)
                         .WithMany("Details")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Cart");
+            modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailOptions", b =>
+                {
+                    b.HasOne("Domain.Entities.Product.UserInteract.AppliedDiscountEntity", "DiscountApplied")
+                        .WithOne("PurchaseOption")
+                        .HasForeignKey("Domain.Entities.Product.UserInteract.PurchaseDetailOptions", "AppliedId");
+
+                    b.HasOne("Domain.Entities.Product.OptionEntity", null)
+                        .WithMany("PurchaseOptions")
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Product.UserInteract.PurchaseDetailEntity", null)
+                        .WithMany("PurchaseOptions")
+                        .HasForeignKey("PurchaseNumber")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("DiscountApplied");
-
-                    b.Navigation("Option");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.ReviewEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Product.OptionEntity", "Option")
+                    b.HasOne("Domain.Entities.Product.OptionEntity", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("OptionId");
-
-                    b.HasOne("Domain.Entities.Product.ProductEntity", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductCode")
+                        .HasForeignKey("OptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany("Reviews")
                         .HasForeignKey("UserReviewerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Option");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.WishListEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.Security.UserEntity", "UserEntity")
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany("WishLists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.WishListProductsEntity", b =>
                 {
                     b.HasOne("Domain.Entities.Product.OptionEntity", "Option")
-                        .WithMany("WishListProducts")
-                        .HasForeignKey("OptionId");
-
-                    b.HasOne("Domain.Entities.Product.ProductEntity", "Product")
-                        .WithMany("ProductsWish")
-                        .HasForeignKey("ProductId")
+                        .WithMany()
+                        .HasForeignKey("OptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Product.UserInteract.WishListEntity", "WishList")
+                    b.HasOne("Domain.Entities.Product.UserInteract.WishListEntity", null)
                         .WithMany("ProductsWish")
                         .HasForeignKey("WishListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Option");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.AddressEntity", b =>
@@ -1656,7 +1561,14 @@ namespace Persistence.Migrations
                         .HasForeignKey("DefaultAddressId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("Domain.Entities.Product.UserInteract.PayMethodEntity", "PayMethod")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Security.UserEntity", "DefaultPayMethodId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("DefaultAddress");
+
+                    b.Navigation("PayMethod");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1712,7 +1624,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.CategoryEntity", b =>
                 {
-                    b.Navigation("ProductsDiscounts");
+                    b.Navigation("Products");
 
                     b.Navigation("SubCategories");
                 });
@@ -1726,13 +1638,11 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.OptionEntity", b =>
                 {
-                    b.Navigation("Details");
-
                     b.Navigation("ProductsDiscounts");
 
-                    b.Navigation("Reviews");
+                    b.Navigation("PurchaseOptions");
 
-                    b.Navigation("WishListProducts");
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.ProductEntity", b =>
@@ -1741,11 +1651,7 @@ namespace Persistence.Migrations
 
                     b.Navigation("Discounts");
 
-                    b.Navigation("PurchaseOptions");
-
-                    b.Navigation("ProductsWish");
-
-                    b.Navigation("Reviews");
+                    b.Navigation("Options");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.SupplierEntity", b =>
@@ -1755,7 +1661,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.AppliedDiscountEntity", b =>
                 {
-                    b.Navigation("PurchaseDetail")
+                    b.Navigation("PurchaseOption")
                         .IsRequired();
                 });
 
@@ -1769,24 +1675,14 @@ namespace Persistence.Migrations
                     b.Navigation("Details");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Product.UserInteract.PayMethodEntity", b =>
+            modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailEntity", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("PurchaseOptions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.WishListEntity", b =>
                 {
                     b.Navigation("ProductsWish");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Product.WarrantyEntity", b =>
-                {
-                    b.Navigation("ProductsDiscounts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Security.AddressEntity", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>

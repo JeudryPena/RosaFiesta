@@ -12,6 +12,7 @@ public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
     {
         builder.ToTable(nameof(OrderEntity));
         builder.HasKey(bill => bill.SKU);
+        builder.Property(bill => bill.SKU).ValueGeneratedOnAdd();
         builder.Property(bill => bill.UserId);
         builder.Property(bill => bill.PayMethodId).IsRequired();
         builder.Property(bill => bill.OrderDate).IsRequired();
@@ -29,6 +30,6 @@ public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
             .HasForeignKey(order => order.PayMethodId);
         builder.HasMany(order => order.Details)
             .WithOne()
-            .HasForeignKey(detail => detail.PurchaseNumber);
+            .HasForeignKey(detail => detail.OrderSku);
     }
 }

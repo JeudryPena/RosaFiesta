@@ -17,7 +17,7 @@ public class PurchaseDetailOptionsConfig: IEntityTypeConfiguration<PurchaseDetai
     public void Configure(EntityTypeBuilder<PurchaseDetailOptions> builder) {
         builder.ToTable(nameof(PurchaseDetailOptions));
         builder.HasKey(x => new {x.PurchaseNumber, x.OptionId});
-        builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
+        builder.Property(x => x.PurchaseNumber);
         builder.Property(x => x.Quantity).IsRequired();
         builder.Property(x => x.UnitPrice).IsRequired();
         builder.Property(x => x.AppliedId);

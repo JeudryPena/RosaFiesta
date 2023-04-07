@@ -31,6 +31,7 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
             ReviewUpdateDate = DateTimeOffset.UtcNow,
             ReviewTittle = "Nice product",
             UserReviewerId = AdminId,
+            OptionId = OptionId
         }, new ReviewEntity
         {
             Id = Guid.Parse(ReviewId2),
