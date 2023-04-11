@@ -24,6 +24,7 @@ public sealed class ServiceManager: IServiceManager
     private readonly Lazy<IReviewService> _lazyReviewService;
     private readonly Lazy<IWishListService> _lazyWishListService;
     private readonly Lazy<IOrderService> _lazyBillService;
+    private readonly Lazy<IFileService> _lazyFileService;
 
     public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor contextAccessor, IConfiguration configuration)
     {
@@ -40,6 +41,7 @@ public sealed class ServiceManager: IServiceManager
         _lazyReviewService = new Lazy<IReviewService>(() => new ReviewService(repositoryManager));
         _lazyWishListService = new Lazy<IWishListService>(() => new WishListService(repositoryManager));
         _lazyBillService = new Lazy<IOrderService>(() => new OrderService(repositoryManager));
+        _lazyFileService = new Lazy<IFileService>(() => new FileService());
     }
 
     public IUserService UserService => _lazyUserService.Value;
@@ -55,4 +57,5 @@ public sealed class ServiceManager: IServiceManager
     public IReviewService ReviewService => _lazyReviewService.Value;
     public IWishListService WishListService => _lazyWishListService.Value;
     public IOrderService OrderService => _lazyBillService.Value;
+    public IFileService FileService => _lazyFileService.Value;
 }

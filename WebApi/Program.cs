@@ -13,10 +13,12 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence;
 using Persistence.Repository;
+using Serilog;
 using Services;
 using Services.Abstractions;
 using WebApi.Middleware;
@@ -45,6 +47,7 @@ public static class Program
         AddJwtTokenAuthentication(builder.Services, builder.Configuration);
         AddRepository(builder.Services);
         AddService(builder.Services);
+        AddFileManage(builder.Services, builder);
         
         // sql connection
         builder.Services.AddDbContext<RosaFiestaContext>(options =>
@@ -69,6 +72,12 @@ public static class Program
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
         }
+        app.UseStaticFiles();
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+            RequestPath = new PathString("/Resources")
+        });
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseCors();
@@ -88,6 +97,22 @@ public static class Program
         
         app.Run();
     }
+
+    private static void AddFileManage(IServiceCollection services, WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
+        {
+            loggerConf.WriteTo.Console().WriteTo.Debug().ReadFrom.Configuration(hostBuilderCtx.Configuration);
+        });
+        
+        services.Configure<FormOptions>(o =>
+        {
+            o.ValueLengthLimit = int.MaxValue;
+            o.MultipartBodyLengthLimit = int.MaxValue;
+            o.MemoryBufferThreshold = int.MaxValue;
+        });
+    }
+
 
     private static void AddControllers(WebApplicationBuilder builder)
     {

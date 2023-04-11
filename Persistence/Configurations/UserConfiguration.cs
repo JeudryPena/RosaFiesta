@@ -24,7 +24,7 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.BirthDate).IsRequired();
         builder.Property(user => user.RefreshToken).HasMaxLength(60);
         builder.Property(user => user.RefreshTokenExpiryTime);
-        builder.Property(user => user.Avatar).HasMaxLength(200);
+        builder.Property(user => user.Avatar);
         builder.Property(user => user.PromotionalMails).IsRequired();
         builder.HasOne(user => user.Cart)
             .WithOne()

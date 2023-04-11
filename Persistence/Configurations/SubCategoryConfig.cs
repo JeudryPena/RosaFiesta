@@ -15,8 +15,7 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).HasMaxLength(20).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(100);
-        builder.Property(x => x.Image).HasMaxLength(100);
-        builder.Property(x => x.Icon).HasMaxLength(100);
+        builder.Property(x => x.Icon);
         builder.Property(x => x.Slug).HasMaxLength(100);
         builder.Property(x => x.IsActive).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
@@ -26,8 +25,7 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
         builder.HasData( new SubCategoryEntity { 
             Id = SubCategory, 
             Name = "Electronics", 
-            Description = "Electronics", 
-            Image = "https://i.imgur.com/0jQYs1R.png", 
+            Description = "Electronics",
             Icon = "https://i.imgur.com/0jQYs1R.png",
             Slug = "electronics",
             IsActive = true,

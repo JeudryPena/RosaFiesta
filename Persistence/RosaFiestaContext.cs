@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Entities.Enterprise;
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
@@ -34,6 +35,12 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         Warranties = Set<WarrantyEntity>();
         WishesList = Set<WishListEntity>();
         WishesListProducts = Set<WishListProductsEntity>();
+        Departments = Set<DepartmentEntity>();
+        Employees = Set<EmployeeEntity>();
+        Quotes = Set<QuoteEntity>();
+        QuoteItems = Set<QuoteItemEntity>();
+        RentProducts = Set<RentProductEntity>();
+        ActionLogs = Set<ActivityLogEntity>();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -62,4 +69,16 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<PurchaseDetailOptions> PurchaseDetailsOptions { get; set; }
     public DbSet<OrderEntity> Orders { get; set; }
     public DbSet<WishListProductsEntity> WishesListProducts { get; set; }
+    
+    public DbSet<RentProductEntity> RentProducts { get; set; }
+
+    public DbSet<QuoteItemEntity> QuoteItems { get; set; }
+
+    public DbSet<QuoteEntity> Quotes { get; set; }
+
+    public DbSet<EmployeeEntity> Employees { get; set; }
+
+    public DbSet<DepartmentEntity> Departments { get; set; }
+    
+    public DbSet<ActivityLogEntity> ActionLogs { get; set; }
 }

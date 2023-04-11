@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entities.Product.Helpers;
-
-namespace Domain.Entities.Product.UserInteract;
+﻿namespace Domain.Entities.Product.UserInteract;
 
 public class PurchaseDetailEntity
 {

@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Product.Helpers;
+﻿using System.Collections;
+using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 
 namespace Domain.Entities.Product;
@@ -10,8 +11,7 @@ public class OptionEntity
     public string? Description { get; set; }
     public double Price { get; set; }
     public DateTimeOffset? EndedAt { get; set; } 
-    public string? Image { get; set; }
-    public string? Thumbnail { get; set; }
+    public ICollection<MultipleOptionImages>? Images { get; set; }
     public int QuantityAvaliable { get; set; }
     public string? Color { get; set; }
     public float? Size { get; set; }

@@ -14,8 +14,7 @@ public class CategoryConfig: IEntityTypeConfiguration<CategoryEntity>
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(20).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(100);
-            builder.Property(x => x.Image).HasMaxLength(100);
-            builder.Property(x => x.Icon).HasMaxLength(100);
+            builder.Property(x => x.Icon);
             builder.Property(x => x.Slug).HasMaxLength(100);
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.CreatedAt).IsRequired();
@@ -26,8 +25,7 @@ public class CategoryConfig: IEntityTypeConfiguration<CategoryEntity>
             builder.HasData( new CategoryEntity { 
                 Id = CategoryId, 
                 Name = "Peluches", 
-                Description = "Peluches de todos los tipos", 
-                Image = "https://i.imgur.com/0jQYs1R.png", 
+                Description = "Peluches de todos los tipos",
                 Icon = "https://i.imgur.com/0jQYs1R.png",
                 Slug = "peluches",
                 IsActive = true,

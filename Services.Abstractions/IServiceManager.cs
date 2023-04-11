@@ -29,4 +29,6 @@ public interface IServiceManager
     IWishListService WishListService { get; }
     
     IOrderService OrderService { get; }
+    
+    IFileService FileService { get; }
 }

@@ -19,7 +19,8 @@ public class UserEntity : IdentityUser
     public string? RefreshToken { get; set; }
     public bool PromotionalMails { get; set; } 
     public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
-    public string Avatar { get; set; } 
+    public string? Avatar { get; set; }
+    public bool hasAvatar { get; set; }
     public CartEntity Cart { get; set; }
     public ICollection<ReviewEntity>? Reviews { get; set; } 
     public ICollection<WishListEntity>? WishLists { get; set; }
