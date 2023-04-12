@@ -4,6 +4,7 @@ using Contracts.Model.Security.Response;
 using Domain.Entities;
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.Exceptions;
 using Domain.IRepository;
 using Mapster;

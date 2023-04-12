@@ -25,12 +25,16 @@ public sealed class ServiceManager: IServiceManager
     private readonly Lazy<IWishListService> _lazyWishListService;
     private readonly Lazy<IOrderService> _lazyBillService;
     private readonly Lazy<IFileService> _lazyFileService;
+    private readonly Lazy<IEnterpriseService> _lazyEnterpriseService;
+    private readonly Lazy<IQuoteService> _lazyQuoteService;
+    private readonly Lazy<IServiceService> _lazyServiceService;
+    private readonly Lazy<IActionLogService> _lazyActionLogService;
 
     public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor contextAccessor, IConfiguration configuration)
     {
         _lazyUserService = new Lazy<IUserService>(() => new UserService(repositoryManager));
         _lazyProductService = new Lazy<IProductService>(() => new ProductService(repositoryManager));
-        _lazyAuthenticateService = new Lazy<IAuthenticateService>(() => new AuthenticateService(userManager, emailSender, contextAccessor, configuration));
+        _lazyAuthenticateService = new Lazy<IAuthenticateService>(() => new AuthenticateService(userManager, emailSender, contextAccessor, configuration, repositoryManager));
         _lazyCategoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager));
         _lazySupplierService = new Lazy<ISupplierService>(() => new SupplierService(repositoryManager));
         _lazyWarrantyService = new Lazy<IWarrantyService>(() => new WarrantyService(repositoryManager));
@@ -42,6 +46,10 @@ public sealed class ServiceManager: IServiceManager
         _lazyWishListService = new Lazy<IWishListService>(() => new WishListService(repositoryManager));
         _lazyBillService = new Lazy<IOrderService>(() => new OrderService(repositoryManager));
         _lazyFileService = new Lazy<IFileService>(() => new FileService());
+        _lazyEnterpriseService = new Lazy<IEnterpriseService>(() => new EnterpriseService(repositoryManager));
+        _lazyQuoteService = new Lazy<IQuoteService>(() => new QuoteService(repositoryManager));
+        _lazyServiceService = new Lazy<IServiceService>(() => new ServiceService(repositoryManager));
+        _lazyActionLogService = new Lazy<IActionLogService>(() => new ActionLogService(repositoryManager));
     }
 
     public IUserService UserService => _lazyUserService.Value;
@@ -58,4 +66,8 @@ public sealed class ServiceManager: IServiceManager
     public IWishListService WishListService => _lazyWishListService.Value;
     public IOrderService OrderService => _lazyBillService.Value;
     public IFileService FileService => _lazyFileService.Value;
+    public IEnterpriseService EnterpriseService => _lazyEnterpriseService.Value;
+    public IQuoteService QuoteService => _lazyQuoteService.Value;
+    public IServiceService ServiceService => _lazyServiceService.Value;
+    public IActionLogService ActionLogService => _lazyActionLogService.Value;
 }

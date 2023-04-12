@@ -17,6 +17,22 @@ namespace Persistence.Migrations
                 name: "RosaFiesta");
 
             migrationBuilder.CreateTable(
+                name: "ActionLogs",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ActivityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Action = table.Column<int>(type: "int", nullable: false),
+                    Timestamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActionLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 schema: "RosaFiesta",
                 columns: table => new
@@ -36,12 +52,10 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Icon = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Slug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -55,11 +69,31 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Departments",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Floor = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DiscountEntity",
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    DiscountCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DiscountCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DiscountName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DiscountType = table.Column<int>(type: "int", nullable: false),
                     DiscountValue = table.Column<double>(type: "float", nullable: false),
@@ -76,6 +110,28 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DiscountEntity", x => x.DiscountCode);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QuantityAvaliable = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,8 +211,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Icon = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Slug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
@@ -178,11 +233,45 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employees",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false),
+                    JobTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    WorkingHours = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    WorkingDays = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Resume = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductEntity",
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    Code = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
@@ -224,12 +313,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductCode = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
                     EndedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Thumbnail = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     QuantityAvaliable = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     Size = table.Column<float>(type: "real", nullable: true),
@@ -251,13 +338,35 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OptionImages",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OptionImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OptionImages_Options_OptionId",
+                        column: x => x.OptionId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Options",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductsDiscountsEntity",
                 schema: "RosaFiesta",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DiscountCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DiscountCode = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     OptionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -295,7 +404,6 @@ namespace Persistence.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -313,7 +421,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DiscountCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DiscountCode = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     AppliedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
@@ -396,7 +504,8 @@ namespace Persistence.Migrations
                     RefreshToken = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     PromotionalMails = table.Column<bool>(type: "bit", nullable: false),
                     RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Avatar = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    hasAvatar = table.Column<bool>(type: "bit", nullable: false),
                     DefaultAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DefaultPayMethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -453,8 +562,7 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    CartId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -492,6 +600,35 @@ namespace Persistence.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Quotes",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Quotes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -567,8 +704,7 @@ namespace Persistence.Migrations
                     TaxesCost = table.Column<double>(type: "float", nullable: false),
                     VoucherType = table.Column<int>(type: "int", nullable: false),
                     VoucherNumber = table.Column<int>(type: "int", nullable: false),
-                    VoucherSeries = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderStatus = table.Column<int>(type: "int", nullable: false)
+                    VoucherSeries = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -591,6 +727,41 @@ namespace Persistence.Migrations
                         column: x => x.PayMethodId,
                         principalSchema: "RosaFiesta",
                         principalTable: "PayMethodEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuoteItemEntity",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    QuoteId = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuoteItemEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_QuoteItemEntity_Quotes_QuoteId",
+                        column: x => x.QuoteId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Quotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_QuoteItemEntity_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -629,7 +800,7 @@ namespace Persistence.Migrations
                 {
                     PurchaseNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     OrderSku = table.Column<int>(type: "int", nullable: true),
                     CartId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -669,7 +840,8 @@ namespace Persistence.Migrations
                     UnitPrice = table.Column<double>(type: "float", nullable: false),
                     AppliedId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsReturned = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -709,14 +881,14 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Age", "Avatar", "BirthDate", "CivilStatus", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName" },
-                values: new object[] { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, 45, "https://i.imgur.com/1Q1Z1Zm.jpg", new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), 1, "c477c9ea-683c-4258-94c4-e8a3fc9e0614", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 761, DateTimeKind.Unspecified).AddTicks(3907), new TimeSpan(0, 0, 0, 0, 0)), "System", null, null, "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEDD2Z6EeOyqnXivkxiV48PdonpLDq2blf4yLldl2Jj8aKFfd1rolsK9OTVEXeeeaLQ==", "18497505944", true, false, null, null, "4682ebe6-fae1-40ac-8924-f5421b0a6038", false, null, null, "Rosalba" });
+                columns: new[] { "Id", "AccessFailedCount", "Age", "Avatar", "BirthDate", "CivilStatus", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName", "hasAvatar" },
+                values: new object[] { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, 45, "https://i.imgur.com/1Q1Z1Zm.jpg", new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), 1, "a6e1272f-9bb7-4561-b859-e66d8b06d5c9", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 688, DateTimeKind.Unspecified).AddTicks(5502), new TimeSpan(0, 0, 0, 0, 0)), "System", null, null, "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEK5N+AVIHaLVbL6C7m8ZIW++sCn4mZaFLh7V1lOjnK7YK8YhfLqTAtaauZQ8zWGiww==", "18497505944", true, false, null, null, "712f2ac6-d638-4839-93e7-43734b668a3e", false, null, null, "Rosalba", false });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "CategoryEntity",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Icon", "Image", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 743, DateTimeKind.Unspecified).AddTicks(2152), new TimeSpan(0, 0, 0, 0, 0)), "System", "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", "https://i.imgur.com/0jQYs1R.png", true, "Peluches", "peluches", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 743, DateTimeKind.Unspecified).AddTicks(2154), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Icon", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 669, DateTimeKind.Unspecified).AddTicks(2771), new TimeSpan(0, 0, 0, 0, 0)), "System", "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", true, "Peluches", "peluches", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 669, DateTimeKind.Unspecified).AddTicks(2773), new TimeSpan(0, 0, 0, 0, 0)), "System" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -724,21 +896,21 @@ namespace Persistence.Migrations
                 columns: new[] { "DiscountCode", "CreatedAt", "CreatedBy", "DiscountDescription", "DiscountEndDate", "DiscountImage", "DiscountName", "DiscountStartDate", "DiscountType", "DiscountValue", "MaxTimesApply", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { "ROSA", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6671), new TimeSpan(0, 0, 0, 0, 0)), "System", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6675), new TimeSpan(0, 0, 0, 0, 0)), 1, 200.0, 5, null, null },
-                    { "WELCOME", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6687), new TimeSpan(0, 0, 0, 0, 0)), "System", "100$ de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento de Bienvenida", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 745, DateTimeKind.Unspecified).AddTicks(6688), new TimeSpan(0, 0, 0, 0, 0)), 0, 10.0, 1, null, null }
+                    { "ROSA", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 671, DateTimeKind.Unspecified).AddTicks(2763), new TimeSpan(0, 0, 0, 0, 0)), "System", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 671, DateTimeKind.Unspecified).AddTicks(2767), new TimeSpan(0, 0, 0, 0, 0)), 1, 200.0, 5, null, null },
+                    { "WELCOME", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 671, DateTimeKind.Unspecified).AddTicks(2775), new TimeSpan(0, 0, 0, 0, 0)), "System", "100$ de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento de Bienvenida", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 671, DateTimeKind.Unspecified).AddTicks(2776), new TimeSpan(0, 0, 0, 0, 0)), 0, 10.0, 1, null, null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "SupplierEntity",
                 columns: new[] { "Id", "Address", "CreatedAt", "CreatedBy", "Description", "Email", "IsActive", "Name", "Phone", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 754, DateTimeKind.Unspecified).AddTicks(2087), new TimeSpan(0, 0, 0, 0, 0)), "System", null, "suplidor@hotmail.com", true, "Supplier 1", "8095395539", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 754, DateTimeKind.Unspecified).AddTicks(2089), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 682, DateTimeKind.Unspecified).AddTicks(2460), new TimeSpan(0, 0, 0, 0, 0)), "System", null, "suplidor@hotmail.com", true, "Supplier 1", "8095395539", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 682, DateTimeKind.Unspecified).AddTicks(2462), new TimeSpan(0, 0, 0, 0, 0)), "System" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "Warranties",
                 columns: new[] { "Id", "Conditions", "CreatedAt", "CreatedBy", "Description", "Name", "Period", "ScopeType", "Status", "Type", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 839, DateTimeKind.Unspecified).AddTicks(7202), new TimeSpan(0, 0, 0, 0, 0)), "System", "Warranty 1", "Warranty 1", "1 year", 2, 1, 3, null, null });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 772, DateTimeKind.Unspecified).AddTicks(7653), new TimeSpan(0, 0, 0, 0, 0)), "System", "Warranty 1", "Warranty 1", "1 year", 2, 1, 3, null, null });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -746,9 +918,9 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "AppliedDate", "DiscountCode", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 741, DateTimeKind.Unspecified).AddTicks(4451), new TimeSpan(0, -4, 0, 0, 0)), "ROSA", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { 2, new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 741, DateTimeKind.Unspecified).AddTicks(4483), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { 3, new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 741, DateTimeKind.Unspecified).AddTicks(4485), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
+                    { 1, new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 667, DateTimeKind.Unspecified).AddTicks(5636), new TimeSpan(0, -4, 0, 0, 0)), "ROSA", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
+                    { 2, new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 667, DateTimeKind.Unspecified).AddTicks(5667), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
+                    { 3, new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 667, DateTimeKind.Unspecified).AddTicks(5669), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.InsertData(
@@ -767,7 +939,7 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "PayMethodEntity",
                 columns: new[] { "Id", "CreatedDate", "Description", "Name", "PayMethodType", "UpdatedDate", "UserId" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 748, DateTimeKind.Unspecified).AddTicks(3623), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", "Cash", 2, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 674, DateTimeKind.Unspecified).AddTicks(2261), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", "Cash", 2, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -775,25 +947,25 @@ namespace Persistence.Migrations
                 columns: new[] { "Code", "Brand", "CategoryId", "CreatedAt", "CreatedBy", "SupplierId", "Title", "Type", "UpdatedAt", "UpdatedBy", "WarrantyId" },
                 values: new object[,]
                 {
-                    { "SDA01", "Champion", 1, new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 750, DateTimeKind.Unspecified).AddTicks(4373), new TimeSpan(0, 0, 0, 0, 0)), "System", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Polo", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") },
-                    { "SDA02", "Flores", 1, new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 750, DateTimeKind.Unspecified).AddTicks(4379), new TimeSpan(0, 0, 0, 0, 0)), "System", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Flores", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") }
+                    { "SDA01", "Champion", 1, new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 676, DateTimeKind.Unspecified).AddTicks(9352), new TimeSpan(0, 0, 0, 0, 0)), "System", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Polo", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") },
+                    { "SDA02", "Flores", 1, new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 676, DateTimeKind.Unspecified).AddTicks(9359), new TimeSpan(0, 0, 0, 0, 0)), "System", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Flores", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") }
                 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "SubCategoryEntity",
-                columns: new[] { "Id", "CategoryId", "CreatedAt", "CreatedBy", "Description", "Icon", "Image", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, 1, new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(9646), new TimeSpan(0, 0, 0, 0, 0)), "System", "Electronics", "https://i.imgur.com/0jQYs1R.png", "https://i.imgur.com/0jQYs1R.png", true, "Electronics", "electronics", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(9648), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                columns: new[] { "Id", "CategoryId", "CreatedAt", "CreatedBy", "Description", "Icon", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, 1, new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 682, DateTimeKind.Unspecified).AddTicks(64), new TimeSpan(0, 0, 0, 0, 0)), "System", "Electronics", "https://i.imgur.com/0jQYs1R.png", true, "Electronics", "electronics", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 682, DateTimeKind.Unspecified).AddTicks(65), new TimeSpan(0, 0, 0, 0, 0)), "System" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "Options",
-                columns: new[] { "Id", "Color", "Condition", "Description", "EndedAt", "GenderFor", "Image", "Material", "Price", "ProductCode", "QuantityAvaliable", "Size", "Thumbnail", "Weight" },
+                columns: new[] { "Id", "Color", "Condition", "Description", "EndedAt", "GenderFor", "Material", "Price", "ProductCode", "QuantityAvaliable", "Size", "Weight" },
                 values: new object[,]
                 {
-                    { 1, "Gold", 1, "Polo de manga larga", null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=162812", 6, 1200.0, "SDA01", 8, 1.7f, null, 0.7f },
-                    { 2, "White", 1, "Polo de manga corta", null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 6, 800.0, "SDA01", 10, 1.5f, null, 0.5f },
-                    { 3, "Green", 2, "Polo XL", null, 3, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.com%2FChampion-Reverse-Weave-Polo-White%2Fdp%2FB07G1J7Q2Q&psig=AOvVaw2D5N7VQ2v0uL7zS9O4yJ7l&ust=1628125928634000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjGqfCg1_ICFQAAAAAdAAAAABAD", 6, 1400.0, "SDA02", 10, 2f, null, 1f }
+                    { 1, "Gold", 1, "Polo de manga larga", null, 3, 6, 1200.0, "SDA01", 8, 1.7f, 0.7f },
+                    { 2, "White", 1, "Polo de manga corta", null, 3, 6, 800.0, "SDA01", 10, 1.5f, 0.5f },
+                    { 3, "Green", 2, "Polo XL", null, 3, 6, 1400.0, "SDA02", 10, 2f, 1f }
                 });
 
             migrationBuilder.InsertData(
@@ -820,12 +992,12 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "PurchaseDetailOptions",
-                columns: new[] { "OptionId", "PurchaseNumber", "AppliedId", "CreatedAt", "Quantity", "UnitPrice", "UpdatedAt" },
+                columns: new[] { "OptionId", "PurchaseNumber", "AppliedId", "CreatedAt", "IsReturned", "Quantity", "UnitPrice", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(2978), new TimeSpan(0, -4, 0, 0, 0)), 3, 1200.0, null },
-                    { 2, 1, 2, new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(3001), new TimeSpan(0, -4, 0, 0, 0)), 4, 800.0, null },
-                    { 3, 2, 3, new DateTimeOffset(new DateTime(2023, 4, 7, 12, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(3003), new TimeSpan(0, -4, 0, 0, 0)), 2, 800.0, null }
+                    { 1, 1, 1, new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 680, DateTimeKind.Unspecified).AddTicks(29), new TimeSpan(0, -4, 0, 0, 0)), null, 3, 1200.0, null },
+                    { 2, 1, 2, new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 680, DateTimeKind.Unspecified).AddTicks(67), new TimeSpan(0, -4, 0, 0, 0)), null, 4, 800.0, null },
+                    { 3, 2, 3, new DateTimeOffset(new DateTime(2023, 4, 12, 14, 33, 5, 680, DateTimeKind.Unspecified).AddTicks(70), new TimeSpan(0, -4, 0, 0, 0)), null, 2, 800.0, null }
                 });
 
             migrationBuilder.InsertData(
@@ -834,8 +1006,8 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "OptionId", "ReviewDate", "ReviewDescription", "ReviewRating", "ReviewTittle", "ReviewUpdateDate", "UserReviewerId" },
                 values: new object[,]
                 {
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"), 1, new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5425), new TimeSpan(0, 0, 0, 0, 0)), "So so i liked the expierience a bit", 3f, "Kinda love it", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5426), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"), 1, new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5417), new TimeSpan(0, 0, 0, 0, 0)), "Excellent", 5f, "Nice product", new DateTimeOffset(new DateTime(2023, 4, 7, 16, 10, 49, 753, DateTimeKind.Unspecified).AddTicks(5418), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
+                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"), 1, new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 681, DateTimeKind.Unspecified).AddTicks(925), new TimeSpan(0, 0, 0, 0, 0)), "So so i liked the expierience a bit", 3f, "Kinda love it", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 681, DateTimeKind.Unspecified).AddTicks(926), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
+                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"), 1, new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 681, DateTimeKind.Unspecified).AddTicks(916), new TimeSpan(0, 0, 0, 0, 0)), "Excellent", 5f, "Nice product", new DateTimeOffset(new DateTime(2023, 4, 12, 18, 33, 5, 681, DateTimeKind.Unspecified).AddTicks(918), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -922,6 +1094,18 @@ namespace Persistence.Migrations
                 table: "CartEntity",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_DepartmentId",
+                schema: "RosaFiesta",
+                table: "Employees",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OptionImages_OptionId",
+                schema: "RosaFiesta",
+                table: "OptionImages",
+                column: "OptionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Options_ProductCode",
@@ -1020,6 +1204,24 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "PurchaseDetailOptions",
                 column: "OptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuoteItemEntity_QuoteId",
+                schema: "RosaFiesta",
+                table: "QuoteItemEntity",
+                column: "QuoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuoteItemEntity_ServiceId",
+                schema: "RosaFiesta",
+                table: "QuoteItemEntity",
+                column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quotes_UserId",
+                schema: "RosaFiesta",
+                table: "Quotes",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReviewEntity_OptionId",
@@ -1126,6 +1328,10 @@ namespace Persistence.Migrations
                 table: "PayMethodEntity");
 
             migrationBuilder.DropTable(
+                name: "ActionLogs",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims",
                 schema: "RosaFiesta");
 
@@ -1146,11 +1352,23 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
+                name: "Employees",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "OptionImages",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
                 name: "ProductsDiscountsEntity",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
                 name: "PurchaseDetailOptions",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "QuoteItemEntity",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
@@ -1170,11 +1388,23 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
+                name: "Departments",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
                 name: "AppliedDiscounts",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
                 name: "PurchaseDetailEntity",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "Quotes",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "Services",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(

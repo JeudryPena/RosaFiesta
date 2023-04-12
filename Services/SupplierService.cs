@@ -1,6 +1,8 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Domain.Entities.Product;
+using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 using Mapster;
 using Services.Abstractions;
@@ -30,21 +32,27 @@ internal sealed class SupplierService: ISupplierService
         return supplierResponse;
     }
 
-    public async Task<SupplierResponse> CreateAsync(string? username, SupplierDto supplierDto, CancellationToken cancellationToken = default)
+    public async Task<SupplierResponse> CreateAsync(string userId, SupplierDto supplierDto, CancellationToken cancellationToken = default)
     {
         var supplier = supplierDto.Adapt<SupplierEntity>();
-        supplier.CreatedBy = username;
+        supplier.CreatedBy = userId;
         supplier.CreatedAt = DateTimeOffset.UtcNow;
         supplier.Id = Guid.NewGuid();
         supplier.IsActive = true;
-
         _repositoryManager.SupplierRepository.Insert(supplier);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Supplier,
+            Action = ActivityAction.Created,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var supplierResponse = supplier.Adapt<SupplierResponse>();
         return supplierResponse;
     }
 
-    public async Task<SupplierResponse> UpdateAsync(string? username, Guid supplierId, SupplierDto supplierDto,
+    public async Task<SupplierResponse> UpdateAsync(string userId, Guid supplierId, SupplierDto supplierDto,
         CancellationToken cancellationToken = default)
     {
         SupplierEntity supplier = await _repositoryManager.SupplierRepository.GetByIdAsync(supplierId, cancellationToken);
@@ -54,18 +62,32 @@ internal sealed class SupplierService: ISupplierService
         supplier.Address = supplierDto.Address;
         supplier.Phone = supplierDto.Phone;
         supplier.Email = supplierDto.Email;
-        supplier.UpdatedBy = username;
+        supplier.UpdatedBy = userId;
         supplier.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.SupplierRepository.Update(supplier);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Supplier,
+            Action = ActivityAction.Updated,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var supplierResponse = supplier.Adapt<SupplierResponse>();
         return supplierResponse;    
     }
 
-    public async Task DeleteAsync(Guid supplierId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(string userId, Guid supplierId, CancellationToken cancellationToken = default)
     {
         SupplierEntity supplier = await _repositoryManager.SupplierRepository.GetByIdAsync(supplierId, cancellationToken);
         _repositoryManager.SupplierRepository.Delete(supplier);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Supplier,
+            Action = ActivityAction.Deleted,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

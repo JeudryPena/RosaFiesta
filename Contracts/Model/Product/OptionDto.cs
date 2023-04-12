@@ -1,4 +1,6 @@
-﻿namespace Contracts.Model.Product;
+﻿using Contracts.Model.Product.UserInteract;
+
+namespace Contracts.Model.Product;
 
 public class OptionDto
 {
@@ -12,7 +14,7 @@ public class OptionDto
     public int? GenderFor { get; set; } 
     public int? Material { get; set; }
     public int Condition { get; set; }
-    public string? Image { get; set; }
+    public ICollection<MultipleImageDto>? Images { get; set; }
     public string? Thumbnail { get; set; }
     public int QuantityAvaliable { get; set; }
 }

@@ -13,6 +13,7 @@ public class CartConfiguration: IEntityTypeConfiguration<CartEntity>
     {
         builder.ToTable(nameof(CartEntity));
         builder.HasKey(x => x.CartId);
+        builder.Property(x => x.CartId).ValueGeneratedNever();
         builder.Property(x => x.UserId).IsRequired();
         builder.HasMany(x => x.Details).WithOne().HasForeignKey(x => x.CartId);
         builder.HasData( new CartEntity { 

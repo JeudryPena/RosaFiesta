@@ -57,7 +57,10 @@ public class DiscountsController: ControllerBase
      [HttpDelete("{discountCode}")]
      public async Task<IActionResult> DeleteDiscount(string discountCode, CancellationToken cancellationToken)
      {
-          await _serviceManager.DiscountService.DeleteDiscountAsync(discountCode, cancellationToken);
+          string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          if (userId == null)
+               return StatusCode((int) HttpStatusCode.Unauthorized);
+          await _serviceManager.DiscountService.DeleteDiscountAsync(userId, discountCode, cancellationToken);
           return Ok();
      }
 }

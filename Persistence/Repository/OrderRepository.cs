@@ -27,4 +27,7 @@ internal sealed class OrderRepository: IOrderRepository
     
     public async Task<IEnumerable<OrderEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken)
     => await _context.Orders.Where(x => x.UserId == userId).ToListAsync(cancellationToken);
+
+    public void Update(OrderEntity order)
+    => _context.Orders.Update(order);
 }

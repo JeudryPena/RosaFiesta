@@ -13,6 +13,7 @@ public class WarrantyConfig: IEntityTypeConfiguration<WarrantyEntity>
     {
         builder.HasKey(w => w.Id);
         builder.Property(w => w.Name).HasMaxLength(100);
+        builder.HasIndex(w => w.Name);
         builder.Property(w => w.Type);
         builder.Property(w => w.ScopeType);
         builder.Property(w => w.Period).HasMaxLength(70);

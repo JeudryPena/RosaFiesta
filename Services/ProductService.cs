@@ -6,6 +6,7 @@ using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.Exceptions;
 using Domain.IRepository;
 using Mapster;
@@ -56,7 +57,7 @@ internal sealed class ProductService : IProductService
         return productAndOptionResponse;
     }
     
-    public async Task<ProductAndOptionResponse> CreateAsync(string? userId, ProductDto productForCreationDto,
+    public async Task<ProductAndOptionResponse> CreateAsync(string userId, ProductDto productForCreationDto,
         CancellationToken cancellationToken = default)
     {
         ProductEntity product = productForCreationDto.Adapt<ProductEntity>();
@@ -83,16 +84,23 @@ internal sealed class ProductService : IProductService
         }
         else
             product.CategoryId = productForCreationDto.CategoryId;
-        
         _repositoryManager.ProductRepository.Insert(product);
+        ActionLogEntity actionLog = new()
+        {
+            Action = ActivityAction.Created,
+            UserId = userId,
+            ActivityType = Activities.Product,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ProductAndOptionResponse productResponse = new();
         productResponse.Adapt(product);
         productResponse.Adapt(product.Options.FirstOrDefault());
+        
         return productResponse;
     }
 
-    public async Task<ProductAndOptionResponse> UpdateAsync(string? userId, int optionId, string productId,
+    public async Task<ProductAndOptionResponse> UpdateAsync(string userId, int optionId, string productId,
         ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken = default)
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
@@ -105,15 +113,28 @@ internal sealed class ProductService : IProductService
         product.UpdatedAt = DateTimeOffset.UtcNow;
         product.UpdatedBy = userId;
         _repositoryManager.ProductRepository.Update(product);
+        ActionLogEntity actionLog = new()
+        {
+            Action = ActivityAction.Updated,
+            UserId = userId,
+            ActivityType = Activities.Product,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ProductAndOptionResponse productAndOptionResponse = product.Adapt<ProductAndOptionResponse>();
         productAndOptionResponse.Adapt(option);
         return productAndOptionResponse;
     }
 
-    public async Task DeleteAsync(string productId, int? optionId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(string userId, string productId, int? optionId,
+        CancellationToken cancellationToken = default)
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
+        ActionLogEntity actionLog = new()
+        {
+            Action = ActivityAction.Deleted,
+            UserId = userId,
+        };
         if (optionId == null)
         {
             OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
@@ -121,11 +142,16 @@ internal sealed class ProductService : IProductService
                 throw new Exception("Option not found");
             product.Options.Remove(option);
             _repositoryManager.ProductRepository.Update(product);
+            actionLog.ActivityType = Activities.Option;
         }
         else
+        {
             _repositoryManager.ProductRepository.Delete(product);
-        
+            actionLog.ActivityType = Activities.Option;
+        }
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+        
     }
     
     public async Task<ProductAndOptionDetailResponse> GetProductDetail(string productCode, int optionId,
@@ -139,7 +165,7 @@ internal sealed class ProductService : IProductService
         return productAndOptionResponse;
     }
 
-    public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string? userId, int optionId, string productId, int count,
+    public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string userId, int optionId, string productId, int count,
         CancellationToken cancellationToken = default)
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
@@ -148,18 +174,33 @@ internal sealed class ProductService : IProductService
         product.UpdatedBy = userId;
         product.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.ProductRepository.Update(product);
+        ActionLogEntity actionLog = new()
+        {
+            Action = ActivityAction.Updated,
+            UserId = userId,
+            ActivityType = Activities.Product,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         OptionAdjustResponse optionAdjustResponse = option.Adapt<OptionAdjustResponse>();
         return optionAdjustResponse;
     }
 
-    public async Task<ProductAndOptionResponse> CreateOptionAsync(string productId, OptionDto optionForCreationDto,
+    public async Task<ProductAndOptionResponse> CreateOptionAsync(string userId, string productId,
+        OptionDto optionForCreationDto,
         CancellationToken cancellationToken = default)
     {
         ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId,  cancellationToken);
         var option = optionForCreationDto.Adapt<OptionEntity>();
         product.Options.Add(option);
         _repositoryManager.ProductRepository.Update(product);
+        ActionLogEntity actionLog = new()
+        {
+            Action = ActivityAction.Updated,
+            UserId = userId,
+            ActivityType = Activities.Option,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ProductAndOptionResponse optionResponse = new();
         optionResponse.Adapt(product);

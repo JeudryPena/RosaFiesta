@@ -19,5 +19,4 @@ public class OrderEntity
     public VoucherType VoucherType { get; set; }
     public int VoucherNumber { get; set; }
     public string VoucherSeries { get; set; }
-    public OrderStatusType OrderStatus { get; set; }
 }

@@ -4,7 +4,7 @@ public class OptionPreviewResponse
 {
     public int Id { get; set; }
     public double Price { get; set; }
-    public string? Image { get; set; } 
+    public string? Images { get; set; } 
     public string Stock => StockCalculate().ToString();
     public int QuantityAvaliable { get; set; }
     public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.ReviewRating);

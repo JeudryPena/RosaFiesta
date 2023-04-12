@@ -57,7 +57,10 @@ public class ProductsController: ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateOption(string productId, [FromBody] OptionDto optionForCreationDto, CancellationToken cancellationToken)
     {
-        ProductAndOptionResponse option = await _serviceManager.ProductService.CreateOptionAsync(productId, optionForCreationDto, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        ProductAndOptionResponse option = await _serviceManager.ProductService.CreateOptionAsync(userId, productId, optionForCreationDto, cancellationToken);
         return Ok(option);
     }
     
@@ -88,9 +91,12 @@ public class ProductsController: ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteProductOrOption(string productId, CancellationToken cancellationToken, int? optionId = 0)
     {
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
         if (optionId != 0)
             optionId = null;
-        await _serviceManager.ProductService.DeleteAsync(productId, optionId, cancellationToken);
+        await _serviceManager.ProductService.DeleteAsync(userId, productId, optionId, cancellationToken);
         return Ok();
     }
 }

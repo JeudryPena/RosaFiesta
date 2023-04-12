@@ -24,6 +24,7 @@ public class PurchaseDetailOptionsConfig: IEntityTypeConfiguration<PurchaseDetai
         builder.Property(x => x.CreatedAt).IsRequired();
         builder.Property(x => x.UpdatedAt);
         builder.Property(x => x.OptionId).IsRequired();
+        builder.Property(x => x.IsReturned);
         builder.HasOne(x => x.DiscountApplied).WithOne(x => x.PurchaseOption).HasForeignKey<PurchaseDetailOptions>(x => x.AppliedId);
         builder.HasData(new PurchaseDetailOptions {
             PurchaseNumber = PurchaseNumberDefault,

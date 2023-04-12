@@ -18,7 +18,6 @@ public interface IAuthenticateService
     Task LogoutAsync();
     Task<LoginResponse> LoginAsync(LogingDto logingDto);
     LoginResponse RefreshToken(TokenApiDto tokenApiDto);
-    
     void RevokeToken(string username);
-    string CurrentUserId();
+    Task<string> GetUserNameAsync(string userId);
 }

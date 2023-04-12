@@ -72,7 +72,10 @@ public class WarrantiesController: ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteWarranty(Guid warrantyId, CancellationToken cancellationToken)
     {
-        await _serviceManager.WarrantyService.DeleteWarrantyAsync(warrantyId, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        await _serviceManager.WarrantyService.DeleteWarrantyAsync(userId, warrantyId, cancellationToken);
         return Ok();
     }
 }

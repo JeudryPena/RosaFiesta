@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,6 +27,9 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.RefreshTokenExpiryTime);
         builder.Property(user => user.Avatar);
         builder.Property(user => user.PromotionalMails).IsRequired();
+        builder.HasMany(user => user.Quotes)
+            .WithOne()
+            .HasForeignKey(quote => quote.UserId);
         builder.HasOne(user => user.Cart)
             .WithOne()
             .HasForeignKey<CartEntity>(cart => cart.UserId)

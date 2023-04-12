@@ -11,6 +11,7 @@ public class WishListConfig : IEntityTypeConfiguration<WishListEntity>
     {
         builder.HasKey(w => w.Id);
         builder.Property(w => w.Title).HasMaxLength(50);
+        builder.HasIndex(x => x.Title).IsUnique();
         builder.Property(w => w.Description).HasMaxLength(200);
         builder.Property(w => w.CreatedDate);
         builder.Property(w => w.UpdatedDate);

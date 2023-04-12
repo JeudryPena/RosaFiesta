@@ -1,4 +1,6 @@
-﻿using Contracts.Model.Product;
+﻿using System.Net;
+using System.Security.Claims;
+using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,23 +37,30 @@ public class SuppliersController: ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateSupplier([FromBody] SupplierDto supplierDto, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        SupplierResponse supplierResponse = await _serviceManager.SupplierService.CreateAsync(username, supplierDto, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        SupplierResponse supplierResponse = await _serviceManager.SupplierService.CreateAsync(userId, supplierDto, cancellationToken);
         return Ok(supplierResponse);
     }
     
     [HttpPut("{supplierId:guid}")]
     public async Task<IActionResult> UpdateSupplier(Guid supplierId, [FromBody] SupplierDto supplierDto, CancellationToken cancellationToken)
     {
-        string? username = User.Identity?.Name;
-        SupplierResponse supplierResponse = await _serviceManager.SupplierService.UpdateAsync(username, supplierId, supplierDto, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        SupplierResponse supplierResponse = await _serviceManager.SupplierService.UpdateAsync(userId, supplierId, supplierDto, cancellationToken);
         return Ok(supplierResponse);
     }
     
     [HttpDelete("{supplierId:guid}")]
     public async Task<IActionResult> DeleteSupplier(Guid supplierId, CancellationToken cancellationToken)
     {
-        await _serviceManager.SupplierService.DeleteAsync(supplierId, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        await _serviceManager.SupplierService.DeleteAsync(userId, supplierId, cancellationToken);
         return Ok();
     }
 }

@@ -3,6 +3,8 @@ using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
 using Domain.Entities.Product.UserInteract;
+using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 using Mapster;
 using Services.Abstractions;
@@ -28,19 +30,34 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService {
         return purchaseDetailResponse;
     }
 
-    public async Task<PurchaseDetailResponse> UpdateAsync(int detailId, PurchaseDetailDto purchaseDetailDto,
-         CancellationToken cancellationToken = default) {
+    public async Task<PurchaseDetailResponse> UpdateAsync(string userId, int detailId,
+        PurchaseDetailDto purchaseDetailDto,
+        CancellationToken cancellationToken = default) {
         PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
         purchaseDetail = purchaseDetailDto.Adapt(purchaseDetail);
         _repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Detail,
+            Action = ActivityAction.Updated,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var purchaseDetailResponse = purchaseDetail.Adapt<PurchaseDetailResponse>();
         return purchaseDetailResponse;
     }
 
-    public async Task DeleteAsync(int detailId, CancellationToken cancellationToken = default) {
+    public async Task DeleteAsync(string userId, int detailId, CancellationToken cancellationToken = default) {
         PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
         _repositoryManager.PurchaseDetailRepository.Delete(purchaseDetail);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Detail,
+            Action = ActivityAction.Deleted,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

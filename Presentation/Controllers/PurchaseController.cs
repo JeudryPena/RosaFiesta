@@ -67,7 +67,10 @@ public class PurchaseController: ControllerBase
     [HttpPost("purchase/{purchaseNumber}")]
     public async Task<IActionResult> RemoveDiscountAsync(int purchaseNumber, CancellationToken cancellationToken)
     {
-        await _serviceManager.OrderService.RemoveDiscountAsync(purchaseNumber, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        await _serviceManager.OrderService.RemoveDiscountAsync(userId, purchaseNumber, cancellationToken);
         return Ok();
     }
 
@@ -95,15 +98,31 @@ public class PurchaseController: ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdatePurchaseDetail(int detailId, [FromBody] PurchaseDetailDto purchaseDetail, CancellationToken cancellationToken)
     {
-        PurchaseDetailResponse purchaseDetailEntity = await _serviceManager.PurchaseDetailService.UpdateAsync(detailId, purchaseDetail, cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        PurchaseDetailResponse purchaseDetailEntity = await _serviceManager.PurchaseDetailService.UpdateAsync(userId, detailId, purchaseDetail, cancellationToken);
         return Ok(purchaseDetailEntity);
+    }
+    
+    [HttpPut("{orderId}/purchases/{purchaseNumber}/return")]
+    public async Task<IActionResult> ReturnOrder(int orderId, int purchaseNumber, CancellationToken cancellationToken)
+    {
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, orderId, purchaseNumber, cancellationToken);
+        return Ok();
     }
 
     [HttpDelete("{detailId}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeletePurchaseDetail(int detailId, CancellationToken cancellationToken)
     {
-        await _serviceManager.PurchaseDetailService.DeleteAsync(detailId,  cancellationToken);
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+            return StatusCode((int) HttpStatusCode.Unauthorized);
+        await _serviceManager.PurchaseDetailService.DeleteAsync(userId, detailId,  cancellationToken);
         return Ok();
     }
 }

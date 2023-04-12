@@ -12,9 +12,9 @@ public class QuoteEntity
     public string? Email { get; set; }
     public string EventName { get; set; }
     public DateTimeOffset EventDate { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset? UpdatedAt { get; set; }
     public string Location { get; set; }
     public ICollection<QuoteItemEntity> QuoteItems { get; set; }
     public string? UserId { get; set; }
-    public UserEntity? User { get; set; }
 }

@@ -17,6 +17,13 @@ public class AuthenticateController: ControllerBase
     {
         _serviceManager = serviceManager;
     }
+    
+    [HttpGet("{userId}/GetUserName")]
+    public async Task<IActionResult> GetUserName(string userId)
+    {
+        string userName = await _serviceManager.AuthenticateService.GetUserNameAsync(userId);
+        return Ok(userName);
+    }
 
     [HttpPost("PreRegister")]
     public async Task<RegisterResponse> RegisterResponse(
@@ -36,9 +43,7 @@ public class AuthenticateController: ControllerBase
     {
         LoginResponse result = await _serviceManager.AuthenticateService.LoginAsync(logingDto);
         if (!result.IsAuthSuccessful)
-        {
             return Unauthorized(new { message = result.Message });
-        }
         return Ok(result);
     }
 

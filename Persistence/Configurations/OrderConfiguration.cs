@@ -20,7 +20,6 @@ public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
         builder.Property(bill => bill.VoucherNumber).IsRequired();
         builder.Property(bill => bill.VoucherSeries).IsRequired();
         builder.Property(bill => bill.VoucherType).IsRequired();
-        builder.Property(bill => bill.OrderStatus).IsRequired();
         builder.Property(bill => bill.TaxesCost).IsRequired();
         builder.HasOne(x => x.Address)
             .WithMany()

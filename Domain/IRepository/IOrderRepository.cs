@@ -8,4 +8,5 @@ public interface IOrderRepository
     Task<OrderEntity> GetByIdAsync(int billId, CancellationToken cancellationToken = default);
     void CreateAsync(OrderEntity order);
     Task<IEnumerable<OrderEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken);
+    void Update(OrderEntity order);
 }

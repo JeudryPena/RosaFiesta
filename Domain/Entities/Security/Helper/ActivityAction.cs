@@ -5,10 +5,9 @@ public enum ActivityAction
     Created = 1,
     Updated = 2,
     Deleted = 3,
-    Purchased = 4,
-    Returned = 5,
-    Added = 6,
-    Discounted = 7,
-    Realized = 8,
-    Access = 9
+    Returned = 4,
+    Access = 5,
+    Registered = 6,
+    Removed = 7,
+    Selected = 8,
 }

@@ -11,7 +11,9 @@ using Contracts.Model.Security.Response;
 using Domain.Entities;
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.Exceptions;
+using Domain.IRepository;
 using Mapster;
 using Messaging;
 using Microsoft.AspNetCore.Http;
@@ -29,13 +31,15 @@ internal sealed class AuthenticateService: IAuthenticateService
     private readonly IEmailSender _emailSender;
     private readonly IHttpContextAccessor _httpContext;
     private readonly IConfiguration _configuration;
+    private readonly IRepositoryManager _repositoryManager;
 
-    public AuthenticateService(UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor httpContext, IConfiguration configuration)
+    public AuthenticateService(UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor httpContext, IConfiguration configuration, IRepositoryManager repositoryManager)
     {
         _userManager = userManager;
         _emailSender = emailSender;
         _httpContext = httpContext;
         _configuration = configuration;
+        _repositoryManager = repositoryManager;
     }
     
     public async Task<RegisterResponse> RegisterAsync(
@@ -105,8 +109,15 @@ internal sealed class AuthenticateService: IAuthenticateService
         user.CivilStatus = finishRegisterDto.CivilStatus.Adapt<CivilType>();
         user.UpdatedAt = DateTimeOffset.UtcNow;
         user.Cart = new CartEntity();
-        
         await _userManager.UpdateAsync(user).ConfigureAwait(false);
+        
+        ActionLogEntity log = new ActionLogEntity
+        {
+            Action = ActivityAction.Registered,
+            UserId = user.Id,
+            ActivityType = Activities.User,
+        };
+        _repositoryManager.ActionLogRepository.Create(log);
         return new FinishRegisterResponse
         {
             IsSuccess = true,
@@ -203,7 +214,17 @@ internal sealed class AuthenticateService: IAuthenticateService
             await _userManager.SetLockoutEndDateAsync( user, null).ConfigureAwait(false);
             await _userManager.ResetAccessFailedCountAsync(user);
             await _userManager.UpdateAsync(user);
-            
+            ActionLogEntity log = new ActionLogEntity()
+            {
+                Action = ActivityAction.Access,
+                UserId = user.Id,
+            };
+            if (await _userManager.IsInRoleAsync(user, "admin"))
+                log.ActivityType = Activities.Admin;
+            else 
+                log.ActivityType = Activities.User;
+            _repositoryManager.ActionLogRepository.Create(log);
+
             return new LoginResponse
             {
                 Token = accessToken,
@@ -273,7 +294,13 @@ internal sealed class AuthenticateService: IAuthenticateService
         user.RefreshToken = null;
         _userManager.UpdateAsync(user);
     }
-    
+
+    public async Task<string> GetUserNameAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException(userId);
+        return user.UserName!;
+    }
+
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters

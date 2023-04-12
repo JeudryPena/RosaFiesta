@@ -14,6 +14,7 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
     {
         builder.ToTable(nameof(DiscountEntity));
         builder.HasKey(x => x.DiscountCode);
+        builder.Property(x => x.DiscountCode).HasMaxLength(20).IsRequired();
         builder.Property(x => x.DiscountName).HasMaxLength(100).IsRequired();
          builder.Property(x => x.DiscountType).IsRequired();
         builder.Property(x => x.DiscountValue).IsRequired();

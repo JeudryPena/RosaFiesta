@@ -32,6 +32,9 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
         builder.HasMany(option => option.PurchaseOptions)
             .WithOne()
             .HasForeignKey(purchaseOption => purchaseOption.OptionId);
+        builder.HasMany(option => option.Images)
+            .WithOne()
+            .HasForeignKey(image => image.OptionId);
 
         builder.HasData(new OptionEntity
         {

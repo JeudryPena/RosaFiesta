@@ -19,6 +19,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     {
         Addresses = Set<AddressEntity>();
         Products = Set<ProductEntity>();
+        OptionImages = Set<MultipleOptionImages>();
         Options = Set<OptionEntity>();
         Carts = Set<CartEntity>();
         Discounts = Set<DiscountEntity>();
@@ -39,8 +40,8 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         Employees = Set<EmployeeEntity>();
         Quotes = Set<QuoteEntity>();
         QuoteItems = Set<QuoteItemEntity>();
-        RentProducts = Set<RentProductEntity>();
-        ActionLogs = Set<ActivityLogEntity>();
+        Services = Set<ServiceEntity>();
+        ActionLogs = Set<ActionLogEntity>();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,6 +55,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ProductEntity> Products { get; }
     public DbSet<OptionEntity> Options { get; set; }
+    public DbSet<MultipleOptionImages> OptionImages { get; set; }
     public DbSet<CartEntity> Carts { get; set; }
     public DbSet<DiscountEntity> Discounts { get; set; }
     public DbSet<AppliedDiscountEntity> AppliedDiscounts { get; set; }
@@ -70,7 +72,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<OrderEntity> Orders { get; set; }
     public DbSet<WishListProductsEntity> WishesListProducts { get; set; }
     
-    public DbSet<RentProductEntity> RentProducts { get; set; }
+    public DbSet<ServiceEntity> Services { get; set; }
 
     public DbSet<QuoteItemEntity> QuoteItems { get; set; }
 
@@ -80,5 +82,5 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 
     public DbSet<DepartmentEntity> Departments { get; set; }
     
-    public DbSet<ActivityLogEntity> ActionLogs { get; set; }
+    public DbSet<ActionLogEntity> ActionLogs { get; set; }
 }

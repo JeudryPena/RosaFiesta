@@ -1,4 +1,4 @@
-namespace Domain.Entities.Security;
+namespace Domain.Entities.Security.Helper;
 
 public enum CivilType
 {

@@ -17,6 +17,10 @@ public sealed class RepositoryManager : IRepositoryManager
     private readonly Lazy<IReviewRepository> _lazyReviewRepository;
     private readonly Lazy<IOrderRepository> _lazyBillRepository;
     private readonly Lazy<IPayMethodRepository> _lazyPayMethodRepository;
+    private readonly Lazy<IActionLogRepository> _lazyActionLogRepository;
+    private readonly Lazy<IEnterpriseRepository> _lazyEnterpriseRepository;
+    private readonly Lazy<IQuoteRepository> _lazyQuoteRepository;
+    private readonly Lazy<IServiceRepository> _lazyServiceRepository;
 
     public RepositoryManager(RosaFiestaContext dbContext)
     {
@@ -33,6 +37,10 @@ public sealed class RepositoryManager : IRepositoryManager
         _lazyReviewRepository = new Lazy<IReviewRepository>(() => new ReviewRepository(dbContext));
         _lazyBillRepository = new Lazy<IOrderRepository>(() => new OrderRepository(dbContext));
         _lazyPayMethodRepository = new Lazy<IPayMethodRepository>(() => new PayMethodRepository(dbContext));
+        _lazyActionLogRepository = new Lazy<IActionLogRepository>(() => new ActionLogRepository(dbContext));
+        _lazyEnterpriseRepository = new Lazy<IEnterpriseRepository>(() => new EnterpriseRepository(dbContext));
+        _lazyQuoteRepository = new Lazy<IQuoteRepository>(() => new QuoteRepository(dbContext));
+        _lazyServiceRepository = new Lazy<IServiceRepository>(() => new ServiceRepository(dbContext));
     }
 
     public IUserRepository UserRepository => _lazyUserRepository.Value;
@@ -48,4 +56,8 @@ public sealed class RepositoryManager : IRepositoryManager
     public IReviewRepository ReviewRepository => _lazyReviewRepository.Value;
     public IOrderRepository OrderRepository => _lazyBillRepository.Value;
     public IPayMethodRepository PayMethodRepository => _lazyPayMethodRepository.Value;
+    public IActionLogRepository ActionLogRepository => _lazyActionLogRepository.Value;
+    public IEnterpriseRepository EnterpriseRepository => _lazyEnterpriseRepository.Value;
+    public IQuoteRepository QuoteRepository => _lazyQuoteRepository.Value;
+    public IServiceRepository ServiceRepository => _lazyServiceRepository.Value;
 }

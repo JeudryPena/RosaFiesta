@@ -7,7 +7,7 @@ public class ProductAndOptionsPreviewResponse
     public double Price { get; set; }
     public double? OfferPrice => Discount == null ? null : Discount.DiscountType == 1 ? Price - Price * Discount.DiscountValue / 100 : Price - Discount.DiscountValue;
     public float? DiscountSave { get; set; }
-    public string? Image { get; set; } 
+    public string? Images { get; set; } 
     public string Stock => StockCalculate().ToString();
     public int QuantityAvaliable { get; set; }
     public string Condition { get; set; }

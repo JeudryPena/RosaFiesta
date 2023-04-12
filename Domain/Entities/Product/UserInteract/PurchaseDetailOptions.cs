@@ -10,4 +10,5 @@ public class PurchaseDetailOptions
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public int OptionId { get; set; }
+    public bool? IsReturned { get; set; }
 }

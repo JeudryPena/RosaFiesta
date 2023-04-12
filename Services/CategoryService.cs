@@ -1,6 +1,8 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Domain.Entities.Product;
+using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 using Mapster;
 using Services.Abstractions;
@@ -50,29 +52,39 @@ internal sealed class CategoryService: ICategoryService
         return categoryResponse;
     }
 
-    public async Task DeleteAsync(int categoryId, int? subCategoryId, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(string userId, int categoryId, int? subCategoryId,
+        CancellationToken cancellationToken = default)
     {
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Subcategory,
+            Action = ActivityAction.Deleted,
+        };
         if (subCategoryId == null)
         {
             CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
             _repositoryManager.CategoryRepository.Delete(category);
+            actionLog.ActivityType = Activities.Category;
         }
         else
         {
             SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subCategoryId.Value, cancellationToken);
             _repositoryManager.CategoryRepository.DeleteSubCategory(subCategory);
+            actionLog.ActivityType = Activities.Subcategory;
         }
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<CategoryResponse> CreateAsync(string? username, CategoryDto categoryDto, CancellationToken cancellationToken = default)
+    public async Task<CategoryResponse> CreateAsync(string userId, CategoryDto categoryDto, CancellationToken cancellationToken = default)
     {
         var category = new CategoryEntity
         {
             Name = categoryDto.Name,
             Description = categoryDto.Description,
             CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = username,
+            CreatedBy = userId,
             Icon = categoryDto.Icon,
             Slug = categoryDto.Slug,
             IsActive = categoryDto.IsActive,
@@ -82,32 +94,52 @@ internal sealed class CategoryService: ICategoryService
             foreach (var subCategory in category.SubCategories)
             {
                 subCategory.CreatedAt = DateTimeOffset.UtcNow;
-                subCategory.CreatedBy = username;
+                subCategory.CreatedBy = userId;
             } 
+            ActionLogEntity actionLogc = new()
+            {
+                UserId = userId,
+                ActivityType = Activities.Subcategory,
+                Action = ActivityAction.Deleted,
+            };
+            _repositoryManager.ActionLogRepository.Create(actionLogc);
         }
-        
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Category,
+            Action = ActivityAction.Created,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         _repositoryManager.CategoryRepository.Insert(category);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         CategoryResponse categoryResponse = category.Adapt<CategoryResponse>();
         return categoryResponse;
     }
 
-    public async Task<List<SubCategoryResponse>> CreateSubCategoryAsync(string? username, List<SubCategoryDto> subCategoryDto,
+    public async Task<List<SubCategoryResponse>> CreateSubCategoryAsync(string userId, List<SubCategoryDto> subCategoryDto,
         CancellationToken cancellationToken = default)
     {
         List<SubCategoryEntity> subCategory = subCategoryDto.Adapt<List<SubCategoryEntity>>();
         foreach (var x in subCategory)
         {
             x.CreatedAt = DateTimeOffset.UtcNow;
-            x.CreatedBy = username;
+            x.CreatedBy = userId;
         }
         _repositoryManager.CategoryRepository.InsertSubCategory(subCategory);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Category,
+            Action = ActivityAction.Created,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         List<SubCategoryResponse> subCategoryResponse = subCategory.Adapt<List<SubCategoryResponse>>();
         return subCategoryResponse;
     }
     
-    public async Task<CategoryResponse> UpdateAsync(string? username, int categoryId, CategoryUpdateDto categoryUpdateDto, CancellationToken cancellationToken = default)
+    public async Task<CategoryResponse> UpdateAsync(string userId, int categoryId, CategoryUpdateDto categoryUpdateDto, CancellationToken cancellationToken = default)
     {
         CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
         category.Name = categoryUpdateDto.Name;
@@ -116,15 +148,21 @@ internal sealed class CategoryService: ICategoryService
         category.Slug = categoryUpdateDto.Slug;
         category.IsActive = categoryUpdateDto.IsActive;
         category.UpdatedAt = DateTimeOffset.UtcNow;
-        category.UpdatedBy = username;
+        category.UpdatedBy = userId;
         _repositoryManager.CategoryRepository.Update(category);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Category,
+            Action = ActivityAction.Updated,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         CategoryResponse categoryResponse = category.Adapt<CategoryResponse>();
         return categoryResponse;
     }
 
-    public async Task<SubCategoryResponse> UpdateSubCategoryAsync(string? username, int categoryId, int subCategoryId,
-        SubCategoryUpdateDto subCategoryUpdateDto, CancellationToken cancellationToken = default)
+    public async Task<SubCategoryResponse> UpdateSubCategoryAsync(string userId, int categoryId, int subCategoryId, SubCategoryUpdateDto subCategoryUpdateDto, CancellationToken cancellationToken = default)
     {
         SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subCategoryId, cancellationToken);
         subCategory.Name = subCategoryUpdateDto.Name;
@@ -133,36 +171,57 @@ internal sealed class CategoryService: ICategoryService
         subCategory.Slug = subCategoryUpdateDto.Slug;
         subCategory.IsActive = subCategoryUpdateDto.IsActive;
         subCategory.UpdatedAt = DateTimeOffset.UtcNow;
-        subCategory.UpdatedBy = username;
+        subCategory.UpdatedBy = userId;
         _repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Subcategory,
+            Action = ActivityAction.Updated,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         SubCategoryResponse subCategoryResponse = subCategory.Adapt<SubCategoryResponse>();
         return subCategoryResponse;
     }
 
-    public async Task<List<SubCategoryResponse>> MoveSubCategoriesAsync(string? username, List<MoveSubCategoryDto> moveSubCategoryDto, CancellationToken cancellationToken = default)
+    public async Task<List<SubCategoryResponse>> MoveSubCategoriesAsync(string userId, List<MoveSubCategoryDto> moveSubCategoryDto, CancellationToken cancellationToken = default)
     {
         List<SubCategoryEntity> subCategories = await _repositoryManager.CategoryRepository.GetSubCategoriesByIdsAsync(moveSubCategoryDto.Select(x => x.SubCategoryId).ToList(), cancellationToken);
         foreach (var subCategory in subCategories)
         {
             subCategory.CategoryId = moveSubCategoryDto.FirstOrDefault(x => x.SubCategoryId == subCategory.Id)?.NewCategoryId ?? subCategory.CategoryId;
             subCategory.UpdatedAt = DateTimeOffset.UtcNow;
-            subCategory.UpdatedBy = username;
+            subCategory.UpdatedBy = userId;
         }
         _repositoryManager.CategoryRepository.UpdateSubCategories(subCategories);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Subcategory,
+            Action = ActivityAction.Updated,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         List<SubCategoryResponse> subCategoryResponse = subCategories.Adapt<List<SubCategoryResponse>>();
         return subCategoryResponse;
     }
 
-    public async Task<SubCategoryResponse> DragSubCategory(string? username, MoveSubCategoryDto moveSubCategoryDto,
+    public async Task<SubCategoryResponse> DragSubCategory(string userId, MoveSubCategoryDto moveSubCategoryDto,
         CancellationToken cancellationToken = default)
     {
         SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(moveSubCategoryDto.CategoryId, moveSubCategoryDto.SubCategoryId, cancellationToken);
         subCategory.CategoryId = moveSubCategoryDto.NewCategoryId;
         subCategory.UpdatedAt = DateTimeOffset.UtcNow;
-        subCategory.UpdatedBy = username;
+        subCategory.UpdatedBy = userId;
         _repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Subcategory,
+            Action = ActivityAction.Updated,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         SubCategoryResponse subCategoryResponse = subCategory.Adapt<SubCategoryResponse>();
         return subCategoryResponse;

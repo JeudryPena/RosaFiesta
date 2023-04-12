@@ -1,7 +1,9 @@
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using Domain.Entities.Enterprise;
 using Domain.Entities.Product;
 using Domain.Entities.Product.UserInteract;
+using Domain.Entities.Security.Helper;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities.Security;
@@ -32,4 +34,5 @@ public class UserEntity : IdentityUser
     public ICollection<PayMethodEntity>? PayMethods { get; set; }
     public PayMethodEntity? PayMethod { get; set; }
     public Guid? DefaultPayMethodId { get; set; }
+    public ICollection<QuoteEntity>? Quotes { get; set; }
 }

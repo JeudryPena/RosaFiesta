@@ -19,6 +19,7 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
     {
         builder.ToTable(nameof(ProductEntity));
         builder.HasKey(product => product.Code);
+        builder.Property(product => product.Code).HasMaxLength(100).IsRequired();
         builder.Property(product => product.Title).HasMaxLength(40).IsRequired();
         builder.Property(product => product.Brand).HasMaxLength(40);
         builder.Property(product => product.Type).IsRequired();

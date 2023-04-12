@@ -31,4 +31,12 @@ public interface IServiceManager
     IOrderService OrderService { get; }
     
     IFileService FileService { get; }
+    
+    IEnterpriseService EnterpriseService { get; }
+    
+    IQuoteService QuoteService { get; }
+    
+    IServiceService ServiceService { get; }
+    
+    IActionLogService ActionLogService { get; }
 }

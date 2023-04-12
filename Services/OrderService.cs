@@ -6,6 +6,8 @@ using Contracts.Model.Security;
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
+using Domain.Entities.Security;
+using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 
 using Mapster;
@@ -73,15 +75,30 @@ internal sealed class OrderService : IOrderService {
             detail.CartId = null;
         }
         _repositoryManager.OrderRepository.CreateAsync(order);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Order,
+            Action = ActivityAction.Created,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         OrderResponse orderResponse = order.Adapt<OrderResponse>();
         return orderResponse;
     }
 
-    public async Task RemoveDiscountAsync(int purchaseNumber, CancellationToken cancellationToken = default)
+    public async Task RemoveDiscountAsync(string userId, int purchaseNumber,
+        CancellationToken cancellationToken = default)
     {
         AppliedDiscountEntity appliedDiscount = await _repositoryManager.DiscountRepository.GetAppliedDiscount(purchaseNumber, cancellationToken);
         _repositoryManager.DiscountRepository.DeleteAppliedDiscount(appliedDiscount);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Discount,
+            Action = ActivityAction.Removed,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
@@ -93,8 +110,45 @@ internal sealed class OrderService : IOrderService {
         detail.DiscountApplied.DiscountCode = discountCode;
         detail.DiscountApplied.AppliedDate = DateTimeOffset.UtcNow;
         _repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(detail);
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Discount,
+            Action = ActivityAction.Selected,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         ValidDiscountResponse validDiscountResponse = detail.DiscountApplied.Adapt<ValidDiscountResponse>();
         return validDiscountResponse;
+    }
+
+    public async Task ReturnOrderDetailAsync(string userId, int purchaseNumber, int orderId, CancellationToken cancellationToken)
+    {
+        OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
+        if(order.UserId != userId)
+            throw new Exception("You can't return this order");
+        if(order.OrderDate.AddDays(31) < DateTimeOffset.UtcNow)
+            throw new Exception("You can't return this order, the time limit has expired");
+        if (order.Details == null)
+            throw new Exception("You can't return this order, the detail doesn't exist");
+        var detail = order.Details.FirstOrDefault(x => x.PurchaseNumber == purchaseNumber);
+        if (detail == null)
+            throw new Exception("You can't return this order, the detail doesn't exist");
+        foreach (var optionPurchase in detail.PurchaseOptions)
+        {
+            var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionPurchase.OptionId, cancellationToken);
+            option.QuantityAvaliable += optionPurchase.Quantity;
+            optionPurchase.IsReturned = true;
+            _repositoryManager.ProductRepository.UpdateOption(option);
+            _repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(optionPurchase);
+        }
+        ActionLogEntity actionLog = new()
+        {
+            UserId = userId,
+            ActivityType = Activities.Detail,
+            Action = ActivityAction.Returned,
+        };
+        _repositoryManager.ActionLogRepository.Create(actionLog);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

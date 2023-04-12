@@ -10,4 +10,5 @@ public class PurchaseDetailOptionResponse
     public double TotalPrice => UnitPrice * Quantity;
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
+    public bool IsReturned { get; set; }
 }
