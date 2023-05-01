@@ -3,9 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app-component/app.component';
+import { AuthenticateComponent } from './components/authenticate/authenticate.component';
+
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AuthenticateComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
