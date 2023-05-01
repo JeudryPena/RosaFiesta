@@ -2,3 +2,23 @@
     background-image: url(./../../../assets/backgrounds/loginBG.jpg);
     background-position: center center;
 }
+
+.btn-outline-pink {
+    color: #e91ecb;
+    background-color: transparent;
+    border-color: #e91ecb;
+}
+
+.btn-outline-pink:hover {
+    color: #fff;
+    background-color: #e91ecb;
+    border-color: #e91ecb;
+}
+
+.row.text-center.line {
+    width: 100%;
+    color: indigo;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+}
