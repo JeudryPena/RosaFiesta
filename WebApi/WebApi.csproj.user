@@ -2,5 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\User\Documents\Programming\Aspnet\RosaFiesta\.github\workflows\azure-static-web-apps-happy-field-0eb4c990f.yml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
