@@ -18,13 +18,6 @@ internal sealed class EnterpriseService: IEnterpriseService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<IEnumerable<DepartmentPreviewResponse>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        IEnumerable<DepartmentEntity> departmentEntity = await _repositoryManager.EnterpriseRepository.GetDepartmentsAsync(cancellationToken);
-        IEnumerable<DepartmentPreviewResponse> departmentPreviewResponses = departmentEntity.Adapt<IEnumerable<DepartmentPreviewResponse>>();
-        return departmentPreviewResponses;
-    }
-
     public async Task<IEnumerable<EmployePreviewResponse>> GetAllEmployeesPreview(CancellationToken cancellationToken = default)
     {
         IEnumerable<EmployeeEntity> employeeEntities = await _repositoryManager.EnterpriseRepository.GetEmployeesAsync(cancellationToken);
@@ -32,34 +25,11 @@ internal sealed class EnterpriseService: IEnterpriseService
         return employePreviewResponses;
     }
 
-    public async Task<DepartmentResponse> GetDepartmentAsync(int departmentId, CancellationToken cancellationToken = default)
-    {
-        DepartmentEntity departmentEntity = await _repositoryManager.EnterpriseRepository.GetDepartmentAsync(departmentId, cancellationToken);
-        DepartmentResponse departmentResponse = departmentEntity.Adapt<DepartmentResponse>();
-        return departmentResponse;
-    }
-
     public async Task<EmployeeResponse> GetEmployeeAsync(Guid employeeId, CancellationToken cancellationToken = default)
     {
         EmployeeEntity employeeEntity = await _repositoryManager.EnterpriseRepository.GetEmployeeAsync(employeeId, cancellationToken);
         EmployeeResponse employeeResponse = employeeEntity.Adapt<EmployeeResponse>();
         return employeeResponse;
-    }
-
-    public async Task<DepartmentResponse> CreateAsync(string userId, DepartmentDto departmentDto, CancellationToken cancellationToken = default)
-    {
-        DepartmentEntity departmentEntity = departmentDto.Adapt<DepartmentEntity>(); departmentEntity.CreatedBy = userId;
-        _repositoryManager.EnterpriseRepository.CreateDepartment(departmentEntity);
-        ActionLogEntity actionLog = new()
-        {
-            UserId = userId,
-            ActivityType = Activities.Department,
-            Action = ActivityAction.Created,
-        };
-        _repositoryManager.ActionLogRepository.Create(actionLog);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        DepartmentResponse departmentResponse = departmentEntity.Adapt<DepartmentResponse>();
-        return departmentResponse;
     }
 
     public async Task<EmployeeResponse> CreateEmployeeAsync(string userId, EmployeeDto employeeDto, CancellationToken cancellationToken = default)
@@ -79,25 +49,6 @@ internal sealed class EnterpriseService: IEnterpriseService
         return employeeResponse;
     }
 
-    public async Task<DepartmentResponse> UpdateAsync(string userId, int departmentId, DepartmentDto departmentDto, CancellationToken cancellationToken = default)
-    {
-        DepartmentEntity departmentEntity = await _repositoryManager.EnterpriseRepository.GetDepartmentAsync(departmentId, cancellationToken);
-        departmentEntity = departmentDto.Adapt(departmentEntity);
-        departmentEntity.UpdatedAt = DateTimeOffset.Now;
-        departmentEntity.UpdatedBy = userId;
-        _repositoryManager.EnterpriseRepository.UpdateDepartment(departmentEntity);
-        ActionLogEntity actionLog = new()
-        {
-            UserId = userId,
-            ActivityType = Activities.Department,
-            Action = ActivityAction.Updated,
-        };
-        _repositoryManager.ActionLogRepository.Create(actionLog);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        DepartmentResponse departmentResponse = departmentEntity.Adapt<DepartmentResponse>();
-        return departmentResponse;
-    }
-
     public async Task<EmployeeResponse> UpdateEmployeeAsync(string userId, Guid employeeId, EmployeeDto employeeDto, CancellationToken cancellationToken = default)
     {
         EmployeeEntity employeeEntity = await _repositoryManager.EnterpriseRepository.GetEmployeeAsync(employeeId, cancellationToken);
@@ -115,20 +66,6 @@ internal sealed class EnterpriseService: IEnterpriseService
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         EmployeeResponse employeeResponse = employeeEntity.Adapt<EmployeeResponse>();
         return employeeResponse;
-    }
-
-    public async Task DeleteAsync(string userId, int departmentId, CancellationToken cancellationToken = default)
-    {
-        DepartmentEntity departmentAsync = await _repositoryManager.EnterpriseRepository.GetDepartmentAsync(departmentId, cancellationToken);
-        _repositoryManager.EnterpriseRepository.DeleteDepartment(departmentAsync);
-        ActionLogEntity actionLog = new()
-        {
-            UserId = userId,
-            ActivityType = Activities.Department,
-            Action = ActivityAction.Deleted,
-        };
-        _repositoryManager.ActionLogRepository.Create(actionLog);
-        await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteEmployeeAsync(string userId, Guid employeeId, CancellationToken cancellationToken = default)

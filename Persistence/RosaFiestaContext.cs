@@ -36,7 +36,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
         Warranties = Set<WarrantyEntity>();
         WishesList = Set<WishListEntity>();
         WishesListProducts = Set<WishListProductsEntity>();
-        Departments = Set<DepartmentEntity>();
         Employees = Set<EmployeeEntity>();
         Quotes = Set<QuoteEntity>();
         QuoteItems = Set<QuoteItemEntity>();
@@ -79,8 +78,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
     public DbSet<QuoteEntity> Quotes { get; set; }
 
     public DbSet<EmployeeEntity> Employees { get; set; }
-
-    public DbSet<DepartmentEntity> Departments { get; set; }
     
     public DbSet<ActionLogEntity> ActionLogs { get; set; }
 }
