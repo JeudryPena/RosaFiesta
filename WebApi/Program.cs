@@ -30,6 +30,7 @@ public static class Program
 {
     private const string OriginsKey = "Origins";
     private const string SqlConnectionString = "SqlServerConnection";
+    private const string PostgresConnectionString = "PostgreConnection";
     private const string JwtTokenConfigKey = "jwtTokenConfig";
     private const string SmtpKey = "EmailConfiguration";
 
@@ -48,10 +49,6 @@ public static class Program
         AddRepository(builder.Services);
         AddService(builder.Services);
         AddFileManage(builder.Services, builder);
-        
-        // sql connection
-        builder.Services.AddDbContext<RosaFiestaContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString(SqlConnectionString)));
 
         builder.Services.Configure<FormOptions>(o => {
             o.ValueLengthLimit = int.MaxValue;
@@ -78,7 +75,6 @@ public static class Program
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
             RequestPath = new PathString("/Resources")
         });
-
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseCors();
         app.UseHttpsRedirection();
@@ -89,8 +85,6 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseEndpoints(endpoints => endpoints.MapControllers());
-
-        // migrate any database changes on startup (includes initial db creation)
         using var serviceScope = app.Services.CreateScope();
         using var context = serviceScope.ServiceProvider.GetService<RosaFiestaContext>();
         context.Database.Migrate();
@@ -150,13 +144,10 @@ public static class Program
                     .Local;
                 opts.UseCamelCasing(false);
             });
-        
-        
     }
 
     private static void AddCompressionMethod(WebApplicationBuilder builder)
     {
-        // Nose que es
         builder.Services.AddResponseCompression(opts =>
         {
             opts.Providers.Add<BrotliCompressionProvider>();
@@ -242,8 +233,25 @@ public static class Program
     {
         var migrationsAssembly = typeof(RosaFiestaContext).GetTypeInfo().Assembly.GetName().Name;
         string? connectionString = configuration.GetConnectionString(SqlConnectionString);
-
-        void ContextBuilder(DbContextOptionsBuilder b) =>
+        
+        string? postgresConnectionString = configuration.GetConnectionString(PostgresConnectionString);
+        
+        void PgContextBuilder(DbContextOptionsBuilder b) =>
+            b.UseNpgsql(
+                postgresConnectionString,
+                npg =>
+                {
+                    npg.MigrationsAssembly(migrationsAssembly);
+                    npg.MigrationsHistoryTable(
+                        "_EFNegotiationMigrationHistory",
+                        RosaFiestaContext.DefaultSchema
+                    );
+                    npg.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                }
+            );
+        
+        
+        /*void ContextBuilder(DbContextOptionsBuilder b) =>
             b.UseSqlServer(
                 connectionString,
                 sql =>
@@ -257,7 +265,8 @@ public static class Program
                 }
             );
 
-        services.AddDbContext<RosaFiestaContext>(ContextBuilder);
+        services.AddDbContext<RosaFiestaContext>(ContextBuilder);*/
+        services.AddDbContext<RosaFiestaContext>(PgContextBuilder);
         services.AddScoped<DbContext, RosaFiestaContext>();
     }
     
