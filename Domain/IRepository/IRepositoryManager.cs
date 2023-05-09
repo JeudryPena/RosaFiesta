@@ -16,7 +16,6 @@ public interface IRepositoryManager
     IOrderRepository OrderRepository { get; }
     IPayMethodRepository PayMethodRepository { get; }
     IActionLogRepository ActionLogRepository { get; }
-    IEnterpriseRepository EnterpriseRepository { get; }
     IQuoteRepository QuoteRepository { get; }
     IServiceRepository ServiceRepository { get; }
 }

@@ -25,7 +25,6 @@ public sealed class ServiceManager: IServiceManager
     private readonly Lazy<IWishListService> _lazyWishListService;
     private readonly Lazy<IOrderService> _lazyBillService;
     private readonly Lazy<IFileService> _lazyFileService;
-    private readonly Lazy<IEnterpriseService> _lazyEnterpriseService;
     private readonly Lazy<IQuoteService> _lazyQuoteService;
     private readonly Lazy<IServiceService> _lazyServiceService;
     private readonly Lazy<IActionLogService> _lazyActionLogService;
@@ -46,7 +45,6 @@ public sealed class ServiceManager: IServiceManager
         _lazyWishListService = new Lazy<IWishListService>(() => new WishListService(repositoryManager));
         _lazyBillService = new Lazy<IOrderService>(() => new OrderService(repositoryManager));
         _lazyFileService = new Lazy<IFileService>(() => new FileService());
-        _lazyEnterpriseService = new Lazy<IEnterpriseService>(() => new EnterpriseService(repositoryManager));
         _lazyQuoteService = new Lazy<IQuoteService>(() => new QuoteService(repositoryManager));
         _lazyServiceService = new Lazy<IServiceService>(() => new ServiceService(repositoryManager));
         _lazyActionLogService = new Lazy<IActionLogService>(() => new ActionLogService(repositoryManager));
@@ -66,7 +64,6 @@ public sealed class ServiceManager: IServiceManager
     public IWishListService WishListService => _lazyWishListService.Value;
     public IOrderService OrderService => _lazyBillService.Value;
     public IFileService FileService => _lazyFileService.Value;
-    public IEnterpriseService EnterpriseService => _lazyEnterpriseService.Value;
     public IQuoteService QuoteService => _lazyQuoteService.Value;
     public IServiceService ServiceService => _lazyServiceService.Value;
     public IActionLogService ActionLogService => _lazyActionLogService.Value;
