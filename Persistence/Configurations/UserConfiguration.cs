@@ -25,7 +25,6 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.BirthDate).IsRequired();
         builder.Property(user => user.RefreshToken).HasMaxLength(60);
         builder.Property(user => user.RefreshTokenExpiryTime);
-        builder.Property(user => user.Avatar);
         builder.Property(user => user.PromotionalMails).IsRequired();
         builder.HasMany(user => user.Quotes)
             .WithOne()
@@ -90,8 +89,7 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             TwoFactorEnabled = false,
             LockoutEnd = null,
             PromotionalMails = false,
-            BirthDate = new DateTime(1996, 10, 10),
-            Avatar = "https://i.imgur.com/1Q1Z1Zm.jpg"
+            BirthDate = new DateTime(1996, 10, 10)
         };
         admin.PasswordHash = PassGenerate(admin);
         builder.HasData(admin);
