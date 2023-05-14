@@ -13,6 +13,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     MediaComponent,
     SettingsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent],
 })

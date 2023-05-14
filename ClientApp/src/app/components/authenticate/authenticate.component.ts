@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./authenticate.component.css']
 })
 export class AuthenticateComponent {
+  title = 'app';
 
+  constructor() {
+  }
+
+  ngOnInit() {
+
+  }
 }
