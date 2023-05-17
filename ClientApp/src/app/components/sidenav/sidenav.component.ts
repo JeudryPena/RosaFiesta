@@ -7,6 +7,16 @@ import { navbarData } from './nav-data';
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent {
-  collapsed = true;
+  collapsed = false;
   navData = navbarData;
+
+  toggLeCollapsed(): void { 
+    this.collapsed = !this.collapsed;
+  }
+
+
+  closeSidenav(): void {
+    this.collapsed = false;
+  }
+
 }

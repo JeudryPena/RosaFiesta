@@ -73,9 +73,10 @@
       display: flex;
       align-items: center;
       height: 3rem;
-      color: #f3f3f3;
+      color: #f3f3f3; 
       text-decoration: none;
-      transition: color 0.3s ease;
+      border-radius: 0.625rem;
+      transition: all .3s ease;
 
       .sidenav-link-icon {
         font-size: 22px;
