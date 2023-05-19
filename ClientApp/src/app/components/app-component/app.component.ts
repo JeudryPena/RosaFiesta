@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+
+interface SidenavToggle{
+  screenWidth: number;
+  collapsed: boolean;
+}
 
 @Component({
   selector: 'app-root',
@@ -7,9 +11,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'ClientApp';
+  title = 'Sidenav';
 
-  constructor(
-    private router: Router
-  ) {}
+  isSideNavCollapsed = false;
+  screenWidth = 0;
+
+  onToggleSidenav(data: SidenavToggle): void{
+    this.screenWidth = data.screenWidth;
+    this.isSideNavCollapsed = data.collapsed;
+  }
 }

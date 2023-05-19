@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app-component/app.component';
 import { AuthenticateComponent } from './components/authenticate/authenticate.component';
@@ -13,7 +15,6 @@ import { ProductsComponent } from './components/products/products.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MediaComponent,
     SettingsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent],
 })
