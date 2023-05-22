@@ -1,3 +1,11 @@
+.bg-image {
+    background: #ffe259;
+    background: linear-gradient(to right, #ffa751, #ffe259);
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
 .bg {
     background-image: url(./../../../assets/backgrounds/loginBG.jpg);
     background-position: center center;
