@@ -18,6 +18,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { UserManagmentComponent } from './components/user-managment/user-managment.component';
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -29,9 +30,8 @@ const routes: Routes = [
   { path: 'pages', component: PagesComponent },
   { path: 'media', component: MediaComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'dropdown', component: ActionDropdownComponent },
-  { path: 'home', component: BodyComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'album', component: AlbumComponent },
   { path: 'purchase', component: PurchaseComponent },
   { path: 'about-us', component: AboutUsComponent },

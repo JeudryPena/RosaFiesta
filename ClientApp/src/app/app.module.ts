@@ -54,6 +54,8 @@ import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
+import { HomeComponent } from './components/home/home.component';
+
 
 @NgModule({
   declarations: [
@@ -72,7 +74,7 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     HeroesComponent,
     FeaturesComponent,
     CardsComponent,
-    FooterComponent,
+      FooterComponent,
     ActionDropdownComponent,
     MenuDropdownComponent,
     DateSelectorComponent,
@@ -101,7 +103,8 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     PaginationComponent,
     ModalProductComponent,
     RegisterComponent,
-    SublevelMenuComponent
+    SublevelMenuComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
