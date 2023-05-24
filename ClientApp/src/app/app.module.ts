@@ -117,7 +117,6 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     NgbdSortableHeader,
     NgbTypeaheadModule,
   ],
-  providers: [],
   providers: [NgbRatingConfig],
   bootstrap: [AppComponent],
 })
