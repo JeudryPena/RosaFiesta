@@ -1,0 +1,82 @@
+.dropdown {
+    position: relative;
+}
+
+.dropdown * {
+    box-sizing: border-box;
+    size: 1px;
+}
+
+.table-group-divider {
+    border-bottom: 1px solid var(--clr-aliceblue);
+    border: 1px solid darkslategray;
+    text-size-adjust: 100%;
+    font-size: 16px;
+}
+
+.table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: var(--clr-white);
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+
+}
+
+.table-row {
+    height: 12px;
+    border-bottom: 1px solid var(--clr-aliceblue);
+    border: 1px solid darkgray;
+    border-collapse: collapse;
+}
+
+.table .table-row .table-cell {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: var(--clr-slate-grey);
+    font-weight: 200px;
+}
+
+.table .table-row .table-cell:nth-child(1) {
+    width: 90px;
+}
+
+.table .table-row .table-cell:nth-child(2) {
+    width: 140.25px;
+}
+
+.table .table-row .table-cell:nth-child(3) {
+    width: 300px;
+}
+
+.table .table-row .table-cell:nth-child(4) {
+    width: 100px;
+}
+
+.table .table-row .table-cell:nth-child(5) {
+    width: 30.65px;
+}
+
+.table .table-row .table-cell:nth-child(6) {
+    width: 80.59px;
+}
+
+.table .table-row .table-cell:nth-child(7) {
+    width: 70.28px;
+}
+
+.btn {
+    // change size
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0.1rem 0.4rem;
+    transition: all 0.15s ease-in-out 0s;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    color: var(--clr-white);
+    background-color: var(--clr-slate-grey);
+    border-color: var(--clr-slate-grey);
+}

@@ -1,0 +1,54 @@
+<div class="row p-3">
+    <div class="col">
+        <div class="card text-start p-2">
+            <img class="card-img-top" src="holder.js/100px180/" alt="Title">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-borderless table-primary align-middle">
+                        <thead class="table-light">
+                            <caption>Products</caption>
+                            <tr class="table-row" >
+                                <th class="table-cell">Codigo</th>
+                                <th class="table-cell">Nombre</th>
+                                <th class="table-cell">Descripcion</th>
+                                <th class="table-cell">Precio</th>
+                                <th class="table-cell">C</th>
+                                <th class="table-cell">Imagen</th>
+                                <th class="table-cell">Color</th>
+                                <th class="table-cell"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="table-group-divider">
+                            <tr *ngFor="let item of dataTable" class="table-primary">
+                                <td class="table-cell">{{item.id}}</td>
+                                <td class="table-cell" >{{item.name}}</td>
+                                <td class="table-cell">{{ item.description }}</td>
+                                <td class="table-cell">{{ item.price | currency:'USD':'symbol-narrow'}}</td>
+                                <td class="table-cell">{{ item.quantity }}</td>
+                                <td class="table-cell">{{ item.image }}</td>
+                                <td class="table-cell">{{ item.color }}</td>
+                                <td class="table-cell">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                                            <li><a class="dropdown-item" href="#">View</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="dataTable.length"></ngb-pagination>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

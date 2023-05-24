@@ -7,5 +7,7 @@
 			"path": "../ClientApp"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"autoHide.autoHideSideBar": true
+	}
 }
