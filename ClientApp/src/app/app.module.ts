@@ -96,6 +96,7 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     RatingComponent,
     RatingDirective,
     UserManagmentComponent,
+    SublevelMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -107,9 +108,8 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     NgxStarsModule,
     NgbPaginationModule,
     NgbModule,
-    SublevelMenuComponent,
+    BrowserAnimationsModule,
   ],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent],
 })
