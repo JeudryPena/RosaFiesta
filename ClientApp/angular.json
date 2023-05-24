@@ -30,8 +30,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/styles.scss",
-              "node_modules/@ng-bootstrap/ng-bootstrap//ng-bootstrap.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

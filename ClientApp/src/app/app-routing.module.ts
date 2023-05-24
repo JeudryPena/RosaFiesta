@@ -13,19 +13,20 @@ import { AlbumComponent } from './components/album/album.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
-import { CoupensComponent } from './components/coupens/coupens.component';
 import { ManagmentProductsComponent } from './components/managment-products/managment-products.component';
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { UserManagmentComponent } from './components/user-managment/user-managment.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { AuthenticateComponent } from './components/authenticate/authenticate.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'statistics', component: StatisticsComponent },
+  { path: 'authenticate', component: AuthenticateComponent },
   { path: 'coupens', component: CoupensComponent },
   { path: 'pages', component: PagesComponent },
   { path: 'media', component: MediaComponent },

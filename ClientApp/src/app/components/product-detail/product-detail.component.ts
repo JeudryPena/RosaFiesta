@@ -16,10 +16,6 @@ export class ProductDetailComponent implements OnInit {
     'https://via.placeholder.com/400x300',
   ];
 
-  constructor() {
-
-  }
-
   ngOnInit(): void {
 
   }

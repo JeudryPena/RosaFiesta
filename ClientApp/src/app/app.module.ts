@@ -5,11 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxStarsModule } from 'ngx-stars';
+import { NgbDropdownModule, NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { NgxStarsModule } from 'ngx-stars';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -52,6 +55,10 @@ import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
+import { UserManagmentComponent } from './components/user-managment/user-managment.component';
+import { PaginationComponent } from './helpers/pagination/pagination.component';
+import { ModalProductComponent } from './components/modal-product/modal-product.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -96,9 +103,13 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     RatingComponent,
     RatingDirective,
     UserManagmentComponent,
+    PaginationComponent,
+    ModalProductComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FontAwesomeModule,
     FormsModule,
@@ -107,10 +118,10 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     NgxStarsModule,
     NgbPaginationModule,
     NgbModule,
-    SublevelMenuComponent,
+    NgbdSortableHeader,
+    NgbTypeaheadModule,
   ],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FontAwesomeModule],
-  providers: [],
+  providers: [NgbRatingConfig],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
