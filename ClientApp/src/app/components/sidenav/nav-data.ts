@@ -1,37 +1,50 @@
-export const navbarData = [
+import { INavbarData } from "./helper";
+
+
+export const navbarData: INavbarData []= [
   {
     routeLink: 'dashboard',
     icon: 'fal fa-home',
-    Label: 'Dashboard',
+    label: 'Dashboard',
   },
   {
     routeLink: 'products',
     icon: 'fal fa-box-open',
-    Label: 'Products',
+    label: 'Products',
   },
   {
     routeLink: 'statistics',
     icon: 'fal fa-chart-bar',
-    Label: 'Statistics',
+    label: 'Statistics',
   },
   {
     routeLink: 'coupens',
     icon: 'fal fa-tags',
-    Label: 'Coupens',
+    label: 'Coupens',
+    items: [
+      {
+        routeLink: 'coupens/list',
+        label: 'List Coupens'
+      },
+      {
+        routeLink: 'coupens/create',
+        label: 'Create Coupens'
+      }
+    ]
   },
   {
     routeLink: 'pages',
     icon: 'fal fa-file',
-    Label: 'Pages',
+    label: 'Pages',
   },
   {
     routeLink: 'media',
     icon: 'fal fa-camera',
-    Label: 'Media',
+    label: 'Media',
   },
   {
     routeLink: 'settings',
     icon: 'fal fa-cog',
-    Label: 'Settings',
+    label: 'Settings',
   },
 ];

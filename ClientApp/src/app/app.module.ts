@@ -15,6 +15,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     PagesComponent,
     MediaComponent,
     SettingsComponent,
+    SublevelMenuComponent,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
