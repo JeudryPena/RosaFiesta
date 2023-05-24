@@ -27,27 +27,34 @@
                             </ul>
                         </li>
                     </ul>
-                    <!-- <form role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                    </form> -->
                     <div class="d-flex flex-wrap">
                         <form class="col mb-2 mb-lg-0 me-lg-3 col-lg-auto" role="search" (ngSubmit)="Search()">
-                            <div class="input-group-sm d-flex search-container" >
-                                <input type="search" id="search-input" class="form-control input-search" placeholder="Buscar..."
-                                    aria-label="Buscar" [ngClass]="{'input-search-expanded': isSearchInputFocused}" role="search" (focus)="onSearchInputFocus()" (blur)="onSearchInputBlur()">
+                            <div class="input-group-sm d-flex search-container">
+                                
+                                    <div class="col">
+                                        <input type="search" id="typeahead-template" type="text" placeholder="Buscar..."
+                                            aria-label="Buscar" class="form-control col input-search" role="search"
+                                            [ngClass]="{'input-search-expanded': isSearchInputFocused}"
+                                            [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
+                                            [inputFormatter]="formatter" [focusFirst]="focusFirst" container="body" (focus)="onSearchInputFocus()"
+                                            (blur)="onSearchInputBlur()">
+                                    </div>
                                 <button class="input-group-text text-end search-icon" type="submit" *ngIf="isSearchInputFocused">
                                     <i class="fa fa-search"></i>
                                 </button>
+                                <ng-template #rt let-r="result" let-t="term">
+                                    <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
+                                        class="me-1" style="width: 16px" />
+                                    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                                </ng-template>
                             </div>
                         </form>
-                    
-
-                                    
                         <div *ngIf="isAuthenticated; else elseBlock">
                             <div class="container d-flex flex-wrap justify-content-center">
-                                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                                        class="rounded-circle">
                                 </a>
                                 <ul class="dropdown-menu text-small">
                                     <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -61,14 +68,14 @@
                             </div>
                         </div>
                         <ng-template #elseBlock>
-                            <div class="text-end">
+                            <div class="text-end mb-xl-0">
                                 <button type="button" class="btn btn-primary btn">Acceso</button>
                                 <button type="button" class="btn btn-warning">Registro</button>
                             </div>
                         </ng-template>
                     </div>
                 </div>
-                
+
             </div>
         </nav>
     </main>

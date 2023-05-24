@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
+import { AuthenticateComponent } from './components/authenticate/authenticate.component';
 import { BodyComponent } from './components/body/body.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { CoupensComponent } from './components/coupens/coupens.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'statistics', component: StatisticsComponent },
+  { path: 'authenticate', component: AuthenticateComponent },
   { path: 'coupens', component: CoupensComponent },
   { path: 'pages', component: PagesComponent },
   { path: 'media', component: MediaComponent },

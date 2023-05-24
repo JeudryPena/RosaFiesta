@@ -5,11 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
+import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -25,12 +24,14 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeroesComponent } from './components/heroes/heroes.component';
 import { ManagmentProductsComponent } from './components/managment-products/managment-products.component';
 import { MediaComponent } from './components/media/media.component';
+import { ModalProductComponent } from './components/modal-product/modal-product.component';
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PagesComponent } from './components/pages/pages.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductsComponent } from './components/products/products.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
+import { RegisterComponent } from './components/register/register.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
@@ -48,6 +49,7 @@ import { JumbotronComponent } from './helpers/jumbotron/jumbotron.component';
 import { LoadingButtonComponent } from './helpers/loading-button/loading-button.component';
 import { MenuDropdownComponent } from './helpers/menu-dropdown/menu-dropdown.component';
 import { NotificationsComponent } from './helpers/notifications/notifications.component';
+import { PaginationComponent } from './helpers/pagination/pagination.component';
 import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
@@ -96,10 +98,14 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     RatingComponent,
     RatingDirective,
     UserManagmentComponent,
+    PaginationComponent,
+    ModalProductComponent,
+    RegisterComponent,
     SublevelMenuComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FontAwesomeModule,
     FormsModule,
@@ -108,9 +114,11 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     NgxStarsModule,
     NgbPaginationModule,
     NgbModule,
-    BrowserAnimationsModule,
+    NgbdSortableHeader,
+    NgbTypeaheadModule,
   ],
   providers: [],
+  providers: [NgbRatingConfig],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
