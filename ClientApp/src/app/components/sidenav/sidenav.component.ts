@@ -1,5 +1,6 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { INavbarData } from './helper';
 import { navbarData } from './nav-data';
 
 interface SidenavToggle{
@@ -70,4 +71,14 @@ export class SidenavComponent implements OnInit{
     this.onToggleSidenav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
   }
 
+  handleClick(item: INavbarData): void { 
+    if (!this.multiple) {
+      for (let modelItem of this.navData){
+        if (item !== modelItem && modelItem.expanded) {
+          modelItem.expanded = false;
+        }
+      }
+    }
+    item.expanded = !item.expanded;
+  }
 }
