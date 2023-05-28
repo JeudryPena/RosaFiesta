@@ -7,9 +7,9 @@ import { INavbarData } from './helper';
   template: `
     <ul *ngIf="collapsed && data.items && data.items.length > 0"
     [@submenu]="expanded
-    ?{value: 'visible',
+    ? {value: 'visible',
       params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)', height: '*'}}
-    :{value: 'hidden',
+    : {value: 'hidden',
       params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)', height: '0'}}"
     class="sublevel-nav"
     >

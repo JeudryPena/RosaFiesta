@@ -43,7 +43,6 @@ export class SidenavComponent implements OnInit{
     this.screenWidth = window.innerWidth;
   }
   
- 
   @Output() onToggleSidenav: EventEmitter<SidenavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth = 0;
