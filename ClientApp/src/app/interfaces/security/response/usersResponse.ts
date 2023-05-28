@@ -1,10 +1,14 @@
+import { AppliedDiscountResponse } from "../../product/response/appliedDiscountResponse";
+import { OrderResponse } from "../../product/userInteract/response/orderResponse";
+import { ReviewResponse } from "../../product/userInteract/response/reviewResponse";
+import { WishListResponse } from "../../product/userInteract/response/wishListResponse";
+
 export interface UsersResponse {
     id: string;
     fullName: string;
     email: string;
     userName: string;
     age: number;
-    civilStatus: string;
     createdAt: string;
     updatedAt: string | null;
     birthDate: string;

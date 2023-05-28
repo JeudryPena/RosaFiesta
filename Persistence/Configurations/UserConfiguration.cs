@@ -1,14 +1,13 @@
-﻿using Domain.Entities;
-using Domain.Entities.Product.UserInteract;
+﻿using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
-using Domain.Entities.Security.Helper;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
+public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {
     private const string AdminId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
 
@@ -18,7 +17,6 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.HasKey(user => user.Id);
         builder.Property(user => user.FullName).HasMaxLength(60).IsRequired();
         builder.Property(user => user.Age).IsRequired();
-        builder.Property(user => user.CivilStatus).IsRequired();
         builder.Property(user => user.CreatedAt).IsRequired();
         builder.Property(user => user.UpdatedAt);
         builder.Property(user => user.UpdatedBy);
@@ -64,7 +62,7 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             .WithOne()
             .HasForeignKey(appliedDiscount => appliedDiscount.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
 
         var admin = new UserEntity
         {
@@ -79,7 +77,6 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
             LockoutEnabled = false,
             FullName = "Rosalba Pena",
             Age = 45,
-            CivilStatus = CivilType.Married,
             CreatedAt = DateTimeOffset.UtcNow,
             CreatedBy = "System",
             UpdatedAt = null,
@@ -94,11 +91,11 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         admin.PasswordHash = PassGenerate(admin);
         builder.HasData(admin);
     }
-    
+
     public string PassGenerate(UserEntity user)
     {
         var passHash = new PasswordHasher<UserEntity>();
         return passHash.HashPassword(user, "Rosanny4674$");
     }
-    
+
 }

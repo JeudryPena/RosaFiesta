@@ -1,6 +1,6 @@
 export interface FinishRegisterDto {
     name: string;
     lastName: string;
-    civilStatus: number;
+    phoneNumber: string;
     promotionalMails: boolean;
 }

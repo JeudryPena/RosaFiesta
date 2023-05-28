@@ -6,21 +6,20 @@ namespace Contracts.Model.Security.Response;
 public class UsersResponse
 {
     public Guid Id { get; set; }
-    
+
     public string FullName { get; set; } = string.Empty;
 
     public string Email { get; set; } = string.Empty;
 
     public string UserName { get; set; } = string.Empty;
-    
+
     public int Age { get; set; }
-    
-    public string CivilStatus { get; set; } = string.Empty;
-    
+
+
     public DateTimeOffset CreatedAt { get; set; }
-    
+
     public DateTimeOffset? UpdatedAt { get; set; }
-    
+
     public DateTimeOffset BirthDate { get; set; }
 
     public string PhoneNumber { get; set; } = string.Empty;
@@ -39,15 +38,15 @@ public class UsersResponse
 
     public string? PasswordHash { get; set; }
 
-    public bool IsLockedOut { get; set; } 
-    
+    public bool IsLockedOut { get; set; }
+
     public bool PromotionalMails { get; set; }
-    
-    public ICollection<OrderResponse>? Orders { get; set; } 
-    
+
+    public ICollection<OrderResponse>? Orders { get; set; }
+
     public ICollection<ReviewResponse>? Reviews { get; set; }
-    
+
     public ICollection<WishListResponse>? WishLists { get; set; }
-    
+
     public ICollection<AppliedDiscountResponse>? AppliedDiscounts { get; set; }
 }

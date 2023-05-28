@@ -55,6 +55,8 @@ import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-butto
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
 import { HomeComponent } from './components/home/home.component';
+import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 
 
 @NgModule({
@@ -105,6 +107,8 @@ import { HomeComponent } from './components/home/home.component';
     RegisterComponent,
     SublevelMenuComponent,
     HomeComponent,
+    ModalQuoteComponent,
+    ProductCardComponent,
   ],
   imports: [
     BrowserModule,

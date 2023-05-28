@@ -4,6 +4,4 @@ export interface RegisterDto {
     password: string;
     confirmPassword: string;
     birthDate: string;
-    phoneNumber: string;
-    termsAndConditionsAccepted: boolean;
 }

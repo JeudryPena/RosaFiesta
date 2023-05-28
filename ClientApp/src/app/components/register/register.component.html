@@ -1,1 +1,53 @@
-<p>register works!</p>
+<div class="bg-image">
+    <div class="container w-75 bg-primary mt-5 rounded shadow">
+        <div class="row align-items-stretch">
+            <div class="col bg-white p-5 rounded-start">
+                <h2 class="fw-bold text-center py-3">Registrarse</h2>
+                <form action="#">
+                    <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': userFocused}">
+                        <input #userInput type="email" class="form-control contact-input" id="username"
+                            placeholder="Usuario" (focus)="userFocused = true" (blur)="userFocused = false" />
+                        <label for="floatingInput">Usuario</label>
+                        <i class="icon fa-regular fa-id-card"></i>
+                    </div>
+                    <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': emailFocused}">
+                        <input #emailInput type="email" class="form-control contact-input" id="email" placeholder="Correo"
+                            (focus)="emailFocused = true" (blur)="emailFocused = false" />
+                        <label for="floatingInput">Correo</label>
+                        <i class="icon fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': passwordFocused}">
+                        <input #passwordInput type="password" class="form-control contact-input" id="password"
+                            placeholder="Contraseña" (focus)="passwordFocused = true"
+                            (blur)="passwordFocused = false" />
+                        <label for="floatingInput">Contraseña</label>
+                        <i class="icon fa-solid fa-lock"></i>
+                    </div>
+                    <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': confirmPasswordFocused}">
+                        <input #confirmPasswordInput type="password" class="form-control contact-input"
+                            id="confirmPassword" placeholder="Confirmar Contraseña"
+                            (focus)="confirmPasswordFocused = true" (blur)="confirmPasswordFocused = false" />
+                        <label for="floatingInput">Confirmar Contraseña</label>
+                        <i class="icon fa-solid fa-lock"></i>
+                    </div>
+                    <div class="mb"></div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Iniciar Sesión
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Registrarse</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-7 rounded-end"></div>
+        </div>
+    </div>
+</div>

@@ -6,9 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./authenticate.component.css']
 })
 export class AuthenticateComponent {
-  title = 'app';
+  userFocused = false;
+  passwordFocused = false;
 
   constructor() {
+    
   }
 
   ngOnInit() {

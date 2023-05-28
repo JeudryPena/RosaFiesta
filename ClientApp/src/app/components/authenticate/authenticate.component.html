@@ -3,7 +3,7 @@
     <div class="row align-items-stretch">
       <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-7 rounded"></div>
       <div class="col bg-white p-5 rounded-end">
-        <h2 class="fw-bold text-center py-3">Ingresar mediante</h2>
+        <h2 class="fw-bold text-center py-3">Ingresa con un click!</h2>
         <form action="#">
           <div class="container w-100 my-3">
             <div class="btn btn-outline-primary w-100 my-1">
@@ -45,18 +45,21 @@
               <h5>o con tu usuario</h5>
             </div>
           </div>
-          <div class="mb-4 form-floating">
-            <input type="email" class="form-control" id="username" placeholder="Usuario" />
+          <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': userFocused}">
+            <input #userInput type="email" class="form-control contact-input" id="username" placeholder="Usuario"
+              (focus)="userFocused = true" (blur)="userFocused = false" />
             <label for="floatingInput">Usuario</label>
+            <i class="icon fa-regular fa-id-card"></i>
           </div>
-          <div class="mb-4 form-floating">
-            <input type="password" class="form-control" id="password" placeholder="Contraseña" />
+          <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': passwordFocused}">
+            <input #passwordInput type="password" class="form-control contact-input" id="password" placeholder="Contraseña" (focus)="passwordFocused = true" (blur)="passwordFocused = false" />
             <label for="floatingInput">Contraseña</label>
+            <i class="icon fa-solid fa-lock"></i>
           </div>
-<div class="mb"></div>
+          <div class="mb"></div>
           <div class="row mb-4">
             <div class="col">
-              <input type="checkbox" name="connected" class="form-check-input" id="connected" value="remember-me"/>
+              <input type="checkbox" name="connected" class="form-check-input" id="connected" value="remember-me" />
               <label for="connected" class="form-check-label">&nbsp;&nbsp;Recordarme</label>
             </div>
             <div class="col-7 text-end">

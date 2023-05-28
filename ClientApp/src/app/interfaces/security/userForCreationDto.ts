@@ -7,7 +7,6 @@ export interface UserForCreationDto {
     phoneNumber: string;
     name: string;
     lastName: string;
-    civilStatus: number;
     address: string;
     city: string;
     state: string;

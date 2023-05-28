@@ -19,12 +19,17 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
 import { UserManagmentComponent } from './components/user-managment/user-managment.component';
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { HomeComponent } from './components/home/home.component';
+import { ModalProductComponent } from './components/modal-product/modal-product.component';
+import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'statistics', component: StatisticsComponent },
+  { path: 'register', component: RegisterComponent},
   { path: 'authenticate', component: AuthenticateComponent },
   { path: 'coupens', component: CoupensComponent },
   { path: 'pages', component: PagesComponent },
@@ -40,7 +45,11 @@ const routes: Routes = [
   { path: 'orders', component: MyOrdersComponent },
   { path: 'product-detail', component: ProductDetailComponent },
   { path: 'coupens', component: CoupensComponent },
-  { path: 'user-managment', component: UserManagmentComponent}
+  { path: 'user-managment', component: UserManagmentComponent },
+  { path: 'modal-product', component: ModalProductComponent },
+  { path: 'modal-quote', component: ModalQuoteComponent },
+  { path: 'product-card', component: ProductCardComponent },
+  { path: 'my-orders', component: MyOrdersComponent },
 ];
 
 @NgModule({

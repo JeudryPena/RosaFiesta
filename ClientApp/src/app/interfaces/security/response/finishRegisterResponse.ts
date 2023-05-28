@@ -5,7 +5,6 @@ export interface FinishRegisterResponse {
     email: string;
     userName: string;
     fullName: string;
-    civilStatus: string;
     address: string;
     city: string;
     state: string;
