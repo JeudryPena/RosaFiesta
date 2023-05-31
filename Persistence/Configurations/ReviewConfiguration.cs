@@ -16,11 +16,11 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
     {
         builder.ToTable(nameof(ReviewEntity));
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.ReviewDescription).HasMaxLength(2000);
+        builder.Property(x => x.ReviewDescription);
         builder.Property(x => x.ReviewRating).IsRequired();
         builder.Property(x => x.ReviewDate).IsRequired();
         builder.Property(x => x.ReviewUpdateDate);
-        builder.Property(x => x.ReviewTittle).HasMaxLength(100);
+        builder.Property(x => x.ReviewTittle);
         builder.Property(x => x.UserReviewerId).IsRequired();
         builder.HasData(new ReviewEntity
         {

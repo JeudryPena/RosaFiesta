@@ -13,12 +13,12 @@ public class SupplierConfig: IEntityTypeConfiguration<SupplierEntity>
     {
         builder.ToTable(nameof(SupplierEntity));
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Name).HasMaxLength(20).IsRequired();
+        builder.Property(x => x.Name).IsRequired();
         builder.HasIndex(x => x.Name).IsUnique();
-        builder.Property(x => x.Email).HasMaxLength(100);
+        builder.Property(x => x.Email);
         builder.HasIndex(x => x.Email).IsUnique();
-        builder.Property(x => x.Phone).HasMaxLength(20);
-        builder.Property(x => x.Address).HasMaxLength(100);
+        builder.Property(x => x.Phone);
+        builder.Property(x => x.Address);
         builder.Property(x => x.IsActive);
         builder.Property(x => x.CreatedAt);
         builder.Property(x => x.UpdatedAt);

@@ -9,10 +9,10 @@ public class ServiceConfig : IEntityTypeConfiguration<ServiceEntity>
     public void Configure(EntityTypeBuilder<ServiceEntity> builder)
     {
         builder.HasKey(s => s.Id);
-        builder.Property(s => s.Name).IsRequired().HasMaxLength(100);
+        builder.Property(s => s.Name).IsRequired();
         builder.HasIndex(s => s.Name).IsUnique();
-        builder.Property(s => s.Description).IsRequired().HasMaxLength(500);
-        builder.Property(s => s.Price).IsRequired().HasColumnType("decimal(18,2)");
+        builder.Property(s => s.Description).IsRequired();
+        builder.Property(s => s.Price).IsRequired();
         builder.Property(s => s.Image).IsRequired();
         builder.Property(s => s.Quantity).IsRequired();
         builder.Property(s => s.QuantityAvaliable).IsRequired();

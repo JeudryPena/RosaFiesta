@@ -1,10 +1,11 @@
 ﻿using Domain.Entities.Product;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-public class ProductsDiscountsConfig: IEntityTypeConfiguration<ProductsDiscountsEntity>
+public class ProductsDiscountsConfig : IEntityTypeConfiguration<ProductsDiscountsEntity>
 {
     private const string DefaultDiscountCode = "ROSA";
     private const string DefaultDiscountCode1 = "WELCOME";
@@ -19,7 +20,7 @@ public class ProductsDiscountsConfig: IEntityTypeConfiguration<ProductsDiscounts
     public void Configure(EntityTypeBuilder<ProductsDiscountsEntity> builder)
     {
         builder.ToTable(nameof(ProductsDiscountsEntity));
-        builder.HasKey(x => new {x.Id, x.DiscountCode});
+        builder.HasKey(x => new { x.Id, x.DiscountCode });
         builder.HasOne(x => x.Option).WithMany(x => x.ProductsDiscounts).HasForeignKey(x => x.OptionId);
         builder.HasData(
             new ProductsDiscountsEntity

@@ -15,13 +15,13 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable(nameof(UserEntity));
         builder.HasKey(user => user.Id);
-        builder.Property(user => user.FullName).HasMaxLength(60).IsRequired();
+        builder.Property(user => user.FullName).IsRequired();
         builder.Property(user => user.Age).IsRequired();
         builder.Property(user => user.CreatedAt).IsRequired();
         builder.Property(user => user.UpdatedAt);
         builder.Property(user => user.UpdatedBy);
         builder.Property(user => user.BirthDate).IsRequired();
-        builder.Property(user => user.RefreshToken).HasMaxLength(60);
+        builder.Property(user => user.RefreshToken);
         builder.Property(user => user.RefreshTokenExpiryTime);
         builder.Property(user => user.PromotionalMails).IsRequired();
         builder.HasMany(user => user.Quotes)

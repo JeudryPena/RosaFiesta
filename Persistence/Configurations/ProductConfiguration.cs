@@ -1,13 +1,12 @@
-﻿using Domain.Entities;
-using Domain.Entities.Product;
+﻿using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
-using Domain.Entities.Product.UserInteract;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEntity>
+internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntity>
 {
     private const string ProductId = "SDA01";
     private const string ProductId2 = "SDA02";
@@ -19,9 +18,9 @@ internal sealed class ProductConfiguration: IEntityTypeConfiguration<ProductEnti
     {
         builder.ToTable(nameof(ProductEntity));
         builder.HasKey(product => product.Code);
-        builder.Property(product => product.Code).HasMaxLength(100).IsRequired();
-        builder.Property(product => product.Title).HasMaxLength(40).IsRequired();
-        builder.Property(product => product.Brand).HasMaxLength(40);
+        builder.Property(product => product.Code).IsRequired();
+        builder.Property(product => product.Title).IsRequired();
+        builder.Property(product => product.Brand);
         builder.Property(product => product.Type).IsRequired();
         builder.Property(product => product.CreatedAt).IsRequired();
         builder.Property(product => product.UpdatedAt);

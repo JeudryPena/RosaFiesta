@@ -1,31 +1,32 @@
 ﻿using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using Contracts.Model;
+
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
-using Domain.Entities;
+
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Entities.Security.Helper;
 using Domain.Exceptions;
 using Domain.IRepository;
-using Mapster;
+
 using Messaging;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+
 using Services.Abstractions;
 
 namespace Services;
 
-internal sealed class AuthenticateService: IAuthenticateService
+internal sealed class AuthenticateService : IAuthenticateService
 {
     private readonly UserManager<UserEntity> _userManager;
     private readonly IEmailSender _emailSender;
@@ -41,7 +42,7 @@ internal sealed class AuthenticateService: IAuthenticateService
         _configuration = configuration;
         _repositoryManager = repositoryManager;
     }
-    
+
     public async Task<RegisterResponse> RegisterAsync(
         RegisterDto registerDto,
         CancellationToken cancellationToken = default
@@ -61,7 +62,7 @@ internal sealed class AuthenticateService: IAuthenticateService
         result = await _userManager.AddToRoleAsync(user, "User")
             .ConfigureAwait(false);
         IdentityResultMessage(result);
-        
+
         await RegisterEmailAsync(user.Email);
 
         return new RegisterResponse
@@ -77,7 +78,7 @@ internal sealed class AuthenticateService: IAuthenticateService
     public async Task RegisterEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email) ?? throw new InvalidOperationException("User not found");
-        
+
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         string codeEncoded = HttpUtility.UrlEncode(token);
         var param = new Dictionary<string, string?>
@@ -85,12 +86,12 @@ internal sealed class AuthenticateService: IAuthenticateService
             {"token", codeEncoded },
             {"id", user.Id},
         };
-        
+
         var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/confirm-email", param);
-        
+
         var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Confirm User</a>";
-        
-        var message = new EmailMessage(new [] { user.Email }, "Email Confirmation token", $"Click the next button to confirm your user registration: <br/> <br/> {htmlButton}", null);
+
+        var message = new EmailMessage(new[] { user.Email }, "Email Confirmation token", $"Click the next button to confirm your user registration: <br/> <br/> {htmlButton}", null);
         await _emailSender.SendEmailAsync(message);
     }
 
@@ -101,16 +102,15 @@ internal sealed class AuthenticateService: IAuthenticateService
         string codeDecoded = HttpUtility.UrlDecode(token);
 
         var confirmResult = await _userManager.ConfirmEmailAsync(user, codeDecoded).ConfigureAwait(false);
-        
+
         if (!confirmResult.Succeeded)
             IdentityResultMessage(confirmResult);
-        
+
         user.FullName = finishRegisterDto.Name + " " + finishRegisterDto.LastName;
-        user.CivilStatus = finishRegisterDto.CivilStatus.Adapt<CivilType>();
         user.UpdatedAt = DateTimeOffset.UtcNow;
         user.Cart = new CartEntity();
         await _userManager.UpdateAsync(user).ConfigureAwait(false);
-        
+
         ActionLogEntity log = new ActionLogEntity
         {
             Action = ActivityAction.Registered,
@@ -126,7 +126,6 @@ internal sealed class AuthenticateService: IAuthenticateService
             UserName = user.UserName ?? string.Empty,
             Email = user.Email ?? string.Empty,
             FullName = user.FullName,
-            CivilStatus = user.CivilStatus.ToString(),
         };
     }
 
@@ -146,10 +145,10 @@ internal sealed class AuthenticateService: IAuthenticateService
             {"id", user.Id },
         };
         var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/reset-password", param);
-        
+
         var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
-        
-        var message = new EmailMessage(new [] { user.Email }, "Reset password token", $"Click the next button to reset your password: <br/> <br/> {htmlButton}", null);
+
+        var message = new EmailMessage(new[] { user.Email }, "Reset password token", $"Click the next button to reset your password: <br/> <br/> {htmlButton}", null);
         await _emailSender.SendEmailAsync(message).ConfigureAwait(false);
     }
 
@@ -158,11 +157,11 @@ internal sealed class AuthenticateService: IAuthenticateService
         var user = await _userManager.FindByIdAsync(id).ConfigureAwait(false) ?? throw new UserNotFoundException(id);
 
         string codeDecoded = HttpUtility.UrlDecode(passwordToken);
-        
+
         var resetPassResult = await _userManager.ResetPasswordAsync(user, codeDecoded, resetPasswordDto.Password).ConfigureAwait(false);
         if (!resetPassResult.Succeeded)
             IdentityResultMessage(resetPassResult);
-        
+
         await _userManager.SetLockoutEndDateAsync(user, null).ConfigureAwait(false);
     }
 
@@ -170,7 +169,7 @@ internal sealed class AuthenticateService: IAuthenticateService
     {
         var userId = CurrentUserId();
         var user = await _userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException(userId);
-        
+
         var changePassResult = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
         if (!changePassResult.Succeeded)
             IdentityResultMessage(changePassResult);
@@ -190,28 +189,28 @@ internal sealed class AuthenticateService: IAuthenticateService
         var user = await _userManager.FindByEmailAsync(logingDto.Username);
         if (user == null)
         {
-            return new LoginResponse { Message = "Invalid username or password"};
+            return new LoginResponse { Message = "Invalid username or password" };
         }
         var result = await _userManager.CheckPasswordAsync(user, logingDto.Password);
         if (!result)
         {
             await _userManager.AccessFailedAsync(user);
-            return new LoginResponse { Message = "Invalid username or password"};
+            return new LoginResponse { Message = "Invalid username or password" };
         }
-        if(!await _userManager.IsEmailConfirmedAsync(user))
+        if (!await _userManager.IsEmailConfirmedAsync(user))
         {
-            return new LoginResponse { Message = "Email is not confirmed"};
+            return new LoginResponse { Message = "Email is not confirmed" };
         }
-        
+
         if (result)
         {
             var accessToken = GenerateAccessToken(user);
             var refreshToken = GenerateRefreshToken();
-            
+
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(7);
 
-            await _userManager.SetLockoutEndDateAsync( user, null).ConfigureAwait(false);
+            await _userManager.SetLockoutEndDateAsync(user, null).ConfigureAwait(false);
             await _userManager.ResetAccessFailedCountAsync(user);
             await _userManager.UpdateAsync(user);
             ActionLogEntity log = new ActionLogEntity()
@@ -221,7 +220,7 @@ internal sealed class AuthenticateService: IAuthenticateService
             };
             if (await _userManager.IsInRoleAsync(user, "admin"))
                 log.ActivityType = Activities.Admin;
-            else 
+            else
                 log.ActivityType = Activities.User;
             _repositoryManager.ActionLogRepository.Create(log);
 
@@ -232,7 +231,7 @@ internal sealed class AuthenticateService: IAuthenticateService
                 IsAuthSuccessful = true
             };
         }
-        
+
         if (await _userManager.GetAccessFailedCountAsync(user) >= 5)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
@@ -243,27 +242,27 @@ internal sealed class AuthenticateService: IAuthenticateService
                 {"token", codeEncoded },
                 {"id", user.Id },
             };
-            
+
             var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/unlock-account", param);
-            var callback2 = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/reset-password", param); 
-            
+            var callback2 = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/reset-password", param);
+
             var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Restore User</a>";
-            
+
             var htmlButton2 = $"<a href='{callback2}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
-        
+
             var content = $"Your account is locked out because of many access failures. To unlock the account click this link: <br> <br> {htmlButton} <br> <br> or you could reset your password in this link: <br> <br> {htmlButton2}";
-        
-            var message = new EmailMessage(new [] { logingDto.Username }, 
+
+            var message = new EmailMessage(new[] { logingDto.Username },
                 "Locked out account information", content, null);
-    
+
             await _emailSender.SendEmailAsync(message).ConfigureAwait(false);
-            
-            return new LoginResponse { Message = "User account is locked out for 5 minutes"};
+
+            return new LoginResponse { Message = "User account is locked out for 5 minutes" };
         }
-        
+
         if (await _userManager.IsLockedOutAsync(user))
         {
-            return new LoginResponse { Message = "User account is temporally locked out"};
+            return new LoginResponse { Message = "User account is temporally locked out" };
         }
         return new LoginResponse { Message = "Invalid username or password" };
     }
@@ -343,10 +342,10 @@ internal sealed class AuthenticateService: IAuthenticateService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var expiration = token.ValidTo.ToString(CultureInfo.InvariantCulture);
         var tokenString = tokenHandler.WriteToken(token);
-        
+
         return tokenString;
     }
-    
+
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -365,7 +364,7 @@ internal sealed class AuthenticateService: IAuthenticateService
             throw new InvalidOperationException(string.Join(", ", errors));
         }
     }
-    
+
     public string CurrentUserId()
     {
         var findFirstValue = _httpContext.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User not found");

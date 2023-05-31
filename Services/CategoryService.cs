@@ -1,15 +1,18 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+
 using Domain.Entities.Product;
 using Domain.Entities.Security;
 using Domain.Entities.Security.Helper;
 using Domain.IRepository;
+
 using Mapster;
+
 using Services.Abstractions;
 
 namespace Services;
 
-internal sealed class CategoryService: ICategoryService
+internal sealed class CategoryService : ICategoryService
 {
     private readonly IRepositoryManager _repositoryManager;
     public CategoryService(IRepositoryManager repositoryManager)
@@ -30,7 +33,7 @@ internal sealed class CategoryService: ICategoryService
         var categoryResponse = categories.Adapt<IEnumerable<CategoryResponse>>();
         return categoryResponse;
     }
-    
+
     public async Task<IEnumerable<SubCategoryResponse>> GetAllSubCategoriesAsync(CancellationToken cancellationToken = default)
     {
         IEnumerable<SubCategoryEntity> subCategories = await _repositoryManager.CategoryRepository.GetAllSubCategoriesAsync(cancellationToken);
@@ -86,16 +89,16 @@ internal sealed class CategoryService: ICategoryService
             CreatedAt = DateTimeOffset.UtcNow,
             CreatedBy = userId,
             Icon = categoryDto.Icon,
-            Slug = categoryDto.Slug,
             IsActive = categoryDto.IsActive,
         };
-        if (categoryDto.SubCategories != null){
+        if (categoryDto.SubCategories != null)
+        {
             category.SubCategories = categoryDto.SubCategories.Adapt<List<SubCategoryEntity>>();
             foreach (var subCategory in category.SubCategories)
             {
                 subCategory.CreatedAt = DateTimeOffset.UtcNow;
                 subCategory.CreatedBy = userId;
-            } 
+            }
             ActionLogEntity actionLogc = new()
             {
                 UserId = userId,
@@ -138,14 +141,13 @@ internal sealed class CategoryService: ICategoryService
         List<SubCategoryResponse> subCategoryResponse = subCategory.Adapt<List<SubCategoryResponse>>();
         return subCategoryResponse;
     }
-    
+
     public async Task<CategoryResponse> UpdateAsync(string userId, int categoryId, CategoryUpdateDto categoryUpdateDto, CancellationToken cancellationToken = default)
     {
         CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
         category.Name = categoryUpdateDto.Name;
         category.Description = categoryUpdateDto.Description;
         category.Icon = categoryUpdateDto.Icon;
-        category.Slug = categoryUpdateDto.Slug;
         category.IsActive = categoryUpdateDto.IsActive;
         category.UpdatedAt = DateTimeOffset.UtcNow;
         category.UpdatedBy = userId;
@@ -168,7 +170,6 @@ internal sealed class CategoryService: ICategoryService
         subCategory.Name = subCategoryUpdateDto.Name;
         subCategory.Description = subCategoryUpdateDto.Description;
         subCategory.Icon = subCategoryUpdateDto.Icon;
-        subCategory.Slug = subCategoryUpdateDto.Slug;
         subCategory.IsActive = subCategoryUpdateDto.IsActive;
         subCategory.UpdatedAt = DateTimeOffset.UtcNow;
         subCategory.UpdatedBy = userId;
