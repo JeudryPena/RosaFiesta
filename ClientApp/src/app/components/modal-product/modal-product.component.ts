@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal-product',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./modal-product.component.css']
 })
 export class ModalProductComponent {
+  @ViewChild('myModal') myModal!: TemplateRef<any>;
   
 }

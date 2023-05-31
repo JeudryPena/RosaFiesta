@@ -1,10 +1,11 @@
 ﻿using Domain.Entities.Security;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-public class ActionLogConfig: IEntityTypeConfiguration<ActionLogEntity>
+public class ActionLogConfig : IEntityTypeConfiguration<ActionLogEntity>
 {
     public void Configure(EntityTypeBuilder<ActionLogEntity> builder)
     {

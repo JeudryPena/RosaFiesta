@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 
@@ -5,9 +7,13 @@ namespace Domain.Entities.Product;
 
 public class ProductEntity : BaseEntity
 {
+    [StringLength(100, MinimumLength = 3)]
     public string? Code { get; set; }
+    [StringLength(100, MinimumLength = 5)]
     public string Title { get; set; }
+    [StringLength(50, MinimumLength = 3)]
     public string? Brand { get; set; }
+    [StringLength(15, MinimumLength = 4)]
     public ProductType Type { get; set; }
     public int? CategoryId { get; set; }
     public CategoryEntity? Category { get; set; }

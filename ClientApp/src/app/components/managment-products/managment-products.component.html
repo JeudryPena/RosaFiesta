@@ -3,7 +3,9 @@
         <div class="card text-start p-2">
             <div class="card-body">
                 <div class="row">
-                    <caption class="col">Products</caption>
+                    <caption class="col">Products&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add" ngbAutofocus (click)="AddProduct()">
+                        Añadir Producto
+                    </button></caption>           
                     <span class="col col-sm-auto col-form-label" *ngIf="service.loading$ | async">
                         <i class="fas fa-spinner fa-spin" style="color: #32CD32; display: inline-block; margin-right: 5px;"></i>
                         <span style="color: #32CD32; display: inline-block;">Cargando..</span>
@@ -49,7 +51,7 @@
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">
-                                        <button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown" ngbDropdownToggle>Actions</button>
                                         <div ngbDropdownMenu>
                                             <button ngbDropdownItem>Edit</button>
                                             <button ngbDropdownItem>Duplicate</button>
@@ -84,3 +86,5 @@
         </div>
     </div>
 </div>
+
+<app-modal-product></app-modal-product>

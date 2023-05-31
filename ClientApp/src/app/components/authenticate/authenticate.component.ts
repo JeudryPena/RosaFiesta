@@ -9,9 +9,9 @@ export class AuthenticateComponent {
   userFocused = false;
   passwordFocused = false;
 
-  constructor() {
+  constructor(
     
-  }
+  ) { }
 
   ngOnInit() {
 

@@ -57,7 +57,7 @@
     width: 70.28px;
 }
 
-.btn {
+.btn-dropdown {
     // change size
     font-size: 14px;
     font-weight: 500;
@@ -72,6 +72,19 @@
     color: var(--clr-white);
     background-color: var(--clr-slate-grey);
     border-color: var(--clr-slate-grey);
+} 
+
+.btn-add {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0.25rem 0.4rem;
+    transition: all 0.15s ease-in-out 0s;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
 }
 
 .table-responsive {

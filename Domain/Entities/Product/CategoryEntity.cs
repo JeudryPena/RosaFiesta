@@ -1,13 +1,16 @@
-﻿namespace Domain.Entities.Product;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class CategoryEntity: BaseEntity
+namespace Domain.Entities.Product;
+
+public class CategoryEntity : BaseEntity
 {
     public int Id { get; set; }
-    public string Name { get; set; } 
+    [StringLength(50, MinimumLength = 3)]
+    public string Name { get; set; }
+    [StringLength(250, MinimumLength = 3)]
     public string Description { get; set; }
-    public string? Icon { get; set; } 
-    public string Slug { get; set; }
+    public string? Icon { get; set; }
     public bool IsActive { get; set; } = true;
-    public ICollection<SubCategoryEntity>? SubCategories { get; set; } 
-    public ICollection<ProductEntity>? Products { get; set; } 
+    public ICollection<SubCategoryEntity>? SubCategories { get; set; }
+    public ICollection<ProductEntity>? Products { get; set; }
 }

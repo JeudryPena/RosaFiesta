@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { AsyncPipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
@@ -6,6 +6,10 @@ import { ProductsService } from '../../shared/services/products.service';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalProductComponent } from '../modal-product/modal-product.component';
+
+declare var window: any;
 
 @Component({
   selector: 'app-managment-products',
@@ -14,13 +18,43 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
   providers: [ProductsService, DecimalPipe],
 })
 export class ManagmentProductsComponent implements OnInit {
+  @ViewChild('myModal') myModal: any;
+  formModal: any;
+
+  AddProduct() {
+    this.formModal.show();
+    this.modalService.open(this.myModal).result.then((result) => {
+      // Modal cerrado
+    }, (reason) => {
+      // Modal cerrado con rechazo
+    });
+
+    // Enfocar el elemento después de que se haya abierto completamente el modal
+    this.myModal.result.then(() => {
+      const myInput = document.getElementById('myInput') as HTMLInputElement;
+      myInput.focus();
+    });
+  }
+
+  close() {
+    this.formModal.hide();
+  }
+
+  ngOnInit(): void {
+    this.formModal = new window.bootstrap.Modal(
+      document.getElementById('exampleModal'),
+    )
+  }
 
   products$: Observable<ProductAndOptionsPreviewResponse[]>;
   total$: Observable<number>;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
-  constructor(public service: ProductsService) {
+  constructor(
+    public service: ProductsService,
+    public modalService: NgbModal
+  ) {
     this.products$ = service.countries$;
     this.total$ = service.total$;
   }
@@ -37,9 +71,7 @@ export class ManagmentProductsComponent implements OnInit {
     this.service.sortDirection = direction;
   }
 
-  ngOnInit(): void {
-    
-  }
+  
 
   collectionSize = 0;
   pageSize = 5;

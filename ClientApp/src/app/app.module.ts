@@ -9,6 +9,9 @@ import { NgbDropdownModule, NgbModule, NgbPaginationModule, NgbRatingConfig, Ngb
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -17,21 +20,25 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
 import { BodyComponent } from './components/body/body.component';
 import { CardsComponent } from './components/cards/cards.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
-import { CoupensComponent } from './components/coupens/coupens.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FeaturesComponent } from './components/features/features.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HeroesComponent } from './components/heroes/heroes.component';
+import { HomeComponent } from './components/home/home.component';
 import { ManagmentProductsComponent } from './components/managment-products/managment-products.component';
 import { MediaComponent } from './components/media/media.component';
 import { ModalProductComponent } from './components/modal-product/modal-product.component';
+import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PagesComponent } from './components/pages/pages.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductsComponent } from './components/products/products.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
@@ -54,9 +61,7 @@ import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
-import { HomeComponent } from './components/home/home.component';
-import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
-import { ProductCardComponent } from './components/product-card/product-card.component';
+import { CoupensComponent } from './components/coupens/coupens.component';
 
 
 @NgModule({
@@ -76,7 +81,7 @@ import { ProductCardComponent } from './components/product-card/product-card.com
     HeroesComponent,
     FeaturesComponent,
     CardsComponent,
-      FooterComponent,
+    FooterComponent,
     ActionDropdownComponent,
     MenuDropdownComponent,
     DateSelectorComponent,
@@ -109,6 +114,9 @@ import { ProductCardComponent } from './components/product-card/product-card.com
     HomeComponent,
     ModalQuoteComponent,
     ProductCardComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -123,6 +131,8 @@ import { ProductCardComponent } from './components/product-card/product-card.com
     NgbModule,
     NgbdSortableHeader,
     NgbTypeaheadModule,
+    NgbModalModule,
+    
   ],
   providers: [NgbRatingConfig],
   bootstrap: [AppComponent],
