@@ -1,9 +1,6 @@
-﻿using Contracts.Model.Product;
-using Contracts.Model.Product.Response;
-using Contracts.Model.Product.UserInteract;
+﻿using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract.Response;
-using Contracts.Model.Security;
-using Domain.Entities.Product;
+
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
@@ -16,27 +13,31 @@ using Services.Abstractions;
 
 namespace Services;
 
-internal sealed class OrderService : IOrderService {
+internal sealed class OrderService : IOrderService
+{
     private readonly IRepositoryManager _repositoryManager;
 
-    public OrderService(IRepositoryManager repositoryManager) {
+    public OrderService(IRepositoryManager repositoryManager)
+    {
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<IEnumerable<OrderPreviewResponse>> GetAllAsync(CancellationToken cancellationToken = default) {
+    public async Task<IEnumerable<OrderPreviewResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
         IEnumerable<OrderEntity> orders = await _repositoryManager.OrderRepository.GetAllAsync(cancellationToken);
         IEnumerable<OrderPreviewResponse> orderResponse = orders.Adapt<IEnumerable<OrderPreviewResponse>>();
         return orderResponse;
     }
-    
-    public async Task<IEnumerable<OrderPreviewResponse>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default) 
+
+    public async Task<IEnumerable<OrderPreviewResponse>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         IEnumerable<OrderEntity> orders = await _repositoryManager.OrderRepository.GetByUserIdAsync(userId, cancellationToken);
         IEnumerable<OrderPreviewResponse> orderResponse = orders.Adapt<IEnumerable<OrderPreviewResponse>>();
         return orderResponse;
     }
 
-    public async Task<OrderResponse> GetByIdAsync(int billId, CancellationToken cancellationToken = default) {
+    public async Task<OrderResponse> GetByIdAsync(int billId, CancellationToken cancellationToken = default)
+    {
         OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(billId, cancellationToken);
         OrderResponse orderResponse = order.Adapt<OrderResponse>();
         return orderResponse;
@@ -65,10 +66,10 @@ internal sealed class OrderService : IOrderService {
                 var discount = await _repositoryManager.DiscountRepository.GetByAppliedId(optionPurchase.AppliedId, cancellationToken);
                 if (discount.AppliedDiscounts?.Count(x => x.UserId == userId) >= discount.MaxTimesApply)
                 {
-                    double discountValue = discount.DiscountType == DiscountType.Percentage
-                        ? optionPurchase.UnitPrice * discount.DiscountValue / 100
-                        : discount.DiscountValue;
-                    optionPurchase.UnitPrice -= discountValue;
+                    double Value = discount.Type == DiscountType.Percentage
+                        ? optionPurchase.UnitPrice * discount.Value / 100
+                        : discount.Value;
+                    optionPurchase.UnitPrice -= Value;
                 }
             }
             detail.OrderSku = order.SKU;
@@ -102,12 +103,12 @@ internal sealed class OrderService : IOrderService {
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, string discountCode, int optionId, CancellationToken cancellationToken = default)
+    public async Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, string Code, int optionId, CancellationToken cancellationToken = default)
     {
         PurchaseDetailOptions detail = await _repositoryManager.PurchaseDetailRepository.GetDetailOptionByIdAsync(optionId, purchaseNumber, cancellationToken);
         if (detail.DiscountApplied == null)
             detail.DiscountApplied = new AppliedDiscountEntity { UserId = userId };
-        detail.DiscountApplied.DiscountCode = discountCode;
+        detail.DiscountApplied.Code = Code;
         detail.DiscountApplied.AppliedDate = DateTimeOffset.UtcNow;
         _repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(detail);
         ActionLogEntity actionLog = new()
@@ -125,9 +126,9 @@ internal sealed class OrderService : IOrderService {
     public async Task ReturnOrderDetailAsync(string userId, int purchaseNumber, int orderId, CancellationToken cancellationToken)
     {
         OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
-        if(order.UserId != userId)
+        if (order.UserId != userId)
             throw new Exception("You can't return this order");
-        if(order.OrderDate.AddDays(31) < DateTimeOffset.UtcNow)
+        if (order.OrderDate.AddDays(31) < DateTimeOffset.UtcNow)
             throw new Exception("You can't return this order, the time limit has expired");
         if (order.Details == null)
             throw new Exception("You can't return this order, the detail doesn't exist");

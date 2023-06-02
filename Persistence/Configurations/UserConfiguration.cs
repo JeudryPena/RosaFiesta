@@ -34,7 +34,7 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .HasForeignKey(order => order.UserId);
         builder.HasMany(owner => owner.Reviews)
             .WithOne()
-            .HasForeignKey(review => review.UserReviewerId)
+            .HasForeignKey(review => review.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(owner => owner.WishLists)
             .WithOne()

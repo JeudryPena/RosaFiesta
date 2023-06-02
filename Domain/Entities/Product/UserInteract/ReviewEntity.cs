@@ -6,13 +6,13 @@ public class ReviewEntity
 {
     public Guid Id { get; set; }
     [StringLength(250, MinimumLength = 3)]
-    public string? ReviewDescription { get; set; }
+    public string? Description { get; set; }
     [Range(0, 5)]
-    public float ReviewRating { get; set; }
-    public DateTimeOffset ReviewDate { get; set; }
-    public DateTimeOffset? ReviewUpdateDate { get; set; }
+    public float Rating { get; set; }
+    public DateTimeOffset Date { get; set; }
+    public DateTimeOffset? UpdateDate { get; set; }
     [StringLength(50, MinimumLength = 3)]
-    public string? ReviewTittle { get; set; }
-    public string UserReviewerId { get; set; }
+    public string? Title { get; set; }
+    public string UserId { get; set; }
     public int OptionId { get; set; }
 }

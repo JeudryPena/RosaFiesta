@@ -3,6 +3,6 @@
 public class ProductsDiscountResponse
 {
     public string ProductCode { get; set; }
-    public string DiscountCode { get; set; }
+    public string Code { get; set; }
     public int OptionId { get; set; }
 }

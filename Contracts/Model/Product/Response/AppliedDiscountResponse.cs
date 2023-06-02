@@ -4,7 +4,7 @@ public class AppliedDiscountResponse
 {
     public int Id { get; set; }
     public string UserId { get; set; }
-    public string DiscountCode { get; set; }
+    public string Code { get; set; }
     public int TimesApplied { get; set; }
     public DateTimeOffset AppliedDate { get; set; }
     public int OrderId { get; set; }

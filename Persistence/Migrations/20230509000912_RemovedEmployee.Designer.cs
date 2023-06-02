@@ -229,7 +229,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.DiscountEntity", b =>
                 {
-                    b.Property<string>("DiscountCode")
+                    b.Property<string>("Code")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
@@ -239,28 +239,28 @@ namespace Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("DiscountDescription")
+                    b.Property<string>("Description")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset>("DiscountEndDate")
+                    b.Property<DateTimeOffset>("End")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DiscountImage")
                         .HasColumnType("text");
 
-                    b.Property<string>("DiscountName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset>("DiscountStartDate")
+                    b.Property<DateTimeOffset>("Start")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("DiscountType")
+                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
-                    b.Property<double>("DiscountValue")
+                    b.Property<double>("Value")
                         .HasColumnType("double precision");
 
                     b.Property<int>("MaxTimesApply")
@@ -272,37 +272,37 @@ namespace Persistence.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.HasKey("DiscountCode");
+                    b.HasKey("Code");
 
                     b.ToTable("DiscountEntity", "RosaFiesta");
 
                     b.HasData(
                         new
                         {
-                            DiscountCode = "ROSA",
+                            Code = "ROSA",
                             CreatedAt = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 424, DateTimeKind.Unspecified).AddTicks(6578), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
-                            DiscountDescription = "10% de descuento en todos los productos",
-                            DiscountEndDate = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "10% de descuento en todos los productos",
+                            End = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
-                            DiscountName = "Descuento Inicial",
-                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 424, DateTimeKind.Unspecified).AddTicks(6583), new TimeSpan(0, 0, 0, 0, 0)),
-                            DiscountType = 1,
-                            DiscountValue = 200.0,
+                            Name = "Descuento Inicial",
+                            Start = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 424, DateTimeKind.Unspecified).AddTicks(6583), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = 1,
+                            Value = 200.0,
                             MaxTimesApply = 5
                         },
                         new
                         {
-                            DiscountCode = "WELCOME",
+                            Code = "WELCOME",
                             CreatedAt = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 424, DateTimeKind.Unspecified).AddTicks(6625), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "System",
-                            DiscountDescription = "100$ de descuento en todos los productos",
-                            DiscountEndDate = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "100$ de descuento en todos los productos",
+                            End = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
-                            DiscountName = "Descuento de Bienvenida",
-                            DiscountStartDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 424, DateTimeKind.Unspecified).AddTicks(6626), new TimeSpan(0, 0, 0, 0, 0)),
-                            DiscountType = 0,
-                            DiscountValue = 10.0,
+                            Name = "Descuento de Bienvenida",
+                            Start = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 424, DateTimeKind.Unspecified).AddTicks(6626), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = 0,
+                            Value = 10.0,
                             MaxTimesApply = 1
                         });
                 });
@@ -505,7 +505,7 @@ namespace Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("DiscountCode")
+                    b.Property<string>("Code")
                         .HasColumnType("character varying(20)");
 
                     b.Property<int?>("OptionId")
@@ -514,9 +514,9 @@ namespace Persistence.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("character varying(100)");
 
-                    b.HasKey("Id", "DiscountCode");
+                    b.HasKey("Id", "Code");
 
-                    b.HasIndex("DiscountCode");
+                    b.HasIndex("Code");
 
                     b.HasIndex("OptionId");
 
@@ -528,21 +528,21 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
-                            DiscountCode = "ROSA",
+                            Code = "ROSA",
                             OptionId = 1,
                             ProductId = "SDA01"
                         },
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f5"),
-                            DiscountCode = "WELCOME",
+                            Code = "WELCOME",
                             OptionId = 2,
                             ProductId = "SDA01"
                         },
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
-                            DiscountCode = "WELCOME",
+                            Code = "WELCOME",
                             OptionId = 3,
                             ProductId = "SDA02"
                         });
@@ -698,7 +698,7 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("AppliedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("DiscountCode")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("character varying(20)");
 
@@ -708,7 +708,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiscountCode");
+                    b.HasIndex("Code");
 
                     b.HasIndex("UserId");
 
@@ -719,21 +719,21 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             AppliedDate = new DateTimeOffset(new DateTime(2023, 5, 8, 20, 9, 12, 421, DateTimeKind.Unspecified).AddTicks(4432), new TimeSpan(0, -4, 0, 0, 0)),
-                            DiscountCode = "ROSA",
+                            Code = "ROSA",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = 2,
                             AppliedDate = new DateTimeOffset(new DateTime(2023, 5, 8, 20, 9, 12, 421, DateTimeKind.Unspecified).AddTicks(4469), new TimeSpan(0, -4, 0, 0, 0)),
-                            DiscountCode = "WELCOME",
+                            Code = "WELCOME",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = 3,
                             AppliedDate = new DateTimeOffset(new DateTime(2023, 5, 8, 20, 9, 12, 421, DateTimeKind.Unspecified).AddTicks(4471), new TimeSpan(0, -4, 0, 0, 0)),
-                            DiscountCode = "WELCOME",
+                            Code = "WELCOME",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
                 });
@@ -974,24 +974,24 @@ namespace Persistence.Migrations
                     b.Property<int>("OptionId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("ReviewDate")
+                    b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReviewDescription")
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
-                    b.Property<float>("ReviewRating")
+                    b.Property<float>("Rating")
                         .HasColumnType("real");
 
-                    b.Property<string>("ReviewTittle")
+                    b.Property<string>("Title")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset?>("ReviewUpdateDate")
+                    b.Property<DateTimeOffset?>("UpdateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserReviewerId")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -999,7 +999,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OptionId");
 
-                    b.HasIndex("UserReviewerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ReviewEntity", "RosaFiesta");
 
@@ -1008,23 +1008,23 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
                             OptionId = 1,
-                            ReviewDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5205), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReviewDescription = "Excellent",
-                            ReviewRating = 5f,
-                            ReviewTittle = "Nice product",
-                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5207), new TimeSpan(0, 0, 0, 0, 0)),
-                            UserReviewerId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
+                            Date = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5205), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description= "Excellent",
+                            Rating = 5f,
+                            Title = "Nice product",
+                            UpdateDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5207), new TimeSpan(0, 0, 0, 0, 0)),
+                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
                             OptionId = 1,
-                            ReviewDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5214), new TimeSpan(0, 0, 0, 0, 0)),
-                            ReviewDescription = "So so i liked the expierience a bit",
-                            ReviewRating = 3f,
-                            ReviewTittle = "Kinda love it",
-                            ReviewUpdateDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5215), new TimeSpan(0, 0, 0, 0, 0)),
-                            UserReviewerId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
+                            Date = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5214), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description= "So so i liked the expierience a bit",
+                            Rating = 3f,
+                            Title = "Kinda love it",
+                            UpdateDate = new DateTimeOffset(new DateTime(2023, 5, 9, 0, 9, 12, 433, DateTimeKind.Unspecified).AddTicks(5215), new TimeSpan(0, 0, 0, 0, 0)),
+                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
                 });
 
@@ -1581,7 +1581,7 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Product.DiscountEntity", null)
                         .WithMany("ProductsDiscounts")
-                        .HasForeignKey("DiscountCode")
+                        .HasForeignKey("Code")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1609,7 +1609,7 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Product.DiscountEntity", null)
                         .WithMany("AppliedDiscounts")
-                        .HasForeignKey("DiscountCode")
+                        .HasForeignKey("Code")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1715,7 +1715,7 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("UserReviewerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

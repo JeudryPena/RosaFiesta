@@ -84,13 +84,13 @@ public class PurchaseController: ControllerBase
         return Ok(cart);
     }
 
-    [HttpPut("{purchaseNumber}/option{optionId}/discount/{discountCode}/SelectDiscount")]
-    public async Task<IActionResult> SelectDiscountAsync(int purchaseNumber, int optionId, string discountCode, CancellationToken cancellationToken)
+    [HttpPut("{purchaseNumber}/option{optionId}/discount/{Code}/SelectDiscount")]
+    public async Task<IActionResult> SelectDiscountAsync(int purchaseNumber, int optionId, string Code, CancellationToken cancellationToken)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        ValidDiscountResponse cart = await _serviceManager.OrderService.SelectDiscountAsync(userId, purchaseNumber, discountCode, optionId, cancellationToken);
+        ValidDiscountResponse cart = await _serviceManager.OrderService.SelectDiscountAsync(userId, purchaseNumber, Code, optionId, cancellationToken);
         return Ok(cart);
     }
     

@@ -2,7 +2,7 @@
 
 public class ReviewDto
 {
-    public string? ReviewDescription { get; set; }
-    public float ReviewRating { get; set; }
-    public string? ReviewTittle { get; set; }
+    public string? Description{ get; set; }
+    public float Rating { get; set; }
+    public string? Title { get; set; }
 }

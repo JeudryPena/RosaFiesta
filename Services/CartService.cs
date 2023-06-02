@@ -41,7 +41,7 @@ internal sealed class CartService : ICartService {
         return cartResponse;
      }
 
-     public async Task<CartResponse> AddPackToCartAsync(string userId, int optionId, string? discountCode, List<PurchaseDetailDto> cartItems,
+     public async Task<CartResponse> AddPackToCartAsync(string userId, int optionId, string? Code, List<PurchaseDetailDto> cartItems,
          CancellationToken cancellationToken = default)
      { 
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
@@ -66,9 +66,9 @@ internal sealed class CartService : ICartService {
                     Quantity = cartItem.Quantity,
                     CreatedAt = DateTimeOffset.UtcNow,
                     UnitPrice = cartItem.Quantity * productOption.Price,
-                    DiscountApplied = discountCode != null ? new AppliedDiscountEntity
+                    DiscountApplied = Code != null ? new AppliedDiscountEntity
                     {
-                        DiscountCode = discountCode,
+                        Code = Code,
                         UserId = userId,
                         AppliedDate = DateTimeOffset.UtcNow,
                     } : null,
@@ -81,10 +81,10 @@ internal sealed class CartService : ICartService {
                 if (purchaseOption == null)
                     throw new Exception("Option not found");
                 purchaseOption.Quantity += cartItem.Quantity;
-                if (discountCode != null && purchaseOption.AppliedId == null)
+                if (Code != null && purchaseOption.AppliedId == null)
                     purchaseOption.DiscountApplied = new AppliedDiscountEntity
                     {
-                        DiscountCode = discountCode,
+                        Code = Code,
                         UserId = userId,
                         AppliedDate = DateTimeOffset.UtcNow,
                     };
@@ -136,7 +136,7 @@ internal sealed class CartService : ICartService {
         return cartResponse;
      }
 
-     public async Task<CartResponse> AddProductToCartAsync(string userId, string? discountCode, PurchaseDetailDto cartItem,
+     public async Task<CartResponse> AddProductToCartAsync(string userId, string? Code, PurchaseDetailDto cartItem,
          CancellationToken cancellationToken = default)
      {
          CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
@@ -155,9 +155,9 @@ internal sealed class CartService : ICartService {
                  Quantity = cartItem.Quantity,
                  CreatedAt = DateTimeOffset.UtcNow,
                  UnitPrice = cartItem.Quantity * option.Price,
-                 DiscountApplied = discountCode != null ? new AppliedDiscountEntity
+                 DiscountApplied = Code != null ? new AppliedDiscountEntity
                  {
-                     DiscountCode = discountCode,
+                     Code = Code,
                      UserId = userId,
                      AppliedDate = DateTimeOffset.UtcNow,
                  } : null,
@@ -170,11 +170,11 @@ internal sealed class CartService : ICartService {
             optionDetail.Quantity += cartItem.Quantity;
             if (optionDetail.Quantity < option.QuantityAvaliable)
                 throw new Exception($"You are adding {optionDetail.Quantity - option.QuantityAvaliable} more items than the quantity available");
-            if (discountCode != null && optionDetail.AppliedId == null)
+            if (Code != null && optionDetail.AppliedId == null)
             {
                 optionDetail.DiscountApplied = new AppliedDiscountEntity
                 {
-                    DiscountCode = discountCode,
+                    Code = Code,
                     UserId = userId,
                     AppliedDate = DateTimeOffset.UtcNow,
                 }; 

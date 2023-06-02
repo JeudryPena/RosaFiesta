@@ -28,9 +28,7 @@ export class ManagementDiscountsComponent {
     // config.keyboard = false;
   }
 
-
-
-  AddProduct() {
+  AddDiscount() {
     const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.name = 'World';
   }

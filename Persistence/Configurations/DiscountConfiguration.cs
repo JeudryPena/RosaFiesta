@@ -8,45 +8,42 @@ namespace Persistence.Configurations;
 
 public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
 {
-    private const string DefaultDiscountCode = "ROSA";
-    private const string DefaultDiscountCode1 = "WELCOME";
+    private const string DefaultCode = "ROSA";
+    private const string DefaultCode1 = "WELCOME";
 
     public void Configure(EntityTypeBuilder<DiscountEntity> builder)
     {
         builder.ToTable(nameof(DiscountEntity));
-        builder.HasKey(x => x.DiscountCode);
-        builder.Property(x => x.DiscountCode).IsRequired();
-        builder.Property(x => x.DiscountName).IsRequired();
-        builder.Property(x => x.DiscountType).IsRequired();
-        builder.Property(x => x.DiscountValue).IsRequired();
+        builder.HasKey(x => x.Code);
+        builder.Property(x => x.Code).IsRequired();
+        builder.Property(x => x.Name).IsRequired();
+        builder.Property(x => x.Type).IsRequired();
+        builder.Property(x => x.Value).IsRequired();
         builder.Property(x => x.MaxTimesApply).IsRequired();
-        builder.Property(x => x.DiscountStartDate).IsRequired();
-        builder.Property(x => x.DiscountEndDate).IsRequired();
-        builder.Property(x => x.DiscountDescription);
-        builder.Property(x => x.DiscountImage);
-        builder.HasMany(x => x.ProductsDiscounts).WithOne().HasForeignKey(x => x.DiscountCode);
-        builder.HasMany(x => x.AppliedDiscounts).WithOne().HasForeignKey(x => x.DiscountCode);
+        builder.Property(x => x.Start).IsRequired();
+        builder.Property(x => x.End).IsRequired();
+        builder.Property(x => x.Description);
+        builder.HasMany(x => x.ProductsDiscounts).WithOne().HasForeignKey(x => x.Code);
+        builder.HasMany(x => x.AppliedDiscounts).WithOne().HasForeignKey(x => x.Code);
         builder.HasData(new DiscountEntity
         {
-            DiscountCode = DefaultDiscountCode,
-            DiscountName = "Descuento Inicial",
-            DiscountValue = 200,
-            DiscountType = DiscountType.Amount,
-            DiscountStartDate = DateTimeOffset.UtcNow,
-            DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
-            DiscountDescription = "10% de descuento en todos los productos",
-            DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
+            Code = DefaultCode,
+            Name = "Descuento Inicial",
+            Value = 200,
+            Type = DiscountType.Amount,
+            Start = DateTimeOffset.UtcNow,
+            End = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
+            Description = "10% de descuento en todos los productos",
             MaxTimesApply = 5,
         }, new DiscountEntity
         {
-            DiscountCode = DefaultDiscountCode1,
-            DiscountName = "Descuento de Bienvenida",
-            DiscountValue = 10,
-            DiscountType = DiscountType.Percentage,
-            DiscountStartDate = DateTimeOffset.UtcNow,
-            DiscountEndDate = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
-            DiscountDescription = "100$ de descuento en todos los productos",
-            DiscountImage = "https://i.imgur.com/1ZQZ1Zm.png",
+            Code = DefaultCode1,
+            Name = "Descuento de Bienvenida",
+            Value = 10,
+            Type = DiscountType.Percentage,
+            Start = DateTimeOffset.UtcNow,
+            End = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
+            Description = "100$ de descuento en todos los productos",
             MaxTimesApply = 1,
         }
 

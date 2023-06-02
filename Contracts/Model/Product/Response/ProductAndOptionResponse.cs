@@ -23,8 +23,8 @@ public class ProductAndOptionResponse
     public Guid? WarrantyId { get; set; }
     public Guid? SupplierId { get; set; }
     public int OptionId { get; set; }
-    public DateTimeOffset? LastReviewDate => Reviews == null || Reviews.Count == 0 ? null : Reviews.Max(r => r.ReviewDate);
-    public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.ReviewRating);
+    public DateTimeOffset? LastDate => Reviews == null || Reviews.Count == 0 ? null : Reviews.Max(r => r.Date);
+    public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.Rating);
     public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
     public ICollection<ReviewResponse>? Reviews { get; set; }
     public int TotalOptions => Options.Count;

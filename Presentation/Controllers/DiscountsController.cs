@@ -27,10 +27,10 @@ public class DiscountsController: ControllerBase
           return Ok(discounts);
      }
      
-     [HttpGet("{discountCode}")]
-     public async Task<IActionResult> GetDiscount(string discountCode, CancellationToken cancellationToken)
+     [HttpGet("{Code}")]
+     public async Task<IActionResult> GetDiscount(string Code, CancellationToken cancellationToken)
      {
-          DiscountResponse discount = await _serviceManager.DiscountService.GetDiscountAsync(discountCode, cancellationToken);
+          DiscountResponse discount = await _serviceManager.DiscountService.GetDiscountAsync(Code, cancellationToken);
           return Ok(discount);
      }
     
@@ -44,23 +44,23 @@ public class DiscountsController: ControllerBase
           return Ok(discountResponse);
      }
 
-     [HttpPut("{discountCode}")]
-     public async Task<IActionResult> UpdateDiscount(string discountCode,[FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
+     [HttpPut("{Code}")]
+     public async Task<IActionResult> UpdateDiscount(string Code,[FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
      {
           string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
           if (userId == null)
                return StatusCode((int) HttpStatusCode.Unauthorized);
-          DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(userId, discountCode, discountDto, cancellationToken);
+          DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(userId, Code, discountDto, cancellationToken);
           return Ok(discountResponse);
      }
     
-     [HttpDelete("{discountCode}")]
-     public async Task<IActionResult> DeleteDiscount(string discountCode, CancellationToken cancellationToken)
+     [HttpDelete("{Code}")]
+     public async Task<IActionResult> DeleteDiscount(string Code, CancellationToken cancellationToken)
      {
           string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
           if (userId == null)
                return StatusCode((int) HttpStatusCode.Unauthorized);
-          await _serviceManager.DiscountService.DeleteDiscountAsync(userId, discountCode, cancellationToken);
+          await _serviceManager.DiscountService.DeleteDiscountAsync(userId, Code, cancellationToken);
           return Ok();
      }
 }

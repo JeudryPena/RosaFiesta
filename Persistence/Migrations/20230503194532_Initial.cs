@@ -94,14 +94,14 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    DiscountCode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DiscountName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    DiscountType = table.Column<int>(type: "integer", nullable: false),
-                    DiscountValue = table.Column<double>(type: "double precision", nullable: false),
+                    Code = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<double>(type: "double precision", nullable: false),
                     MaxTimesApply = table.Column<int>(type: "integer", nullable: false),
-                    DiscountStartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    DiscountEndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    DiscountDescription = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     DiscountImage = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -110,7 +110,7 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiscountEntity", x => x.DiscountCode);
+                    table.PrimaryKey("PK_DiscountEntity", x => x.Code);
                 });
 
             migrationBuilder.CreateTable(
@@ -367,19 +367,19 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DiscountCode = table.Column<string>(type: "character varying(20)", nullable: false),
+                    Code = table.Column<string>(type: "character varying(20)", nullable: false),
                     ProductId = table.Column<string>(type: "character varying(100)", nullable: true),
                     OptionId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductsDiscountsEntity", x => new { x.Id, x.DiscountCode });
+                    table.PrimaryKey("PK_ProductsDiscountsEntity", x => new { x.Id, x.Code });
                     table.ForeignKey(
-                        name: "FK_ProductsDiscountsEntity_DiscountEntity_DiscountCode",
-                        column: x => x.DiscountCode,
+                        name: "FK_ProductsDiscountsEntity_DiscountEntity_Code",
+                        column: x => x.Code,
                         principalSchema: "RosaFiesta",
                         principalTable: "DiscountEntity",
-                        principalColumn: "DiscountCode",
+                        principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductsDiscountsEntity_Options_OptionId",
@@ -423,18 +423,18 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    DiscountCode = table.Column<string>(type: "character varying(20)", nullable: false),
+                    Code = table.Column<string>(type: "character varying(20)", nullable: false),
                     AppliedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AppliedDiscounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppliedDiscounts_DiscountEntity_DiscountCode",
-                        column: x => x.DiscountCode,
+                        name: "FK_AppliedDiscounts_DiscountEntity_Code",
+                        column: x => x.Code,
                         principalSchema: "RosaFiesta",
                         principalTable: "DiscountEntity",
-                        principalColumn: "DiscountCode",
+                        principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -639,20 +639,20 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ReviewDescription = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    ReviewRating = table.Column<float>(type: "real", nullable: false),
-                    ReviewDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ReviewUpdateDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    ReviewTittle = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    UserReviewerId = table.Column<string>(type: "text", nullable: false),
+                    Description= table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    Rating = table.Column<float>(type: "real", nullable: false),
+                    Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     OptionId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReviewEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReviewEntity_AspNetUsers_UserReviewerId",
-                        column: x => x.UserReviewerId,
+                        name: "FK_ReviewEntity_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalSchema: "RosaFiesta",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -895,7 +895,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
-                columns: new[] { "DiscountCode", "CreatedAt", "CreatedBy", "DiscountDescription", "DiscountEndDate", "DiscountImage", "DiscountName", "DiscountStartDate", "DiscountType", "DiscountValue", "MaxTimesApply", "UpdatedAt", "UpdatedBy" },
+                columns: new[] { "Code", "CreatedAt", "CreatedBy", "Description", "End", "DiscountImage", "Name", "Start", "Type", "Value", "MaxTimesApply", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
                     { "ROSA", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2182), new TimeSpan(0, 0, 0, 0, 0)), "System", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2187), new TimeSpan(0, 0, 0, 0, 0)), 1, 200.0, 5, null, null },
@@ -917,7 +917,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "AppliedDiscounts",
-                columns: new[] { "Id", "AppliedDate", "DiscountCode", "UserId" },
+                columns: new[] { "Id", "AppliedDate", "Code", "UserId" },
                 values: new object[,]
                 {
                     { 1, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 524, DateTimeKind.Unspecified).AddTicks(1743), new TimeSpan(0, -4, 0, 0, 0)), "ROSA", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
@@ -983,7 +983,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "ProductsDiscountsEntity",
-                columns: new[] { "DiscountCode", "Id", "OptionId", "ProductId" },
+                columns: new[] { "Code", "Id", "OptionId", "ProductId" },
                 values: new object[,]
                 {
                     { "ROSA", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), 1, "SDA01" },
@@ -1005,7 +1005,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "ReviewEntity",
-                columns: new[] { "Id", "OptionId", "ReviewDate", "ReviewDescription", "ReviewRating", "ReviewTittle", "ReviewUpdateDate", "UserReviewerId" },
+                columns: new[] { "Id", "OptionId", "Date", "ReviewDescription", "Rating", "Title", "UpdateDate", "UserId" },
                 values: new object[,]
                 {
                     { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"), 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8244), new TimeSpan(0, 0, 0, 0, 0)), "So so i liked the expierience a bit", 3f, "Kinda love it", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8245), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
@@ -1019,10 +1019,10 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppliedDiscounts_DiscountCode",
+                name: "IX_AppliedDiscounts_Code",
                 schema: "RosaFiesta",
                 table: "AppliedDiscounts",
-                column: "DiscountCode");
+                column: "Code");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppliedDiscounts_UserId",
@@ -1190,10 +1190,10 @@ namespace Persistence.Migrations
                 column: "WarrantyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductsDiscountsEntity_DiscountCode",
+                name: "IX_ProductsDiscountsEntity_Code",
                 schema: "RosaFiesta",
                 table: "ProductsDiscountsEntity",
-                column: "DiscountCode");
+                column: "Code");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsDiscountsEntity_OptionId",
@@ -1263,10 +1263,10 @@ namespace Persistence.Migrations
                 column: "OptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReviewEntity_UserReviewerId",
+                name: "IX_ReviewEntity_UserId",
                 schema: "RosaFiesta",
                 table: "ReviewEntity",
-                column: "UserReviewerId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Services_Name",

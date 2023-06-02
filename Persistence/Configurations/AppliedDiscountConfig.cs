@@ -6,9 +6,9 @@ namespace Persistence.Configurations;
 
 public class AppliedDiscountConfig : IEntityTypeConfiguration<AppliedDiscountEntity>
 {
-    private const string DefaultDiscountCode = "ROSA";
+    private const string DefaultCode = "ROSA";
     private const string AdminId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
-    private const string DefaultDiscountCode1 = "WELCOME";
+    private const string DefaultCode1 = "WELCOME";
     private const int AppliedId = 1;
     private const int AppliedId1 = 2;
     private const int AppliedId2 = 3;
@@ -18,26 +18,26 @@ public class AppliedDiscountConfig : IEntityTypeConfiguration<AppliedDiscountEnt
         builder.Property(ad => ad.Id).ValueGeneratedOnAdd();
         builder.Property(ad => ad.AppliedDate).IsRequired();
         builder.Property(ad => ad.UserId).IsRequired();
-        builder.Property(ad => ad.DiscountCode).IsRequired();
+        builder.Property(ad => ad.Code).IsRequired();
 
         builder.HasData(new AppliedDiscountEntity
         {
             Id = AppliedId,
             UserId = AdminId,
-            DiscountCode = DefaultDiscountCode,
+            Code = DefaultCode,
             AppliedDate = DateTimeOffset.Now,
         }, new AppliedDiscountEntity
         {
             Id = AppliedId1,
             UserId = AdminId,
-            DiscountCode = DefaultDiscountCode1,
+            Code = DefaultCode1,
             AppliedDate = DateTimeOffset.Now,
         },
         new AppliedDiscountEntity
         {
             Id = AppliedId2,
             UserId = AdminId,
-            DiscountCode = DefaultDiscountCode1,
+            Code = DefaultCode1,
             AppliedDate = DateTimeOffset.Now,
         });
     }

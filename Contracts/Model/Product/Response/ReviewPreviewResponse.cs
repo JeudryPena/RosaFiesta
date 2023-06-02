@@ -2,5 +2,5 @@
 
 public class ReviewPreviewResponse
 {
-    public float ReviewRating { get; set; } 
+    public float Rating { get; set; } 
 }

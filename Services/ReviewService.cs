@@ -38,8 +38,8 @@ internal sealed class ReviewService: IReviewService
     {
         var review = reviewDto.Adapt<ReviewEntity>();
         await _repositoryManager.ReviewRepository.AlredyExistAsync(optionId, userId, cancellationToken); 
-        review.ReviewDate = DateTimeOffset.UtcNow;
-        review.UserReviewerId = userId;
+        review.Date = DateTimeOffset.UtcNow;
+        review.UserId = userId;
         review.OptionId = optionId;
         _repositoryManager.ReviewRepository.Insert(review);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -51,7 +51,7 @@ internal sealed class ReviewService: IReviewService
     {
         ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
         review = reviewDto.Adapt(review);
-        review.ReviewUpdateDate = DateTimeOffset.Now;
+        review.UpdateDate = DateTimeOffset.Now;
         _repositoryManager.ReviewRepository.Update(review);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var reviewResponse = review.Adapt<ReviewResponse>();

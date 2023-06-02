@@ -9,7 +9,7 @@ public class ProductAndOptionDetailResponse
     public string? Description { get; set; }
     public ICollection<MultipleImagesResponse>? Images { get; set; }
     public double Price { get; set; }
-    public double? OfferPrice => Discount == null ? null : Discount.DiscountType == 1 ? Price - Price * Discount.DiscountValue / 100 : Price - Discount.DiscountValue;
+    public double? OfferPrice => Discount == null ? null : Discount.Type == 1 ? Price - Price * Discount.Value / 100 : Price - Discount.Value;
     public float? DiscountSave { get; set; }
     public string Stock => StockCalculate().ToString(); 
     public int QuantityAvaliable { get; set; }
@@ -22,8 +22,8 @@ public class ProductAndOptionDetailResponse
     public string Type { get; set; } 
     public string Condition { get; set; } 
     public int? CategoryId { get; set; }
-    public DateTimeOffset LastReviewDate => Reviews.Max(x => x.ReviewDate);
-    public float AverageRating => Reviews.Average(x => x.ReviewRating);
+    public DateTimeOffset LastDate => Reviews.Max(x => x.Date);
+    public float AverageRating => Reviews.Average(x => x.Rating);
     public int TotalReviews => Reviews.Count;
     public int TotalSales { get; set; }
     public ICollection<ReviewResponse>? Reviews { get; set; }

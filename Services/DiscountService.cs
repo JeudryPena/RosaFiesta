@@ -41,7 +41,7 @@ internal sealed class DiscountService : IDiscountService
         var discountEntity = discount.Adapt<DiscountEntity>();
         discountEntity.ProductsDiscounts = discount.ProductsDiscount.Select(d => new ProductsDiscountsEntity()
         {
-            DiscountCode = discountEntity.DiscountCode,
+            Code = discountEntity.Code,
             ProductId = d.ProductCode ?? null,
             OptionId = d.OptionId ?? null
         }).ToList();

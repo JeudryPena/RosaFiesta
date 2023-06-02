@@ -3,12 +3,12 @@
 public class ReviewResponse
 {
     public Guid Id { get; set; }
-    public string? ReviewDescription { get; set; }
-    public float ReviewRating { get; set; }
-    public DateTimeOffset ReviewDate { get; set; } 
-    public DateTimeOffset? ReviewUpdateDate { get; set; }
-    public string? ReviewTittle { get; set; }
-    public string UserReviewerId { get; set; }
+    public string? Description{ get; set; }
+    public float Rating { get; set; }
+    public DateTimeOffset Date { get; set; } 
+    public DateTimeOffset? UpdateDate { get; set; }
+    public string? Title { get; set; }
+    public string UserId { get; set; }
     public string ProductCode { get; set; } 
     public int? OptionId { get; set; } 
 }

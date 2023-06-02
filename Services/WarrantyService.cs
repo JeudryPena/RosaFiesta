@@ -111,5 +111,4 @@ internal sealed class WarrantyService : IWarrantyService
         var warrantyResponse = warranty.Adapt<WarrantyResponse>();
         return warrantyResponse;
     }
-
 }

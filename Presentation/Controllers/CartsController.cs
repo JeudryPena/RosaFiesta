@@ -54,25 +54,25 @@ public class CartsController : ControllerBase {
         return Ok(cart);
     }
     
-    [HttpPut("discount/{discountCode?}/AddProductToCart")]
-    public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken, string? discountCode = " ") {
+    [HttpPut("discount/{Code?}/AddProductToCart")]
+    public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken, string? Code = " ") {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        if(discountCode == " ")
-            discountCode = null;
-        CartResponse cart = await _serviceManager.CartService.AddProductToCartAsync(userId, discountCode, cartItem, cancellationToken);
+        if(Code == " ")
+            Code = null;
+        CartResponse cart = await _serviceManager.CartService.AddProductToCartAsync(userId, Code, cartItem, cancellationToken);
         return Ok(cart);
     }
 
-    [HttpPut("/option/{optionId}/discount/{discountCode?}/AddPackToCart")]
-    public async Task<IActionResult> AddPackToCartAsync([FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken, int optionId, string? discountCode = " ") {
+    [HttpPut("/option/{optionId}/discount/{Code?}/AddPackToCart")]
+    public async Task<IActionResult> AddPackToCartAsync([FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken, int optionId, string? Code = " ") {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return StatusCode((int) HttpStatusCode.Unauthorized);
-        if(discountCode == " ")
-            discountCode = null;
-        CartResponse cart = await _serviceManager.CartService.AddPackToCartAsync(userId, optionId, discountCode, cartItemsItems, cancellationToken);
+        if(Code == " ")
+            Code = null;
+        CartResponse cart = await _serviceManager.CartService.AddPackToCartAsync(userId, optionId, Code, cartItemsItems, cancellationToken);
         return Ok(cart);
     }
     

@@ -7,8 +7,8 @@ namespace Persistence.Configurations;
 
 public class ProductsDiscountsConfig : IEntityTypeConfiguration<ProductsDiscountsEntity>
 {
-    private const string DefaultDiscountCode = "ROSA";
-    private const string DefaultDiscountCode1 = "WELCOME";
+    private const string DefaultCode = "ROSA";
+    private const string DefaultCode1 = "WELCOME";
     private const string ProductId = "SDA01";
     private const string ProductId2 = "SDA02";
     private const int OptionId = 1;
@@ -20,28 +20,28 @@ public class ProductsDiscountsConfig : IEntityTypeConfiguration<ProductsDiscount
     public void Configure(EntityTypeBuilder<ProductsDiscountsEntity> builder)
     {
         builder.ToTable(nameof(ProductsDiscountsEntity));
-        builder.HasKey(x => new { x.Id, x.DiscountCode });
+        builder.HasKey(x => new { x.Id, x.Code });
         builder.HasOne(x => x.Option).WithMany(x => x.ProductsDiscounts).HasForeignKey(x => x.OptionId);
         builder.HasData(
             new ProductsDiscountsEntity
             {
                 Id = Guid.Parse(ProductDiscountId),
                 ProductId = ProductId,
-                DiscountCode = DefaultDiscountCode,
+                Code = DefaultCode,
                 OptionId = OptionId
             },
             new ProductsDiscountsEntity
             {
                 Id = Guid.Parse(ProductDiscountId2),
                 ProductId = ProductId,
-                DiscountCode = DefaultDiscountCode1,
+                Code = DefaultCode1,
                 OptionId = OptionId2
             },
             new ProductsDiscountsEntity
             {
                 Id = Guid.Parse(ProductDiscountId3),
                 ProductId = ProductId2,
-                DiscountCode = DefaultDiscountCode1,
+                Code = DefaultCode1,
                 OptionId = OptionId3
             }
         );

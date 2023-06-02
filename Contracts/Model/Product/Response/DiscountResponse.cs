@@ -2,14 +2,13 @@
 
 public class DiscountResponse
 {
-    public string DiscountCode { get; set; } = string.Empty;
-    public string DiscountName { get; set; } = string.Empty;
-    public string DiscountType { get; set; }
-    public double DiscountValue { get; set; }
+    public string Code { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Type { get; set; }
+    public double Value { get; set; }
     public int MaxTimesApply { get; set; }
-    public DateTimeOffset DiscountStartDate { get; set; } = DateTimeOffset.Now;
-    public DateTimeOffset DiscountEndDate { get; set; } = DateTimeOffset.Now;
-    public string? DiscountDescription { get; set; }
-    public string? DiscountImage { get; set; }
+    public DateTimeOffset Start { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset End { get; set; } = DateTimeOffset.Now;
+    public string? Description { get; set; }
     public ICollection<ProductsDiscountResponse> ProductsDiscounts { get; set; }
 }

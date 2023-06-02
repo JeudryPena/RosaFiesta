@@ -17,30 +17,30 @@ public class ReviewConfiguration: IEntityTypeConfiguration<ReviewEntity>
         builder.ToTable(nameof(ReviewEntity));
         builder.HasKey(x => x.Id);
         builder.Property(x => x.ReviewDescription);
-        builder.Property(x => x.ReviewRating).IsRequired();
-        builder.Property(x => x.ReviewDate).IsRequired();
-        builder.Property(x => x.ReviewUpdateDate);
-        builder.Property(x => x.ReviewTittle);
-        builder.Property(x => x.UserReviewerId).IsRequired();
+        builder.Property(x => x.Rating).IsRequired();
+        builder.Property(x => x.Date).IsRequired();
+        builder.Property(x => x.UpdateDate);
+        builder.Property(x => x.Title);
+        builder.Property(x => x.UserId).IsRequired();
         builder.HasData(new ReviewEntity
         {
             Id = Guid.Parse(ReviewId),
-            ReviewDescription = "Excellent",
-            ReviewRating = 5,
-            ReviewDate = DateTimeOffset.UtcNow,
-            ReviewUpdateDate = DateTimeOffset.UtcNow,
-            ReviewTittle = "Nice product",
-            UserReviewerId = AdminId,
+            Description= "Excellent",
+            Rating = 5,
+            Date = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Title = "Nice product",
+            UserId = AdminId,
             OptionId = OptionId
         }, new ReviewEntity
         {
             Id = Guid.Parse(ReviewId2),
-            ReviewDescription = "So so i liked the expierience a bit",
-            ReviewRating = 3,
-            ReviewDate = DateTimeOffset.UtcNow,
-            ReviewUpdateDate = DateTimeOffset.UtcNow,
-            ReviewTittle = "Kinda love it",
-            UserReviewerId = AdminId,
+            Description= "So so i liked the expierience a bit",
+            Rating = 3,
+            Date = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Title = "Kinda love it",
+            UserId = AdminId,
             OptionId = OptionId
         });
     }

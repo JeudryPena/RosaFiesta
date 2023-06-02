@@ -78,17 +78,17 @@ namespace Persistence.Migrations
             migrationBuilder.UpdateData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
-                keyColumn: "DiscountCode",
+                keyColumn: "Code",
                 keyValue: "ROSA",
-                columns: new[] { "CreatedAt", "DiscountStartDate" },
+                columns: new[] { "CreatedAt", "Start" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 768, DateTimeKind.Unspecified).AddTicks(1562), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 768, DateTimeKind.Unspecified).AddTicks(1567), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
-                keyColumn: "DiscountCode",
+                keyColumn: "Code",
                 keyValue: "WELCOME",
-                columns: new[] { "CreatedAt", "DiscountStartDate" },
+                columns: new[] { "CreatedAt", "Start" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 768, DateTimeKind.Unspecified).AddTicks(1576), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 768, DateTimeKind.Unspecified).AddTicks(1577), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
@@ -144,7 +144,7 @@ namespace Persistence.Migrations
                 table: "ReviewEntity",
                 keyColumn: "Id",
                 keyValue: new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
-                columns: new[] { "ReviewDate", "ReviewUpdateDate" },
+                columns: new[] { "Date", "UpdateDate" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 776, DateTimeKind.Unspecified).AddTicks(7747), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 776, DateTimeKind.Unspecified).AddTicks(7748), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
@@ -152,7 +152,7 @@ namespace Persistence.Migrations
                 table: "ReviewEntity",
                 keyColumn: "Id",
                 keyValue: new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
-                columns: new[] { "ReviewDate", "ReviewUpdateDate" },
+                columns: new[] { "Date", "UpdateDate" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 776, DateTimeKind.Unspecified).AddTicks(7739), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 8, 23, 47, 28, 776, DateTimeKind.Unspecified).AddTicks(7741), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
@@ -255,17 +255,17 @@ namespace Persistence.Migrations
             migrationBuilder.UpdateData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
-                keyColumn: "DiscountCode",
+                keyColumn: "Code",
                 keyValue: "ROSA",
-                columns: new[] { "CreatedAt", "DiscountStartDate" },
+                columns: new[] { "CreatedAt", "Start" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2182), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2187), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
-                keyColumn: "DiscountCode",
+                keyColumn: "Code",
                 keyValue: "WELCOME",
-                columns: new[] { "CreatedAt", "DiscountStartDate" },
+                columns: new[] { "CreatedAt", "Start" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2196), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2197), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
@@ -321,7 +321,7 @@ namespace Persistence.Migrations
                 table: "ReviewEntity",
                 keyColumn: "Id",
                 keyValue: new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
-                columns: new[] { "ReviewDate", "ReviewUpdateDate" },
+                columns: new[] { "Date", "UpdateDate" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8244), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8245), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
@@ -329,7 +329,7 @@ namespace Persistence.Migrations
                 table: "ReviewEntity",
                 keyColumn: "Id",
                 keyValue: new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
-                columns: new[] { "ReviewDate", "ReviewUpdateDate" },
+                columns: new[] { "Date", "UpdateDate" },
                 values: new object[] { new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8234), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8237), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(

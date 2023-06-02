@@ -32,7 +32,7 @@ internal sealed class ReviewRepository: IReviewRepository
     
     public async Task AlredyExistAsync(int optionId, string userId, CancellationToken cancellationToken = default)
     {
-        ReviewEntity? review = await _context.Reviews.FirstOrDefaultAsync(x =>  x.UserReviewerId == userId && x.OptionId == optionId, cancellationToken);
+        ReviewEntity? review = await _context.Reviews.FirstOrDefaultAsync(x =>  x.UserId == userId && x.OptionId == optionId, cancellationToken);
         if (review != null)
             throw new ArgumentException("Review already exist");
     }

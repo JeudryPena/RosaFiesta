@@ -14,7 +14,7 @@ public interface IOrderService
     Task<OrderResponse> OrderPurchaseAsync(string userId, Guid payMethodId, Guid addressId,
         CancellationToken cancellationToken = default);
     Task RemoveDiscountAsync(string userId, int purchaseNumber, CancellationToken cancellationToken = default);
-    Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, string discountCode,
+    Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, string Code,
         int optionId,
         CancellationToken cancellationToken = default);
     Task ReturnOrderDetailAsync(string userId, int purchaseNumber, int orderId, CancellationToken cancellationToken);
