@@ -1,5 +1,5 @@
 export interface ReviewDto {
-    reviewDescription: string | null;
-    reviewRating: number;
-    reviewtitle: string | null;
+    description: string | null;
+    rating: number;
+    title: string | null;
 }
