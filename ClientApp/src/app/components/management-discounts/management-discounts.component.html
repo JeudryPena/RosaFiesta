@@ -1,0 +1,86 @@
+<div class="row p-3">
+    <div class="col">
+        <div class="card text-start p-2">
+            <div class="card-body">
+                <div class="row">
+                    <caption class="col">Categorias&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
+                            ngbAutofocus (click)="AddCategory()">
+                            Añadir Categoria
+                        </button></caption>
+                    <span class="col col-sm-auto col-form-label" *ngIf="service.loading$ | async">
+                        <i class="fas fa-spinner fa-spin"
+                            style="color: #32CD32; display: inline-block; margin-right: 5px;"></i>
+                        <span style="color: #32CD32; display: inline-block;">Cargando..</span>
+                    </span>
+                    <div class="col-xs-3 col-sm-auto input-group-sm d-flex search-container align-items-center">
+                        <input id="table-complete-search" type="text" class="form-control searcher" name="searchTerm"
+                            [(ngModel)]="service.searchTerm" placeholder="Buscar..." aria-label="Buscar" />
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table class="table table-striped table-hover align-middle ">
+                        <thead (scroll)="onScroll($event)" class="tables">
+                            <tr class="table-row">
+                                <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Titulo</th>
+                                <th scope="col" class="table-cell">Icono</th>
+                                <th scope="col" class="table-cell">
+                                    Descripción</th>
+                                <th scope="col" class="table-cell">
+                                    SubCategorias</th>
+                                <th scope="col" class="table-cell"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="rows">
+                            <tr class="scroll" *ngFor="let item of categories$ | async ">
+                                <td><ngb-highlight [result]="item.title" [term]="service.searchTerm"></ngb-highlight>
+                                <td>
+                                    <img [src]="'' + item.icon" class="me-2" style="width: 20px" />
+                                </td>
+                                <td><ngb-highlight [result]="item.description"
+                                        [term]="service.searchTerm"></ngb-highlight>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+                                        <div *ngFor="let subcategory of item.subCategories">
+                                            <span class="badge bg-primary">{{subcategory.title}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="overflow-hidden">
+                                    <div ngbDropdown container="body">
+                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown"
+                                            ngbDropdownToggle>Actions</button>
+                                        <div ngbDropdownMenu>
+                                            <button ngbDropdownItem>Edit</button>
+                                            <button ngbDropdownItem>Disable</button>
+                                            <div class="dropdown-divider"></div>
+                                            <button ngbDropdownItem>Delete</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between p-2">
+                    <pre>Current page: {{service.page}}</pre>
+                    <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page"
+                        [pageSize]="service.pageSize" [collectionSize]="collectionSize" [maxSize]="maxSize"
+                        [rotate]="true" [boundaryLinks]="true" size="sm">
+                    </ngb-pagination>
+                    <div class="row">
+                        <pre class="col">Filas</pre>
+                        <select class="form-select " style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+                            <option [ngValue]="5">5</option>
+                            <option [ngValue]="10">10</option>
+                            <option [ngValue]="15">15</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

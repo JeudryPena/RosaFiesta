@@ -1,15 +1,13 @@
-﻿using Contracts.Model;
-using Contracts.Model.Product;
+﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
-using Domain.Entities;
+
 using Domain.Entities.Product;
-using Domain.Entities.Product.Helpers;
-using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Entities.Security.Helper;
-using Domain.Exceptions;
 using Domain.IRepository;
+
 using Mapster;
+
 using Services.Abstractions;
 
 namespace Services;
@@ -17,7 +15,7 @@ namespace Services;
 internal sealed class ProductService : IProductService
 {
     private readonly IRepositoryManager _repositoryManager;
-    
+
     public ProductService(IRepositoryManager repositoryManager)
     {
         _repositoryManager = repositoryManager;
@@ -56,27 +54,18 @@ internal sealed class ProductService : IProductService
         productAndOptionResponse.Adapt(option);
         return productAndOptionResponse;
     }
-    
+
     public async Task<ProductAndOptionResponse> CreateAsync(string userId, ProductDto productForCreationDto,
         CancellationToken cancellationToken = default)
     {
         ProductEntity product = productForCreationDto.Adapt<ProductEntity>();
-        product.CreatedAt = DateTimeOffset.UtcNow;
-        product.CreatedBy = userId;
         product.Options = productForCreationDto.Options.Adapt<List<OptionEntity>>();
         if (productForCreationDto.Category != null)
         {
             CategoryEntity category = productForCreationDto.Category.Adapt<CategoryEntity>();
-            category.CreatedAt = DateTimeOffset.UtcNow;
-            category.CreatedBy = userId;
             if (productForCreationDto.Category.SubCategories != null)
             {
                 category.SubCategories = productForCreationDto.Category.SubCategories.Adapt<List<SubCategoryEntity>>();
-                foreach (var subCategory in category.SubCategories)
-                {
-                    subCategory.CreatedAt = DateTimeOffset.UtcNow;
-                    subCategory.CreatedBy = userId;
-                } 
             }
             _repositoryManager.CategoryRepository.Insert(category);
             await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -96,7 +85,7 @@ internal sealed class ProductService : IProductService
         ProductAndOptionResponse productResponse = new();
         productResponse.Adapt(product);
         productResponse.Adapt(product.Options.FirstOrDefault());
-        
+
         return productResponse;
     }
 
@@ -110,8 +99,6 @@ internal sealed class ProductService : IProductService
         // adapt productForUpdateDto to product and option
         option.Adapt(productForUpdateDto);
         product.Adapt(productForUpdateDto.Option);
-        product.UpdatedAt = DateTimeOffset.UtcNow;
-        product.UpdatedBy = userId;
         _repositoryManager.ProductRepository.Update(product);
         ActionLogEntity actionLog = new()
         {
@@ -151,9 +138,9 @@ internal sealed class ProductService : IProductService
         }
         _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-        
+
     }
-    
+
     public async Task<ProductAndOptionDetailResponse> GetProductDetail(string productCode, int optionId,
         CancellationToken cancellationToken = default)
     {
@@ -171,8 +158,6 @@ internal sealed class ProductService : IProductService
         ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
         OptionEntity option = product.Options[0];
         option.QuantityAvaliable += count;
-        product.UpdatedBy = userId;
-        product.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.ProductRepository.Update(product);
         ActionLogEntity actionLog = new()
         {
@@ -190,7 +175,7 @@ internal sealed class ProductService : IProductService
         OptionDto optionForCreationDto,
         CancellationToken cancellationToken = default)
     {
-        ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId,  cancellationToken);
+        ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
         var option = optionForCreationDto.Adapt<OptionEntity>();
         product.Options.Add(option);
         _repositoryManager.ProductRepository.Update(product);

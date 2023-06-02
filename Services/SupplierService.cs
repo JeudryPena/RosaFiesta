@@ -1,15 +1,18 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+
 using Domain.Entities.Product;
 using Domain.Entities.Security;
 using Domain.Entities.Security.Helper;
 using Domain.IRepository;
+
 using Mapster;
+
 using Services.Abstractions;
 
 namespace Services;
 
-internal sealed class SupplierService: ISupplierService
+internal sealed class SupplierService : ISupplierService
 {
     private readonly IRepositoryManager _repositoryManager;
 
@@ -17,7 +20,7 @@ internal sealed class SupplierService: ISupplierService
     {
         _repositoryManager = repositoryManager;
     }
-    
+
     public async Task<IEnumerable<SupplierResponse>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         IEnumerable<SupplierEntity> suppliers = await _repositoryManager.SupplierRepository.GetAllAsync(cancellationToken);
@@ -35,8 +38,6 @@ internal sealed class SupplierService: ISupplierService
     public async Task<SupplierResponse> CreateAsync(string userId, SupplierDto supplierDto, CancellationToken cancellationToken = default)
     {
         var supplier = supplierDto.Adapt<SupplierEntity>();
-        supplier.CreatedBy = userId;
-        supplier.CreatedAt = DateTimeOffset.UtcNow;
         supplier.Id = Guid.NewGuid();
         supplier.IsActive = true;
         _repositoryManager.SupplierRepository.Insert(supplier);
@@ -62,8 +63,6 @@ internal sealed class SupplierService: ISupplierService
         supplier.Address = supplierDto.Address;
         supplier.Phone = supplierDto.Phone;
         supplier.Email = supplierDto.Email;
-        supplier.UpdatedBy = userId;
-        supplier.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.SupplierRepository.Update(supplier);
         ActionLogEntity actionLog = new()
         {
@@ -74,7 +73,7 @@ internal sealed class SupplierService: ISupplierService
         _repositoryManager.ActionLogRepository.Create(actionLog);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         var supplierResponse = supplier.Adapt<SupplierResponse>();
-        return supplierResponse;    
+        return supplierResponse;
     }
 
     public async Task DeleteAsync(string userId, Guid supplierId, CancellationToken cancellationToken = default)

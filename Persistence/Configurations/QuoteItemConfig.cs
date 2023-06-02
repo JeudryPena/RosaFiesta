@@ -16,9 +16,5 @@ public class QuoteItemConfig : IEntityTypeConfiguration<QuoteItemEntity>
         builder.Property(x => x.Price).IsRequired();
         builder.Property(x => x.Quantity).IsRequired();
         builder.Property(x => x.ServiceId).IsRequired();
-        builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.UpdatedAt);
-        builder.Property(x => x.CreatedBy);
-        builder.Property(x => x.UpdatedBy);
     }
 }

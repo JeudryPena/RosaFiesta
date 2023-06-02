@@ -10,7 +10,6 @@ export interface UsersResponse {
     userName: string;
     age: number;
     createdAt: string;
-    updatedAt: string | null;
     birthDate: string;
     phoneNumber: string;
     twoFactorEnabled: boolean;

@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product;
 
-public class SupplierEntity : BaseEntity
+public class SupplierEntity 
 {
     public Guid Id { get; set; }
     [StringLength(100, MinimumLength = 5)]

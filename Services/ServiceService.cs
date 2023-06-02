@@ -1,18 +1,21 @@
 ﻿using Contracts.Model.Enterprise;
 using Contracts.Model.Enterprise.Response;
+
 using Domain.Entities.Enterprise;
 using Domain.Entities.Security;
 using Domain.Entities.Security.Helper;
 using Domain.IRepository;
+
 using Mapster;
+
 using Services.Abstractions;
 
 namespace Services;
 
-internal sealed class ServiceService: IServiceService
+internal sealed class ServiceService : IServiceService
 {
     private readonly IRepositoryManager _repositoryManager;
-    
+
     public ServiceService(IRepositoryManager repositoryManager)
     {
         _repositoryManager = repositoryManager;
@@ -35,7 +38,6 @@ internal sealed class ServiceService: IServiceService
     public async Task<ServiceResponse> CreateAsync(string userId, ServiceDto serviceDto, CancellationToken cancellationToken = default)
     {
         ServiceEntity service = serviceDto.Adapt<ServiceEntity>();
-        service.CreatedBy = userId;
         _repositoryManager.ServiceRepository.Create(service);
         ActionLogEntity actionLog = new()
         {
@@ -53,8 +55,6 @@ internal sealed class ServiceService: IServiceService
         CancellationToken cancellationToken = default)
     {
         ServiceEntity service = await _repositoryManager.ServiceRepository.GetAsync(serviceId, cancellationToken);
-        service.UpdatedBy = userId;
-        service.UpdatedAt = DateTimeOffset.UtcNow;
         service = serviceDto.Adapt(service);
         if (serviceDto.Quantity != null)
         {
@@ -81,8 +81,6 @@ internal sealed class ServiceService: IServiceService
         ServiceEntity service = await _repositoryManager.ServiceRepository.GetAsync(serviceId, cancellationToken);
         service.Quantity += count;
         service.QuantityAvaliable += count;
-        service.UpdatedBy = userId;
-        service.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.ServiceRepository.Update(service);
         ActionLogEntity actionLog = new()
         {

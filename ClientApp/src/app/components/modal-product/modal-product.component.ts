@@ -1,5 +1,5 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal-product',
@@ -7,6 +7,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./modal-product.component.css']
 })
 export class ModalProductComponent {
-  @ViewChild('myModal') myModal!: TemplateRef<any>;
-  
+
+  codeFocused = false;
+  titleFocused = false;
+  optionsFocused = false;
+  typeFocused = false;
+  categoryIdFocused = false;
+  warrantyIdFocused = false;
+  supplierIdFocused = false;
+  selectorFocused = true;
+
+  constructor(public activeModal: NgbActiveModal) {
+
+  }
 }

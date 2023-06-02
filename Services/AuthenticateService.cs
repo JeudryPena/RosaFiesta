@@ -107,7 +107,6 @@ internal sealed class AuthenticateService : IAuthenticateService
             IdentityResultMessage(confirmResult);
 
         user.FullName = finishRegisterDto.Name + " " + finishRegisterDto.LastName;
-        user.UpdatedAt = DateTimeOffset.UtcNow;
         user.Cart = new CartEntity();
         await _userManager.UpdateAsync(user).ConfigureAwait(false);
 

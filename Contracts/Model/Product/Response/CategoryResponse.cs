@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Model.Product.Response;
 
-public class CategoryResponse : BaseResponse
+public class CategoryResponse
 {
     public int Id { get; set; }
     public string Name { get; set; }

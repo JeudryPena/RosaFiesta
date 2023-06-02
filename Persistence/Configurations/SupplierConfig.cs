@@ -1,14 +1,15 @@
 ﻿using Domain.Entities.Product;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-public class SupplierConfig: IEntityTypeConfiguration<SupplierEntity>
+public class SupplierConfig : IEntityTypeConfiguration<SupplierEntity>
 {
     private const string SupplierId = "B22698B8-42A2-4115-9631-1C2D1E2AC5F9";
-    
-    
+
+
     public void Configure(EntityTypeBuilder<SupplierEntity> builder)
     {
         builder.ToTable(nameof(SupplierEntity));
@@ -20,10 +21,6 @@ public class SupplierConfig: IEntityTypeConfiguration<SupplierEntity>
         builder.Property(x => x.Phone);
         builder.Property(x => x.Address);
         builder.Property(x => x.IsActive);
-        builder.Property(x => x.CreatedAt);
-        builder.Property(x => x.UpdatedAt);
-        builder.Property(x => x.CreatedBy);
-        builder.Property(x => x.UpdatedBy);
         builder.HasData(new SupplierEntity
         {
             Id = Guid.Parse(SupplierId),
@@ -32,10 +29,6 @@ public class SupplierConfig: IEntityTypeConfiguration<SupplierEntity>
             Phone = "8095395539",
             Address = "La Capital",
             IsActive = true,
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = "System",
-            UpdatedAt = DateTimeOffset.UtcNow,
-            UpdatedBy = "System",
         });
     }
 }

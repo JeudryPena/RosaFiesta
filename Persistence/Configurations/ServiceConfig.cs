@@ -16,11 +16,6 @@ public class ServiceConfig : IEntityTypeConfiguration<ServiceEntity>
         builder.Property(s => s.Image).IsRequired();
         builder.Property(s => s.Quantity).IsRequired();
         builder.Property(s => s.QuantityAvaliable).IsRequired();
-        builder.Property(s => s.CreatedAt).IsRequired();
-        builder.Property(s => s.UpdatedAt);
-        builder.Property(s => s.CreatedBy);
-        builder.Property(s => s.UpdatedBy);
         builder.HasMany(s => s.QuoteItems).WithOne().HasForeignKey(qi => qi.ServiceId);
-        
     }
 }

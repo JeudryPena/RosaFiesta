@@ -1,17 +1,90 @@
-<div class="modal fade" id="exampleModals" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" >
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="form">
+    <div class="contact-form">
+        <span class="circle one"></span>
+        <span class="circle two"></span>
+        <form action="index.html" autocomplete="off">
+            <h3 class="title">Añadir Productos</h3>
+            <div class="input-container" [ngClass]="{'focus': codeFocused || codeInput.value.length > 0 }">
+                <input #codeInput type="text" formControlName="code" class="input" (focus)="codeFocused = true"
+                    (blur)="codeFocused = false" />
+                <label>Código</label>
+                <span>Código</span>
             </div>
-            <div class="modal-body">
-                <p>hola</p>
+            <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0 }">
+                <input #titleInput type="text" formControlName="title" class="input" (focus)="titleFocused = true"
+                    (blur)="titleFocused = false" />
+                <label>Título</label>
+                <span>Título</span>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            <div class="input-container" [ngClass]="{'focus': optionsFocused || optionsInput.value.length > 0 }">
+                <input #optionsInput type="text" formControlName="options" class="input" (focus)="optionsFocused = true"
+                    (blur)="optionsFocused = false" />
+                <label>Opciones</label>
+                <span>Opciones</span>
             </div>
-        </div>
+            <div class="row group">
+                <div class="col">
+                    <div class="input-container"
+                        [ngClass]="{'focus': categoryIdFocused || categoryIdInput.value.length > 0 }">
+                        <select #categoryIdInput class="input form-select form-select-sm"
+                            aria-label=".form-select-sm example" (focus)="categoryIdFocused = true"
+                            (blur)="categoryIdFocused = false" formControlName="categoryId">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label>Categoría</label>
+                        <span>Categoría</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-container" [ngClass]="{'focus': typeFocused || typeInput.value.length > 0 }">
+                        <select #typeInput class="input form-select form-select-sm" aria-label=".form-select-sm example"
+                            (focus)="typeFocused = true" (blur)="typeFocused = false">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label>Tipo</label>
+                        <span>Tipo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row group">
+                <div class="col">
+                    <div class="input-container"
+                        [ngClass]="{'focus': warrantyIdFocused || warrantyIdInput.value.length > 0 }">
+                        <select #warrantyIdInput class="input form-select form-select-sm"
+                            aria-label=".form-select-sm example" (focus)="warrantyIdFocused = true"
+                            (blur)="warrantyIdFocused = false">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label>Garantía</label>
+                        <span>Garantía</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-container"
+                        [ngClass]="{'focus': supplierIdFocused || supplierIdInput.value.length > 0 }">
+                        <select #supplierIdInput class="input form-select form-select-sm"
+                            aria-label=".form-select-sm example" (focus)="supplierIdFocused = true"
+                            (blur)="supplierIdFocused = false">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label>Suplidor</label>
+                        <span>Suplidor</span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Crear" class="btn" />
+        </form>
     </div>
 </div>

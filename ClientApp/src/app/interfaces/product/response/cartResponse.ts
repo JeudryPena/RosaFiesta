@@ -2,8 +2,6 @@ import { PurchaseDetailResponse } from "../userInteract/response/purchaseDetailR
 
 export interface CartResponse {
     cartId: number;
-    createdDate: string;
-    updatedDate: string | null;
     userId: string | null;
     totalCartQuantity: number;
     totalCartPrice: number;

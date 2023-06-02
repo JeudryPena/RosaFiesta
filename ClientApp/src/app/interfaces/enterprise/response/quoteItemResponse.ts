@@ -1,6 +1,5 @@
-import { BaseResponse } from "../../baseResponse";
 
-export interface QuoteItemResponse extends BaseResponse {
+export interface QuoteItemResponse {
     id: string;
     quantity: number;
     price: number;

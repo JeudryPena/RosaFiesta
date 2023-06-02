@@ -1,8 +1,6 @@
-﻿using Contracts.Model.Product.UserInteract.Response;
+﻿namespace Contracts.Model.Product.Response;
 
-namespace Contracts.Model.Product.Response;
-
-public class DiscountResponse: BaseResponse
+public class DiscountResponse
 {
     public string DiscountCode { get; set; } = string.Empty;
     public string DiscountName { get; set; } = string.Empty;
@@ -13,5 +11,5 @@ public class DiscountResponse: BaseResponse
     public DateTimeOffset DiscountEndDate { get; set; } = DateTimeOffset.Now;
     public string? DiscountDescription { get; set; }
     public string? DiscountImage { get; set; }
-    public ICollection<ProductsDiscountResponse> ProductsDiscounts { get; set; } 
+    public ICollection<ProductsDiscountResponse> ProductsDiscounts { get; set; }
 }

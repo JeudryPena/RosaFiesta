@@ -21,11 +21,6 @@ public class WarrantyConfig : IEntityTypeConfiguration<WarrantyEntity>
         builder.Property(w => w.Description);
         builder.Property(w => w.Conditions);
         builder.Property(w => w.Status);
-        builder.Property(w => w.CreatedAt);
-        builder.Property(w => w.CreatedBy);
-        builder.Property(w => w.UpdatedAt);
-        builder.Property(w => w.UpdatedBy);
-
         builder.HasData(new WarrantyEntity
         {
             Id = Guid.Parse(WarrantyId),
@@ -36,8 +31,6 @@ public class WarrantyConfig : IEntityTypeConfiguration<WarrantyEntity>
             Description = "Warranty 1",
             Conditions = "Warranty 1",
             Status = WarrantyStatusType.Active,
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = "System",
         });
     }
 }

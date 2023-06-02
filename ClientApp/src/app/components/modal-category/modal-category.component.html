@@ -1,0 +1,34 @@
+<div class="form">
+    <div class="contact-form">
+        <span class="circle one"></span>
+        <span class="circle two"></span>
+        <form action="index.html" autocomplete="off">
+            <h3 class="title">Añadir Categorías</h3>
+            <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0 }">
+                <input #titleInput type="text" formControlName="title" class="input" (focus)="titleFocused = true"
+                    (blur)="titleFocused = false" />
+                <label>Título</label>
+                <span>Título</span>
+            </div>
+            <div class="input-container" [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
+                <input #subCategoriesInput type="text" formControlName="subCategories" class="input" (focus)="subCategoriesFocused = true"
+                    (blur)="subCategoriesFocused = false" />
+                <label>Sub Categorías</label>
+                <span>Sub Categorías</span>
+            </div>
+            <div class="input-container" [ngClass]="{'focus': iconFocused || iconInput.value.length > 0 }">
+                <input #iconInput type="text" formControlName="icon" class="input" (focus)="iconFocused = true"
+                    (blur)="iconFocused = false" />
+                <label>Icono</label>
+                <span>Icono</span>
+            </div>
+            <div class="input-container" [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
+                <input #descriptionInput type="text" formControlName="icon" class="input" (focus)="descriptionFocused = true"
+                    (blur)="descriptionFocused = false" />
+                <label>Descripción</label>
+                <span>Descripción</span>
+            </div>
+            <input type="submit" value="Crear" class="btn" />
+        </form>
+    </div>
+</div>

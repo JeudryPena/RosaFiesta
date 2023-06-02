@@ -1,24 +1,27 @@
 ﻿using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
+
 using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
 using Domain.Entities.Security;
 using Domain.Entities.Security.Helper;
 using Domain.IRepository;
+
 using Mapster;
+
 using Services.Abstractions;
 
 namespace Services;
 
-internal sealed class WarrantyService: IWarrantyService
+internal sealed class WarrantyService : IWarrantyService
 {
     private readonly IRepositoryManager _repositoryManager;
-    
+
     public WarrantyService(IRepositoryManager repositoryManager)
     {
         _repositoryManager = repositoryManager;
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -41,8 +44,6 @@ internal sealed class WarrantyService: IWarrantyService
     public async Task<WarrantyResponse> CreateWarrantyAsync(string userId, WarrantyDto warranty, CancellationToken cancellationToken = default)
     {
         var warrantyEntity = warranty.Adapt<WarrantyEntity>();
-        warrantyEntity.CreatedBy = userId;
-        warrantyEntity.CreatedAt = DateTimeOffset.UtcNow;
         warrantyEntity.Id = Guid.NewGuid();
         warrantyEntity.Status = WarrantyStatusType.Active;
         _repositoryManager.WarrantyRepository.Insert(warrantyEntity);
@@ -67,8 +68,6 @@ internal sealed class WarrantyService: IWarrantyService
         warranty.Conditions = warrantyDto.Conditions;
         warranty.Type = warrantyDto.Type.Adapt<WarrantyType>();
         warranty.ScopeType = warrantyDto.ScopeType.Adapt<WarrantyScopeType>();
-        warranty.UpdatedBy = userId;
-        warranty.UpdatedAt = DateTimeOffset.UtcNow;
         _repositoryManager.WarrantyRepository.Update(warranty);
         ActionLogEntity actionLog = new()
         {
@@ -99,9 +98,7 @@ internal sealed class WarrantyService: IWarrantyService
     public async Task<WarrantyResponse> UpdateWarrantyStatusAsync(string userId, Guid warrantyId, int warrantyStatus, CancellationToken cancellationToken = default)
     {
         WarrantyEntity warranty = await _repositoryManager.WarrantyRepository.GetByIdAsync(warrantyId, cancellationToken);
-        warranty.Status = (WarrantyStatusType) warrantyStatus;
-        warranty.UpdatedBy = userId;
-        warranty.UpdatedAt = DateTimeOffset.UtcNow;
+        warranty.Status = (WarrantyStatusType)warrantyStatus;
         _repositoryManager.WarrantyRepository.Update(warranty);
         ActionLogEntity actionLog = new()
         {
@@ -114,5 +111,5 @@ internal sealed class WarrantyService: IWarrantyService
         var warrantyResponse = warranty.Adapt<WarrantyResponse>();
         return warrantyResponse;
     }
-    
+
 }

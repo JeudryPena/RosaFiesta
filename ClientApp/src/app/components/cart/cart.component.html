@@ -1,0 +1,55 @@
+<ng-container *ngIf="products$">
+    <div class="container ">
+        <div class="card-table">
+            <div class="cart-product">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Titulo</th>
+                            <th>Precio</th>
+                            <th>C</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of products$ | async">
+                            <td><img style="width: 120px;" src="hola" alt=""></td>
+                            <td>{{product.title}}</td>
+                            <th style="width: 12%;">{{product.price}}</th>
+                            <td style="width: 12%;">{{product.quantityAvaliable}}</td>
+                            <td style="width: 12%;">{{product.price}}</td>
+                            <td>
+                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row  ps-2">
+                    <div class="col">
+                        <strong>Grand Total : $</strong>
+                    </div>
+                    <div class="col pb-2">
+                        <button type="button" class="btn btn-primary btn-sm ">Acceso</button>
+                        <button type="button" class="btn btn-warning  btn-sm">Registro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!products$">
+    <div class="container">
+        <div class="row">
+            <div class="center">
+                <img src="https://rukminim1.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+                    alt="">
+                <h4>Your cart is empty!</h4>
+                <h6>Add item to it now</h6>
+                <button routerLink="/products" class="btn btn-primary">Shop Now</button>
+            </div>
+        </div>
+    </div>
+</ng-container>

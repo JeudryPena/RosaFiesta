@@ -1,5 +1,52 @@
+.navbar-cart {
+  position: relative;
+  color: white;
+  &-items {
+    position: absolute;
+    left: 40.5px;
+    top: 6px;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    background-color: rgb(172, 14, 14);
+    height: 20px;
+    width: 20px;
+
+    p {
+      font-size: 0.8rem;
+      text-align: center;
+    }
+  }
+}
+
+.container-fluid a {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.navbar-toggler-icon {
+  height: 25px;
+  max-height: 25px;
+  font-size: 0.7rem;
+}
+
+nav {
+  transition: 0.5s;
+  padding: 4px;
+}
+
+.btn {
+  height: 30px;
+  max-height: 30px;
+  padding-top: 0px;
+}
+
 .form-control {
   width: 300px;
+  height: 30px;
+  max-height: 30px;
+  margin-top: 2px;
+
 }
 
 .input-search {
@@ -22,7 +69,7 @@
   bottom: 0;
   display: flex;
   align-items: center;
-  padding-right: 0.5rem;
+  margin-top: 2px;
 }
 
 .input-group-sm .input-search {
@@ -32,12 +79,10 @@
 
 .input-group-sm .input-search-expanded+.input-group-text {
   position: absolute;
-
   top: 0;
   bottom: 0;
   z-index: 3;
   width: 40px;
-  height: 100%;
   border: none;
   background: transparent;
   display: flex;
@@ -74,7 +119,6 @@
 .nav-scroller .nav {
   display: flex;
   flex-wrap: nowrap;
-  padding-bottom: 1rem;
   margin-top: -1px;
   overflow-x: auto;
   text-align: center;
@@ -118,12 +162,4 @@
 
 .dropdown-toggle:not(:focus) {
   outline: 0;
-}
-
-body {
-  padding-bottom: 20px;
-}
-
-.navbar {
-  margin-bottom: 20px;
 }

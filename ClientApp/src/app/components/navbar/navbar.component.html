@@ -1,56 +1,69 @@
-<body>
-    <main>
-        <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Expand at xl</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<nav id="navbar" class="navbar fixed-top navbar-expand-xl navbar-dark bg-dark navbar-sm"
+    aria-label="Sixth navbar example">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">RosaFiesta</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06"
+            aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <div class="collapse navbar-collapse" id="navbarsExample06">
-                    <ul class="navbar-nav me-auto mb-2 mb-xl-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Nosotros</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                aria-expanded="false">Dropdown</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
+        <div class="collapse navbar-collapse" id="navbarsExample06">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Nosotros</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">Dropdown</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
-                    <div class="d-flex flex-wrap">
-                        <form class="col mb-2 mb-lg-0 me-lg-3 col-lg-auto" role="search" (ngSubmit)="Search()">
-                            <div class="input-group-sm d-flex search-container">
-                                
-                                    <div class="col">
-                                        <input type="search" id="typeahead-template" type="text" placeholder="Buscar..."
-                                            aria-label="Buscar" class="form-control col input-search" role="search"
-                                            [ngClass]="{'input-search-expanded': isSearchInputFocused}"
-                                            [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
-                                            [inputFormatter]="formatter" [focusFirst]="focusFirst" container="body" (focus)="onSearchInputFocus()"
-                                            (blur)="onSearchInputBlur()">
+                </li>
+            </ul>
+            <div class="d-flex flex-wrap d-inline">
+                <form class=" me-lg-3 col-lg-auto" role="search" (ngSubmit)="Search()">
+                    <div class="input-group-sm d-flex search-container">
+                        <div class="col">
+                            <input type="search" id="typeahead-template" type="text" placeholder="Buscar..."
+                                aria-label="Buscar" class="form-control col input-search" role="search"
+                                [ngClass]="{'input-search-expanded': isSearchInputFocused}" [(ngModel)]="model"
+                                [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+                                [focusFirst]="focusFirst" container="body" (focus)="onSearchInputFocus()"
+                                (blur)="onSearchInputBlur()">
+                        </div>
+                        <button class="input-group-text text-end search-icon" type="submit"
+                            *ngIf="isSearchInputFocused">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <ng-template #rt let-r="result" let-t="term">
+                            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
+                                class="me-1" style="width: 16px" />
+                            <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                        </ng-template>
+                    </div>
+                </form>
+                <div *ngIf="isAuthenticated; else elseBlock">
+                    <div class="row">
+                        <div class="col">
+                            <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-end">
+                                <button type="button" class="btn btn-outline-primary border-0 navbar-cart" id="dropdownForm1" aria-labelledby="navbarDropdown3"  ngbDropdownToggle>
+                                    <div class="navbar-cart-items" *ngIf="(products$ | async)?.length">
+                                        <p>{{ (products$ | async)?.length }}</p>
                                     </div>
-                                <button class="input-group-text text-end search-icon" type="submit" *ngIf="isSearchInputFocused">
-                                    <i class="fa fa-search"></i>
+                                    <i class="fa-solid fa-cart-shopping"></i>
                                 </button>
-                                <ng-template #rt let-r="result" let-t="term">
-                                    <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
-                                        class="me-1" style="width: 16px" />
-                                    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-                                </ng-template>
+                                <div ngbDropdownMenu aria-labelledby="dropdownForm1">
+                                    <app-cart></app-cart>
+                                </div>
                             </div>
-                        </form>
-                        <div *ngIf="isAuthenticated; else elseBlock">
-                            <div class="container d-flex flex-wrap justify-content-center">
+                        </div>
+                        <div class="col">
+                            <div class="container d-flex flex-wrap justify-content-center ">
                                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
@@ -67,16 +80,17 @@
                                 </ul>
                             </div>
                         </div>
-                        <ng-template #elseBlock>
-                            <div class="text-end mb-xl-0">
-                                <button type="button" class="btn btn-primary btn">Acceso</button>
-                                <button type="button" class="btn btn-warning">Registro</button>
-                            </div>
-                        </ng-template>
                     </div>
-                </div>
 
+
+                </div>
+                <ng-template #elseBlock>
+                    <div class="btn-cont">
+                        <button type="button" class="btn btn-primary btn ">Acceso</button>
+                        <button type="button" class="btn btn-warning ">Registro</button>
+                    </div>
+                </ng-template>
             </div>
-        </nav>
-    </main>
-</body>
+        </div>
+    </div>
+</nav>

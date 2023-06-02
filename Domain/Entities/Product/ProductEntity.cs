@@ -5,7 +5,7 @@ using Domain.Entities.Product.UserInteract;
 
 namespace Domain.Entities.Product;
 
-public class ProductEntity : BaseEntity
+public class ProductEntity
 {
     [StringLength(100, MinimumLength = 3)]
     public string? Code { get; set; }

@@ -13,15 +13,10 @@ public class UserEntity : IdentityUser
     public string FullName { get; set; } = String.Empty;
     [Range(16, 150)]
     public int Age { get; set; }
-    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
-    [StringLength(36, MinimumLength = 32)]
-    public string? CreatedBy { get; set; }
-    public DateTimeOffset? UpdatedAt { get; set; }
-    [StringLength(36, MinimumLength = 32)]
-    public string? UpdatedBy { get; set; }
     public DateTimeOffset BirthDate { get; set; }
     public string? RefreshToken { get; set; }
     public bool PromotionalMails { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
     public CartEntity Cart { get; set; }
     public ICollection<ReviewEntity>? Reviews { get; set; }

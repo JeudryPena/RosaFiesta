@@ -1,8 +1,7 @@
-import { BaseResponse } from "../../baseResponse";
 import { ReviewResponse } from "../userInteract/response/reviewResponse";
 import { OptionPreviewResponse } from "./optionPreviewResponse";
 
-export interface ProductAndOptionResponse extends BaseResponse {
+export interface ProductAndOptionResponse {
     code: string | null;
     tittle: string;
     description: string | null;

@@ -14,12 +14,7 @@ public class UsersResponse
     public string UserName { get; set; } = string.Empty;
 
     public int Age { get; set; }
-
-
     public DateTimeOffset CreatedAt { get; set; }
-
-    public DateTimeOffset? UpdatedAt { get; set; }
-
     public DateTimeOffset BirthDate { get; set; }
 
     public string PhoneNumber { get; set; } = string.Empty;

@@ -57,9 +57,6 @@ internal sealed class UserService : IUserService
 
         user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
         user.BirthDate = userForUpdateDto.BirthDate;
-        user.UpdatedAt = DateTimeOffset.UtcNow;
-        user.UpdatedBy = username;
-
         _repositoryManager.UserRepository.Update(user);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
@@ -84,8 +81,6 @@ internal sealed class UserService : IUserService
 
         user.LockoutEnd = null;
         user.AccessFailedCount = 0;
-        user.UpdatedAt = DateTimeOffset.UtcNow;
-        user.UpdatedBy = username;
         _repositoryManager.UserRepository.Update(user);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
@@ -95,9 +90,6 @@ internal sealed class UserService : IUserService
         UserEntity user = userForCreationDto.Adapt<UserEntity>();
         user.FullName = userForCreationDto.Name + " " + userForCreationDto.LastName;
         user.CreatedAt = DateTimeOffset.UtcNow;
-        user.CreatedBy = username;
-        user.UpdatedAt = DateTimeOffset.UtcNow;
-        user.UpdatedBy = username;
         user.UserName = userForCreationDto.Email;
         user.Email = userForCreationDto.Email;
         user.EmailConfirmed = true;
@@ -125,8 +117,6 @@ internal sealed class UserService : IUserService
         ) ?? throw new UserNotFoundException(userId);
 
         user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
-        user.UpdatedAt = DateTimeOffset.UtcNow;
-        user.UpdatedBy = username;
         user.AccessFailedCount = 0;
         _repositoryManager.UserRepository.Update(user);
 

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { OperatorFunction, Observable, debounceTime, map } from 'rxjs';
+import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
+import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
+import { ProductsService } from '../../shared/services/products.service';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -61,15 +63,41 @@ const statesWithFlags: { name: string; flag: string }[] = [
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+
+  viewCart: boolean = false;
+  products$: Observable<ProductAndOptionsPreviewResponse[]>;
+  total$: Observable<number>;
   isSearchInputFocused = false;
-  isAuthenticated = false;
+  isAuthenticated = true;
+  lastScrollTop = 0;
+  navbar: any;
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    public service: ProductsService,
+  ) {
+    this.products$ = service.products$;
+    this.total$ = service.total$;
+  }
+
+  onToggleCart() {
+    this.viewCart = !this.viewCart
+  };
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: any) {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    this.navbar = document.getElementById("navbar");
+    if (scrollTop > this.lastScrollTop) {
+      this.navbar.style.top = "-50px";
+    } else {
+      this.navbar.style.top = "0";
+    }
+    this.lastScrollTop = scrollTop;
+  }
 
   ngOnInit() {
   }
@@ -85,12 +113,12 @@ export class NavbarComponent implements OnInit {
   }
 
   Search() {
-    
+
   }
 
   public model: any;
 
-  search: OperatorFunction<string, readonly { name:any; flag:any }[]> = (text$: Observable<string>) =>
+  search: OperatorFunction<string, readonly { name: any; flag: any }[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       map((term) =>

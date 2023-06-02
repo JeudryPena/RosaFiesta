@@ -18,8 +18,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.FullName).IsRequired();
         builder.Property(user => user.Age).IsRequired();
         builder.Property(user => user.CreatedAt).IsRequired();
-        builder.Property(user => user.UpdatedAt);
-        builder.Property(user => user.UpdatedBy);
         builder.Property(user => user.BirthDate).IsRequired();
         builder.Property(user => user.RefreshToken);
         builder.Property(user => user.RefreshTokenExpiryTime);
@@ -78,9 +76,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             FullName = "Rosalba Pena",
             Age = 45,
             CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = "System",
-            UpdatedAt = null,
-            UpdatedBy = null,
             PhoneNumber = "18497505944",
             PhoneNumberConfirmed = true,
             TwoFactorEnabled = false,

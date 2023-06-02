@@ -1,7 +1,6 @@
-import { BaseResponse } from "../../baseResponse";
 import { ProductsDiscountResponse } from "./productsDiscountResponse";
 
-export interface DiscountResponse extends BaseResponse {
+export interface DiscountResponse {
     discountCode: string;
     discountName: string;
     discountType: string;

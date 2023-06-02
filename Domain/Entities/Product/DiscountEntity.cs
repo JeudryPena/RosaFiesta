@@ -5,7 +5,7 @@ using Domain.Entities.Product.UserInteract;
 
 namespace Domain.Entities.Product;
 
-public class DiscountEntity : BaseEntity
+public class DiscountEntity
 {
     [StringLength(25, MinimumLength = 5)]
     public string DiscountCode { get; set; }

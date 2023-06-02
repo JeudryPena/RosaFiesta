@@ -7,7 +7,7 @@ import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 
 interface SearchResult {
-  countries: ProductAndOptionsPreviewResponse[];
+  products: ProductAndOptionsPreviewResponse[];
   total: number;
 }
 
@@ -21,21 +21,21 @@ interface State {
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(countries: ProductAndOptionsPreviewResponse[], column: SortColumn, direction: string): ProductAndOptionsPreviewResponse[] {
+function sort(products: ProductAndOptionsPreviewResponse[], column: SortColumn, direction: string): ProductAndOptionsPreviewResponse[] {
   if (direction === '' || column === '') {
-    return countries;
+    return products;
   } else {
-    return [...countries].sort((a:any, b:any) => {
+    return [...products].sort((a:any, b:any) => {
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
   }
 }
 
-function matches(country: ProductAndOptionsPreviewResponse, term: string, pipe: PipeTransform) {
+function matches(product: ProductAndOptionsPreviewResponse, term: string, pipe: PipeTransform) {
   return (
-    country.title.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(country.code).includes(term) 
+    product.title.toLowerCase().includes(term.toLowerCase()) ||
+    pipe.transform(product.code).includes(term) 
   );
 }
 
@@ -45,7 +45,7 @@ function matches(country: ProductAndOptionsPreviewResponse, term: string, pipe: 
 export class ProductsService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<ProductAndOptionsPreviewResponse[]>([]);
+  private _products$ = new BehaviorSubject<ProductAndOptionsPreviewResponse[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -66,15 +66,15 @@ export class ProductsService {
         tap(() => this._loading$.next(false)),
       )
       .subscribe((result) => {
-        this._countries$.next(result.countries);
+        this._products$.next(result.products);
         this._total$.next(result.total);
       });
 
     this._search$.next();
   }
 
-  get countries$() {
-    return this._countries$.asObservable();
+  get products$() {
+    return this._products$.asObservable();
   }
   get total$() {
     return this._total$.asObservable();
@@ -117,14 +117,14 @@ export class ProductsService {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
     // 1. sort
-    let countries = sort(Products, sortColumn, sortDirection);
+    let products = sort(Products, sortColumn, sortDirection);
 
     // 2. filter
-    countries = countries.filter((country) => matches(country, searchTerm, this.pipe));
-    const total = countries.length;
+    products = products.filter((product) => matches(product, searchTerm, this.pipe));
+    const total = products.length;
 
     // 3. paginate
-    countries = countries.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ countries, total });
+    products = products.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return of({ products, total });
   }
 }

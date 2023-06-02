@@ -22,10 +22,6 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
         builder.Property(product => product.Title).IsRequired();
         builder.Property(product => product.Brand);
         builder.Property(product => product.Type).IsRequired();
-        builder.Property(product => product.CreatedAt).IsRequired();
-        builder.Property(product => product.UpdatedAt);
-        builder.Property(product => product.CreatedBy);
-        builder.Property(product => product.UpdatedBy);
         builder.HasMany(product => product.Options)
             .WithOne()
             .HasForeignKey(option => option.ProductCode)
@@ -56,8 +52,6 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
                 CategoryId = CategoryId,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
-                CreatedAt = DateTimeOffset.UtcNow,
-                CreatedBy = "System",
             },
             new ProductEntity
             {
@@ -68,8 +62,6 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
                 CategoryId = CategoryId,
                 WarrantyId = Guid.Parse(WarrantyId),
                 SupplierId = Guid.Parse(SupplierId),
-                CreatedAt = DateTimeOffset.UtcNow,
-                CreatedBy = "System",
             }
         );
     }

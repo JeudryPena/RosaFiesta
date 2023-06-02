@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-save-modal',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./save-modal.component.scss']
 })
 export class SaveModalComponent {
+  @Input() name: any;
 
+  constructor(public activeModal: NgbActiveModal) { }
 }

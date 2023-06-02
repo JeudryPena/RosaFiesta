@@ -5,13 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDropdownModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -20,13 +19,17 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
 import { BodyComponent } from './components/body/body.component';
 import { CardsComponent } from './components/cards/cards.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { CoupensComponent } from './components/coupens/coupens.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FeaturesComponent } from './components/features/features.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HeroesComponent } from './components/heroes/heroes.component';
 import { HomeComponent } from './components/home/home.component';
-import { ManagmentProductsComponent } from './components/managment-products/managment-products.component';
+import { LayoutComponent } from './components/layout/layout.component';
+import { ManagementProductsComponent } from './components/management-products/management-products.component';
+import { ManagementSuppliersComponent } from './components/management-suppliers/management-suppliers.component';
+import { ManagementUsersComponent } from './components/management-users/management-users.component';
 import { MediaComponent } from './components/media/media.component';
 import { ModalProductComponent } from './components/modal-product/modal-product.component';
 import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
@@ -43,7 +46,6 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
-import { UserManagmentComponent } from './components/user-managment/user-managment.component';
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { BreadcrumbComponent } from './helpers/breadcrumb/breadcrumb.component';
 import { CheckboxComponent } from './helpers/checkbox/checkbox.component';
@@ -61,7 +63,16 @@ import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
-import { CoupensComponent } from './components/coupens/coupens.component';
+import { ManagementWarrantiesComponent } from './components/management-warranties/management-warranties.component';
+import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
+import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
+import { ManagementServicesComponent } from './components/management-services/management-services.component';
+import { CartComponent } from './components/cart/cart.component';
+import { FinishRegisterComponent } from './components/finish-register/finish-register.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { WishListsComponent } from './components/wish-lists/wish-lists.component';
+import { ProductWishlistComponent } from './components/product-wishlist/product-wishlist.component';
+import { ModalCategoryComponent } from './components/modal-category/modal-category.component';
 
 
 @NgModule({
@@ -101,12 +112,11 @@ import { CoupensComponent } from './components/coupens/coupens.component';
     PurchaseComponent,
     AboutUsComponent,
     CarouselComponent,
-    ManagmentProductsComponent,
+    ManagementProductsComponent,
     MyOrdersComponent,
     ProductDetailComponent,
     RatingComponent,
     RatingDirective,
-    UserManagmentComponent,
     PaginationComponent,
     ModalProductComponent,
     RegisterComponent,
@@ -116,7 +126,20 @@ import { CoupensComponent } from './components/coupens/coupens.component';
     ProductCardComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    
+    LayoutComponent,
+    ManagementSuppliersComponent,
+    ManagementUsersComponent,
+    ManagementWarrantiesComponent,
+    ManagementCategoriesComponent,
+    ManagementDiscountsComponent,
+    ManagementServicesComponent,
+    CartComponent,
+    FinishRegisterComponent,
+    ChangePasswordComponent,
+    WishListsComponent,
+    ProductWishlistComponent,
+    ModalCategoryComponent
+  
   ],
   imports: [
     BrowserModule,
@@ -132,9 +155,9 @@ import { CoupensComponent } from './components/coupens/coupens.component';
     NgbdSortableHeader,
     NgbTypeaheadModule,
     NgbModalModule,
-    
+    CommonModule
   ],
-  providers: [NgbRatingConfig],
+  providers: [NgbRatingConfig, DecimalPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

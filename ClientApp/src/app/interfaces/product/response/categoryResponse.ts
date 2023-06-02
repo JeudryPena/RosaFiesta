@@ -1,8 +1,7 @@
-import { BaseResponse } from "../../baseResponse";
 import { ProductAndOptionResponse } from "./productAndOptionResponse";
 import { SubCategoryResponse } from "./subCategoryResponse";
 
-export interface CategoryResponse extends BaseResponse {
+export interface CategoryResponse {
     id: number;
     name: string;
     description: string;

@@ -2,7 +2,7 @@
 
 namespace Contracts.Model.Product.Response;
 
-public class ProductAndOptionResponse: BaseResponse
+public class ProductAndOptionResponse
 {
     public string? Code { get; set; }
     public string Tittle { get; set; } = string.Empty;
@@ -11,14 +11,14 @@ public class ProductAndOptionResponse: BaseResponse
     public string? Images { get; set; } = string.Empty;
     public string Stock => StockCalculate().ToString();
     public int QuantityAvaliable { get; set; }
-    public string? Brand { get; set; } 
+    public string? Brand { get; set; }
     public string? Color { get; set; }
     public float? Size { get; set; }
     public float Weight { get; set; }
     public string? GenderFor { get; set; }
-    public string? Material { get; set; } 
-    public string Type { get; set; } 
-    public string Condition { get; set; } 
+    public string? Material { get; set; }
+    public string Type { get; set; }
+    public string Condition { get; set; }
     public int? CategoryId { get; set; }
     public Guid? WarrantyId { get; set; }
     public Guid? SupplierId { get; set; }
@@ -29,7 +29,7 @@ public class ProductAndOptionResponse: BaseResponse
     public ICollection<ReviewResponse>? Reviews { get; set; }
     public int TotalOptions => Options.Count;
     public ICollection<OptionPreviewResponse> Options { get; set; }
-    
+
     private StockStatusType StockCalculate()
     {
         if (QuantityAvaliable == 0)

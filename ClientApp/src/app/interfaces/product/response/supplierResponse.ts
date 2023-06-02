@@ -1,7 +1,6 @@
-import { BaseResponse } from "../../baseResponse";
 import { ProductAndOptionResponse } from "./productAndOptionResponse";
 
-export interface SupplierResponse extends BaseResponse {
+export interface SupplierResponse {
     id: string;
     name: string;
     email: string | null;

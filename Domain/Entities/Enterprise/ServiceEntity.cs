@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Enterprise;
 
-public class ServiceEntity : BaseEntity
+public class ServiceEntity
 {
     public Guid Id { get; set; }
     [StringLength(100, MinimumLength = 2)]

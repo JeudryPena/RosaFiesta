@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product;
 
-public class SubCategoryEntity : BaseEntity
+public class SubCategoryEntity
 {
     public int Id { get; set; }
     [StringLength(50, MinimumLength = 3)]

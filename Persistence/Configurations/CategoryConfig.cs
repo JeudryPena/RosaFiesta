@@ -19,10 +19,6 @@ public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
         builder.Property(x => x.Description);
         builder.Property(x => x.Icon);
         builder.Property(x => x.IsActive).IsRequired();
-        builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.UpdatedAt);
-        builder.Property(x => x.CreatedBy).IsRequired();
-        builder.Property(x => x.UpdatedBy);
         builder.HasMany(x => x.SubCategories).WithOne().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Cascade);
         builder.HasData(new CategoryEntity
         {
@@ -31,10 +27,6 @@ public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
             Description = "Peluches de todos los tipos",
             Icon = "https://i.imgur.com/0jQYs1R.png",
             IsActive = true,
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = "System",
-            UpdatedAt = DateTimeOffset.UtcNow,
-            UpdatedBy = "System",
         });
     }
 }

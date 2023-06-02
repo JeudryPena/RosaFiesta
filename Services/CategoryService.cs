@@ -86,19 +86,12 @@ internal sealed class CategoryService : ICategoryService
         {
             Name = categoryDto.Name,
             Description = categoryDto.Description,
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = userId,
             Icon = categoryDto.Icon,
             IsActive = categoryDto.IsActive,
         };
         if (categoryDto.SubCategories != null)
         {
             category.SubCategories = categoryDto.SubCategories.Adapt<List<SubCategoryEntity>>();
-            foreach (var subCategory in category.SubCategories)
-            {
-                subCategory.CreatedAt = DateTimeOffset.UtcNow;
-                subCategory.CreatedBy = userId;
-            }
             ActionLogEntity actionLogc = new()
             {
                 UserId = userId,
@@ -124,11 +117,6 @@ internal sealed class CategoryService : ICategoryService
         CancellationToken cancellationToken = default)
     {
         List<SubCategoryEntity> subCategory = subCategoryDto.Adapt<List<SubCategoryEntity>>();
-        foreach (var x in subCategory)
-        {
-            x.CreatedAt = DateTimeOffset.UtcNow;
-            x.CreatedBy = userId;
-        }
         _repositoryManager.CategoryRepository.InsertSubCategory(subCategory);
         ActionLogEntity actionLog = new()
         {
@@ -149,8 +137,6 @@ internal sealed class CategoryService : ICategoryService
         category.Description = categoryUpdateDto.Description;
         category.Icon = categoryUpdateDto.Icon;
         category.IsActive = categoryUpdateDto.IsActive;
-        category.UpdatedAt = DateTimeOffset.UtcNow;
-        category.UpdatedBy = userId;
         _repositoryManager.CategoryRepository.Update(category);
         ActionLogEntity actionLog = new()
         {
@@ -171,8 +157,6 @@ internal sealed class CategoryService : ICategoryService
         subCategory.Description = subCategoryUpdateDto.Description;
         subCategory.Icon = subCategoryUpdateDto.Icon;
         subCategory.IsActive = subCategoryUpdateDto.IsActive;
-        subCategory.UpdatedAt = DateTimeOffset.UtcNow;
-        subCategory.UpdatedBy = userId;
         _repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
         ActionLogEntity actionLog = new()
         {
@@ -192,8 +176,6 @@ internal sealed class CategoryService : ICategoryService
         foreach (var subCategory in subCategories)
         {
             subCategory.CategoryId = moveSubCategoryDto.FirstOrDefault(x => x.SubCategoryId == subCategory.Id)?.NewCategoryId ?? subCategory.CategoryId;
-            subCategory.UpdatedAt = DateTimeOffset.UtcNow;
-            subCategory.UpdatedBy = userId;
         }
         _repositoryManager.CategoryRepository.UpdateSubCategories(subCategories);
         ActionLogEntity actionLog = new()
@@ -213,8 +195,6 @@ internal sealed class CategoryService : ICategoryService
     {
         SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(moveSubCategoryDto.CategoryId, moveSubCategoryDto.SubCategoryId, cancellationToken);
         subCategory.CategoryId = moveSubCategoryDto.NewCategoryId;
-        subCategory.UpdatedAt = DateTimeOffset.UtcNow;
-        subCategory.UpdatedBy = userId;
         _repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
         ActionLogEntity actionLog = new()
         {

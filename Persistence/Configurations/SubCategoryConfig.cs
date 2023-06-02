@@ -19,10 +19,6 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
         builder.Property(x => x.Description);
         builder.Property(x => x.Icon);
         builder.Property(x => x.IsActive).IsRequired();
-        builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.UpdatedAt);
-        builder.Property(x => x.CreatedBy).IsRequired();
-        builder.Property(x => x.UpdatedBy);
         builder.HasData(new SubCategoryEntity
         {
             Id = SubCategory,
@@ -31,10 +27,6 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
             Icon = "https://i.imgur.com/0jQYs1R.png",
             IsActive = true,
             CategoryId = CategoryId,
-            CreatedAt = DateTimeOffset.UtcNow,
-            CreatedBy = "System",
-            UpdatedAt = DateTimeOffset.UtcNow,
-            UpdatedBy = "System",
         });
     }
 }

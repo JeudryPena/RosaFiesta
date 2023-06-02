@@ -1,6 +1,5 @@
-import { BaseResponse } from "../../baseResponse";
 
-export interface SubCategoryResponse extends BaseResponse {
+export interface SubCategoryResponse {
     id: number;
     name: string;
     description: string;
