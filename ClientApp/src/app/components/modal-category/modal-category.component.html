@@ -3,7 +3,7 @@
         <span class="circle one"></span>
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off">
-            <h3 class="title">Añadir Categorías</h3>
+            <h3 class="title">Añadir Categoría</h3>
             <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0 }">
                 <input #titleInput type="text" formControlName="title" class="input" (focus)="titleFocused = true"
                     (blur)="titleFocused = false" />
@@ -23,8 +23,8 @@
                 <span>Icono</span>
             </div>
             <div class="input-container" [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
-                <input #descriptionInput type="text" formControlName="icon" class="input" (focus)="descriptionFocused = true"
-                    (blur)="descriptionFocused = false" />
+                <textarea #descriptionInput type="text" formControlName="icon" class="input" (focus)="descriptionFocused = true"
+                    (blur)="descriptionFocused = false" rows="3"></textarea>
                 <label>Descripción</label>
                 <span>Descripción</span>
             </div>

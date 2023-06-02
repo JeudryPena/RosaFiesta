@@ -1,0 +1,96 @@
+<div class="form">
+    <div class="contact-form">
+        <span class="circle one"></span>
+        <span class="circle two"></span>
+        <form action="index.html" autocomplete="off">
+            <h3 class="title">Añadir Descuento</h3>
+            <div class="input-container" [ngClass]="{'focus': codeFocused || codeInput.value.length > 0 }">
+                <input #codeInput type="text" formControlName="code" class="input" (focus)="codeFocused = true"
+                    (blur)="codeFocused = false" />
+                <label>Código</label>
+                <span>Código</span>
+            </div>
+            <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
+                <input #nameInput type="text" formControlName="name" class="input" (focus)="nameFocused = true"
+                    (blur)="nameFocused = false" />
+                <label>Nombre</label>
+                <span>Nombre</span>
+            </div>
+            <div class="input-container"
+                [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
+                <textarea #descriptionInput type="text" formControlName="icon" class="input"
+                    (focus)="descriptionFocused = true" (blur)="descriptionFocused = false" rows="3"></textarea>
+                <label>Descripción</label>
+                <span>Descripción</span>
+            </div>
+            <div class="input-container"
+                [ngClass]="{'focus': productsDiscountsFocused || productsDiscountsInput.value.length > 0 }">
+                <input #productsDiscountsInput type="text" formControlName="productsDiscounts" class="input"
+                    (focus)="productsDiscountsFocused = true" (blur)="productsDiscountsFocused = false" />
+                <label>Productos</label>
+                <span>Productos</span>
+            </div>
+            <div class="row group">
+                <div class="col">
+                    <div class="input-container" [ngClass]="{'focus': typeFocused || typeInput.value.length > 0 }">
+                            <select #typeInput class="input form-select form-select-sm" aria-label=".form-select-sm example" type="text" formControlName="type" (focus)="typeFocused = true"
+                            (blur)="typeFocused = false">
+                                <option hidden selected></option>
+                                <option value="1">Porcentaje</option>
+                                <option value="2">Monto</option>
+                            </select>
+                        <label>Tipo</label>
+                        <span>Tipo</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-container" [ngClass]="{'focus': valueFocused || valueInput.value.length > 0 }">
+                        <input #valueInput type="number" formControlName="value" class="input" min="0" value="0"
+                            (focus)="valueFocused = true" (blur)="valueFocused = false" />
+                        <label>Valor</label>
+                        <span>Valor</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-container"
+                        [ngClass]="{'focus': maxTimesApplyFocused || maxTimesApplyInput.value.length > 0 }">
+                        <input #maxTimesApplyInput type="text" formControlName="maxTimesApply" class="input"
+                            (focus)="maxTimesApplyFocused = true" (blur)="maxTimesApplyFocused = false" />
+                        <label>Uso Máximo</label>
+                        <span>Uso Máximo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row group">
+                <div class="col">
+                    <div class="input-container" [ngClass]="{'focus': startFocused || startInput.value.length > 0 }">
+                        <div class="input-group">
+                            <input #startInput type="text" formControlName="start" class="input date"
+                                (focus)="startFocused = true" (blur)="startFocused = false" [(ngModel)]="model"
+                                ngbDatepicker #start="ngbDatepicker" />
+
+                            <button class="btn btn-outline-primary bi bi-calendar3" (click)="start.toggle()"
+                                type="button"></button>
+                        </div>
+                        <label>Inicio</label>
+                        <span>Inicio</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-container" [ngClass]="{'focus': endFocused || endInput.value.length > 0 }">
+                        <div class="input-group">
+                            <input #endInput type="text" formControlName="end" class="input date"
+                                (focus)="endFocused = true" (blur)="endFocused = false" [(ngModel)]="model"
+                                ngbDatepicker #end="ngbDatepicker" />
+                            <button class="btn btn-outline-primary bi bi-calendar3" (click)="end.toggle()"
+                                type="button"></button>
+                        </div>
+                        <label>Final</label>
+                        <span>Final</span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Crear" class="btn submit" />
+        </form>
+    </div>
+</div>

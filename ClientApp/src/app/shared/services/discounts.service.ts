@@ -3,7 +3,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Subject, tap, debounceTime, switchMap, delay, Observable, of } from 'rxjs';
 import { Discounts } from '../../dummy/discounts';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
-import { DiscountResponse } from '../../interfaces/discount/response/discountResponse';
+import { DiscountResponse } from '../../interfaces/product/response/discountResponse';
 
 interface SearchResult {
   discounts: DiscountResponse[];
@@ -33,8 +33,8 @@ function sort(discounts: DiscountResponse[], column: SortColumn, direction: stri
 
 function matches(discount: DiscountResponse, term: string, pipe: PipeTransform) {
   return (
-    discount.title.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(discount.).includes(term)
+    discount.name.toLowerCase().includes(term.toLowerCase()) ||
+    pipe.transform(discount.code).includes(term) 
   );
 }
 

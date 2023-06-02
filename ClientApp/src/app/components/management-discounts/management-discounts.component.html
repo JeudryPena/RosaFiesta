@@ -3,9 +3,9 @@
         <div class="card text-start p-2">
             <div class="card-body">
                 <div class="row">
-                    <caption class="col">Categorias&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
+                    <caption class="col">Descuentos&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
                             ngbAutofocus (click)="AddDiscount()">
-                            Añadir Categoria
+                            Añadir Descuento
                         </button></caption>
                     <span class="col col-sm-auto col-form-label" *ngIf="service.loading$ | async">
                         <i class="fas fa-spinner fa-spin"
@@ -19,31 +19,44 @@
                 </div>
                 <div class="table-responsive" style="overflow-x: auto;">
                     <table class="table table-striped table-hover align-middle ">
-                        <thead (scroll)="onScroll($event)" class="tables">
+                        <thead class="tables">
                             <tr class="table-row">
-                                <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Titulo</th>
-                                <th scope="col" class="table-cell">Icono</th>
+                                <th scope="col" class="table-cell" sortable="code" (sort)="onSort($event)">Código</th>
+                                <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Título</th>
+                                <th scope="col" class="table-cell">Descripción</th>
+                                <th scope="col" class="table-cell">Valor</th>
+                                <th scope="col" class="table-cell">Uso Máx.</th>
                                 <th scope="col" class="table-cell">
-                                    Descripción</th>
+                                    Inicio</th>
                                 <th scope="col" class="table-cell">
-                                    SubCategorias</th>
+                                    Fin</th>
+                                <th scope="col" class="table-cell">
+                                    Productos</th>
                                 <th scope="col" class="table-cell"></th>
                             </tr>
                         </thead>
 
                         <tbody class="rows">
-                            <tr class="scroll" *ngFor="let item of categories$ | async ">
-                                <td><ngb-highlight [result]="item.title" [term]="service.searchTerm"></ngb-highlight>
+                            <tr class="scroll" *ngFor="let item of discounts$ | async ">
+                                <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
+                                </td>
+                                <td><ngb-highlight [result]="item.description" [term]="service.searchTerm"></ngb-highlight>
+                                </td>
                                 <td>
-                                    <img [src]="'' + item.icon" class="me-2" style="width: 20px" />
-                                </td>
-                                <td><ngb-highlight [result]="item.description"
+                                    <ngb-highlight [result]="item.value | number"
                                         [term]="service.searchTerm"></ngb-highlight>
+                                        <span *ngIf="item.type == 'Porcentaje'">%</span>
                                 </td>
+                                <td><ngb-highlight [result]="item.maxTimesApply | number"
+                                        [term]="service.searchTerm"></ngb-highlight></td>
+                                <td><ngb-highlight [result]="item.start | date: 'dd/MM/yyyy' "
+                                        [term]="service.searchTerm"></ngb-highlight></td>
+                                <td><ngb-highlight [result]="item.end | date: 'dd/MM/yyyy'" [term]="service.searchTerm"></ngb-highlight></td>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <div *ngFor="let subcategory of item.subCategories">
-                                            <span class="badge bg-primary">{{subcategory.title}}</span>
+                                        <div *ngFor="let subcategory of item.productsDiscounts">
+                                            <span class="badge bg-primary">{{subcategory.productCode}}</span>
                                         </div>
                                     </div>
                                 </td>

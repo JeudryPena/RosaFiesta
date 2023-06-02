@@ -3,11 +3,13 @@
         <div class="card text-start p-2">
             <div class="card-body">
                 <div class="row">
-                    <caption class="col">Products&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add" ngbAutofocus (click)="AddProduct()">
-                        Añadir Producto
-                    </button></caption>           
+                    <caption class="col">Products&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
+                            ngbAutofocus (click)="AddProduct()">
+                            Añadir Producto
+                        </button></caption>
                     <span class="col col-sm-auto col-form-label" *ngIf="service.loading$ | async">
-                        <i class="fas fa-spinner fa-spin" style="color: #32CD32; display: inline-block; margin-right: 5px;"></i>
+                        <i class="fas fa-spinner fa-spin"
+                            style="color: #32CD32; display: inline-block; margin-right: 5px;"></i>
                         <span style="color: #32CD32; display: inline-block;">Cargando..</span>
                     </span>
                     <div class="col-xs-3 col-sm-auto input-group-sm d-flex search-container align-items-center">
@@ -16,9 +18,8 @@
                     </div>
                 </div>
                 <div class="table-responsive" style="overflow-x: auto;">
-                    <table 
-                        class="table table-striped table-hover align-middle ">
-                        <thead (scroll)="onScroll($event)" class="tables">
+                    <table class="table table-striped table-hover align-middle ">
+                        <thead class="tables">
                             <tr class="table-row">
                                 <th scope="col" class="table-cell" sortable="code" (sort)="onSort($event)">Codigo</th>
                                 <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Titulo</th>
@@ -34,7 +35,7 @@
                         </thead>
 
                         <tbody class="rows">
-                            <tr class="scroll" *ngFor="let item of products$ | async " >
+                            <tr class="scroll" *ngFor="let item of products$ | async ">
                                 <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td><ngb-highlight [result]="item.title" [term]="service.searchTerm"></ngb-highlight>
@@ -51,7 +52,8 @@
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">
-                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown" ngbDropdownToggle>Actions</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown"
+                                            ngbDropdownToggle>Actions</button>
                                         <div ngbDropdownMenu>
                                             <button ngbDropdownItem>Edit</button>
                                             <button ngbDropdownItem>Disable</button>

@@ -3,7 +3,7 @@
         <span class="circle one"></span>
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off">
-            <h3 class="title">Añadir Productos</h3>
+            <h3 class="title">Añadir Producto</h3>
             <div class="input-container" [ngClass]="{'focus': codeFocused || codeInput.value.length > 0 }">
                 <input #codeInput type="text" formControlName="code" class="input" (focus)="codeFocused = true"
                     (blur)="codeFocused = false" />
@@ -29,7 +29,7 @@
                         <select #categoryIdInput class="input form-select form-select-sm"
                             aria-label=".form-select-sm example" (focus)="categoryIdFocused = true"
                             (blur)="categoryIdFocused = false" formControlName="categoryId">
-                            <option selected></option>
+                            <option hidden selected></option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
@@ -42,7 +42,7 @@
                     <div class="input-container" [ngClass]="{'focus': typeFocused || typeInput.value.length > 0 }">
                         <select #typeInput class="input form-select form-select-sm" aria-label=".form-select-sm example"
                             (focus)="typeFocused = true" (blur)="typeFocused = false">
-                            <option selected></option>
+                            <option hidden selected></option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
@@ -59,7 +59,7 @@
                         <select #warrantyIdInput class="input form-select form-select-sm"
                             aria-label=".form-select-sm example" (focus)="warrantyIdFocused = true"
                             (blur)="warrantyIdFocused = false">
-                            <option selected></option>
+                            <option hidden selected></option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
@@ -74,7 +74,7 @@
                         <select #supplierIdInput class="input form-select form-select-sm"
                             aria-label=".form-select-sm example" (focus)="supplierIdFocused = true"
                             (blur)="supplierIdFocused = false">
-                            <option selected></option>
+                            <option hidden selected></option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>

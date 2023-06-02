@@ -5,6 +5,9 @@ import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/respo
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { ProductsService } from '../../shared/services/products.service';
 import { ModalProductComponent } from '../modal-product/modal-product.component';
+import { DiscountResponse } from '../../interfaces/product/response/discountResponse';
+import { DiscountsService } from '../../shared/services/discounts.service';
+import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
 
 @Component({
   selector: 'app-management-discounts',
@@ -12,24 +15,24 @@ import { ModalProductComponent } from '../modal-product/modal-product.component'
   styleUrls: ['./management-discounts.component.scss']
 })
 export class ManagementDiscountsComponent {
-  discounts$: Observable<ProductAndOptionsPreviewResponse[]>;
+  discounts$: Observable<DiscountResponse[]>;
   total$: Observable<number>;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
-    public service: ProductsService,
+    public service: DiscountsService,
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
-    this.discounts$ = service.products$;
+    this.discounts$ = service.discounts$;
     this.total$ = service.total$;
     // config.backdrop = 'static';
     // config.keyboard = false;
   }
 
   AddDiscount() {
-    const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.name = 'World';
   }
 
@@ -49,9 +52,4 @@ export class ManagementDiscountsComponent {
   pageSize = 5;
   page = 1;
   maxSize = 10;
-
-  onScroll(event: any) {
-    console.log('User scrolled table!', event.target)
-    // Update your data or pagination here  
-  }
 }

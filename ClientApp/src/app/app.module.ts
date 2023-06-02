@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 import { CommonModule } from '@angular/common';
 import { DecimalPipe } from '@angular/common';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -73,6 +74,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { WishListsComponent } from './components/wish-lists/wish-lists.component';
 import { ProductWishlistComponent } from './components/product-wishlist/product-wishlist.component';
 import { ModalCategoryComponent } from './components/modal-category/modal-category.component';
+import { ModalDiscountComponent } from './components/modal-discount/modal-discount.component';
 
 
 @NgModule({
@@ -138,7 +140,8 @@ import { ModalCategoryComponent } from './components/modal-category/modal-catego
     ChangePasswordComponent,
     WishListsComponent,
     ProductWishlistComponent,
-    ModalCategoryComponent
+    ModalCategoryComponent,
+    ModalDiscountComponent
   
   ],
   imports: [
@@ -155,7 +158,8 @@ import { ModalCategoryComponent } from './components/modal-category/modal-catego
     NgbdSortableHeader,
     NgbTypeaheadModule,
     NgbModalModule,
-    CommonModule
+    CommonModule,
+    NgbDatepickerModule
   ],
   providers: [NgbRatingConfig, DecimalPipe],
   bootstrap: [AppComponent],

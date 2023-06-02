@@ -54,9 +54,4 @@ export class ManagementProductsComponent {
   pageSize = 5;
   page = 1;
   maxSize = 10;
-
-  onScroll(event: any) {
-    console.log('User scrolled table!', event.target)
-    // Update your data or pagination here  
-  }
 }

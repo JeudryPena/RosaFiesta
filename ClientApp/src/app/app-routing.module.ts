@@ -27,6 +27,7 @@ import { ManagementUsersComponent } from './components/management-users/manageme
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
+import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
 
 const routes: Routes = [
   {
@@ -52,7 +53,8 @@ const routes: Routes = [
       { path: 'product-card', component: ProductCardComponent },
       { path: 'my-orders', component: MyOrdersComponent },
       { path: 'cart', component: CartComponent },
-      { path: 'management-categories', component: ManagementCategoriesComponent}
+      { path: 'management-categories', component: ManagementCategoriesComponent },
+      { path: 'management-discounts', component: ManagementDiscountsComponent}
     ]
   },
   { path: 'statistics', component: StatisticsComponent },

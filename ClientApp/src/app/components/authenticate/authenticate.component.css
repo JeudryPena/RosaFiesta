@@ -3,7 +3,7 @@
     background: linear-gradient(to right, #ffa751, #ffe259);
     position: relative;
     height: 100vh;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .bg {
