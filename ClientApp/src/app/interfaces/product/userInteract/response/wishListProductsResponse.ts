@@ -2,6 +2,6 @@ import { ProductsWishListDto } from "../productsWishListDto";
 
 export interface WishListProductsResponse {
     wishListId: number;
-    tittle: string;
+    title: string;
     productsWish: ProductsWishListDto[];
 }

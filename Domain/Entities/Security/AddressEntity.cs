@@ -6,7 +6,7 @@ public class AddressEntity
 {
     public Guid Id { get; set; }
     [StringLength(40, MinimumLength = 1)]
-    public string Tittle { get; set; }
+    public string Title { get; set; }
     [StringLength(50, MinimumLength = 3)]
     public string Country { get; set; }
     [StringLength(100, MinimumLength = 2)]

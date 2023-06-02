@@ -1,13 +1,12 @@
 import { ProductsDiscountDto } from "./productsDiscountDto";
 
 export interface DiscountDto {
-    discountCode: string;
-    discountName: string;
-    discountType: number;
+    code: string;
+    name: string;
+    type: number;
     discount: number;
-    discountStartDate: string;
-    discountEndDate: string;
-    discountDescription: string | null;
-    discountImage: string | null;
+    start: string;
+    end: string;
+    description: string | null;
     productsDiscount: ProductsDiscountDto[];
 }

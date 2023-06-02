@@ -1,5 +1,5 @@
 export interface DiscountPreviewResponse {
-    discountCode: string;
-    discountType: number;
-    discountValue: number;
+    code: string;
+    type: number;
+    value: number;
 }

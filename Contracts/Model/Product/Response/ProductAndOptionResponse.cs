@@ -5,7 +5,7 @@ namespace Contracts.Model.Product.Response;
 public class ProductAndOptionResponse
 {
     public string? Code { get; set; }
-    public string Tittle { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
     public double Price { get; set; }
     public string? Images { get; set; } = string.Empty;

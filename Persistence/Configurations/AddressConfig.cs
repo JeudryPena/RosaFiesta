@@ -12,7 +12,7 @@ public class AddressConfig : IEntityTypeConfiguration<AddressEntity>
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Id).ValueGeneratedOnAdd();
-        builder.Property(a => a.Tittle).IsRequired();
+        builder.Property(a => a.Title).IsRequired();
         builder.Property(a => a.City).IsRequired();
         builder.Property(a => a.Country).IsRequired();
         builder.Property(a => a.Street).IsRequired();

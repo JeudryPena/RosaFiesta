@@ -3,7 +3,7 @@ import { OptionDto } from "./optionDto";
 
 export interface ProductDto {
     code: string;
-    tittle: string;
+    title: string;
     options: OptionDto[];
     type: number;
     categoryId: number | null;

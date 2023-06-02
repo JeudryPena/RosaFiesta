@@ -1,5 +1,5 @@
 export interface ProductsDiscountResponse {
     productCode: string;
-    discountCode: string;
+    code: string;
     optionId: number;
 }

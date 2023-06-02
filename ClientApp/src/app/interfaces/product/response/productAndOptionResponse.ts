@@ -3,7 +3,7 @@ import { OptionPreviewResponse } from "./optionPreviewResponse";
 
 export interface ProductAndOptionResponse {
     code: string | null;
-    tittle: string;
+    title: string;
     description: string | null;
     price: number;
     images: string | null;

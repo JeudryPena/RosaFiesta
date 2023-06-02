@@ -1,6 +1,6 @@
 export interface AddressResponse {
     id: string;
-    tittle: string;
+    title: string;
     country: string;
     city: string;
     zipCode: string;

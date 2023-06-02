@@ -5,7 +5,7 @@ import { OptionPreviewResponse } from "./optionPreviewResponse";
 
 export interface ProductAndOptionDetailResponse {
     code: string;
-    tittle: string;
+    title: string;
     description: string | null;
     images: MultipleImagesResponse[] | null;
     price: number;

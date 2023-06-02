@@ -1,8 +1,8 @@
 export interface ValidDiscountResponse {
-    discountCode: string;
-    discountType: string;
-    discountValue: number;
-    discountDescription: string | null;
+    code: string;
+    type: string;
+    value: number;
+    description: string | null;
     isValid: boolean;
     responseMessage: string | null;
 }

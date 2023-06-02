@@ -4,7 +4,7 @@ export interface ReviewResponse {
     reviewRating: number;
     reviewDate: string;
     reviewUpdateDate: string | null;
-    reviewTittle: string | null;
+    reviewtitle: string | null;
     userReviewerId: string;
     productCode: string;
     optionId: number | null;

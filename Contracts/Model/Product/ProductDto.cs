@@ -5,7 +5,7 @@ namespace Contracts.Model.Product;
 public class ProductDto
 {
     public string Code { get; set; }
-    public string Tittle { get; set; }
+    public string Title { get; set; }
     public ICollection<OptionDto> Options { get; set; }
     public int Type { get; set; }
     public int? CategoryId { get; set; }
