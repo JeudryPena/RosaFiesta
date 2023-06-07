@@ -41,8 +41,7 @@ internal sealed class WishListService : IWishListService
 		{
 			Title = wishList.Title,
 			Description = wishList.Description,
-			UserId = userId,
-			CreatedDate = DateTimeOffset.Now,
+			UserId = userId
 		};
 		if (wishList.OptionsId != null)
 		{

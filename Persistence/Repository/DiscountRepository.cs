@@ -88,4 +88,7 @@ internal sealed class DiscountRepository : IDiscountRepository
 			throw new InvalidOperationException("Discount is deleted");
 		return discount;
 	}
+
+	public void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount)
+	=> _dbContext.AppliedDiscounts.Remove(appliedDiscount);
 }

@@ -51,4 +51,7 @@ internal sealed class PayMethodRepository : IPayMethodRepository
 			throw new InvalidOperationException("User is deleted");
 		return user;
 	}
+
+	public void Update(PayMethodEntity payment)
+	=> _context.PayMethods.Update(payment);
 }

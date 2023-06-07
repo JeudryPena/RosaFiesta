@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    [Migration("20230604131734_initial")]
-    partial class initial
+    [Migration("20230607131031_isDeleted")]
+    partial class isDeleted
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,9 @@ namespace Persistence.Migrations
                     b.Property<string>("ExtraInfo")
                         .HasMaxLength(4)
                         .HasColumnType("character varying(4)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -119,6 +122,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(700)
@@ -128,6 +134,9 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -143,6 +152,9 @@ namespace Persistence.Migrations
                     b.Property<int>("QuantityAvaliable")
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
@@ -156,6 +168,9 @@ namespace Persistence.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -164,13 +179,16 @@ namespace Persistence.Migrations
                     b.Property<string>("Icon")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -183,9 +201,10 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 247, DateTimeKind.Unspecified).AddTicks(3102), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Peluches de todos los tipos",
                             Icon = "https://i.imgur.com/0jQYs1R.png",
-                            IsActive = true,
+                            IsDeleted = false,
                             Name = "Peluches"
                         });
                 });
@@ -196,12 +215,18 @@ namespace Persistence.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTimeOffset>("End")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("MaxTimesApply")
                         .HasColumnType("integer");
@@ -218,6 +243,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
 
@@ -229,22 +257,26 @@ namespace Persistence.Migrations
                         new
                         {
                             Code = "ROSA",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 248, DateTimeKind.Unspecified).AddTicks(5207), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "10% de descuento en todos los productos",
                             End = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
                             MaxTimesApply = 5,
                             Name = "Descuento Inicial",
-                            Start = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 228, DateTimeKind.Unspecified).AddTicks(2120), new TimeSpan(0, 0, 0, 0, 0)),
+                            Start = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 248, DateTimeKind.Unspecified).AddTicks(5200), new TimeSpan(0, 0, 0, 0, 0)),
                             Type = 1,
                             Value = 200.0
                         },
                         new
                         {
                             Code = "WELCOME",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 248, DateTimeKind.Unspecified).AddTicks(5210), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "100$ de descuento en todos los productos",
                             End = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
                             MaxTimesApply = 1,
                             Name = "Descuento de Bienvenida",
-                            Start = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 228, DateTimeKind.Unspecified).AddTicks(2140), new TimeSpan(0, 0, 0, 0, 0)),
+                            Start = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 248, DateTimeKind.Unspecified).AddTicks(5209), new TimeSpan(0, 0, 0, 0, 0)),
                             Type = 0,
                             Value = 10.0
                         });
@@ -288,6 +320,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
@@ -298,6 +333,9 @@ namespace Persistence.Migrations
                     b.Property<int?>("GenderFor")
                         .HasMaxLength(20)
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("Material")
                         .HasMaxLength(20)
@@ -317,6 +355,9 @@ namespace Persistence.Migrations
                     b.Property<float?>("Size")
                         .HasColumnType("real");
 
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<float>("Weight")
                         .HasColumnType("real");
 
@@ -332,8 +373,10 @@ namespace Persistence.Migrations
                             Id = 1,
                             Color = "Gold",
                             Condition = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 249, DateTimeKind.Unspecified).AddTicks(5298), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Polo de manga larga",
                             GenderFor = 3,
+                            IsDeleted = false,
                             Material = 6,
                             Price = 1200.0,
                             ProductCode = "SDA01",
@@ -346,8 +389,10 @@ namespace Persistence.Migrations
                             Id = 2,
                             Color = "White",
                             Condition = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 249, DateTimeKind.Unspecified).AddTicks(5308), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Polo de manga corta",
                             GenderFor = 3,
+                            IsDeleted = false,
                             Material = 6,
                             Price = 800.0,
                             ProductCode = "SDA01",
@@ -360,8 +405,10 @@ namespace Persistence.Migrations
                             Id = 3,
                             Color = "Green",
                             Condition = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 249, DateTimeKind.Unspecified).AddTicks(5311), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Polo XL",
                             GenderFor = 3,
+                            IsDeleted = false,
                             Material = 6,
                             Price = 1400.0,
                             ProductCode = "SDA02",
@@ -384,6 +431,12 @@ namespace Persistence.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid?>("SupplierId")
                         .HasColumnType("uuid");
 
@@ -395,6 +448,9 @@ namespace Persistence.Migrations
                     b.Property<int>("Type")
                         .HasMaxLength(15)
                         .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("WarrantyId")
                         .HasColumnType("uuid");
@@ -415,6 +471,8 @@ namespace Persistence.Migrations
                             Code = "SDA01",
                             Brand = "Champion",
                             CategoryId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 252, DateTimeKind.Unspecified).AddTicks(1962), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
                             SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Title = "Polo",
                             Type = 1,
@@ -425,6 +483,8 @@ namespace Persistence.Migrations
                             Code = "SDA02",
                             Brand = "Flores",
                             CategoryId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 252, DateTimeKind.Unspecified).AddTicks(1983), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
                             SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Title = "Flores",
                             Type = 1,
@@ -492,6 +552,9 @@ namespace Persistence.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -500,13 +563,16 @@ namespace Persistence.Migrations
                     b.Property<string>("Icon")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -522,9 +588,10 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 257, DateTimeKind.Unspecified).AddTicks(5100), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Electronics",
                             Icon = "https://i.imgur.com/0jQYs1R.png",
-                            IsActive = true,
+                            IsDeleted = false,
                             Name = "Electronics"
                         });
                 });
@@ -540,6 +607,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
@@ -548,7 +618,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(320)
                         .HasColumnType("character varying(320)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
@@ -559,6 +629,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -575,8 +648,9 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
                             Address = "La Capital",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 258, DateTimeKind.Unspecified).AddTicks(4286), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "suplidor@hotmail.com",
-                            IsActive = true,
+                            IsDeleted = false,
                             Name = "Supplier 1",
                             Phone = "8095395539"
                         });
@@ -614,21 +688,21 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 222, DateTimeKind.Unspecified).AddTicks(4234), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 245, DateTimeKind.Unspecified).AddTicks(6017), new TimeSpan(0, -4, 0, 0, 0)),
                             Code = "ROSA",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = 2,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 222, DateTimeKind.Unspecified).AddTicks(4277), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 245, DateTimeKind.Unspecified).AddTicks(6048), new TimeSpan(0, -4, 0, 0, 0)),
                             Code = "WELCOME",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = 3,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 222, DateTimeKind.Unspecified).AddTicks(4278), new TimeSpan(0, -4, 0, 0, 0)),
+                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 245, DateTimeKind.Unspecified).AddTicks(6049), new TimeSpan(0, -4, 0, 0, 0)),
                             Code = "WELCOME",
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
@@ -655,6 +729,26 @@ namespace Persistence.Migrations
                         {
                             CartId = 1,
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
+                        },
+                        new
+                        {
+                            CartId = 2,
+                            UserId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3"
+                        },
+                        new
+                        {
+                            CartId = 3,
+                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E1"
+                        },
+                        new
+                        {
+                            CartId = 4,
+                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E2"
+                        },
+                        new
+                        {
+                            CartId = 5,
+                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E3"
                         });
                 });
 
@@ -669,6 +763,12 @@ namespace Persistence.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -680,6 +780,9 @@ namespace Persistence.Migrations
 
                     b.Property<double>("TaxesCost")
                         .HasColumnType("double precision");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -713,13 +816,16 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -730,7 +836,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset?>("UpdatedDate")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -747,8 +853,9 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 232, DateTimeKind.Unspecified).AddTicks(4200), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 250, DateTimeKind.Unspecified).AddTicks(5288), new TimeSpan(0, -4, 0, 0, 0)),
                             Description = "Cash payment",
+                            IsDeleted = false,
                             Name = "Cash",
                             PayMethodType = 2,
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
@@ -767,12 +874,23 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
                     b.Property<int?>("OrderSku")
                         .HasColumnType("integer");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("PurchaseNumber");
 
@@ -789,12 +907,16 @@ namespace Persistence.Migrations
                         {
                             PurchaseNumber = 1,
                             CartId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 253, DateTimeKind.Unspecified).AddTicks(3398), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
                             ProductId = "SDA01"
                         },
                         new
                         {
                             PurchaseNumber = 2,
                             CartId = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 253, DateTimeKind.Unspecified).AddTicks(3401), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
                             ProductId = "SDA02"
                         });
                 });
@@ -840,7 +962,7 @@ namespace Persistence.Migrations
                             PurchaseNumber = 1,
                             OptionId = 1,
                             AppliedId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 240, DateTimeKind.Unspecified).AddTicks(2932), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 254, DateTimeKind.Unspecified).AddTicks(5603), new TimeSpan(0, -4, 0, 0, 0)),
                             Quantity = 3,
                             UnitPrice = 1200.0
                         },
@@ -849,7 +971,7 @@ namespace Persistence.Migrations
                             PurchaseNumber = 1,
                             OptionId = 2,
                             AppliedId = 2,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 240, DateTimeKind.Unspecified).AddTicks(2970), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 254, DateTimeKind.Unspecified).AddTicks(5624), new TimeSpan(0, -4, 0, 0, 0)),
                             Quantity = 4,
                             UnitPrice = 800.0
                         },
@@ -858,7 +980,7 @@ namespace Persistence.Migrations
                             PurchaseNumber = 2,
                             OptionId = 3,
                             AppliedId = 3,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 240, DateTimeKind.Unspecified).AddTicks(2973), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 254, DateTimeKind.Unspecified).AddTicks(5650), new TimeSpan(0, -4, 0, 0, 0)),
                             Quantity = 2,
                             UnitPrice = 800.0
                         });
@@ -870,12 +992,15 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("Date")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("OptionId")
                         .HasColumnType("integer");
@@ -887,7 +1012,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<DateTimeOffset?>("UpdateDate")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -906,23 +1031,23 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
-                            Date = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9472), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 255, DateTimeKind.Unspecified).AddTicks(3509), new TimeSpan(0, -4, 0, 0, 0)),
                             Description = "Excellent",
+                            IsDeleted = false,
                             OptionId = 1,
                             Rating = 5f,
                             Title = "Nice product",
-                            UpdateDate = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9476), new TimeSpan(0, 0, 0, 0, 0)),
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
-                            Date = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9485), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 9, 10, 31, 255, DateTimeKind.Unspecified).AddTicks(3524), new TimeSpan(0, -4, 0, 0, 0)),
                             Description = "So so i liked the expierience a bit",
+                            IsDeleted = false,
                             OptionId = 1,
                             Rating = 3f,
                             Title = "Kinda love it",
-                            UpdateDate = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9486), new TimeSpan(0, 0, 0, 0, 0)),
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         });
                 });
@@ -935,18 +1060,21 @@ namespace Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("CreatedDate")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Title")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<DateTimeOffset?>("UpdatedDate")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -989,10 +1117,16 @@ namespace Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1016,6 +1150,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
@@ -1027,7 +1164,9 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
                             Conditions = "Warranty 1",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 570, DateTimeKind.Unspecified).AddTicks(447), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Warranty 1",
+                            IsDeleted = false,
                             Name = "Warranty 1",
                             Period = "1 year",
                             ScopeType = 2,
@@ -1043,8 +1182,12 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Action")
-                        .HasMaxLength(12)
                         .HasColumnType("integer");
+
+                    b.Property<string>("ActivityId")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
 
                     b.Property<string>("ActivityType")
                         .IsRequired()
@@ -1082,6 +1225,9 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -1092,7 +1238,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -1151,6 +1297,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("character varying(120)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
@@ -1189,6 +1338,9 @@ namespace Persistence.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -1216,21 +1368,114 @@ namespace Persistence.Migrations
                             AccessFailedCount = 0,
                             Age = 45,
                             BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
-                            ConcurrencyStamp = "56aa7434-65be-4422-80e7-ec312f321e84",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 271, DateTimeKind.Unspecified).AddTicks(105), new TimeSpan(0, 0, 0, 0, 0)),
+                            ConcurrencyStamp = "4ceb3809-7b4f-4dd3-8f4e-c606fbf47150",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 263, DateTimeKind.Unspecified).AddTicks(8910), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
+                            IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHGUEPVgIwQZY8cOBe+7ea1pUqxJXy/u4kYkgNZVkwVnPqiEKPyrIvp7/7tzovPUgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKweDuzBsUvS06fY+SLqTBpIHZv20yth5ccA1sf50u9wkOwia9kia/dR6+jvSxflNQ==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "65f90c26-630b-47ed-b00e-f021aeb0d39b",
+                            SecurityStamp = "89538251-add9-480d-bdeb-f0703823e043",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
+                        },
+                        new
+                        {
+                            Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
+                            AccessFailedCount = 0,
+                            Age = 15,
+                            BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "c0a6023c-4b20-4aea-8b31-06ab6d39146c",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 263, DateTimeKind.Unspecified).AddTicks(8952), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "rosanny@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "Rosanny Pena",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ROSANNY@GMAIL.COM",
+                            NormalizedUserName = "ROSANNY",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEDuKjnEf7tDU2/Km0XBIKMA0QTFlt/4ZBSBDw6/EaSPsFrqazSBtAKUy0aAUlDeNQ==",
+                            PhoneNumber = "18497505945",
+                            PhoneNumberConfirmed = true,
+                            PromotionalMails = false,
+                            SecurityStamp = "eec9a5a8-da70-4e1c-afe9-a692f863439e",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosanny"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
+                            AccessFailedCount = 0,
+                            Age = 15,
+                            BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "bb7cf576-d7f7-4aee-9566-ef862430f39f",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 263, DateTimeKind.Unspecified).AddTicks(8963), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "rosalbapp@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "Rosalba Pena",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ROSALBAPP@GMAIL.COM",
+                            NormalizedUserName = "ROSMERY2",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAIL2fmR+GlwAuArZ6+q8H0mH0sLYboyxnmbMPGsTm6w96bvHTda3nKn8IW7i9v59w==",
+                            PhoneNumber = "18497505946",
+                            PhoneNumberConfirmed = true,
+                            PromotionalMails = false,
+                            SecurityStamp = "26095aa7-c859-41af-bb67-c6a89927c412",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosalba2"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            AccessFailedCount = 0,
+                            Age = 15,
+                            BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "d965eb48-f7df-4251-a551-2353ecc18bf6",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 263, DateTimeKind.Unspecified).AddTicks(8977), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "jendrypp@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "Jendry Pena",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "JENDRYPP@GMAIL.COM",
+                            NormalizedUserName = "JENDRY",
+                            PasswordHash = "AQAAAAIAAYagAAAAECeoLebvMpHjkAqCVRUDejH9oVMqiBgaVV0XfvkrfcmGEsJ2yWMQizSVhVRjn4FkXA==",
+                            PhoneNumber = "18497505947",
+                            PhoneNumberConfirmed = true,
+                            PromotionalMails = false,
+                            SecurityStamp = "1c583128-10af-440c-9535-ae7b4ef640ee",
+                            TwoFactorEnabled = false,
+                            UserName = "jendry"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            AccessFailedCount = 0,
+                            Age = 15,
+                            BirthDate = new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "2cc1481f-43be-4964-8d7b-52f389a8911a",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 7, 13, 10, 31, 263, DateTimeKind.Unspecified).AddTicks(8990), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "rosmerypp@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "Rosmery Pena",
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ROSMERYPP@GMAIL.COM",
+                            NormalizedUserName = "ROSMERY",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEQlRUn2hQdRF71hfF+uFeLQpe1I/RFusdOMiFud0l9ebwzydUu8V5hwfxOn+tmM2w==",
+                            PhoneNumber = "18497505948",
+                            PhoneNumberConfirmed = true,
+                            PromotionalMails = false,
+                            SecurityStamp = "e9392aba-5cd1-4b1b-a04a-8d43df1600cf",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosmery"
                         });
                 });
 
@@ -1269,8 +1514,26 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Name = "CLIENT",
+                            NormalizedName = "CLIENT"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            Name = "ProductsManager",
+                            NormalizedName = "PRODUCTSMANAGER"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            Name = "SalesManager",
+                            NormalizedName = "SALESMANAGER"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E4",
+                            Name = "MarketingManager",
+                            NormalizedName = "MARKETINGMANAGER"
                         });
                 });
 
@@ -1365,6 +1628,26 @@ namespace Persistence.Migrations
                         {
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             RoleId = "2301D884-221A-4E7D-B509-0113DCC043E1"
+                        },
+                        new
+                        {
+                            UserId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
+                            RoleId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3"
+                        },
+                        new
+                        {
+                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E1",
+                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E2"
+                        },
+                        new
+                        {
+                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E3"
+                        },
+                        new
+                        {
+                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E4"
                         });
                 });
 
