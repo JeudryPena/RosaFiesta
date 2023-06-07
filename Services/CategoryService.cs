@@ -20,6 +20,14 @@ internal sealed class CategoryService : ICategoryService
         _repositoryManager = repositoryManager;
     }
 
+    public async Task<IEnumerable<CategoryManagementResponse>> GetAllManagementAsync(CancellationToken cancellationToken)
+    {
+        IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllManagementAsync(cancellationToken);
+        var categoryResponse = categories.Adapt<IEnumerable<CategoryManagementResponse>>();
+        return categoryResponse;
+
+    }
+
     public async Task<IEnumerable<CategoryPreviewResponse>> GetAllCategoriesPreviewAsync(CancellationToken cancellationToken = default)
     {
         IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
@@ -51,6 +59,8 @@ internal sealed class CategoryService : ICategoryService
     public async Task<CategoryResponse> GetByIdAsync(int categoryId, CancellationToken cancellationToken = default)
     {
         CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
+        if (category.IsDeleted == true)
+            throw new("Category not found");
         var categoryResponse = category.Adapt<CategoryResponse>();
         return categoryResponse;
     }
@@ -67,13 +77,15 @@ internal sealed class CategoryService : ICategoryService
         if (subCategoryId == null)
         {
             CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
-            _repositoryManager.CategoryRepository.Delete(category);
+            category.IsDeleted = true;
+            _repositoryManager.CategoryRepository.Update(category);
             actionLog.ActivityType = Activities.Category;
         }
         else
         {
             SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subCategoryId.Value, cancellationToken);
-            _repositoryManager.CategoryRepository.DeleteSubCategory(subCategory);
+            subCategory.IsDeleted = true;
+            _repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
             actionLog.ActivityType = Activities.Subcategory;
         }
         _repositoryManager.ActionLogRepository.Create(actionLog);
@@ -87,7 +99,6 @@ internal sealed class CategoryService : ICategoryService
             Name = categoryDto.Name,
             Description = categoryDto.Description,
             Icon = categoryDto.Icon,
-            IsActive = categoryDto.IsActive,
         };
         if (categoryDto.SubCategories != null)
         {

@@ -20,7 +20,9 @@ public class SupplierConfig : IEntityTypeConfiguration<SupplierEntity>
         builder.HasIndex(x => x.Email).IsUnique();
         builder.Property(x => x.Phone);
         builder.Property(x => x.Address);
-        builder.Property(x => x.IsActive);
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.HasData(new SupplierEntity
         {
             Id = Guid.Parse(SupplierId),
@@ -28,7 +30,8 @@ public class SupplierConfig : IEntityTypeConfiguration<SupplierEntity>
             Email = "suplidor@hotmail.com",
             Phone = "8095395539",
             Address = "La Capital",
-            IsActive = true,
+            CreatedAt = DateTime.UtcNow,
+            IsDeleted = false
         });
     }
 }

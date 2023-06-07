@@ -22,6 +22,7 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
         builder.Property(product => product.Title).IsRequired();
         builder.Property(product => product.Brand);
         builder.Property(product => product.Type).IsRequired();
+
         builder.HasMany(product => product.Options)
             .WithOne()
             .HasForeignKey(option => option.ProductCode)

@@ -1,24 +1,29 @@
 ﻿namespace Contracts.Model.Product.Response;
 
-public class OptionPreviewResponse
+public class OptionPreviewResponse : BaseResponse
 {
-    public int Id { get; set; }
-    public double Price { get; set; }
-    public string? Images { get; set; } 
-    public string Stock => StockCalculate().ToString();
-    public int QuantityAvaliable { get; set; }
-    public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.Rating);
-    public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
-    public ICollection<ReviewPreviewResponse>? Reviews { get; set; }
-    public DiscountPreviewResponse? Discount { get; set; }
-    private StockStatusType StockCalculate()
-    {
-        if (QuantityAvaliable == 0)
-            return StockStatusType.OutOfStock;
-        if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
-            return StockStatusType.LowStock;
-        if (QuantityAvaliable >= 10)
-            return StockStatusType.InStock;
-        return StockStatusType.InStock;
-    }
+
+	public double Price { get; set; }
+	public double? OfferPrice => Discount == null ? null : Discount.Type == 1 ? Price - Price * Discount.Value / 100 : Price - Discount.Value;
+	public float? DiscountSave { get; set; }
+	public string? Images { get; set; }
+	public string Stock => StockCalculate().ToString();
+	public int QuantityAvaliable { get; set; }
+	public string Condition { get; set; }
+	public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.Rating);
+	public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
+	public ICollection<ReviewPreviewResponse>? Reviews { get; set; }
+	public DiscountPreviewResponse? Discount { get; set; }
+
+	private StockStatusType StockCalculate()
+	{
+		if (QuantityAvaliable == 0)
+			return StockStatusType.OutOfStock;
+		if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
+			return StockStatusType.LowStock;
+		if (QuantityAvaliable >= 10)
+			return StockStatusType.InStock;
+		return StockStatusType.InStock;
+	}
+	public int Id { get; set; }
 }

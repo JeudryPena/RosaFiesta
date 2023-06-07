@@ -12,6 +12,7 @@ public class ActionLogEntity
     [StringLength(36, MinimumLength = 32)]
     public string? UserId { get; set; }
     [StringLength(12, MinimumLength = 3)]
+    public string ActivityId { get; set; }
     public ActivityAction Action { get; set; }
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
 }

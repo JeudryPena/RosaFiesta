@@ -2,7 +2,7 @@
 
 namespace Contracts.Model.Product.UserInteract.Response;
 
-public class OrderResponse
+public class OrderResponse : BaseResponse
 {
     public int SKU { get; set; }
     public Guid PayMethodId { get; set; }

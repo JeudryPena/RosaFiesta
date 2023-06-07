@@ -1,6 +1,7 @@
 ﻿namespace Contracts.Model.Security.Response;
 
-public class AddressResponse
+public class AddressResponse : BaseResponse
+
 {
     public Guid Id { get; set; }
     public string Title { get; set; }

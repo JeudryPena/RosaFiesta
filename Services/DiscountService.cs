@@ -13,12 +13,19 @@ using Services.Abstractions;
 namespace Services;
 
 internal sealed class DiscountService : IDiscountService
-{
+    {
     private readonly IRepositoryManager _repositoryManager;
 
     public DiscountService(IRepositoryManager repositoryManager)
     {
         _repositoryManager = repositoryManager;
+    }
+    
+    public async Task<IEnumerable<ManagementDiscountsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default)
+    {
+        IEnumerable<DiscountEntity> discounts = await _repositoryManager.DiscountRepository.ManagementGetAllAsync(cancellationToken);
+        var discountResponse = discounts.Adapt<IEnumerable<ManagementDiscountsResponse>>();
+        return discountResponse;
     }
 
     public async Task<IEnumerable<DiscountResponse>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -80,7 +87,8 @@ internal sealed class DiscountService : IDiscountService
         CancellationToken cancellationToken = default)
     {
         DiscountEntity discount = await _repositoryManager.DiscountRepository.GetDiscountAsync(discountId, cancellationToken);
-        _repositoryManager.DiscountRepository.Delete(discount);
+        discount.IsDeleted = true;
+        _repositoryManager.DiscountRepository.Update(discount);
         ActionLogEntity actionLog = new()
         {
             UserId = userId,

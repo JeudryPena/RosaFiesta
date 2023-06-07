@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product;
 
-public class SupplierEntity 
+public class SupplierEntity: BaseEntity
 {
     public Guid Id { get; set; }
     [StringLength(100, MinimumLength = 5)]
@@ -15,6 +15,5 @@ public class SupplierEntity
     public string? Phone { get; set; }
     [StringLength(200, MinimumLength = 5)]
     public string Address { get; set; } = String.Empty;
-    public bool IsActive { get; set; }
     public ICollection<ProductEntity>? ProductsSupplied { get; set; }
 }

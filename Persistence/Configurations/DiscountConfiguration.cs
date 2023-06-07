@@ -23,6 +23,9 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         builder.Property(x => x.Start).IsRequired();
         builder.Property(x => x.End).IsRequired();
         builder.Property(x => x.Description);
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.HasMany(x => x.ProductsDiscounts).WithOne().HasForeignKey(x => x.Code);
         builder.HasMany(x => x.AppliedDiscounts).WithOne().HasForeignKey(x => x.Code);
         builder.HasData(new DiscountEntity
@@ -35,6 +38,8 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
             End = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
             Description = "10% de descuento en todos los productos",
             MaxTimesApply = 5,
+            IsDeleted = false,
+            CreatedAt = DateTimeOffset.UtcNow,
         }, new DiscountEntity
         {
             Code = DefaultCode1,
@@ -45,6 +50,8 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
             End = new DateTimeOffset(2023, 9, 30, 0, 0, 0, TimeSpan.Zero),
             Description = "100$ de descuento en todos los productos",
             MaxTimesApply = 1,
+            IsDeleted = false,
+            CreatedAt = DateTimeOffset.UtcNow,
         }
 
     );

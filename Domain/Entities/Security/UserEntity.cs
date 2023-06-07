@@ -17,6 +17,7 @@ public class UserEntity : IdentityUser
     public string? RefreshToken { get; set; }
     public bool PromotionalMails { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
     public CartEntity Cart { get; set; }
     public ICollection<ReviewEntity>? Reviews { get; set; }
@@ -30,4 +31,5 @@ public class UserEntity : IdentityUser
     public PayMethodEntity? PayMethod { get; set; }
     public Guid? DefaultPayMethodId { get; set; }
     public ICollection<QuoteEntity>? Quotes { get; set; }
+    public bool IsDeleted { get; set; }
 }

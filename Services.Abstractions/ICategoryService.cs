@@ -6,6 +6,7 @@ namespace Services.Abstractions;
 public interface ICategoryService
 {
     Task<IEnumerable<CategoryPreviewResponse>> GetAllCategoriesPreviewAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<CategoryManagementResponse>> GetAllManagementAsync(CancellationToken cancellationToken);
     Task<IEnumerable<CategoryResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<CategoryResponse> CreateAsync(string userId, CategoryDto categoryDto, CancellationToken cancellationToken = default);
     Task<List<SubCategoryResponse>> CreateSubCategoryAsync(string userId, List<SubCategoryDto> subCategoryDto,

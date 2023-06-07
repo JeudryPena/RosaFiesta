@@ -1,23 +1,24 @@
-﻿using Contracts.Model;
-using Contracts.Model.Security;
+﻿using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Services.Abstractions;
 
 namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthenticateController: ControllerBase
+public class AuthenticateController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
-    
-    public AuthenticateController( IServiceManager serviceManager )
+
+    public AuthenticateController(IServiceManager serviceManager)
     {
         _serviceManager = serviceManager;
     }
-    
+
     [HttpGet("{userId}/GetUserName")]
     public async Task<IActionResult> GetUserName(string userId)
     {
@@ -37,7 +38,7 @@ public class AuthenticateController: ControllerBase
         );
         return response;
     }
-    
+
     [HttpPost("Login")]
     public async Task<IActionResult> Login(LogingDto logingDto)
     {
@@ -48,12 +49,12 @@ public class AuthenticateController: ControllerBase
     }
 
     [HttpPost("FinishRegister")]
-    public async Task<FinishRegisterResponse> FinishRegister([FromBody]FinishRegisterDto finishRegisterDto, [FromQuery] string token,  [FromQuery] string id)
+    public async Task<FinishRegisterResponse> FinishRegister([FromBody] FinishRegisterDto finishRegisterDto, [FromQuery] string token, [FromQuery] string id)
     {
         FinishRegisterResponse result = await _serviceManager.AuthenticateService.CreatePasswordAsync(finishRegisterDto, token, id).ConfigureAwait(false);
         return result;
     }
-    
+
     [HttpGet("ResendEmail/{id:guid}")]
     public async Task<IActionResult> ResendEmail(string email)
     {
@@ -61,7 +62,7 @@ public class AuthenticateController: ControllerBase
         await _serviceManager.AuthenticateService.RegisterEmailAsync(email);
         return Ok();
     }
-    
+
     [HttpPost("ForgotPassword")]
     public async Task<IActionResult> ForgotPassword(string email)
     {
@@ -70,7 +71,7 @@ public class AuthenticateController: ControllerBase
     }
 
     [HttpPost("ResetPassword")]
-    public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id)
     {
         await _serviceManager.AuthenticateService.ResetPasswordAsync(resetPasswordDto, passwordToken, id);
         return Ok();
@@ -83,31 +84,13 @@ public class AuthenticateController: ControllerBase
         await _serviceManager.AuthenticateService.ChangePasswordAsync(changePasswordDto);
         return Ok();
     }
-    
+
     // Logout
     [HttpPost("Logout")]
     [Authorize]
     public async Task<IActionResult> Logout()
     {
         await _serviceManager.AuthenticateService.LogoutAsync();
-        return Ok();
-    }
-
-    [HttpPost("RefreshToken")]
-    public IActionResult RefreshToken()
-    {
-        return Ok();
-    }
-    
-    [HttpPost("RevokeToken")]
-    public IActionResult RevokeToken()
-    {
-        return Ok();
-    }
-    
-    [HttpPost("RevokeAllTokens")]
-    public IActionResult RevokeAllTokens()
-    {
         return Ok();
     }
 }

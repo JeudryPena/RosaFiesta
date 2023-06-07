@@ -4,7 +4,7 @@ using Domain.Entities.Product.Helpers;
 
 namespace Domain.Entities.Product;
 
-public class WarrantyEntity
+public class WarrantyEntity : BaseEntity
 {
     public Guid Id { get; set; }
     [StringLength(100, MinimumLength = 5)]

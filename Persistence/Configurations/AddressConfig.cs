@@ -16,7 +16,9 @@ public class AddressConfig : IEntityTypeConfiguration<AddressEntity>
         builder.Property(a => a.City).IsRequired();
         builder.Property(a => a.Country).IsRequired();
         builder.Property(a => a.Street).IsRequired();
-        builder.Property(a => a.ZipCode).IsRequired(); builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.CreatedAt).IsRequired();
         builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
+        builder.Property(a => a.ZipCode).IsRequired();
     }
 }

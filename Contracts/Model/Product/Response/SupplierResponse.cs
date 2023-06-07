@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Model.Product.Response;
 
-public class SupplierResponse
+public class SupplierResponse : BaseResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -8,5 +8,5 @@ public class SupplierResponse
     public string? Description { get; set; }
     public string? Phone { get; set; }
     public string Address { get; set; }
-    public ICollection<ProductAndOptionResponse>? ProductsSupplied { get; set; }
+    public ICollection<ProductResponse>? ProductsSupplied { get; set; }
 }

@@ -1,37 +1,40 @@
 ﻿using Domain.Entities.Product;
-using Domain.Exceptions;
 using Domain.IRepository;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;
 
-public class CategoryRepository: ICategoryRepository
+public class CategoryRepository : ICategoryRepository
 {
     private readonly RosaFiestaContext _rosaFiestaContext;
-    
+
     public CategoryRepository(RosaFiestaContext rosaFiestaContext)
     {
         _rosaFiestaContext = rosaFiestaContext;
     }
 
     public async Task<IEnumerable<CategoryEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-        await _rosaFiestaContext.Categories.Include(x => x.SubCategories).Include(x => x.Products).ToListAsync(cancellationToken);
+        await _rosaFiestaContext.Categories.Include(x => x.SubCategories).Include(x => x.Products).Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
 
-    public async Task<IEnumerable<SubCategoryEntity>> GetAllSubCategoriesAsync(CancellationToken cancellationToken = default) => 
-        await _rosaFiestaContext.SubCategories.ToListAsync(cancellationToken);
+    public async Task<IEnumerable<CategoryEntity>> GetAllManagementAsync(CancellationToken cancellationToken) => await _rosaFiestaContext.Categories.ToListAsync(cancellationToken);
+
+    public async Task<IEnumerable<SubCategoryEntity>> GetAllSubCategoriesAsync(CancellationToken cancellationToken = default) =>
+        await _rosaFiestaContext.SubCategories.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
 
     public void Insert(CategoryEntity category) =>
     _rosaFiestaContext.Categories.Add(category);
-    
+
     public void InsertSubCategory(List<SubCategoryEntity> subCategory) =>
         _rosaFiestaContext.SubCategories.AddRange(subCategory);
 
     public async Task<SubCategoryEntity> GetSubCategoryByIdAsync(int categoryId, int subCategoryId, CancellationToken cancellationToken = default)
     {
-        var subCategory = await _rosaFiestaContext.SubCategories
-            .FirstOrDefaultAsync(x => x.Id == subCategoryId && x.CategoryId == categoryId, cancellationToken); 
+        var subCategory = await _rosaFiestaContext.Categories.Include(x => x.SubCategories).Where(x => x.IsDeleted == false).SelectMany(x => x.SubCategories).FirstOrDefaultAsync(x => x.Id == subCategoryId && x.CategoryId == categoryId, cancellationToken);
         if (subCategory == null)
             throw new ArgumentNullException(nameof(subCategory));
+        if (subCategory.IsDeleted)
+            throw new InvalidOperationException("The subcategory is deleted");
         return subCategory;
     }
 
@@ -41,17 +44,9 @@ public class CategoryRepository: ICategoryRepository
             .FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
         if (category == null)
             throw new ArgumentNullException(nameof(category));
+        if (category.IsDeleted)
+            throw new InvalidOperationException("The category is deleted");
         return category;
-    }
-
-    public void Delete(CategoryEntity category)
-    {
-        _rosaFiestaContext.Categories.Remove(category);
-    }
-
-    public void DeleteSubCategory(SubCategoryEntity subCategory)
-    {
-        _rosaFiestaContext.SubCategories.Remove(subCategory);
     }
 
     public void Update(CategoryEntity category)
@@ -86,4 +81,6 @@ public class CategoryRepository: ICategoryRepository
             throw new ArgumentNullException(nameof(category), "Category not found");
         return category;
     }
+
+
 }

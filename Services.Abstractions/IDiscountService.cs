@@ -11,4 +11,5 @@ public interface IDiscountService
     Task<DiscountResponse> UpdateDiscountAsync(string userId, string discountId, DiscountDto discountDto,
         CancellationToken cancellationToken = default);
     Task DeleteDiscountAsync(string userId, string discountId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<ManagementDiscountsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default);
 }

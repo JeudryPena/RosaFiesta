@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Security;
 
-public class AddressEntity
+public class AddressEntity : BaseEntity
 {
     public Guid Id { get; set; }
     [StringLength(40, MinimumLength = 1)]
@@ -18,6 +18,4 @@ public class AddressEntity
     [StringLength(36, MinimumLength = 32)]
     public string UserId { get; set; }
     public UserEntity User { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset UpdatedAt { get; set; }
 }

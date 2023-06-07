@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,9 +23,9 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ActivityType = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    Action = table.Column<int>(type: "integer", nullable: false),
+                    ActivityType = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
+                    UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true),
+                    Action = table.Column<int>(type: "integer", maxLength: 12, nullable: false),
                     Timestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -54,15 +54,10 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     Icon = table.Column<string>(type: "text", nullable: true),
-                    Slug = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,43 +65,18 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Departments",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Floor = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DiscountEntity",
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    Code = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Code = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Type = table.Column<int>(type: "integer", maxLength: 25, nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     MaxTimesApply = table.Column<int>(type: "integer", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    DiscountImage = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,15 +90,11 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    Image = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(700)", maxLength: 700, nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    Image = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     QuantityAvaliable = table.Column<int>(type: "integer", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    Quantity = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,16 +107,12 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    Phone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    Address = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    Email = table.Column<string>(type: "character varying(320)", maxLength: 320, nullable: true),
+                    Phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,16 +126,12 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    ScopeType = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<int>(type: "integer", maxLength: 50, nullable: false),
+                    ScopeType = table.Column<int>(type: "integer", maxLength: 50, nullable: false),
                     Status = table.Column<int>(type: "integer", maxLength: 50, nullable: true),
-                    Period = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Conditions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    UpdatedBy = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                    Period = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    Conditions = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,16 +168,11 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     Icon = table.Column<string>(type: "text", nullable: true),
-                    Slug = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    CategoryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,56 +187,17 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FullName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
-                    DepartmentId = table.Column<int>(type: "integer", nullable: false),
-                    JobTitle = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Salary = table.Column<decimal>(type: "numeric", nullable: false),
-                    WorkingHours = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    WorkingDays = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Resume = table.Column<string>(type: "text", nullable: true),
-                    Photo = table.Column<string>(type: "text", nullable: false),
-                    IdentityCard = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductEntity",
                 schema: "RosaFiesta",
                 columns: table => new
                 {
                     Code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Title = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
-                    Brand = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Brand = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Type = table.Column<int>(type: "integer", maxLength: 15, nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: true),
                     WarrantyId = table.Column<Guid>(type: "uuid", nullable: true),
-                    SupplierId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    SupplierId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -315,17 +229,17 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductCode = table.Column<string>(type: "character varying(100)", nullable: false),
-                    Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    ProductCode = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     Price = table.Column<double>(type: "double precision", nullable: false),
                     EndedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     QuantityAvaliable = table.Column<int>(type: "integer", nullable: false),
-                    Color = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    Color = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Size = table.Column<float>(type: "real", nullable: true),
                     Weight = table.Column<float>(type: "real", nullable: false),
-                    Condition = table.Column<int>(type: "integer", nullable: false),
-                    GenderFor = table.Column<int>(type: "integer", nullable: true),
-                    Material = table.Column<int>(type: "integer", nullable: true)
+                    Condition = table.Column<int>(type: "integer", maxLength: 20, nullable: false),
+                    GenderFor = table.Column<int>(type: "integer", maxLength: 20, nullable: true),
+                    Material = table.Column<int>(type: "integer", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -367,7 +281,7 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Code = table.Column<string>(type: "character varying(20)", nullable: false),
+                    Code = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     ProductId = table.Column<string>(type: "character varying(100)", nullable: true),
                     OptionId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -401,12 +315,12 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: false),
-                    City = table.Column<string>(type: "text", nullable: false),
-                    ZipCode = table.Column<string>(type: "text", nullable: false),
-                    Street = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    Country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ZipCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    Street = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
@@ -423,7 +337,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    Code = table.Column<string>(type: "character varying(20)", nullable: false),
+                    Code = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     AppliedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -495,19 +409,13 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    FullName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    FullName = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     Age = table.Column<int>(type: "integer", nullable: false),
-                    CivilStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     BirthDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    RefreshToken = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
+                    RefreshToken = table.Column<string>(type: "text", nullable: true),
                     PromotionalMails = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Avatar = table.Column<string>(type: "text", nullable: true),
-                    hasAvatar = table.Column<bool>(type: "boolean", nullable: false),
                     DefaultAddressId = table.Column<Guid>(type: "uuid", nullable: true),
                     DefaultPayMethodId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -585,9 +493,9 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PayMethodType = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    PayMethodType = table.Column<int>(type: "integer", maxLength: 10, nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
@@ -611,16 +519,16 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CustomerName = table.Column<string>(type: "text", nullable: false),
-                    ContactNumber = table.Column<string>(type: "text", nullable: false),
-                    ExtraInfo = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    EventName = table.Column<string>(type: "text", nullable: false),
+                    CustomerName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    ContactNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    ExtraInfo = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: true),
+                    Email = table.Column<string>(type: "character varying(7)", maxLength: 7, nullable: true),
+                    EventName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     EventDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Location = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true)
+                    Location = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -639,11 +547,11 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description= table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdateDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     OptionId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -674,7 +582,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: false)
@@ -704,9 +612,9 @@ namespace Persistence.Migrations
                     AddressId = table.Column<Guid>(type: "uuid", nullable: false),
                     ShippingCost = table.Column<double>(type: "double precision", nullable: false),
                     TaxesCost = table.Column<double>(type: "double precision", nullable: false),
-                    VoucherType = table.Column<int>(type: "integer", nullable: false),
+                    VoucherType = table.Column<int>(type: "integer", maxLength: 35, nullable: false),
                     VoucherNumber = table.Column<int>(type: "integer", nullable: false),
-                    VoucherSeries = table.Column<string>(type: "text", nullable: false)
+                    VoucherSeries = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -740,14 +648,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", maxLength: 250, nullable: false),
+                    QuoteId = table.Column<int>(type: "integer", maxLength: 36, nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    QuoteId = table.Column<int>(type: "integer", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -883,36 +787,36 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Age", "Avatar", "BirthDate", "CivilStatus", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName", "hasAvatar" },
-                values: new object[] { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, 45, "https://i.imgur.com/1Q1Z1Zm.jpg", new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), 1, "e073bc6b-fdef-4d1b-9613-7836b1ef8a2e", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 547, DateTimeKind.Unspecified).AddTicks(1897), new TimeSpan(0, 0, 0, 0, 0)), "System", null, null, "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEFviD6LGngaBJQxqKzBjgZg+G7G45XMngKTU0u+4O7lh4+DrAFnSbWAnIL45Tz+oxA==", "18497505944", true, false, null, null, "71bfec22-ea39-4ea3-8740-85e7cb265d1d", false, null, null, "Rosalba", false });
+                columns: new[] { "Id", "AccessFailedCount", "Age", "BirthDate", "ConcurrencyStamp", "CreatedAt", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, 45, new DateTimeOffset(new DateTime(1996, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)), "56aa7434-65be-4422-80e7-ec312f321e84", new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 271, DateTimeKind.Unspecified).AddTicks(105), new TimeSpan(0, 0, 0, 0, 0)), null, null, "user@example.com", true, "Rosalba Pena", false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEHGUEPVgIwQZY8cOBe+7ea1pUqxJXy/u4kYkgNZVkwVnPqiEKPyrIvp7/7tzovPUgA==", "18497505944", true, false, null, null, "65f90c26-630b-47ed-b00e-f021aeb0d39b", false, "Rosalba" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "CategoryEntity",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Icon", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 525, DateTimeKind.Unspecified).AddTicks(9712), new TimeSpan(0, 0, 0, 0, 0)), "System", "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", true, "Peluches", "peluches", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 525, DateTimeKind.Unspecified).AddTicks(9714), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                columns: new[] { "Id", "Description", "Icon", "IsActive", "Name" },
+                values: new object[] { 1, "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", true, "Peluches" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "DiscountEntity",
-                columns: new[] { "Code", "CreatedAt", "CreatedBy", "Description", "End", "DiscountImage", "Name", "Start", "Type", "Value", "MaxTimesApply", "UpdatedAt", "UpdatedBy" },
+                columns: new[] { "Code", "Description", "End", "MaxTimesApply", "Name", "Start", "Type", "Value" },
                 values: new object[,]
                 {
-                    { "ROSA", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2182), new TimeSpan(0, 0, 0, 0, 0)), "System", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2187), new TimeSpan(0, 0, 0, 0, 0)), 1, 200.0, 5, null, null },
-                    { "WELCOME", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2196), new TimeSpan(0, 0, 0, 0, 0)), "System", "100$ de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "https://i.imgur.com/1ZQZ1Zm.png", "Descuento de Bienvenida", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 528, DateTimeKind.Unspecified).AddTicks(2197), new TimeSpan(0, 0, 0, 0, 0)), 0, 10.0, 1, null, null }
+                    { "ROSA", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 5, "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 228, DateTimeKind.Unspecified).AddTicks(2120), new TimeSpan(0, 0, 0, 0, 0)), 1, 200.0 },
+                    { "WELCOME", "100$ de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, "Descuento de Bienvenida", new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 228, DateTimeKind.Unspecified).AddTicks(2140), new TimeSpan(0, 0, 0, 0, 0)), 0, 10.0 }
                 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "SupplierEntity",
-                columns: new[] { "Id", "Address", "CreatedAt", "CreatedBy", "Description", "Email", "IsActive", "Name", "Phone", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 540, DateTimeKind.Unspecified).AddTicks(1456), new TimeSpan(0, 0, 0, 0, 0)), "System", null, "suplidor@hotmail.com", true, "Supplier 1", "8095395539", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 540, DateTimeKind.Unspecified).AddTicks(1459), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                columns: new[] { "Id", "Address", "Description", "Email", "IsActive", "Name", "Phone" },
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", null, "suplidor@hotmail.com", true, "Supplier 1", "8095395539" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "Warranties",
-                columns: new[] { "Id", "Conditions", "CreatedAt", "CreatedBy", "Description", "Name", "Period", "ScopeType", "Status", "Type", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 629, DateTimeKind.Unspecified).AddTicks(6859), new TimeSpan(0, 0, 0, 0, 0)), "System", "Warranty 1", "Warranty 1", "1 year", 2, 1, 3, null, null });
+                columns: new[] { "Id", "Conditions", "Description", "Name", "Period", "ScopeType", "Status", "Type" },
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", "Warranty 1", "Warranty 1", "1 year", 2, 1, 3 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -920,9 +824,9 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "AppliedDate", "Code", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 524, DateTimeKind.Unspecified).AddTicks(1743), new TimeSpan(0, -4, 0, 0, 0)), "ROSA", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { 2, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 524, DateTimeKind.Unspecified).AddTicks(1781), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { 3, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 524, DateTimeKind.Unspecified).AddTicks(1783), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
+                    { 1, new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 222, DateTimeKind.Unspecified).AddTicks(4234), new TimeSpan(0, -4, 0, 0, 0)), "ROSA", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
+                    { 2, new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 222, DateTimeKind.Unspecified).AddTicks(4277), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
+                    { 3, new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 222, DateTimeKind.Unspecified).AddTicks(4278), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.InsertData(
@@ -941,23 +845,23 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "PayMethodEntity",
                 columns: new[] { "Id", "CreatedDate", "Description", "Name", "PayMethodType", "UpdatedDate", "UserId" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 530, DateTimeKind.Unspecified).AddTicks(9895), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", "Cash", 2, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" });
+                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 232, DateTimeKind.Unspecified).AddTicks(4200), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", "Cash", 2, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "ProductEntity",
-                columns: new[] { "Code", "Brand", "CategoryId", "CreatedAt", "CreatedBy", "SupplierId", "Title", "Type", "UpdatedAt", "UpdatedBy", "WarrantyId" },
+                columns: new[] { "Code", "Brand", "CategoryId", "SupplierId", "Title", "Type", "WarrantyId" },
                 values: new object[,]
                 {
-                    { "SDA01", "Champion", 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 534, DateTimeKind.Unspecified).AddTicks(943), new TimeSpan(0, 0, 0, 0, 0)), "System", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Polo", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") },
-                    { "SDA02", "Flores", 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 534, DateTimeKind.Unspecified).AddTicks(949), new TimeSpan(0, 0, 0, 0, 0)), "System", new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Flores", 1, null, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") }
+                    { "SDA01", "Champion", 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Polo", 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") },
+                    { "SDA02", "Flores", 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Flores", 1, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") }
                 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "SubCategoryEntity",
-                columns: new[] { "Id", "CategoryId", "CreatedAt", "CreatedBy", "Description", "Icon", "IsActive", "Name", "Slug", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 539, DateTimeKind.Unspecified).AddTicks(7796), new TimeSpan(0, 0, 0, 0, 0)), "System", "Electronics", "https://i.imgur.com/0jQYs1R.png", true, "Electronics", "electronics", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 539, DateTimeKind.Unspecified).AddTicks(7798), new TimeSpan(0, 0, 0, 0, 0)), "System" });
+                columns: new[] { "Id", "CategoryId", "Description", "Icon", "IsActive", "Name" },
+                values: new object[] { 1, 1, "Electronics", "https://i.imgur.com/0jQYs1R.png", true, "Electronics" });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
@@ -997,19 +901,19 @@ namespace Persistence.Migrations
                 columns: new[] { "OptionId", "PurchaseNumber", "AppliedId", "CreatedAt", "IsReturned", "Quantity", "UnitPrice", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 537, DateTimeKind.Unspecified).AddTicks(4304), new TimeSpan(0, -4, 0, 0, 0)), null, 3, 1200.0, null },
-                    { 2, 1, 2, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 537, DateTimeKind.Unspecified).AddTicks(4352), new TimeSpan(0, -4, 0, 0, 0)), null, 4, 800.0, null },
-                    { 3, 2, 3, new DateTimeOffset(new DateTime(2023, 5, 3, 15, 45, 32, 537, DateTimeKind.Unspecified).AddTicks(4355), new TimeSpan(0, -4, 0, 0, 0)), null, 2, 800.0, null }
+                    { 1, 1, 1, new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 240, DateTimeKind.Unspecified).AddTicks(2932), new TimeSpan(0, -4, 0, 0, 0)), null, 3, 1200.0, null },
+                    { 2, 1, 2, new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 240, DateTimeKind.Unspecified).AddTicks(2970), new TimeSpan(0, -4, 0, 0, 0)), null, 4, 800.0, null },
+                    { 3, 2, 3, new DateTimeOffset(new DateTime(2023, 6, 4, 9, 17, 34, 240, DateTimeKind.Unspecified).AddTicks(2973), new TimeSpan(0, -4, 0, 0, 0)), null, 2, 800.0, null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "ReviewEntity",
-                columns: new[] { "Id", "OptionId", "Date", "ReviewDescription", "Rating", "Title", "UpdateDate", "UserId" },
+                columns: new[] { "Id", "Date", "Description", "OptionId", "Rating", "Title", "UpdateDate", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"), 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8244), new TimeSpan(0, 0, 0, 0, 0)), "So so i liked the expierience a bit", 3f, "Kinda love it", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8245), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"), 1, new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8234), new TimeSpan(0, 0, 0, 0, 0)), "Excellent", 5f, "Nice product", new DateTimeOffset(new DateTime(2023, 5, 3, 19, 45, 32, 538, DateTimeKind.Unspecified).AddTicks(8237), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
+                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"), new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9485), new TimeSpan(0, 0, 0, 0, 0)), "So so i liked the expierience a bit", 1, 3f, "Kinda love it", new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9486), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
+                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"), new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9472), new TimeSpan(0, 0, 0, 0, 0)), "Excellent", 1, 5f, "Nice product", new DateTimeOffset(new DateTime(2023, 6, 4, 13, 17, 34, 241, DateTimeKind.Unspecified).AddTicks(9476), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1099,40 +1003,6 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "CategoryEntity",
                 column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Departments_Name",
-                schema: "RosaFiesta",
-                table: "Departments",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_DepartmentId",
-                schema: "RosaFiesta",
-                table: "Employees",
-                column: "Department");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_Email",
-                schema: "RosaFiesta",
-                table: "Employees",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_IdentityCard",
-                schema: "RosaFiesta",
-                table: "Employees",
-                column: "IdentityCard",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_Phone",
-                schema: "RosaFiesta",
-                table: "Employees",
-                column: "Phone",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1426,10 +1296,6 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
-                name: "Employees",
-                schema: "RosaFiesta");
-
-            migrationBuilder.DropTable(
                 name: "OptionImages",
                 schema: "RosaFiesta");
 
@@ -1459,10 +1325,6 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles",
-                schema: "RosaFiesta");
-
-            migrationBuilder.DropTable(
-                name: "Departments",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(

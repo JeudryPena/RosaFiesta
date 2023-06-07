@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product;
 
-public class CategoryEntity
+public class CategoryEntity : BaseEntity
 {
     public int Id { get; set; }
     [StringLength(50, MinimumLength = 3)]
@@ -10,7 +10,6 @@ public class CategoryEntity
     [StringLength(250, MinimumLength = 3)]
     public string Description { get; set; }
     public string? Icon { get; set; }
-    public bool IsActive { get; set; } = true;
     public ICollection<SubCategoryEntity>? SubCategories { get; set; }
     public ICollection<ProductEntity>? Products { get; set; }
 }

@@ -5,7 +5,7 @@ using Domain.Entities.Product.UserInteract;
 
 namespace Domain.Entities.Product;
 
-public class OptionEntity
+public class OptionEntity : BaseEntity
 {
     public int Id { get; set; }
     [StringLength(100, MinimumLength = 3)]

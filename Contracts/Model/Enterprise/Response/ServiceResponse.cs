@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Model.Enterprise.Response;
 
-public class ServiceResponse
+public class ServiceResponse : BaseResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

@@ -102,7 +102,9 @@ internal sealed class QuoteService: IQuoteService
         QuoteEntity quote = await _repositoryManager.QuoteRepository.GetQuoteByUserIdAsync(id, userId, cancellationToken);
         foreach (var q in quote.QuoteItems)
             await _repositoryManager.ServiceRepository.RestoreQuantity(q.ServiceId, q.Quantity, cancellationToken);
-        _repositoryManager.QuoteRepository.Delete(quote);
+        quote.IsDeleted = true;
+        quote.UpdatedAt = DateTimeOffset.Now;
+        _repositoryManager.QuoteRepository.Update(quote);
         ActionLogEntity actionLog = new()
         {
             UserId = userId,

@@ -1,5 +1,4 @@
-﻿using Contracts.Model.Product;
-using Contracts.Model.Product.Response;
+﻿using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
 
@@ -7,7 +6,6 @@ namespace Services.Abstractions;
 
 public interface ICartService
 {
-    Task<IEnumerable<CartResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<CartResponse> GetByIdAsync(string id, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, string productCode, int optionId, CancellationToken cancellationToken = default);
     Task<CartResponse> AddPackToCartAsync(string userId, int optionId, string? Code, List<PurchaseDetailDto> cartItems,
@@ -19,4 +17,4 @@ public interface ICartService
     Task<CartResponse> ClearCartAsync(string userId, CancellationToken cancellationToken = default);
     Task<CartResponse> AddProductToCartAsync(string userId, string? Code, PurchaseDetailDto cartItem,
         CancellationToken cancellationToken = default);
-} 
+}

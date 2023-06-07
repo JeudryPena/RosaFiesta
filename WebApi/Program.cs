@@ -3,11 +3,13 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+
 using Domain.Configuration;
-using Domain.Entities;
 using Domain.Entities.Security;
 using Domain.IRepository;
+
 using Messaging;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +18,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 using Persistence;
 using Persistence.Repository;
+
 using Serilog;
+
 using Services;
 using Services.Abstractions;
+
 using WebApi.Middleware;
 
 namespace WebApi;
@@ -37,7 +43,7 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         AddControllers(builder);
         AddCompressionMethod(builder);
         AddSwagger(builder);
@@ -50,7 +56,8 @@ public static class Program
         AddService(builder.Services);
         AddFileManage(builder.Services, builder);
 
-        builder.Services.Configure<FormOptions>(o => {
+        builder.Services.Configure<FormOptions>(o =>
+        {
             o.ValueLengthLimit = int.MaxValue;
             o.MultipartBodyLengthLimit = int.MaxValue;
             o.MemoryBufferThreshold = int.MaxValue;
@@ -58,7 +65,7 @@ public static class Program
 
         builder.Services.AddTransient<ExceptionHandlingMiddleware>();
         builder.Services.AddEndpointsApiExplorer();
-        
+
 
         var app = builder.Build();
 
@@ -88,7 +95,7 @@ public static class Program
         using var serviceScope = app.Services.CreateScope();
         using var context = serviceScope.ServiceProvider.GetService<RosaFiestaContext>();
         context.Database.Migrate();
-        
+
         app.Run();
     }
 
@@ -98,7 +105,7 @@ public static class Program
         {
             loggerConf.WriteTo.Console().WriteTo.Debug().ReadFrom.Configuration(hostBuilderCtx.Configuration);
         });
-        
+
         services.Configure<FormOptions>(o =>
         {
             o.ValueLengthLimit = int.MaxValue;
@@ -113,7 +120,7 @@ public static class Program
         var emailConfig = builder.Configuration.GetSection(SmtpKey)
             .Get<EmailConfiguration>();
         builder.Services.AddSingleton(emailConfig);
-        
+
         builder.Services
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
@@ -233,9 +240,9 @@ public static class Program
     {
         var migrationsAssembly = typeof(RosaFiestaContext).GetTypeInfo().Assembly.GetName().Name;
         string? connectionString = configuration.GetConnectionString(SqlConnectionString);
-        
+
         string? postgresConnectionString = configuration.GetConnectionString(PostgresConnectionString);
-        
+
         void PgContextBuilder(DbContextOptionsBuilder b) =>
             b.UseNpgsql(
                 postgresConnectionString,
@@ -243,14 +250,14 @@ public static class Program
                 {
                     npg.MigrationsAssembly(migrationsAssembly);
                     npg.MigrationsHistoryTable(
-                        "_EFNegotiationMigrationHistory",
+                        "_EFRosaFiestaMigrationHistory",
                         RosaFiestaContext.DefaultSchema
                     );
                     npg.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 }
             );
-        
-        
+
+
         /*void ContextBuilder(DbContextOptionsBuilder b) =>
             b.UseSqlServer(
                 connectionString,
@@ -269,7 +276,7 @@ public static class Program
         services.AddDbContext<RosaFiestaContext>(PgContextBuilder);
         services.AddScoped<DbContext, RosaFiestaContext>();
     }
-    
+
     private static void AddHttpContext(IServiceCollection builderServices)
     {
         builderServices.AddHttpContextAccessor();

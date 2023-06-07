@@ -13,4 +13,6 @@ public interface IUserRepository
     void Update(UserEntity user);
     Task<IEnumerable<AddressEntity>> GetAddressesAsync(string userId, CancellationToken cancellationToken);
     Task<AddressEntity> GetAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken);
+    void CreateAddress(AddressEntity address);
+    void UpdateAddress(AddressEntity address);
 }

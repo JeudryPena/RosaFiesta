@@ -5,7 +5,7 @@ using Domain.Entities.Security;
 
 namespace Domain.Entities.Product.UserInteract;
 
-public class PayMethodEntity
+public class PayMethodEntity : BaseEntity
 {
     public Guid Id { get; set; }
     [StringLength(30, MinimumLength = 3)]
@@ -16,6 +16,4 @@ public class PayMethodEntity
     public PayMethodType PayMethodType { get; set; }
     public string UserId { get; set; }
     public UserEntity? User { get; set; }
-    public DateTimeOffset CreatedDate { get; set; }
-    public DateTimeOffset? UpdatedDate { get; set; }
 }

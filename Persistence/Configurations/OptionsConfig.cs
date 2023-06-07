@@ -27,6 +27,9 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
         builder.Property(x => x.GenderFor);
         builder.Property(x => x.Material);
         builder.Property(x => x.Condition).IsRequired();
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.HasMany(product => product.Reviews)
             .WithOne()
             .HasForeignKey(review => review.OptionId);
@@ -51,6 +54,8 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
             Material = MaterialType.Cotton,
             Condition = ConditionType.New,
             ProductCode = ProductId,
+            IsDeleted = false,
+            CreatedAt = DateTime.UtcNow,
         }, new OptionEntity
         {
             Id = OptionId2,
@@ -65,6 +70,8 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
             Material = MaterialType.Cotton,
             Condition = ConditionType.New,
             ProductCode = ProductId,
+            IsDeleted = false,
+            CreatedAt = DateTime.UtcNow,
         }, new OptionEntity()
         {
             Id = OptionId3,
@@ -79,6 +86,8 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
             Material = MaterialType.Cotton,
             Condition = ConditionType.Used,
             ProductCode = ProductId2,
+            IsDeleted = false,
+            CreatedAt = DateTime.UtcNow,
         });
     }
 }

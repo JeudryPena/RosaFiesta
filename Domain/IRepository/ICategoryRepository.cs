@@ -10,11 +10,10 @@ public interface ICategoryRepository
     void InsertSubCategory(List<SubCategoryEntity> subCategory);
     Task<SubCategoryEntity> GetSubCategoryByIdAsync(int categoryId, int subCategoryId, CancellationToken cancellationToken = default);
     Task<CategoryEntity> GetByIdAsync(int categoryId, CancellationToken cancellationToken = default);
-    void Delete(CategoryEntity category);
-    void DeleteSubCategory(SubCategoryEntity subCategory);
     void Update(CategoryEntity category);
     void UpdateSubCategory(SubCategoryEntity subCategory);
     Task<List<SubCategoryEntity>> GetSubCategoriesByIdsAsync(List<int> toList, CancellationToken cancellationToken = default);
     void UpdateSubCategories(List<SubCategoryEntity> subCategories);
     Task<CategoryEntity> GetCategoryAndSubCategoryAsync(int categoryId, CancellationToken cancellationToken);
+    Task<IEnumerable<CategoryEntity>> GetAllManagementAsync(CancellationToken cancellationToken);
 }

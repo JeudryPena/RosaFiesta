@@ -1,12 +1,11 @@
-﻿using Domain.Entities.Product;
-using Domain.Entities.Product.Helpers;
-using Domain.Entities.Product.UserInteract;
+﻿using Domain.Entities.Product.UserInteract;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
+public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
 {
     public void Configure(EntityTypeBuilder<OrderEntity> builder)
     {
@@ -21,6 +20,9 @@ public class OrderConfiguration: IEntityTypeConfiguration<OrderEntity>
         builder.Property(bill => bill.VoucherSeries).IsRequired();
         builder.Property(bill => bill.VoucherType).IsRequired();
         builder.Property(bill => bill.TaxesCost).IsRequired();
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.HasOne(x => x.Address)
             .WithMany()
             .HasForeignKey(x => x.AddressId);

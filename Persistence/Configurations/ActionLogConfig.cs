@@ -15,5 +15,7 @@ public class ActionLogConfig : IEntityTypeConfiguration<ActionLogEntity>
         builder.Property(x => x.UserId);
         builder.Property(x => x.Action).IsRequired();
         builder.Property(x => x.Timestamp).IsRequired();
+
+
     }
 }

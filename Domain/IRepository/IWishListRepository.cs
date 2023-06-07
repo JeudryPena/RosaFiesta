@@ -13,4 +13,5 @@ public interface IWishListRepository
     void DeleteProduct(WishListProductsEntity wishListEntity);
     void Delete(WishListEntity wishListEntity);
     Task<WishListProductsEntity> GetWishListOption(int wishListId, int? optionId, CancellationToken cancellationToken);
+	void UpdateWishLists(IEnumerable<WishListEntity> wishListEntities);
 }

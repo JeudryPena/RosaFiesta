@@ -13,8 +13,9 @@ public class WishListConfig : IEntityTypeConfiguration<WishListEntity>
         builder.Property(w => w.Title);
         builder.HasIndex(x => x.Title).IsUnique();
         builder.Property(w => w.Description);
-        builder.Property(w => w.CreatedDate);
-        builder.Property(w => w.UpdatedDate);
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.Property(w => w.UserId).IsRequired();
         builder.HasMany(x => x.ProductsWish)
             .WithOne()

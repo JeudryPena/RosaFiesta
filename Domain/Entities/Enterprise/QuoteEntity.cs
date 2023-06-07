@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Enterprise;
 
-public class QuoteEntity
+public class QuoteEntity : BaseEntity
 {
     public int Id { get; set; }
     [StringLength(50, MinimumLength = 2)]
@@ -16,8 +16,6 @@ public class QuoteEntity
     [StringLength(50, MinimumLength = 2)]
     public string EventName { get; set; }
     public DateTimeOffset EventDate { get; set; }
-    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
-    public DateTimeOffset? UpdatedAt { get; set; }
     [StringLength(255, MinimumLength = 2)]
     public string Location { get; set; }
     public ICollection<QuoteItemEntity> QuoteItems { get; set; }

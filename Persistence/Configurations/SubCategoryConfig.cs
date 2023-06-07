@@ -18,15 +18,18 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
         builder.HasIndex(x => x.Name).IsUnique();
         builder.Property(x => x.Description);
         builder.Property(x => x.Icon);
-        builder.Property(x => x.IsActive).IsRequired();
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.HasData(new SubCategoryEntity
         {
             Id = SubCategory,
             Name = "Electronics",
             Description = "Electronics",
             Icon = "https://i.imgur.com/0jQYs1R.png",
-            IsActive = true,
             CategoryId = CategoryId,
+            CreatedAt = DateTime.UtcNow,
+            IsDeleted = false
         });
     }
 }

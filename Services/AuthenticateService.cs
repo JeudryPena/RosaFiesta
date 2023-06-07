@@ -53,6 +53,8 @@ internal sealed class AuthenticateService : IAuthenticateService
             UserName = registerDto.UserName,
             Email = registerDto.Email,
             BirthDate = registerDto.BirthDate,
+            CreatedAt = DateTimeOffset.UtcNow,
+            IsDeleted = false,
         };
 
         var result = await _userManager.CreateAsync(user, registerDto.Password)

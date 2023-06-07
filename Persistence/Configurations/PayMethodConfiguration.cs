@@ -17,8 +17,9 @@ public class PayMethodConfiguration : IEntityTypeConfiguration<PayMethodEntity>
         builder.Property(e => e.Id).ValueGeneratedOnAdd();
         builder.Property(e => e.Name).IsRequired();
         builder.Property(e => e.Description).IsRequired();
-        builder.Property(e => e.CreatedDate).IsRequired();
-        builder.Property(e => e.UpdatedDate).IsRequired(false);
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.Property(e => e.PayMethodType).IsRequired();
 
         builder.HasData(new PayMethodEntity
@@ -27,7 +28,8 @@ public class PayMethodConfiguration : IEntityTypeConfiguration<PayMethodEntity>
             Name = "Cash",
             Description = "Cash payment",
             PayMethodType = PayMethodType.Cash,
-            CreatedDate = DateTimeOffset.Now,
+            CreatedAt = DateTimeOffset.Now,
+            IsDeleted = false,
             UserId = UserId
         });
     }

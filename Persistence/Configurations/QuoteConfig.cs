@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Enterprise;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,7 +15,9 @@ public class QuoteConfig : IEntityTypeConfiguration<QuoteEntity>
         builder.Property(q => q.ContactNumber).IsRequired();
         builder.Property(q => q.EventName).IsRequired();
         builder.Property(q => q.EventDate).IsRequired();
-        builder.Property(q => q.CreatedAt).IsRequired();
+        builder.Property(a => a.CreatedAt).IsRequired();
+        builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.IsDeleted).IsRequired();
         builder.Property(q => q.Location).IsRequired();
         builder.HasMany(q => q.QuoteItems).WithOne().HasForeignKey(qi => qi.QuoteId);
     }

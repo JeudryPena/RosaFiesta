@@ -5,7 +5,7 @@ using Domain.Entities.Security;
 
 namespace Domain.Entities.Product.UserInteract;
 
-public class OrderEntity
+public class OrderEntity : BaseEntity
 {
     public int SKU { get; set; }
     public string? UserId { get; set; }
