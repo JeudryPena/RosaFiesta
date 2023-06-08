@@ -36,5 +36,4 @@ public interface IServiceManager
     
     IServiceService ServiceService { get; }
     
-    IActionLogService ActionLogService { get; }
 }

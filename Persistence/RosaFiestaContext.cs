@@ -12,12 +12,10 @@ namespace Persistence;
 public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 {
 	public const string DefaultSchema = "RosaFiesta";
-	private IConfiguration Configuration { get; }
 
-	public RosaFiestaContext(DbContextOptions<RosaFiestaContext> options, IConfiguration configuration)
+	public RosaFiestaContext(DbContextOptions<RosaFiestaContext> options)
 		: base(options)
 	{
-		Configuration = configuration;
 		Addresses = Set<AddressEntity>();
 		Products = Set<ProductEntity>();
 		OptionImages = Set<MultipleOptionImages>();
@@ -40,7 +38,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 		Quotes = Set<QuoteEntity>();
 		QuoteItems = Set<QuoteItemEntity>();
 		Services = Set<ServiceEntity>();
-		ActionLogs = Set<ActionLogEntity>();
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -77,6 +74,4 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 	public DbSet<QuoteItemEntity> QuoteItems { get; set; }
 
 	public DbSet<QuoteEntity> Quotes { get; set; }
-
-	public DbSet<ActionLogEntity> ActionLogs { get; set; }
 }

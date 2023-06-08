@@ -3,7 +3,6 @@ using Contracts.Model.Security.Response;
 
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
-using Domain.Entities.Security.Helper;
 using Domain.Exceptions;
 using Domain.IRepository;
 
@@ -70,12 +69,6 @@ internal sealed class UserService : IUserService
 		) ?? throw new UserNotFoundException(userId.ToString());
 		user.IsDeleted = true;
 		_repositoryManager.UserRepository.Update(user);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.User,
-			Action = ActivityAction.Deleted,
-		};
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 

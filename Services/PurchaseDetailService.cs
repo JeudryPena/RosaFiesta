@@ -2,8 +2,6 @@
 using Contracts.Model.Product.UserInteract.Response;
 
 using Domain.Entities.Product.UserInteract;
-using Domain.Entities.Security;
-using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 
 using Mapster;
@@ -42,13 +40,6 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService
 		PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
 		purchaseDetail = purchaseDetailDto.Adapt(purchaseDetail);
 		_repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Detail,
-			Action = ActivityAction.Updated,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		var purchaseDetailResponse = purchaseDetail.Adapt<PurchaseDetailResponse>();
 		return purchaseDetailResponse;
@@ -59,13 +50,6 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService
 		PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
 		purchaseDetail.IsDeleted = true;
 		_repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Detail,
-			Action = ActivityAction.Deleted,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 }

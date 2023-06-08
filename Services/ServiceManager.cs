@@ -27,7 +27,6 @@ public sealed class ServiceManager: IServiceManager
     private readonly Lazy<IFileService> _lazyFileService;
     private readonly Lazy<IQuoteService> _lazyQuoteService;
     private readonly Lazy<IServiceService> _lazyServiceService;
-    private readonly Lazy<IActionLogService> _lazyActionLogService;
 
     public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor contextAccessor, IConfiguration configuration)
     {
@@ -47,7 +46,6 @@ public sealed class ServiceManager: IServiceManager
         _lazyFileService = new Lazy<IFileService>(() => new FileService());
         _lazyQuoteService = new Lazy<IQuoteService>(() => new QuoteService(repositoryManager));
         _lazyServiceService = new Lazy<IServiceService>(() => new ServiceService(repositoryManager));
-        _lazyActionLogService = new Lazy<IActionLogService>(() => new ActionLogService(repositoryManager));
     }
 
     public IUserService UserService => _lazyUserService.Value;
@@ -66,5 +64,4 @@ public sealed class ServiceManager: IServiceManager
     public IFileService FileService => _lazyFileService.Value;
     public IQuoteService QuoteService => _lazyQuoteService.Value;
     public IServiceService ServiceService => _lazyServiceService.Value;
-    public IActionLogService ActionLogService => _lazyActionLogService.Value;
 }

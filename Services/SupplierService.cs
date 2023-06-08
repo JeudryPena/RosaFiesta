@@ -2,8 +2,6 @@
 using Contracts.Model.Product.Response;
 
 using Domain.Entities.Product;
-using Domain.Entities.Security;
-using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 
 using Mapster;
@@ -40,13 +38,6 @@ internal sealed class SupplierService : ISupplierService
 		var supplier = supplierDto.Adapt<SupplierEntity>();
 		supplier.Id = Guid.NewGuid();
 		_repositoryManager.SupplierRepository.Insert(supplier);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Supplier,
-			Action = ActivityAction.Created,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		var supplierResponse = supplier.Adapt<SupplierResponse>();
 		return supplierResponse;
@@ -62,13 +53,6 @@ internal sealed class SupplierService : ISupplierService
 		supplier.Phone = supplierDto.Phone;
 		supplier.Email = supplierDto.Email;
 		_repositoryManager.SupplierRepository.Update(supplier);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Supplier,
-			Action = ActivityAction.Updated,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		var supplierResponse = supplier.Adapt<SupplierResponse>();
 		return supplierResponse;
@@ -79,13 +63,6 @@ internal sealed class SupplierService : ISupplierService
 		SupplierEntity supplier = await _repositoryManager.SupplierRepository.GetByIdAsync(supplierId, cancellationToken);
 		supplier.IsDeleted = true;
 		_repositoryManager.SupplierRepository.Update(supplier);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Supplier,
-			Action = ActivityAction.Deleted,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 }

@@ -2,8 +2,6 @@
 using Contracts.Model.Enterprise.Response;
 
 using Domain.Entities.Enterprise;
-using Domain.Entities.Security;
-using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 
 using Mapster;
@@ -39,13 +37,6 @@ internal sealed class ServiceService : IServiceService
 	{
 		ServiceEntity service = serviceDto.Adapt<ServiceEntity>();
 		_repositoryManager.ServiceRepository.Create(service);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Service,
-			Action = ActivityAction.Created,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();
 		return serviceResponse;
@@ -62,13 +53,6 @@ internal sealed class ServiceService : IServiceService
 			service.Quantity = service.Quantity;
 			service.QuantityAvaliable += count;
 		}
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Service,
-			Action = ActivityAction.Updated,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		_repositoryManager.ServiceRepository.Update(service);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();
@@ -82,13 +66,6 @@ internal sealed class ServiceService : IServiceService
 		service.Quantity += count;
 		service.QuantityAvaliable += count;
 		_repositoryManager.ServiceRepository.Update(service);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Service,
-			Action = ActivityAction.Updated,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();
 		return serviceResponse;
@@ -99,13 +76,6 @@ internal sealed class ServiceService : IServiceService
 		ServiceEntity service = await _repositoryManager.ServiceRepository.GetAsync(serviceId, cancellationToken);
 		service.IsDeleted = true;
 		_repositoryManager.ServiceRepository.Update(service);
-		ActionLogEntity actionLog = new()
-		{
-			UserId = userId,
-			ActivityType = Activities.Service,
-			Action = ActivityAction.Deleted,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 }

@@ -2,8 +2,6 @@
 using Contracts.Model.Product.Response;
 
 using Domain.Entities.Product;
-using Domain.Entities.Security;
-using Domain.Entities.Security.Helper;
 using Domain.IRepository;
 
 using Mapster;
@@ -72,13 +70,6 @@ internal sealed class ProductService : IProductService
 		else
 			product.CategoryId = productForCreationDto.CategoryId;
 		_repositoryManager.ProductRepository.Insert(product);
-		ActionLogEntity actionLog = new()
-		{
-			Action = ActivityAction.Created,
-			UserId = userId,
-			ActivityType = Activities.Product,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ProductResponse productResponse = new();
 		productResponse.Adapt(product);
@@ -96,13 +87,6 @@ internal sealed class ProductService : IProductService
 		product.Adapt(productForUpdateDto);
 		product.Options.Add(option);
 		_repositoryManager.ProductRepository.Update(product);
-		ActionLogEntity actionLog = new()
-		{
-			Action = ActivityAction.Updated,
-			UserId = userId,
-			ActivityType = Activities.Product,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ProductResponse productAndOptionResponse = product.Adapt<ProductResponse>();
 		return productAndOptionResponse;
@@ -112,12 +96,6 @@ internal sealed class ProductService : IProductService
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
-		ActionLogEntity actionLog = new()
-		{
-			ActivityType = Activities.Product,
-			Action = ActivityAction.Deleted,
-			UserId = userId,
-		};
 		if (optionId == null)
 		{
 			OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
@@ -125,15 +103,12 @@ internal sealed class ProductService : IProductService
 				throw new Exception("Option not found");
 			option.IsDeleted = true;
 			_repositoryManager.ProductRepository.Update(product);
-			actionLog.ActivityType = Activities.Option;
 		}
 		else
 		{
 			product.IsDeleted = true;
 			_repositoryManager.ProductRepository.Update(product);
-			actionLog.ActivityType = Activities.Option;
 		}
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 
@@ -153,13 +128,6 @@ internal sealed class ProductService : IProductService
 		OptionEntity option = product.Options[0];
 		option.QuantityAvaliable += count;
 		_repositoryManager.ProductRepository.Update(product);
-		ActionLogEntity actionLog = new()
-		{
-			Action = ActivityAction.Updated,
-			UserId = userId,
-			ActivityType = Activities.Product,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		OptionAdjustResponse optionAdjustResponse = option.Adapt<OptionAdjustResponse>();
 		return optionAdjustResponse;
@@ -173,13 +141,6 @@ internal sealed class ProductService : IProductService
 		var option = optionForCreationDto.Adapt<OptionEntity>();
 		product.Options.Add(option);
 		_repositoryManager.ProductRepository.Update(product);
-		ActionLogEntity actionLog = new()
-		{
-			Action = ActivityAction.Updated,
-			UserId = userId,
-			ActivityType = Activities.Option,
-		};
-		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ProductResponse optionResponse = new();
 		optionResponse.Adapt(product);
