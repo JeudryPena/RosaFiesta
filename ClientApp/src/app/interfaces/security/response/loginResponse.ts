@@ -1,8 +1,8 @@
 export interface LoginResponse {
-    isAuthSuccessful: boolean;
-    expiration: string | null;
-    error: number | null;
-    token: string | null;
-    message: string | null;
-    refreshToken: string | null;
+	isAuthSuccessful: boolean;
+	expiration: string | null;
+	error: number | null;
+	token: string | null;
+	message: string | null;
+	refreshToken: string | null;
 }

@@ -71,7 +71,7 @@ public class WarrantiesController : ControllerBase
 		return Ok(warrantyResponse);
 	}
 
-	[HttpGet("{warrantyId:guid}")]
+	[HttpGet("{warrantyId:guid}/delete")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteWarranty(Guid warrantyId, CancellationToken cancellationToken)
 	{

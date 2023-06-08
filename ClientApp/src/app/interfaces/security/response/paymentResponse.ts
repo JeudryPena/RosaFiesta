@@ -1,9 +1,9 @@
-export interface PaymentResponse {
-    id: string;
-    name: string;
-    description: string;
-    payMethodType: string;
-    createdDate: string;
-    updatedDate: string | null;
-    userId: string;
+import { BaseResponse } from "../../base-response";
+
+export interface PaymentResponse extends BaseResponse {
+	id: string;
+	name: string;
+	description: string;
+	payMethodType: string;
+	userId: string;
 }

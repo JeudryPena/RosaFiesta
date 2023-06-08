@@ -1,4 +1,3 @@
-
 export interface QuoteItemResponse {
     id: string;
     quantity: number;

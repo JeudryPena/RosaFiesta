@@ -100,7 +100,7 @@ public class UsersController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("{userId}")]
+	[HttpGet("{userId}/delete")]
 	public async Task<IActionResult> DeleteUser(string userId, CancellationToken cancellationToken)
 	{
 		await _serviceManager.UserService.DeleteAsync(

@@ -1,11 +1,11 @@
-export interface ReviewResponse {
+import { BaseResponse } from "../../../base-response";
+
+export interface ReviewResponse extends BaseResponse {
     id: string;
     description: string | null;
     rating: number;
-    date: string;
-    updateDate: string | null;
     title: string | null;
-    reviewerId: string;
-    code: string;
+    userId: string;
+    productCode: string;
     optionId: number | null;
 }

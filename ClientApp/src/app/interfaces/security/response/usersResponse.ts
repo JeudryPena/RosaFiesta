@@ -1,28 +1,27 @@
-import { AppliedDiscountResponse } from "../../product/response/appliedDiscountResponse";
-import { OrderResponse } from "../../product/userInteract/response/orderResponse";
-import { ReviewResponse } from "../../product/userInteract/response/reviewResponse";
-import { WishListResponse } from "../../product/userInteract/response/wishListResponse";
+import { AppliedDiscountResponse } from "../../Product/Response/appliedDiscountResponse";
+import { OrderResponse } from "../../Product/UserInteract/Response/orderResponse";
+import { ReviewResponse } from "../../Product/UserInteract/Response/reviewResponse";
+import { WishListResponse } from "../../Product/UserInteract/Response/wishListResponse";
+import { BaseResponse } from "../../base-response";
 
-export interface UsersResponse {
-    id: string;
-    fullName: string;
-    email: string;
-    userName: string;
-    age: number;
-    createdAt: string;
-    birthDate: string;
-    phoneNumber: string;
-    twoFactorEnabled: boolean;
-    phoneNumberConfirmed: boolean;
-    emailConfirmed: boolean;
-    lockoutEnabled: boolean;
-    accessFailedCount: number;
-    lockoutEnd: string | null;
-    passwordHash: string | null;
-    isLockedOut: boolean;
-    promotionalMails: boolean;
-    orders: OrderResponse[] | null;
-    reviews: ReviewResponse[] | null;
-    wishLists: WishListResponse[] | null;
-    appliedDiscounts: AppliedDiscountResponse[] | null;
+export interface UsersResponse extends BaseResponse {
+	id: string;
+	fullName: string;
+	email: string;
+	userName: string;
+	age: number;
+	birthDate: string;
+	phoneNumber: string;
+	twoFactorEnabled: boolean;
+	phoneNumberConfirmed: boolean;
+	emailConfirmed: boolean;
+	lockoutEnabled: boolean;
+	accessFailedCount: number;
+	lockoutEnd: string | null;
+	passwordHash: string | null;
+	promotionalMails: boolean;
+	orders: OrderResponse[] | null;
+	reviews: ReviewResponse[] | null;
+	wishLists: WishListResponse[] | null;
+	appliedDiscounts: AppliedDiscountResponse[] | null;
 }

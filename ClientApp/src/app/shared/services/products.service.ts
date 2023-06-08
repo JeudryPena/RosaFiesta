@@ -1,13 +1,15 @@
-import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { Products } from '../../dummy/products';
-import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
 import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, PipeTransform } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { config } from "../../env/config.prod";
+import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
+import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
 
 interface SearchResult {
-  products: ProductAndOptionsPreviewResponse[];
+  products: ProductsResponse[];
   total: number;
 }
 
@@ -21,21 +23,21 @@ interface State {
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(products: ProductAndOptionsPreviewResponse[], column: SortColumn, direction: string): ProductAndOptionsPreviewResponse[] {
+function sort(products: ProductsResponse[], column: SortColumn, direction: string): ProductsResponse[] {
   if (direction === '' || column === '') {
     return products;
   } else {
-    return [...products].sort((a:any, b:any) => {
+    return [...products].sort((a: any, b: any) => {
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
   }
 }
 
-function matches(product: ProductAndOptionsPreviewResponse, term: string, pipe: PipeTransform) {
+function matches(product: ProductsResponse, term: string, pipe: PipeTransform) {
   return (
     product.title.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(product.code).includes(term) 
+    pipe.transform(product.code).includes(term)
   );
 }
 
@@ -43,9 +45,11 @@ function matches(product: ProductAndOptionsPreviewResponse, term: string, pipe: 
   providedIn: 'root'
 })
 export class ProductsService {
+  private apiUrl = `${config.apiURL}products/`
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _products$ = new BehaviorSubject<ProductAndOptionsPreviewResponse[]>([]);
+  private _products$ = new BehaviorSubject<ProductsResponse[]>([]);
+  private _managementProducts$: ProductsResponse[] = [];
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -56,9 +60,13 @@ export class ProductsService {
     sortDirection: '',
   };
 
-  constructor(private pipe: DecimalPipe) {
+  constructor(
+    private pipe: DecimalPipe,
+    private http: HttpClient
+  ) {
+    this.getProducts();
     this._search$
-      .pipe(
+      .pipe( 
         tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this._search()),
@@ -71,6 +79,12 @@ export class ProductsService {
       });
 
     this._search$.next();
+  }
+
+  getProducts() {
+    return this.http.get<ProductsResponse[]>(this.apiUrl).subscribe((data) => {
+      this._managementProducts$ = data;
+    });
   }
 
   get products$() {
@@ -116,14 +130,11 @@ export class ProductsService {
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
-    // 1. sort
-    let products = sort(Products, sortColumn, sortDirection);
+    let products = sort(this._managementProducts$, sortColumn, sortDirection);
 
-    // 2. filter
     products = products.filter((product) => matches(product, searchTerm, this.pipe));
     const total = products.length;
 
-    // 3. paginate
     products = products.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({ products, total });
   }

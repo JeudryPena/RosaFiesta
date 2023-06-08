@@ -1,10 +1,9 @@
-import { ProductAndOptionsPreviewResponse } from "../../response/productAndOptionsPreviewResponse";
+import { BaseResponse } from "../../../base-response";
+import { ProductPreviewResponse } from "../../Response/productPreviewResponse";
 
-export interface WishListResponse {
+export interface WishListResponse extends BaseResponse {
     id: number;
     title: string | null;
     description: string | null;
-    createdDate: string;
-    updatedDate: string | null;
-    products: ProductAndOptionsPreviewResponse[] | null;
+    products: ProductPreviewResponse[] | null;
 }

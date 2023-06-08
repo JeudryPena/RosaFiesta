@@ -1,12 +1,12 @@
-import { ProductAndOptionResponse } from "./productAndOptionResponse";
+import { BaseResponse } from "../../base-response";
+import { ProductResponse } from "./productResponse";
 import { SubCategoryResponse } from "./subCategoryResponse";
 
-export interface CategoryResponse {
-    id: number;
-    name: string;
-    description: string;
-    icon: string;
-    isActive: boolean;
-    subCategories: SubCategoryResponse[] | null;
-    products: ProductAndOptionResponse[] | null;
+export interface CategoryResponse extends BaseResponse {
+	id: number;
+	name: string;
+	description: string;
+	icon: string;
+	subCategories: SubCategoryResponse[] | null;
+	products: ProductResponse[] | null;
 }

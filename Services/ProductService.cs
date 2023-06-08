@@ -24,8 +24,14 @@ internal sealed class ProductService : IProductService
 	public async Task<ICollection<ProductsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.ManagementGetAllAsync(cancellationToken);
-		ICollection<ProductsResponse> productPreviewResponse = products.Adapt<ICollection<ProductsResponse>>();
-		return productPreviewResponse;
+		ICollection<ProductsResponse> productsResponse = new List<ProductsResponse>();
+		foreach (ProductEntity product in products)
+		{
+			var productResponse = product.Adapt<ProductsResponse>();
+			productResponse.Option = product.Options.FirstOrDefault().Adapt<OptionsResponse>();
+			productsResponse.Add(productResponse);
+		}
+		return productsResponse;
 	}
 
 	public async Task<ICollection<ProductPreviewResponse>> GetAllAsyncPreview(CancellationToken cancellationToken = default)

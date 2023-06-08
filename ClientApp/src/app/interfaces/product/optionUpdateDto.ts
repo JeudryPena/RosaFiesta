@@ -1,4 +1,4 @@
-import { MultipleImageDto } from "./userInteract/multipleImageDto";
+import { MultipleImageDto } from "./UserInteract/multipleImageDto";
 
 export interface OptionUpdateDto {
     description: string | null;

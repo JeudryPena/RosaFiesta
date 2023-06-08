@@ -1,17 +1,20 @@
 import { RatingDirective } from './shared/directives/rating.directive';
 
+// Providers
+
+
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
-import { CommonModule } from '@angular/common';
-import { DecimalPipe } from '@angular/common';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -20,18 +23,27 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
 import { BodyComponent } from './components/body/body.component';
 import { CardsComponent } from './components/cards/cards.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { CartComponent } from './components/cart/cart.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { CoupensComponent } from './components/coupens/coupens.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FeaturesComponent } from './components/features/features.component';
+import { FinishRegisterComponent } from './components/finish-register/finish-register.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HeroesComponent } from './components/heroes/heroes.component';
 import { HomeComponent } from './components/home/home.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
+import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
 import { ManagementProductsComponent } from './components/management-products/management-products.component';
+import { ManagementServicesComponent } from './components/management-services/management-services.component';
 import { ManagementSuppliersComponent } from './components/management-suppliers/management-suppliers.component';
 import { ManagementUsersComponent } from './components/management-users/management-users.component';
+import { ManagementWarrantiesComponent } from './components/management-warranties/management-warranties.component';
 import { MediaComponent } from './components/media/media.component';
+import { ModalCategoryComponent } from './components/modal-category/modal-category.component';
+import { ModalDiscountComponent } from './components/modal-discount/modal-discount.component';
 import { ModalProductComponent } from './components/modal-product/modal-product.component';
 import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
@@ -39,6 +51,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PagesComponent } from './components/pages/pages.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { ProductWishlistComponent } from './components/product-wishlist/product-wishlist.component';
 import { ProductsComponent } from './components/products/products.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -47,6 +60,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { WishListsComponent } from './components/wish-lists/wish-lists.component';
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { BreadcrumbComponent } from './helpers/breadcrumb/breadcrumb.component';
 import { CheckboxComponent } from './helpers/checkbox/checkbox.component';
@@ -64,17 +78,6 @@ import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
-import { ManagementWarrantiesComponent } from './components/management-warranties/management-warranties.component';
-import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
-import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
-import { ManagementServicesComponent } from './components/management-services/management-services.component';
-import { CartComponent } from './components/cart/cart.component';
-import { FinishRegisterComponent } from './components/finish-register/finish-register.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { WishListsComponent } from './components/wish-lists/wish-lists.component';
-import { ProductWishlistComponent } from './components/product-wishlist/product-wishlist.component';
-import { ModalCategoryComponent } from './components/modal-category/modal-category.component';
-import { ModalDiscountComponent } from './components/modal-discount/modal-discount.component';
 
 
 @NgModule({
@@ -142,7 +145,7 @@ import { ModalDiscountComponent } from './components/modal-discount/modal-discou
     ProductWishlistComponent,
     ModalCategoryComponent,
     ModalDiscountComponent
-  
+
   ],
   imports: [
     BrowserModule,
@@ -159,9 +162,12 @@ import { ModalDiscountComponent } from './components/modal-discount/modal-discou
     NgbTypeaheadModule,
     NgbModalModule,
     CommonModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    NgxChartsModule,
+    HttpClientModule
   ],
-  providers: [NgbRatingConfig, DecimalPipe],
+  providers: [NgbRatingConfig, DecimalPipe
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

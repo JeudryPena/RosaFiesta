@@ -23,12 +23,12 @@
                             <tr class="table-row">
                                 <th scope="col" class="table-cell" sortable="code" (sort)="onSort($event)">Codigo</th>
                                 <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Titulo</th>
-                                <th scope="col" class="table-cell" sortable="stock" (sort)="onSort($event)">Stock</th>
-                                <th scope="col" class="table-cell" sortable="price" (sort)="onSort($event)">Precio</th>
-                                <th scope="col" class="table-cell" sortable="quantityAvaliable" (sort)="onSort($event)">
+                                <th scope="col" class="table-cell" >Stock</th>
+                                <th scope="col" class="table-cell" >Precio</th>
+                                <th scope="col" class="table-cell" >
                                     C</th>
                                 <th scope="col" class="table-cell">Imagen</th>
-                                <th scope="col" class="table-cell" sortable="condition" (sort)="onSort($event)">
+                                <th scope="col" class="table-cell">
                                     Condition</th>
                                 <th scope="col" class="table-cell"></th>
                             </tr>
@@ -39,16 +39,16 @@
                                 <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td><ngb-highlight [result]="item.title" [term]="service.searchTerm"></ngb-highlight>
-                                <td><ngb-highlight [result]="item.stock" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="item.options.stock" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
-                                <td><ngb-highlight [result]="item.price | currency:'USD':'symbol-narrow'"
+                                <td><ngb-highlight [result]="item.options.price | number"
                                         [term]="service.searchTerm"></ngb-highlight></td>
-                                <td><ngb-highlight [result]="item.quantityAvaliable | number"
+                                <td><ngb-highlight [result]="item.options.quantityAvaliable | number"
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td>
-                                    <img [src]="'' + item.images " class="me-2" style="width: 20px" />
+                                    <img [src]="'' + item.options.image" class="me-2" style="width: 20px" />
                                 </td>
-                                <td><ngb-highlight [result]="item.condition"
+                                <td><ngb-highlight [result]="item.options.condition"
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">

@@ -1,10 +1,11 @@
-export interface QuotePreviewResponse {
+import { BaseResponse } from "../../base-response";
+
+export interface QuotePreviewResponse extends BaseResponse {
     id: number;
     customerName: string;
     contactNumber: string;
     eventName: string;
     eventDate: string;
-    createdAt: string;
     location: string;
     userId: string | null;
 }

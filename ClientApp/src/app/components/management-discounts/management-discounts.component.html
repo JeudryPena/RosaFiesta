@@ -54,11 +54,7 @@
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td><ngb-highlight [result]="item.end | date: 'dd/MM/yyyy'" [term]="service.searchTerm"></ngb-highlight></td>
                                 <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div *ngFor="let subcategory of item.productsDiscounts">
-                                            <span class="badge bg-primary">{{subcategory.productCode}}</span>
-                                        </div>
-                                    </div>
+                                    
                                 </td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">

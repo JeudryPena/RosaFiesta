@@ -1,12 +1,14 @@
 import { DecimalPipe } from '@angular/common';
 import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Subject, tap, debounceTime, switchMap, delay, Observable, of } from 'rxjs';
-import { Discounts } from '../../dummy/discounts';
+import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
-import { DiscountResponse } from '../../interfaces/product/response/discountResponse';
+
+import { HttpClient } from '@angular/common/http';
+import { config } from "../../env/config.prod";
+import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
 
 interface SearchResult {
-  discounts: DiscountResponse[];
+  discounts: ManagementDiscountsResponse[];
   total: number;
 }
 
@@ -20,7 +22,7 @@ interface State {
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(discounts: DiscountResponse[], column: SortColumn, direction: string): DiscountResponse[] {
+function sort(discounts: ManagementDiscountsResponse[], column: SortColumn, direction: string): ManagementDiscountsResponse[] {
   if (direction === '' || column === '') {
     return discounts;
   } else {
@@ -31,10 +33,10 @@ function sort(discounts: DiscountResponse[], column: SortColumn, direction: stri
   }
 }
 
-function matches(discount: DiscountResponse, term: string, pipe: PipeTransform) {
+function matches(discount: ManagementDiscountsResponse, term: string, pipe: PipeTransform) {
   return (
     discount.name.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(discount.code).includes(term) 
+    pipe.transform(discount.code).includes(term)
   );
 }
 
@@ -44,8 +46,10 @@ function matches(discount: DiscountResponse, term: string, pipe: PipeTransform) 
 export class DiscountsService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _discounts$ = new BehaviorSubject<DiscountResponse[]>([]);
+  private _discounts$ = new BehaviorSubject<ManagementDiscountsResponse[]>([]);
+  private _managementDiscounts$ = Array<ManagementDiscountsResponse>();
   private _total$ = new BehaviorSubject<number>(0);
+
 
   private _state: State = {
     page: 1,
@@ -55,7 +59,10 @@ export class DiscountsService {
     sortDirection: '',
   };
 
-  constructor(private pipe: DecimalPipe) {
+  constructor(
+    private pipe: DecimalPipe,
+    private http: HttpClient
+  ) {
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -75,6 +82,7 @@ export class DiscountsService {
   get discounts$() {
     return this._discounts$.asObservable();
   }
+
   get total$() {
     return this._total$.asObservable();
   }
@@ -116,7 +124,7 @@ export class DiscountsService {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
     // 1. sort
-    let discounts = sort(Discounts, sortColumn, sortDirection);
+    let discounts = sort(this._managementDiscounts$, sortColumn, sortDirection);
 
     // 2. filter
     discounts = discounts.filter((discount) => matches(discount, searchTerm, this.pipe));

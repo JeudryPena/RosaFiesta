@@ -1,6 +1,6 @@
 import { Config } from "./config";
 
 export const config: Config = {
-  apiURL: 'https://my-api-dev.com',
+  apiURL: 'https://localhost:7136/api/',
   production: false,
 };

@@ -57,7 +57,7 @@ public class SuppliersController : ControllerBase
 		return Ok(supplierResponse);
 	}
 
-	[HttpGet("{supplierId:guid}")]
+	[HttpGet("{supplierId:guid}/delete")]
 	public async Task<IActionResult> DeleteSupplier(Guid supplierId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

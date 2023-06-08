@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
+import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsService } from '../../shared/services/products.service';
 import { DecimalPipe } from '@angular/common';
+import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ import { DecimalPipe } from '@angular/common';
 })
 export class CartComponent {
   viewCart: boolean = false;
-  products$: Observable<ProductAndOptionsPreviewResponse[]>;
+  products$: Observable<ProductsResponse[]>;
   total$: Observable<number>;
 
   constructor(

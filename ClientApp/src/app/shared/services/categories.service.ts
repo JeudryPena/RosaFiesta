@@ -1,10 +1,11 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Subject, tap, debounceTime, switchMap, delay, Observable, of } from 'rxjs';
-import { Categories } from '../../dummy/categories';
-import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
+import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
+import { config } from "../../env/config.dev";
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
-import { CategoryPreviewResponse } from '../../interfaces/product/response/categoryPreviewResponse';
+import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
+import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 
 interface SearchResult {
   categories: CategoryPreviewResponse[];
@@ -34,7 +35,7 @@ function sort(categories: CategoryPreviewResponse[], column: SortColumn, directi
 
 function matches(category: CategoryPreviewResponse, term: string, pipe: PipeTransform) {
   return (
-    category.title.toLowerCase().includes(term.toLowerCase()) ||
+    category.name.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(category.id).includes(term)
   );
 }
@@ -43,10 +44,12 @@ function matches(category: CategoryPreviewResponse, term: string, pipe: PipeTran
   providedIn: 'root'
 })
 export class CategoriesService {
+  private apiUrl = `${config.apiURL}categories/`
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _categories$ = new BehaviorSubject<CategoryPreviewResponse[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
+  public categoriesData: CategoryPreviewResponse[] = [];
 
   private _state: State = {
     page: 1,
@@ -56,21 +59,31 @@ export class CategoriesService {
     sortDirection: '',
   };
 
-  constructor(private pipe: DecimalPipe) {
-    this._search$
-      .pipe(
-        tap(() => this._loading$.next(true)),
-        debounceTime(200),
-        switchMap(() => this._search()),
-        delay(200),
-        tap(() => this._loading$.next(false)),
-      )
-      .subscribe((result) => {
-        this._categories$.next(result.categories);
-        this._total$.next(result.total);
-      });
+  constructor(
+    private pipe: DecimalPipe,
+    private http: HttpClient
+  ) {
+    this.getCategories().subscribe((data) => {
+      this.categoriesData = data;
+      this._search$
+        .pipe(
+          tap(() => this._loading$.next(true)),
+          debounceTime(200),
+          switchMap(() => this._search()),
+          delay(200),
+          tap(() => this._loading$.next(false)),
+        )
+        .subscribe((result) => {
+          this._categories$.next(result.categories);
+          this._total$.next(result.total);
+        });
 
-    this._search$.next();
+      this._search$.next();
+    });
+  }
+
+  getCategories(): Observable<CategoryPreviewResponse[]> {
+    return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
   }
 
   get categories$() {
@@ -115,15 +128,13 @@ export class CategoriesService {
 
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+    
+    console.log(this.categoriesData);
+    let categories = sort(this.categoriesData, sortColumn, sortDirection);
 
-    // 1. sort
-    let categories = sort(Categories, sortColumn, sortDirection);
-
-    // 2. filter
     categories = categories.filter((category) => matches(category, searchTerm, this.pipe));
     const total = categories.length;
 
-    // 3. paginate
     categories = categories.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({ categories, total });
   }

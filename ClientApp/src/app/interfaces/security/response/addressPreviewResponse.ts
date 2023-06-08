@@ -1,4 +1,4 @@
 export interface AddressPreviewResponse {
-    id: string;
-    title: string;
+	id: string;
+	title: string;
 }

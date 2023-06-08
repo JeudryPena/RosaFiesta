@@ -17,9 +17,9 @@
                         <tr *ngFor="let product of products$ | async">
                             <td><img style="width: 120px;" src="hola" alt=""></td>
                             <td>{{product.title}}</td>
-                            <th style="width: 12%;">{{product.price}}</th>
-                            <td style="width: 12%;">{{product.quantityAvaliable}}</td>
-                            <td style="width: 12%;">{{product.price}}</td>
+                            <th style="width: 12%;">{{product.options.price}}</th>
+                            <td style="width: 12%;">{{product.options.quantityAvaliable}}</td>
+                            <td style="width: 12%;">{{product.options.price}}</td>
                             <td>
                                 <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                             </td>

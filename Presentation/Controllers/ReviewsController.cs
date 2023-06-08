@@ -55,7 +55,7 @@ public class ReviewController : ControllerBase
 		return Ok(reviewResponse);
 	}
 
-	[HttpGet("{reviewId:guid}")]
+	[HttpGet("{reviewId:guid}/delete")]
 	[Authorize]
 	public async Task<IActionResult> DeleteReview(Guid reviewId, CancellationToken cancellationToken)
 	{

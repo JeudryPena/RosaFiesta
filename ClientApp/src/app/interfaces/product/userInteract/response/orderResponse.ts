@@ -1,7 +1,8 @@
-import { AddressResponse } from "../../../security/response/addressResponse";
+import { AddressResponse } from "../../../Security/Response/addressResponse";
+import { BaseResponse } from "../../../base-response";
 import { PurchaseDetailResponse } from "./purchaseDetailResponse";
 
-export interface OrderResponse {
+export interface OrderResponse extends BaseResponse {
     sKU: number;
     payMethodId: string;
     userId: string;

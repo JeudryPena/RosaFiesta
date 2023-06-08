@@ -1,5 +1,5 @@
 export interface ProductsDiscountResponse {
-    productCode: string;
-    code: string;
-    optionId: number;
+	productCode: string;
+	code: string;
+	optionId: number;
 }

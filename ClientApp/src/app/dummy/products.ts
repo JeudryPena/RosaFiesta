@@ -1,6 +1,6 @@
-import { ProductAndOptionsPreviewResponse } from "../interfaces/product/response/productAndOptionsPreviewResponse";
+import { ProductPreviewResponse } from '../interfaces/Product/Response/productPreviewResponse'; 
 
-export const Products: ProductAndOptionsPreviewResponse[] = [
+export const Products: ProductPreviewResponse[] = [
     {
         code: "SDA-01",
         title: 'Product 1',

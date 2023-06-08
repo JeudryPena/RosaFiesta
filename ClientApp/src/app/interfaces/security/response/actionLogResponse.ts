@@ -1,7 +1,8 @@
 export interface ActionLogResponse {
-    id: string;
-    activityType: string;
-    userId: string;
-    action: string;
-    timestamp: string;
+	id: string;
+	activityType: string;
+	userId: string;
+	action: string;
+	timestamp: string;
+	activityId: string;
 }

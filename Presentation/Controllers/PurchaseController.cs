@@ -123,7 +123,7 @@ public class PurchaseController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("{detailId}")]
+	[HttpGet("{detailId}/delete")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeletePurchaseDetail(int detailId, CancellationToken cancellationToken)
 	{

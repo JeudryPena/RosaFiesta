@@ -1,6 +1,6 @@
 export interface SubCategoryPreviewResponse {
-    id: number;
-    title: string;
-    icon: string;
-    description: string | null;
+	id: number;
+	name: string;
+	icon: string;
+	description: string | null;
 }

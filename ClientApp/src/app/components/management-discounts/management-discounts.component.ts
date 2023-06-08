@@ -1,13 +1,12 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { ProductsService } from '../../shared/services/products.service';
 import { ModalProductComponent } from '../modal-product/modal-product.component';
-import { DiscountResponse } from '../../interfaces/product/response/discountResponse';
 import { DiscountsService } from '../../shared/services/discounts.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
+import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
 
 @Component({
   selector: 'app-management-discounts',
@@ -15,7 +14,7 @@ import { ModalDiscountComponent } from '../modal-discount/modal-discount.compone
   styleUrls: ['./management-discounts.component.scss']
 })
 export class ManagementDiscountsComponent {
-  discounts$: Observable<DiscountResponse[]>;
+  discounts$: Observable<ManagementDiscountsResponse[]>;
   total$: Observable<number>;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;

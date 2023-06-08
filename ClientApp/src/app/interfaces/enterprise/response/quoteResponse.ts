@@ -1,6 +1,7 @@
+import { BaseResponse } from "../../base-response";
 import { QuoteItemResponse } from "./quoteItemResponse";
 
-export interface QuoteResponse {
+export interface QuoteResponse extends BaseResponse {
     id: number;
     customerName: string;
     contactNumber: string;
@@ -8,7 +9,6 @@ export interface QuoteResponse {
     email: string | null;
     eventName: string;
     eventDate: string;
-    createdAt: string;
     location: string;
     quoteItems: QuoteItemResponse[];
     userId: string | null;

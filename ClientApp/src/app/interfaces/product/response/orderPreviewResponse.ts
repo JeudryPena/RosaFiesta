@@ -1,4 +1,4 @@
 export interface OrderPreviewResponse {
-    sKU: number;
-    orderDate: string;
+	sKU: number;
+	orderDate: string;
 }

@@ -1,8 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
-import { ProductAndOptionsPreviewResponse } from '../../interfaces/product/response/productAndOptionsPreviewResponse';
+import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
 import { ProductsService } from '../../shared/services/products.service';
+import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -68,7 +69,7 @@ const statesWithFlags: { name: string; flag: string }[] = [
 export class NavbarComponent implements OnInit {
 
   viewCart: boolean = false;
-  products$: Observable<ProductAndOptionsPreviewResponse[]>;
+  products$: Observable<ProductsResponse[]>;
   total$: Observable<number>;
   isSearchInputFocused = false;
   isAuthenticated = true;
