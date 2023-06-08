@@ -103,19 +103,13 @@ internal sealed class CategoryService : ICategoryService
 		if (categoryDto.SubCategories != null)
 		{
 			category.SubCategories = categoryDto.SubCategories.Adapt<List<SubCategoryEntity>>();
-			ActionLogEntity actionLogc = new()
-			{
-				UserId = userId,
-				ActivityType = Activities.Subcategory,
-				Action = ActivityAction.Deleted,
-			};
-			_repositoryManager.ActionLogRepository.Create(actionLogc);
 		}
 		ActionLogEntity actionLog = new()
 		{
 			UserId = userId,
 			ActivityType = Activities.Category,
 			Action = ActivityAction.Created,
+			ActivityId = category.Id.ToString(),
 		};
 		_repositoryManager.ActionLogRepository.Create(actionLog);
 		_repositoryManager.CategoryRepository.Insert(category);
@@ -132,8 +126,9 @@ internal sealed class CategoryService : ICategoryService
 		ActionLogEntity actionLog = new()
 		{
 			UserId = userId,
-			ActivityType = Activities.Category,
+			ActivityType = Activities.Subcategory,
 			Action = ActivityAction.Created,
+			ActivityId = subCategory.FirstOrDefault().Id.ToString(),
 		};
 		_repositoryManager.ActionLogRepository.Create(actionLog);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);

@@ -40,9 +40,9 @@
                                 <td><ngb-highlight [result]="item.description" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div *ngFor="let subcategory of item.subCategories | slice:0:3" placement="top" ngbTooltip="{{subcategory.name}}">
-                                            <span>{{subcategory.name}}</span>
+                                    <div *ngFor="let subcategory of item.subCategories" class="d-flex justify-content-between">
+                                        <div>
+                                            <li>{{subcategory.name}}</li>
                                         </div>
                                     </div>
                                 </td>

@@ -3,6 +3,6 @@
 public class BaseEntity
 {
 	public bool IsDeleted { get; set; } = false;
-	public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+	public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
 	public DateTimeOffset? UpdatedAt { get; set; }
 }

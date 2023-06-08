@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -69,8 +70,10 @@ public static class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+		AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+		// Configure the HTTP request pipeline.
+		if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
@@ -95,6 +98,7 @@ public static class Program
         using var serviceScope = app.Services.CreateScope();
         using var context = serviceScope.ServiceProvider.GetService<RosaFiestaContext>();
         context.Database.Migrate();
+
 
         app.Run();
     }
@@ -248,7 +252,7 @@ public static class Program
                 postgresConnectionString,
                 npg =>
                 {
-                    npg.MigrationsAssembly(migrationsAssembly);
+					npg.MigrationsAssembly(migrationsAssembly);
                     npg.MigrationsHistoryTable(
                         "_EFRosaFiestaMigrationHistory",
                         RosaFiestaContext.DefaultSchema
@@ -350,5 +354,5 @@ public static class Program
     {
         services.AddScoped<IServiceManager, ServiceManager>();
         services.AddScoped<IEmailSender, EmailSender>();
-    }
+	}
 }
