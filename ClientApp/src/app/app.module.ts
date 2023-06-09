@@ -3,19 +3,21 @@ import { RatingDirective } from './shared/directives/rating.directive';
 // Providers
 
 
+import { CommonModule, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 
+import { JwtModule } from '@auth0/angular-jwt';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AlbumComponent } from './components/album/album.component';
 import { AppComponent } from './components/app-component/app.component';
@@ -30,6 +32,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FeaturesComponent } from './components/features/features.component';
 import { FinishRegisterComponent } from './components/finish-register/finish-register.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ForbiddenComponent } from './components/forbidden/forbidden.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HeroesComponent } from './components/heroes/heroes.component';
 import { HomeComponent } from './components/home/home.component';
@@ -78,7 +81,12 @@ import { RatingComponent } from './helpers/rating/rating.component';
 import { RoundedButtonsComponent } from './helpers/rounded-buttons/rounded-buttons.component';
 import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
+import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
+import { ToastContainerComponent } from './helpers/toast-container/toast-container.component';
 
+export function tokenGetter() {
+  return localStorage.getItem("token");
+}
 
 @NgModule({
   declarations: [
@@ -144,7 +152,10 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     WishListsComponent,
     ProductWishlistComponent,
     ModalCategoryComponent,
-    ModalDiscountComponent
+    ModalDiscountComponent,
+    ForbiddenComponent,
+    ToastGlobalComponent,
+    ToastContainerComponent
 
   ],
   imports: [
@@ -164,7 +175,17 @@ import { SelectListComponent } from './helpers/select-list/select-list.component
     CommonModule,
     NgbDatepickerModule,
     NgxChartsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:7136"],
+        disallowedRoutes: []
+      }
+    }),
+    NgbTooltipModule,
+    NgbToastModule,
+    NgTemplateOutlet
   ],
   providers: [NgbRatingConfig, DecimalPipe
   ],

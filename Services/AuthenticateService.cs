@@ -42,7 +42,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<RegisterResponse> RegisterAsync(
+	public async Task RegisterAsync(
 		RegisterDto registerDto,
 		CancellationToken cancellationToken = default
 	)
@@ -55,25 +55,14 @@ internal sealed class AuthenticateService : IAuthenticateService
 			CreatedAt = DateTimeOffset.UtcNow,
 			IsDeleted = false,
 		};
-
-		var result = await _userManager.CreateAsync(user, registerDto.Password)
+		var result = await _userManager.AddToRoleAsync(user, "Client")
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
-
-		result = await _userManager.AddToRoleAsync(user, "User")
+		result = await _userManager.CreateAsync(user, registerDto.Password)
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
 
 		await RegisterEmailAsync(user.Email);
-
-		return new RegisterResponse
-		{
-			IsSuccess = true,
-			Message = "User created successfully",
-			Id = user.Id,
-			UserName = user.UserName,
-			Email = user.Email,
-		};
 	}
 
 	public async Task RegisterEmailAsync(string email)
@@ -88,7 +77,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			{"id", user.Id},
 		};
 
-		var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/confirm-email", param);
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/confirm-email", param);
 
 		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Confirm User</a>";
 
@@ -179,7 +168,11 @@ internal sealed class AuthenticateService : IAuthenticateService
 
 	public async Task<LoginResponse> LoginAsync(LogingDto logingDto)
 	{
-		var user = await _userManager.FindByEmailAsync(logingDto.Username);
+		var user = await _userManager.FindByNameAsync(logingDto.Username).ConfigureAwait(false);
+		if (user == null)
+		{
+			user = await _userManager.FindByEmailAsync(logingDto.Username).ConfigureAwait(false);
+		}
 		if (user == null)
 		{
 			return new LoginResponse { Message = "Invalid username or password" };
@@ -209,7 +202,8 @@ internal sealed class AuthenticateService : IAuthenticateService
 
 			return new LoginResponse
 			{
-				Token = accessToken,
+				Token = accessToken.Token,
+				Expiration = accessToken.Expiration,
 				RefreshToken = refreshToken,
 				IsAuthSuccessful = true
 			};
@@ -259,13 +253,14 @@ internal sealed class AuthenticateService : IAuthenticateService
 		var user = _userManager.Users.SingleOrDefault(x => x.UserName == username);
 		if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTimeOffset.Now)
 			throw new SecurityTokenException("Invalid refresh token");
-		var newAccessToken = GenerateAccessToken(user);
+		TokenResponse newAccessToken = GenerateAccessToken(user);
 		var newRefreshToken = GenerateRefreshToken();
 		user.RefreshToken = newRefreshToken;
 		_userManager.UpdateAsync(user);
 		return new LoginResponse
 		{
-			Token = newAccessToken,
+			Token = newAccessToken.Token,
+			Expiration = newAccessToken.Expiration,
 			RefreshToken = newRefreshToken
 		};
 	}
@@ -299,7 +294,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		return principal;
 	}
 
-	private string GenerateAccessToken(UserEntity user)
+	private TokenResponse GenerateAccessToken(UserEntity user)
 	{
 		var userRole = _userManager.GetRolesAsync(user).Result;
 		var tokenHandler = new JwtSecurityTokenHandler();
@@ -323,10 +318,13 @@ internal sealed class AuthenticateService : IAuthenticateService
 		};
 
 		var token = tokenHandler.CreateToken(tokenDescriptor);
-		var expiration = token.ValidTo.ToString(CultureInfo.InvariantCulture);
-		var tokenString = tokenHandler.WriteToken(token);
+		var tokenResponse = new TokenResponse()
+		{
+			Token = tokenHandler.WriteToken(token),
+			Expiration = token.ValidTo.ToString(CultureInfo.InvariantCulture),
+		};
 
-		return tokenString;
+		return tokenResponse;
 	}
 
 	public string GenerateRefreshToken()

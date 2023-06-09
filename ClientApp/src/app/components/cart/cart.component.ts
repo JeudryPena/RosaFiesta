@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ProductsService } from '../../shared/services/products.service';
 import { DecimalPipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
+import { AuthenticateService } from '../../shared/services/authenticate.service';
+import { ProductsService } from '../../shared/services/products.service';
 
 @Component({
   selector: 'app-cart',
@@ -16,18 +16,26 @@ export class CartComponent {
   viewCart: boolean = false;
   products$: Observable<ProductsResponse[]>;
   total$: Observable<number>;
+  isUserAuthenticated: boolean = false;
 
   constructor(
     public service: ProductsService,
     public modalService: NgbModal,
-    config: NgbModalConfig
-  ) { 
+    config: NgbModalConfig,
+    private authService: AuthenticateService
+  ) {
     this.products$ = service.products$;
     this.total$ = service.total$;
+    this.authService.authChanged
+      .subscribe(res => {
+        this.isUserAuthenticated = res;
+      })
   }
+
   
+
   updateUnits(operation: string, id: string) {
-    
+
 
 
   }
@@ -37,11 +45,11 @@ export class CartComponent {
   }
 
   deleteProduct(id: string) {
-    
+
 
   }
 
   totalCart() {
-    
+
   }
 }

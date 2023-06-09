@@ -28,6 +28,8 @@ import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdo
 import { CartComponent } from './components/cart/cart.component';
 import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
 import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
 
 const routes: Routes = [
   {
@@ -51,10 +53,11 @@ const routes: Routes = [
       { path: 'modal-product', component: ModalProductComponent },
       { path: 'modal-quote', component: ModalQuoteComponent },
       { path: 'product-card', component: ProductCardComponent },
-      { path: 'my-orders', component: MyOrdersComponent },
+      { path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
       { path: 'cart', component: CartComponent },
       { path: 'management-categories', component: ManagementCategoriesComponent },
-      { path: 'management-discounts', component: ManagementDiscountsComponent}
+      { path: 'management-discounts', component: ManagementDiscountsComponent },
+      { path: 'toast', component: ToastGlobalComponent },
     ]
   },
   { path: 'statistics', component: StatisticsComponent },
