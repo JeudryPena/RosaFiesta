@@ -33,7 +33,8 @@ export class AuthenticateService {
     this.authChangeSub.next(isAuthenticated);
   }
 
-  public isUserAuthenticated = (token: string): boolean => {
+  public isUserAuthenticated = (): boolean => {
+    const token = localStorage.getItem("token");
     return Boolean(token && !this.jwtHelper.isTokenExpired(token))
   }
 

@@ -1,9 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
-import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
-import { ProductsService } from '../../shared/services/products.service';
 import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
+import { AuthenticateService } from '../../shared/services/authenticate.service';
+import { ProductsService } from '../../shared/services/products.service';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -72,16 +72,18 @@ export class NavbarComponent implements OnInit {
   products$: Observable<ProductsResponse[]>;
   total$: Observable<number>;
   isSearchInputFocused = false;
-  isAuthenticated = true;
+  isAuthenticated = false;
   lastScrollTop = 0;
   navbar: any;
 
   constructor(
     private router: Router,
     public service: ProductsService,
+    private authService: AuthenticateService
   ) {
     this.products$ = service.products$;
     this.total$ = service.total$;
+    this.isAuthenticated = this.authService.isUserAuthenticated();
   }
 
   onToggleCart() {
@@ -98,6 +100,11 @@ export class NavbarComponent implements OnInit {
       this.navbar.style.top = "0";
     }
     this.lastScrollTop = scrollTop;
+  }
+
+  Logout() {
+    this.authService.logout();
+    window.location.reload();
   }
 
   ngOnInit() {
