@@ -18,6 +18,4 @@ public class ProductResponse
 	public ICollection<ReviewResponse>? Reviews { get; set; }
 	public int TotalOptions => Options.Count;
 	public ICollection<OptionPreviewResponse> Options { get; set; }
-
-
 }

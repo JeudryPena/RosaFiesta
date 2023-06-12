@@ -1,36 +1,26 @@
 .sidenav {
-  background: #263238;
+  background: linear-gradient(45deg, #47cebe, #ef4a82);
   transition: all .5s ease;
   position: fixed;
   z-index: 1;
-  width: 5rem;
+  width: 3.5rem;
   height: 100vh;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  
   .logo-container {
     display: flex;
     align-items: center;
-    padding: 0.938rem 0.938rem 0.938rem;
-
-    .logo {
-      background: #fff;
-      text-align: center;
-      width: 3rem;
-      min-width: 3rem;
-      border-radius: 0.313rem;
-      padding: 0.313rem;
-      font-size: 24px;
-      font-weight: 900;
-      cursor: pointer;
-      border: none;
-    }
-
+    padding: 2.7rem 0.938rem 0rem 0.25rem;
+    
     .logo-text {
       margin-left: 1.5rem;
       font-size: 24px;
       font-weight: 700;
       color: #fff;
+      
     }
 
-    .btn-close {
+    .close {
       margin-left: auto;
       cursor: pointer;
       width: 2rem;
@@ -38,22 +28,25 @@
       border-radius: 50%;
       background-color: transparent;
       border: none;
-
+      overflow: hidden;
+      // white color
       .fa-times {
         color: #fff;
-        font-size: 24px;
+        font-size: 26px;
       }
     }
   }
 }
+
 
 .sidenav-collapsed {
   width: 16.5625rem;
 }
 
 .sidenav-nav {
+  
   list-style: none;
-  padding: 0.938rem;
+  padding: 0.25rem;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -62,20 +55,21 @@
   cursor: pointer;
 
   .sidenav-nav-item {
+    
     width: 100%;
     margin-bottom: 0.625rem;
 
     .sidenav-nav-link {
       display: flex;
       align-items: center;
-      height: 3rem;
+      height: 2rem;
       color: #f3f3f3; 
       text-decoration: none;
       border-radius: 0.625rem;
       transition: all .3s ease;
 
       .sidenav-link-icon {
-        font-size: 22px;
+        font-size: 24px;
         width: 2rem;
         min-width: 2rem;
         margin: 0 0.5rem;
@@ -110,22 +104,18 @@
 
 .menu-collapse-icon{
   font-size: 26px;
-  width: 10rem;
-  min-width: 10rem;
-  margin: auto 0.5rem auto auto;
-  text-align: center;
+  margin: auto 1.7rem auto auto;
+  text-align: end;
   color: #f3f3f3;
 }
 
 .sublevel-nav{
   list-style: none;
-  margin-left: 20px;
-
   .sublevel-nav-item{
     .sublevel-nav-link{
       display: flex;
       align-items: center;
-      height: 3rem;
+      height: 2rem;
       color: #898989;
       text-decoration: none;
       border-radius: 0.625rem;
@@ -135,7 +125,7 @@
         font-size: 4px;
         width: 2rem;
         min-width: 2rem;
-        margin: 0 0.5rem;
+        margin: 0 3rem;
         text-align: center;
       }
 

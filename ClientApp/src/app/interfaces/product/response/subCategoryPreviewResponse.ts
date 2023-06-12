@@ -3,4 +3,5 @@ export interface SubCategoryPreviewResponse {
 	name: string;
 	icon: string;
 	description: string | null;
+	expanded?: boolean;
 }

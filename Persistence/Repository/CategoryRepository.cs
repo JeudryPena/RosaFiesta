@@ -30,7 +30,7 @@ public class CategoryRepository : ICategoryRepository
 
 	public async Task<SubCategoryEntity> GetSubCategoryByIdAsync(int categoryId, int subCategoryId, CancellationToken cancellationToken = default)
 	{
-		var subCategory = await _rosaFiestaContext.Categories.Include(x => x.SubCategories).Where(x => x.IsDeleted == false).SelectMany(x => x.SubCategories).FirstOrDefaultAsync(x => x.Id == subCategoryId && x.CategoryId == categoryId, cancellationToken);
+		SubCategoryEntity? subCategory = await _rosaFiestaContext.SubCategories.Include(x => x.Products).FirstOrDefaultAsync(x => x.Id == subCategoryId && x.CategoryId == categoryId, cancellationToken);
 		if (subCategory == null)
 			throw new ArgumentNullException(nameof(subCategory));
 		if (subCategory.IsDeleted)

@@ -14,8 +14,8 @@ import { ProductsService } from '../../shared/services/products.service';
 })
 export class CartComponent {
   viewCart: boolean = false;
-  products$: Observable<ProductsResponse[]>;
-  total$: Observable<number>;
+  products$: Observable<ProductsResponse[]> = new Observable<ProductsResponse[]>();
+  total$: Observable<number> = new Observable<number>();
   isUserAuthenticated: boolean = false;
 
   constructor(
@@ -24,8 +24,8 @@ export class CartComponent {
     config: NgbModalConfig,
     private authService: AuthenticateService
   ) {
-    this.products$ = service.products$;
-    this.total$ = service.total$;
+    
+    
     this.authService.authChanged
       .subscribe(res => {
         this.isUserAuthenticated = res;

@@ -67,8 +67,6 @@ internal sealed class ProductService : IProductService
 			await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 			product.CategoryId = category.Id;
 		}
-		else
-			product.CategoryId = productForCreationDto.CategoryId;
 		_repositoryManager.ProductRepository.Insert(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ProductResponse productResponse = new();

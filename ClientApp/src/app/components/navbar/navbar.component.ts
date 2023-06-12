@@ -1,9 +1,13 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
 import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { ProductsService } from '../../shared/services/products.service';
+import { CartsService } from '../../shared/services/carts.service';
+import { CartResponse } from '../../interfaces/Product/Response/cartResponse';
+import { SidenavService } from '../../shared/services/side-nav.service';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -67,10 +71,11 @@ const statesWithFlags: { name: string; flag: string }[] = [
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
 
   viewCart: boolean = false;
-  products$: Observable<ProductsResponse[]>;
-  total$: Observable<number>;
+  cartItems: CartResponse[] = [];
+  total: Observable<number> = new Observable<number>();
   isSearchInputFocused = false;
   isAuthenticated = false;
   lastScrollTop = 0;
@@ -78,12 +83,22 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public service: ProductsService,
-    private authService: AuthenticateService
+    public service: CartsService,
+    private authService: AuthenticateService,
+    private sidenavService: SidenavService,
   ) {
-    this.products$ = service.products$;
-    this.total$ = service.total$;
+    this.getCartItems();
     this.isAuthenticated = this.authService.isUserAuthenticated();
+  }
+
+  ToggleCollapsed(): void {
+    this.sidenavService.toggleCollapsed();
+  }
+
+  getCartItems() {
+    this.service.getMyCart().subscribe((res: CartResponse[]) => {
+      this.cartItems = res;
+    });
   }
 
   onToggleCart() {

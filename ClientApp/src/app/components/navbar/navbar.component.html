@@ -1,9 +1,8 @@
 <nav id="navbar" class="navbar fixed-top navbar-expand-xl navbar-dark bg-dark navbar-sm"
     aria-label="Sixth navbar example">
     <div class="container-fluid">
-        <button class="navbar-toggler d-flex me-2" type="button">
-            <span class="fa-solid fa-bars"></span>
-        </button>
+        <img src="assets/images/logo.png" (click)="ToggleCollapsed()" alt="" height="38" width="40"
+            class="d-flex me-3 rounded-circle">
         <a class="navbar-brand" href="#">RosaFiesta</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06"
             aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +19,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                        aria-expanded="false">Dropdown</a>
+                        aria-expanded="false">Admin</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -53,11 +52,11 @@
                 <div *ngIf="isAuthenticated; else elseBlock">
                     <div class="row">
                         <div class="col ps-0 pe-0">
-                            <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-end">
+                            <div ngbDropdown class="d-inline-block ps-0 pe-0" display="dynamic" placement="bottom-end">
                                 <button type="button" class="btn btn-outline-primary border-0 navbar-cart"
                                     id="dropdownForm1" aria-labelledby="navbarDropdown3" ngbDropdownToggle>
-                                    <div class="navbar-cart-items" *ngIf="(products$ | async)?.length">
-                                        <p>{{ (products$ | async)?.length }}</p>
+                                    <div class="navbar-cart-items" *ngIf="cartItems?.length">
+                                        <p>{{cartItems.length}}</p>
                                     </div>
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </button>
@@ -66,23 +65,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col ps-1 pe-0">
+                        <div class="col ps-0 pe-0">
                             <div ngbDropdown placement="bottom-end" display="dynamic"
                                 class="container d-flex flex-wrap justify-content-center ps-0 pe-0">
                                 <button type="button" class="btn btn-outline-primary border-0 navbar-cart" id="userMenu"
                                     aria-labelledby="navbarDropdown3" ngbDropdownToggle>
                                     <a href="#" class=" link-dark text-decoration-none" aria-expanded="false">
-                                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                                        <img src="https://github.com/mdo.png" alt="mdo" width="34" height="34"
                                             class="rounded-circle">
                                     </a>
                                 </button>
                                 <div ngbDropdownMenu aria-labelledby="userMenu">
                                     <div class="d-flex flex-column">
-                                        <a class="dropdown-item" href="#"><i class="fa-solid fa-gear" routerLink="/config"></i>&nbsp;&nbsp;Configuración</a>
+                                        <a class="dropdown-item" href="#"><i class="fa-solid fa-gear"
+                                                routerLink="/config"></i>&nbsp;&nbsp;Configuración</a>
 
-                                        <a class="dropdown-item" href="#"><i class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis ordenes</a>
+                                        <a class="dropdown-item" href="#"><i
+                                                class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis ordenes</a>
                                         <div class="dropdown-divider" routerLink="/my-orders"></div>
-                                        <a class="dropdown-item" (click)="Logout()"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
+                                        <a class="dropdown-item" (click)="Logout()"><i
+                                                class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
                                     </div>
                                 </div>
                             </div>

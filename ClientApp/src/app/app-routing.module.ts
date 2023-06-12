@@ -58,12 +58,12 @@ const routes: Routes = [
       { path: 'management-categories', component: ManagementCategoriesComponent },
       { path: 'management-discounts', component: ManagementDiscountsComponent },
       { path: 'toast', component: ToastGlobalComponent },
+      { path: 'dashboard', component: DashboardComponent },
     ]
   },
   { path: 'statistics', component: StatisticsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'authenticate', component: AuthenticateComponent },
-  { path: 'dashboard', component: DashboardComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'navbar', component: NavbarComponent }
 ];

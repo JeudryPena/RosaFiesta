@@ -6,4 +6,5 @@ export interface CategoryPreviewResponse {
 	icon: string;
 	description: string | null;
 	subCategories: SubCategoryPreviewResponse[] | null;
+	expanded?: boolean;
 }

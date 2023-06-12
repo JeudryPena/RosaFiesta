@@ -86,6 +86,7 @@ internal sealed class CategoryService : ICategoryService
 	{
 		var category = new CategoryEntity
 		{
+			Id = new int(),
 			Name = categoryDto.Name,
 			Description = categoryDto.Description,
 			Icon = categoryDto.Icon,

@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.dev";
-import { SortColumn, SortDirection } from '../directives/sortable.directive';
-import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
+import { SortColumn, SortDirection } from '../directives/sortable.directive';
 
 interface SearchResult {
   categories: CategoryPreviewResponse[];
@@ -63,7 +62,7 @@ export class CategoriesService {
     private pipe: DecimalPipe,
     private http: HttpClient
   ) {
-    this.getCategories().subscribe((data) => {
+    this.GetManagementCategories().subscribe((data) => {
       this.categoriesData = data;
       this._search$
         .pipe(
@@ -82,7 +81,11 @@ export class CategoriesService {
     });
   }
 
-  getCategories(): Observable<CategoryPreviewResponse[]> {
+  GetCategories(): Observable<CategoryPreviewResponse[]> {
+    return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
+  }
+
+  GetManagementCategories(): Observable<CategoryPreviewResponse[]> {
     return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
   }
 
@@ -128,8 +131,6 @@ export class CategoriesService {
 
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-    
-    console.log(this.categoriesData);
     let categories = sort(this.categoriesData, sortColumn, sortDirection);
 
     categories = categories.filter((category) => matches(category, searchTerm, this.pipe));
