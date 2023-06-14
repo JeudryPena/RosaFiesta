@@ -83,6 +83,27 @@ import { SaveModalComponent } from './helpers/save-modal/save-modal.component';
 import { SelectListComponent } from './helpers/select-list/select-list.component';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
 import { ToastContainerComponent } from './helpers/toast-container/toast-container.component';
+import { BubleChartComponent } from './helpers/buble-chart/buble-chart.component';
+import { GaugeChartComponent } from './helpers/gauge-chart/gauge-chart.component';
+import { HeartChartComponent } from './helpers/heart-chart/heart-chart.component';
+import { LinearGaugeChartComponent } from './helpers/linear-gauge-chart/linear-gauge-chart.component';
+import { NumberCardChartComponent } from './helpers/number-card-chart/number-card-chart.component';
+import { PolarChartComponent } from './helpers/polar-chart/polar-chart.component';
+import { TreeMapChartComponent } from './helpers/tree-map-chart/tree-map-chart.component';
+import { GroupedHorizontalBarComponent } from './helpers/grouped-horizontal-bar/grouped-horizontal-bar.component';
+import { HorizontalBarChartComponent } from './helpers/horizontal-bar-chart/horizontal-bar-chart.component';
+import { StackedVerticalBarChartComponent } from './helpers/stacked-vertical-bar-chart/stacked-vertical-bar-chart.component';
+import { AdvanmcedPieChartComponent } from './helpers/advanmced-pie-chart/advanmced-pie-chart.component';
+import { PieChartComponent } from './helpers/pie-chart/pie-chart.component';
+import { PieGridChartComponent } from './helpers/pie-grid-chart/pie-grid-chart.component';
+import { NormalizedVerticalBarChartComponent } from './components/normalized-vertical-bar-chart/normalized-vertical-bar-chart.component';
+import { AreaChartComponent } from './helpers/area-chart/area-chart.component';
+import { LineChartComponent } from './helpers/line-chart/line-chart.component';
+import { NormalizedAreaChartComponent } from './helpers/normalized-area-chart/normalized-area-chart.component';
+import { StackedAreaChartComponent } from './helpers/stacked-area-chart/stacked-area-chart.component';
+import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
+import { InventoryLayoutComponent } from './components/inventory-layout/inventory-layout.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -155,7 +176,28 @@ export function tokenGetter() {
     ModalDiscountComponent,
     ForbiddenComponent,
     ToastGlobalComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    BubleChartComponent,
+    GaugeChartComponent,
+    HeartChartComponent,
+    LinearGaugeChartComponent,
+    NumberCardChartComponent,
+    PolarChartComponent,
+    TreeMapChartComponent,
+    GroupedHorizontalBarComponent,
+    HorizontalBarChartComponent,
+    StackedVerticalBarChartComponent,
+    AdvanmcedPieChartComponent,
+    PieChartComponent,
+    PieGridChartComponent,
+    NormalizedVerticalBarChartComponent,
+    AreaChartComponent,
+    LineChartComponent,
+    NormalizedAreaChartComponent,
+    StackedAreaChartComponent,
+    AdminLayoutComponent,
+    InventoryLayoutComponent,
+    InventoryComponent
 
   ],
   imports: [

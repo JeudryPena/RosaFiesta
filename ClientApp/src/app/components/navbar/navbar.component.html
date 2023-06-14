@@ -12,19 +12,27 @@
         <div class="collapse navbar-collapse " id="navbarsExample06">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" routerLink="">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Nosotros</a>
+                    <a class="nav-link" routerLink="/about-us">Nosotros</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                        aria-expanded="false">Admin</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <div ngbDropdown placement="bottom-end" display="dynamic"
+                        class="container d-flex flex-wrap justify-content-center ps-0 pe-0">
+                        <button type="button" class="nav-link btn btn-outline-primary border-0" id="adminMenu"
+                            aria-labelledby="navbarDropdown3" ngbDropdownToggle>
+                            <a>Admin</a>
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="adminMenu">
+                            <div class="d-flex flex-column">
+                                <a class="dropdown-item" routerLink="/inventory"><i
+                                        class="fa-solid fa-warehouse"></i>&nbsp;&nbsp;Inventario</a>
+                                <a class="dropdown-item" routerLink="/admin"><i
+                                        class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;Panel de Admin</a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
             <div class="d-flex flex-wrap d-inline">
@@ -77,14 +85,13 @@
                                 </button>
                                 <div ngbDropdownMenu aria-labelledby="userMenu">
                                     <div class="d-flex flex-column">
-                                        <a class="dropdown-item" href="#"><i class="fa-solid fa-gear"
-                                                routerLink="/config"></i>&nbsp;&nbsp;Configuración</a>
-
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis ordenes</a>
-                                        <div class="dropdown-divider" routerLink="/my-orders"></div>
-                                        <a class="dropdown-item" (click)="Logout()"><i
-                                                class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
+                                        <a class="dropdown-item" routerLink="/config"><i
+                                                class="fa-solid fa-gear"></i>&nbsp;&nbsp;Configuración</a>
+                                        <a class="dropdown-item" routerLink="/my-wish-lists"><i
+                                                class="fa-solid fa-heart"></i>&nbsp;&nbsp;Lista de deseos</a>
+                                        <a class="dropdown-item" routerLink="/my-orders"><i class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis ordenes</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" (click)="Logout()"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
                                     </div>
                                 </div>
                             </div>

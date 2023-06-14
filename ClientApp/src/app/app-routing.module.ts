@@ -30,6 +30,9 @@ import { ManagementCategoriesComponent } from './components/management-categorie
 import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
+import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
+import { InventoryLayoutComponent } from './components/inventory-layout/inventory-layout.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 const routes: Routes = [
   {
@@ -45,23 +48,32 @@ const routes: Routes = [
       { path: 'purchase', component: PurchaseComponent },
       { path: 'about-us', component: AboutUsComponent },
       { path: 'carousel', component: CarouselComponent },
-      { path: 'management-products', component: ManagementProductsComponent },
       { path: 'orders', component: MyOrdersComponent },
       { path: 'product-detail', component: ProductDetailComponent },
-      { path: 'coupens', component: CoupensComponent },
-      { path: 'management-user', component: ManagementUsersComponent },
-      { path: 'modal-product', component: ModalProductComponent },
-      { path: 'modal-quote', component: ModalQuoteComponent },
       { path: 'product-card', component: ProductCardComponent },
       { path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
       { path: 'cart', component: CartComponent },
-      { path: 'management-categories', component: ManagementCategoriesComponent },
-      { path: 'management-discounts', component: ManagementDiscountsComponent },
       { path: 'toast', component: ToastGlobalComponent },
-      { path: 'dashboard', component: DashboardComponent },
     ]
   },
-  { path: 'statistics', component: StatisticsComponent },
+  {
+    path: 'admin', component: AdminLayoutComponent, children: [
+      { path: '', component: DashboardComponent },
+      { path: 'statistics', component: StatisticsComponent },
+    ]
+  },
+  {
+    path: 'inventory', component: InventoryLayoutComponent, children: [
+      { path: '', component: InventoryComponent },
+      { path: 'management-categories', component: ManagementCategoriesComponent },
+      { path: 'management-products', component: ManagementProductsComponent },
+      { path: 'management-discounts', component: ManagementDiscountsComponent },
+      { path: 'management-user', component: ManagementUsersComponent },
+      { path: 'modal-product', component: ModalProductComponent },
+      { path: 'modal-quote', component: ModalQuoteComponent },
+      { path: 'modal-categories', component: ManagementCategoriesComponent}
+    ]
+  },
   { path: 'register', component: RegisterComponent },
   { path: 'authenticate', component: AuthenticateComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
