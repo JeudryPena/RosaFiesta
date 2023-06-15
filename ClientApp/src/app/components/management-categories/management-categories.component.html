@@ -37,24 +37,31 @@
                                 <td>
                                     <img [src]="'' + item.icon" class="me-2" style="width: 20px" />
                                 </td>
-                                <td><ngb-highlight [result]="item.description" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="item.description"
+                                        [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
-                                    <div *ngFor="let subcategory of item.subCategories" class="d-flex justify-content-between">
-                                        <div>
-                                            <li>{{subcategory.name}}</li>
+                                    <div *ngFor="let subcategory of item.subCategories"
+                                        class="d-flex justify-content-between">
+                                        <div ngbDropdown container="body">
+                                            <span class="badge text-bg-primary" ngbDropdownToggle>{{subcategory.name}}</span>
+                                            <div ngbDropdownMenu>
+                                                <button ngbDropdownItem (click)="ModifySub(subcategory.id)"><i class="fa-solid fa-pen pe-2"></i>Modificar</button>
+                                                <div class="dropdown-divider"></div>
+                                                <button ngbDropdownItem (click)="DeleteSub(item.id, subcategory.id)"><i class="fa-solid fa-trash pe-2"></i>Eliminar</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">
                                         <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown"
-                                            ngbDropdownToggle>Actions</button>
+                                            ngbDropdownToggle>Acciones</button>
                                         <div ngbDropdownMenu>
-                                            <button ngbDropdownItem>Edit</button>
-                                            <button ngbDropdownItem>Disable</button>
+                                            <button ngbDropdownItem (click)="Retrieve(item.id)"><i class="fa-solid fa-eye pe-2"></i>Ver</button>
+                                            <button ngbDropdownItem (click)="Modify(item.id)"><i class="fa-solid fa-pen pe-2"></i>Modificar</button>
                                             <div class="dropdown-divider"></div>
-                                            <button ngbDropdownItem>Delete</button>
+                                            <button ngbDropdownItem (click)="Delete(item.id)"><i class="fa-solid fa-trash pe-2"></i>Eliminar</button>
                                         </div>
                                     </div>
                                 </td>

@@ -7,6 +7,7 @@ import { SidenavService } from '../../shared/services/side-nav.service';
 import { dashboardData } from './dashboard-data';
 import { Layout } from './layout';
 import { inventoryData } from './inventory-data';
+import { Router } from '@angular/router';
 
 
 
@@ -59,7 +60,8 @@ export class SidenavComponent implements OnDestroy {
 
   constructor(
     private categoryService: CategoriesService,
-    private sidenavService: SidenavService
+    private sidenavService: SidenavService,
+    private router: Router
   ) {
 
     this.subscription = this.sidenavService.toggleSidenav$.subscribe(() => {
@@ -90,8 +92,15 @@ export class SidenavComponent implements OnDestroy {
     });
   }
 
-  Navigate(id: number): void {
+  Navigate(id: any): void {
+    console.log(id);
+    if (this.layout === Layout.Normal) {
 
+    } else if (this.layout === Layout.Dashboard) {
+      this.router.navigate([`dashboard/${id}`]);
+    } else if (this.layout === Layout.Inventory) {
+      this.router.navigate([`inventory/management-${id}`]);
+    }
   }
 
   @HostListener('window:resize', ['$event'])

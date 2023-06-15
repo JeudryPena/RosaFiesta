@@ -16,8 +16,8 @@ import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categ
   providers: [ProductsService, DecimalPipe],
 })
 export class ManagementCategoriesComponent {
-  categories$: Observable<CategoryPreviewResponse[]>;
-  total$: Observable<number>;
+  categories$: Observable<CategoryPreviewResponse[]> = new Observable<CategoryPreviewResponse[]>();
+  total$: Observable<number> = new Observable<number>();
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
@@ -26,13 +26,40 @@ export class ManagementCategoriesComponent {
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
-    this.categories$ = service.categories$;
-    this.total$ = service.total$;
+    this.retrieveData();
     // config.backdrop = 'static';
     // config.keyboard = false;
   }
 
+  retrieveData() {
+    this.service.RetrieveData();
+    this.categories$ = this.service.categories$;
+    this.total$ = this.service.total$;
+  }
 
+  Retrieve(id: number) {
+
+  }
+
+  Modify(id: number) {
+    
+  }
+
+  Delete(id: number) {
+    this.service.DeleteCategorie(id).subscribe(() => {
+      this.retrieveData();
+    });
+  }
+
+  ModifySub(id: number) {
+    
+  }
+
+  DeleteSub(id: number, subId: number) {
+    this.service.DeleteSubCategorie(id, subId).subscribe(() => {
+      this.retrieveData();
+    });
+  }
 
   AddCategory() {
     const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'lg', scrollable: true });

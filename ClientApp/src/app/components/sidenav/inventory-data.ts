@@ -2,33 +2,38 @@ import { IData } from "./data-interface";
 
 export const inventoryData: IData[] = [
   {
-    id: 'general',
-    icon: 'fal fa-home',
-    name: 'General',
+    id: 'users',
+    icon: 'fa-solid fa-user',
+    name: 'Usuarios',
   },
   {
-    id: 'statistics',
-    icon: 'fal fa-chart-bar',
-    name: 'Estadísticas',
+    id: 'products',
+    icon: 'fa-solid fa-box-open',
+    name: 'Productos',
   },
   {
-    id: 'sales',
-    icon: 'fal fa-box-open',
-    name: 'Ventas',
+    id: 'services',
+    icon: 'fa-solid fa-handshake',
+    name: 'Servicios',
   },
   {
-    id: 'quotes',
-    icon: 'fa-regular fa-calendar-check',
-    name: 'Citas'
+    id: 'categories',
+    icon: 'fa-solid fa-tags',
+    name: 'Categorías'
   },
   {
     id: 'discounts',
-    icon: 'fal fa-tags',
-    name: 'Discounts'
+    icon: 'fa-solid fa-percent',
+    name: 'Descuentos'
   },
   {
-    id: 'accounting',
-    icon: 'fal fa-cog',
-    name: 'Contabilidad',
+    id: 'suppliers',
+    icon: 'fa-solid fa-truck-fast',
+    name: 'Suplidores',
+  },
+  {
+    id: 'warranties',
+    icon: 'fa-solid fa-certificate',
+    name: 'Garantías',
   },
 ];

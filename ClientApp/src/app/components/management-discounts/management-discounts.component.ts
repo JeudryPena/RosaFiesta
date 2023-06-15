@@ -30,6 +30,18 @@ export class ManagementDiscountsComponent {
     // config.keyboard = false;
   }
 
+  Retrieve(code: string) {
+
+  }
+
+  Modify(code: string) {
+
+  }
+
+  Delete(code: string) {
+
+  }
+
   AddDiscount() {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.name = 'World';

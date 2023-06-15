@@ -3,32 +3,22 @@ import { IData } from "./data-interface";
 export const dashboardData: IData[] = [
   {
     id: 'general',
-    icon: 'fal fa-home',
+    icon: 'fa-solid fa-chart-simple',
     name: 'General',
   },
   {
-    id: 'statistics',
-    icon: 'fal fa-chart-bar',
-    name: 'Estadísticas',
-  },
-  {
     id: 'sales',
-    icon: 'fal fa-box-open',
+    icon: 'fa-solid fa-box-open',
     name: 'Ventas',
   },
   {
     id: 'quotes',
-    icon: 'fa-regular fa-calendar-check',
+    icon: 'fa-solid fa-calendar-check',
     name: 'Citas'
   },
   {
-    id: 'discounts',
-    icon: 'fal fa-tags',
-    name: 'Discounts'
-  },
-  {
     id: 'accounting',
-    icon: 'fal fa-cog',
+    icon: 'fa-solid fa-receipt',
     name: 'Contabilidad',
   },
 ];

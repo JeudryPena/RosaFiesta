@@ -15,9 +15,7 @@ public class CategoryRepository : ICategoryRepository
 	}
 
 	public async Task<IEnumerable<CategoryEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-		await _rosaFiestaContext.Categories.Include(x => x.SubCategories.Where(x => x.IsDeleted == false)).Include(x => x.Products).Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
-
-	public async Task<IEnumerable<CategoryEntity>> GetAllManagementAsync(CancellationToken cancellationToken) => await _rosaFiestaContext.Categories.ToListAsync(cancellationToken);
+		await _rosaFiestaContext.Categories.Include(x => x.SubCategories.Where(x => x.IsDeleted == false)).Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<SubCategoryEntity>> GetAllSubCategoriesAsync(CancellationToken cancellationToken = default) =>
 		await _rosaFiestaContext.SubCategories.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);

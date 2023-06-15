@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMa
 import { config } from "../../env/config.dev";
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
+import { CategoryDto } from '../../interfaces/Product/categoryDto';
 
 interface SearchResult {
   categories: CategoryPreviewResponse[];
@@ -62,7 +63,11 @@ export class CategoriesService {
     private pipe: DecimalPipe,
     private http: HttpClient
   ) {
-    this.GetManagementCategories().subscribe((data) => {
+    this.RetrieveData();
+  }
+
+  RetrieveData() {
+    this.GetCategories().subscribe((data) => {
       this.categoriesData = data;
       this._search$
         .pipe(
@@ -81,17 +86,26 @@ export class CategoriesService {
     });
   }
 
+  AddCategory(category: CategoryDto): Observable<CategoryDto> {
+    return this.http.post<CategoryDto>(this.apiUrl, category);
+  }
+  
   GetCategories(): Observable<CategoryPreviewResponse[]> {
     return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
   }
 
-  GetManagementCategories(): Observable<CategoryPreviewResponse[]> {
-    return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
+  DeleteCategorie(categoryId: number) {
+    return this.http.get(`${this.apiUrl}${categoryId}/delete`);
+  }
+
+  DeleteSubCategorie(categoryId: number, subCategoryId: number) {
+    return this.http.get(`${this.apiUrl}${categoryId}/sub-category/${subCategoryId}/delete`);
   }
 
   get categories$() {
     return this._categories$.asObservable();
   }
+
   get total$() {
     return this._total$.asObservable();
   }

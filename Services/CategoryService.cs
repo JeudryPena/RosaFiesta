@@ -18,14 +18,6 @@ internal sealed class CategoryService : ICategoryService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<CategoryManagementResponse>> GetAllManagementAsync(CancellationToken cancellationToken)
-	{
-		IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllManagementAsync(cancellationToken);
-		var categoryResponse = categories.Adapt<IEnumerable<CategoryManagementResponse>>();
-		return categoryResponse;
-
-	}
-
 	public async Task<IEnumerable<CategoryPreviewResponse>> GetAllCategoriesPreviewAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
@@ -63,42 +55,36 @@ internal sealed class CategoryService : ICategoryService
 		return categoryResponse;
 	}
 
-	public async Task DeleteAsync(string userId, int categoryId, int? subCategoryId,
+	public async Task DeleteAsync(string userId, int categoryId,
 		CancellationToken cancellationToken = default)
 	{
-
-		if (subCategoryId == null)
-		{
-			CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
-			category.IsDeleted = true;
-			_repositoryManager.CategoryRepository.Update(category);
-		}
-		else
-		{
-			SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subCategoryId.Value, cancellationToken);
-			subCategory.IsDeleted = true;
-			_repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
-		}
+		CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
+		category.IsDeleted = true;
+		_repositoryManager.CategoryRepository.Update(category);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 
-	public async Task<CategoryResponse> CreateAsync(string userId, CategoryDto categoryDto, CancellationToken cancellationToken = default)
+	public async Task DeleteSubCategoryAsync(string userId, int categoryId, int subcategoryid, CancellationToken cancellationToken)
+	{
+		SubCategoryEntity subCategory = await _repositoryManager.CategoryRepository.GetSubCategoryByIdAsync(categoryId, subcategoryid, cancellationToken);
+		subCategory.IsDeleted = true;
+		_repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+	}
+
+	public async Task CreateAsync(string userId, CategoryDto categoryDto, CancellationToken cancellationToken = default)
 	{
 		var category = new CategoryEntity
 		{
-			Id = new int(),
 			Name = categoryDto.Name,
 			Description = categoryDto.Description,
 			Icon = categoryDto.Icon,
 		};
 		if (categoryDto.SubCategories != null)
-		{
 			category.SubCategories = categoryDto.SubCategories.Adapt<List<SubCategoryEntity>>();
-		}
+
 		_repositoryManager.CategoryRepository.Insert(category);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-		CategoryResponse categoryResponse = category.Adapt<CategoryResponse>();
-		return categoryResponse;
 	}
 
 	public async Task<List<SubCategoryResponse>> CreateSubCategoryAsync(string userId, List<SubCategoryDto> subCategoryDto,

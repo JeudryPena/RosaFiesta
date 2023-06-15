@@ -2,13 +2,13 @@
     <div class="contact-form">
         <span class="circle one"></span>
         <span class="circle two"></span>
-        <form action="index.html" autocomplete="off">
+        <form action="index.html" autocomplete="off" [formGroup]="categoryForm">
             <h3 class="title">Añadir Categoría</h3>
             <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0 }">
-                <input #titleInput type="text" formControlName="title" class="input" (focus)="titleFocused = true"
+                <input #titleInput type="text" formControlName="name" class="input" (focus)="titleFocused = true"
                     (blur)="titleFocused = false" />
-                <label>Título</label>
-                <span>Título</span>
+                <label>Nombre</label>
+                <span>Nombre</span>
             </div>
             <div class="input-container" [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
                 <input #subCategoriesInput type="text" formControlName="subCategories" class="input" (focus)="subCategoriesFocused = true"
@@ -23,12 +23,12 @@
                 <span>Icono</span>
             </div>
             <div class="input-container" [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
-                <textarea #descriptionInput type="text" formControlName="icon" class="input" (focus)="descriptionFocused = true"
+                <textarea #descriptionInput type="text" formControlName="description" class="input" (focus)="descriptionFocused = true"
                     (blur)="descriptionFocused = false" rows="3"></textarea>
                 <label>Descripción</label>
                 <span>Descripción</span>
             </div>
-            <input type="submit" value="Crear" class="btn" />
+            <input type="submit" value="Crear" class="btn" (click)="AddCategory(categoryForm.value)" />
         </form>
     </div>
 </div>

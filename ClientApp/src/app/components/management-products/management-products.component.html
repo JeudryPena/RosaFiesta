@@ -52,13 +52,12 @@
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">
-                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown"
-                                            ngbDropdownToggle>Actions</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown" ngbDropdownToggle>Acciones</button>
                                         <div ngbDropdownMenu>
-                                            <button ngbDropdownItem>Edit</button>
-                                            <button ngbDropdownItem>Disable</button>
-                                            <div class="dropdown-divider"></div>
-                                            <button ngbDropdownItem>Delete</button>
+                                            <button ngbDropdownItem (click)="Retrieve(item.code)">Ver</button>
+                                            <button ngbDropdownItem (click)="Modify(item.code)">Modificar</button>
+                                            <div class="dropdown-divider" (click)="Delete(item.code)"></div>
+                                            <button ngbDropdownItem>Eliminar</button>
                                         </div>
                                     </div>
                                 </td>

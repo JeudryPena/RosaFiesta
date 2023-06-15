@@ -29,13 +29,6 @@ public class CategoriesController : ControllerBase
 		return Ok(categories);
 	}
 
-	[HttpGet("categoriesManagement")]
-	public async Task<IActionResult> GetCategoriesManagement(CancellationToken cancellationToken)
-	{
-		IEnumerable<CategoryManagementResponse> products = await _serviceManager.CategoryService.GetAllManagementAsync(cancellationToken);
-		return Ok(products);
-	}
-
 	[HttpGet]
 	public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
 	{
@@ -71,8 +64,8 @@ public class CategoriesController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		CategoryResponse categoryResponse = await _serviceManager.CategoryService.CreateAsync(userId, categoryDto, cancellationToken);
-		return Ok(categoryResponse);
+		await _serviceManager.CategoryService.CreateAsync(userId, categoryDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPost("sub-category")]
@@ -130,16 +123,25 @@ public class CategoriesController : ControllerBase
 		return Ok(subCategoryResponse);
 	}
 
-	[HttpGet("{categoryId}/sub-category/{subCategoryId?}/delete")]
+	[HttpGet("{categoryId}/delete")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeleteCategory(int categoryId, CancellationToken cancellationToken, int? subCategoryId = 0)
+	public async Task<IActionResult> DeleteCategory(int categoryId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		if (subCategoryId != 0)
-			subCategoryId = null;
-		await _serviceManager.CategoryService.DeleteAsync(userId, categoryId, subCategoryId, cancellationToken);
+		await _serviceManager.CategoryService.DeleteAsync(userId, categoryId, cancellationToken);
+		return Ok();
+	}
+
+	[HttpGet("{categoryId}/sub-category/{subcategoryid}/delete")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> DeleteSubCategory(int categoryId, int subcategoryid, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		await _serviceManager.CategoryService.DeleteSubCategoryAsync(userId, categoryId, subcategoryid, cancellationToken);
 		return Ok();
 	}
 }

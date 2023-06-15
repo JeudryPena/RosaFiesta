@@ -32,7 +32,17 @@ export class ManagementProductsComponent {
     // config.keyboard = false;
   }
 
-  
+  Retrieve(code: string) {
+    
+  }
+
+  Modify(code: string) {
+
+  }
+
+  Delete(code: string) {
+
+  }
 
   AddProduct() {
     const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
