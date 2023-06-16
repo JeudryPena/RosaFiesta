@@ -3,32 +3,130 @@
         <span class="circle one"></span>
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off" [formGroup]="categoryForm">
-            <h3 class="title">Añadir Categoría</h3>
-            <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0 }">
-                <input #titleInput type="text" formControlName="name" class="input" (focus)="titleFocused = true"
-                    (blur)="titleFocused = false" />
-                <label>Nombre</label>
-                <span>Nombre</span>
+            <h3 class="title">{{title}}</h3>
+            <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0}">
+                <input #titleInput type="text" required minlength="3" maxlength="50" formControlName="name"
+                    class="input" (focus)="titleFocused = true" (blur)="titleFocused = false;" />
+                <label>Nombre *</label>
+                <span>Nombre *</span>
+                <h5 *ngIf="validate('name', 'required', titleFocused)">El Nombre es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength', titleFocused)">El Nombre es<strong> muy corto</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
-                <input #subCategoriesInput type="text" formControlName="subCategories" class="input" (focus)="subCategoriesFocused = true"
-                    (blur)="subCategoriesFocused = false" />
+            <div class="input-container "
+                [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
+                <div class="input-group">
+                    <input #subCategoriesInput type="text" class="input wrap" (focus)="subCategoriesFocused = true"
+                        (blur)="subCategoriesFocused = false" minlength="3" formControlName="subCategories"
+                        maxlength="50" />
+                    <button class="btn btn-outline-light bi pe-3 ps-3" type="button"
+                        [disabled]="subCategoriesInput.value.length < 3"
+                        (click)="addNewSubcategory(subCategoriesInput.value)">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
                 <label>Sub Categorías</label>
                 <span>Sub Categorías</span>
+                <h5 *ngIf="validate('subCategories', 'minlength', subCategoriesFocused)">La SubCategoría es<strong> muy
+                        corta</strong>
+                </h5>
+            </div>
+            <div class="input-container">
+                <ol class="list-group list-group-numbered " *ngFor="let subcat of subCategories; let i = index">
+                    <li>
+                        <div class="input-group">
+                            <button type="text" class="btn text-md-start list btn-outline-light wrap"
+                                (click)="selectSubCategory(i)">{{i+1}}. {{subcat.name}}</button>
+                            <button class="btn btn-outline-light list pe-3 ps-3" (click)="removeSubcategory(i)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ol>
             </div>
             <div class="input-container" [ngClass]="{'focus': iconFocused || iconInput.value.length > 0 }">
                 <input #iconInput type="text" formControlName="icon" class="input" (focus)="iconFocused = true"
-                    (blur)="iconFocused = false" />
-                <label>Icono</label>
-                <span>Icono</span>
+                    (blur)="iconFocused = false" required minlength="3" maxlength="200" />
+                <label>Icono *</label>
+                <span>Icono *</span>
+                <h5 *ngIf="validate('icon', 'required', iconFocused)">El Icono es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('icon', 'minlength', iconFocused)">El Icono es<strong> muy corto</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
-                <textarea #descriptionInput type="text" formControlName="description" class="input" (focus)="descriptionFocused = true"
-                    (blur)="descriptionFocused = false" rows="3"></textarea>
-                <label>Descripción</label>
-                <span>Descripción</span>
+            <div class="input-container"
+                [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
+                <textarea #descriptionInput type="text" formControlName="description" class="input"
+                    (focus)="descriptionFocused = true" (blur)="descriptionFocused = false" rows="3" required
+                    minlength="5" maxlength="250"></textarea>
+                <label>Descripción *</label>
+                <span>Descripción *</span>
+                <h5 *ngIf="validate('description', 'required', descriptionFocused)">La Descripción es<strong>
+                        Requerida</strong>
+                </h5>
+                <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
+                        corta</strong>
+                </h5>
             </div>
-            <input type="submit" value="Crear" class="btn" (click)="AddCategory(categoryForm.value)" />
+            <div *ngIf="update == false; else updateCat" class="d-flex justify-content-between">
+                <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
+                <input type="submit" value="Crear" [disabled]="!categoryForm.valid" class="btn submit"
+                    (click)="AddCategory(categoryForm.value)" />
+            </div>
+            <ng-template #updateCat>
+                <div class="d-flex justify-content-between">
+                    <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
+                    <input type="submit" value="Actualizar" [disabled]="!categoryForm.valid" class="btn submit"
+                        (click)="updateCategory(categoryForm.value)" />
+                </div>
+            </ng-template>
+        </form>
+    </div>
+    <div class="contact-info" *ngIf="subCategoryForm != null">
+        <form action="index.html" autocomplete="off" [formGroup]="subCategoryForm">
+            <h3 class="title">{{subCategoryTittle}}</h3>
+            <div class="input-container" [ngClass]="{'focus': subTitleFocused || subTitleInput.value.length > 0 }">
+                <input #subTitleInput type="text" formControlName="name" class="input" (focus)="subTitleFocused = true"
+                    (blur)="subTitleFocused = false" required minlength="3" maxlength="50" />
+                <label>Nombre *</label>
+                <span>Nombre *</span>
+                <h5 *ngIf="validateSub('name', 'required', subTitleFocused)">El Nombre es<strong> Requerido</strong>
+                </h5>
+                <h5 *ngIf="validateSub('name', 'minlength', subTitleFocused)">El Nombre es<strong> muy corto</strong>
+                </h5>
+            </div>
+            <div class="input-container" [ngClass]="{'focus': subIconFocused || subIconInput.value.length > 0 }">
+                <input #subIconInput type="text" formControlName="icon" class="input" (focus)="subIconFocused = true"
+                    (blur)="subIconFocused = false" required minlength="3" maxlength="200" />
+                <label>Icono *</label>
+                <span>Icono *</span>
+                <h5 *ngIf="validateSub('icon', 'required', subIconFocused)">El Icono es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validateSub('icon', 'minlength', subIconFocused)">El Icono es<strong> muy corto</strong></h5>
+            </div>
+            <div class="input-container"
+                [ngClass]="{'focus': subDescriptionFocused || subDescriptionInput.value.length > 0 }">
+                <textarea #subDescriptionInput type="text" formControlName="description" class="input"
+                    (focus)="subDescriptionFocused = true" (blur)="subDescriptionFocused = false" rows="3" required
+                    minlength="5" maxlength="250"></textarea>
+                <label>Descripción *</label>
+                <span>Descripción *</span>
+                <h5 *ngIf="validateSub('description', 'required', subDescriptionFocused)">La Descripción es<strong>
+                        Requerida</strong>
+                </h5>
+                <h5 *ngIf="validateSub('description', 'minlength', subDescriptionFocused)">La Descripción es<strong> muy
+                        corta</strong>
+                </h5>
+            </div>
+            <div *ngIf="updateSubCategory == false; else updateSub" class="d-flex justify-content-between">
+                <input type="submit" value="Cancelar" class="btn btn-outline-light bi" (click)="cancelSubCategory()" />
+                <input type="submit" value="Añadir" [disabled]="!subCategoryForm.valid" class="btn submit"
+                    (click)="saveSubcategory(subCategoryForm.value)" />
+            </div>
+            <ng-template #updateSub>
+                <div class="d-flex justify-content-between">
+                    <input type="submit" value="Cancelar" class="btn btn-outline-light bi"
+                        (click)="cancelSubCategory()" />
+                    <input type="submit" [disabled]="!subCategoryForm.valid" value="Actualizar" class="btn submit"
+                        (click)="updateSubCat(subCategoryForm.value)" />
+                </div>
+            </ng-template>
         </form>
     </div>
 </div>

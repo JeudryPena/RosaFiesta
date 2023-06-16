@@ -6,7 +6,6 @@ import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.
 import { CategoriesService } from '../../shared/services/categories.service';
 import { ProductsService } from '../../shared/services/products.service';
 import { ModalCategoryComponent } from '../modal-category/modal-category.component';
-import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 
 @Component({
@@ -42,17 +41,16 @@ export class ManagementCategoriesComponent {
   }
 
   Modify(id: number) {
-    
+    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'xl', scrollable: true });
+    modalRef.componentInstance.title = 'Modificar Categoría';
+    modalRef.componentInstance.update = true;
+    modalRef.componentInstance.categoryId = id;
   }
 
   Delete(id: number) {
     this.service.DeleteCategorie(id).subscribe(() => {
       this.retrieveData();
     });
-  }
-
-  ModifySub(id: number) {
-    
   }
 
   DeleteSub(id: number, subId: number) {
@@ -62,8 +60,8 @@ export class ManagementCategoriesComponent {
   }
 
   AddCategory() {
-    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.name = 'World';
+    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'xl', scrollable: true });
+    modalRef.componentInstance.title = 'Añadir Categoría';
   }
 
   onSort({ column, direction }: SortEvent) {

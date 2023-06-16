@@ -9,7 +9,8 @@ public class SubCategoryEntity : BaseEntity
 	public string Name { get; set; }
 	[StringLength(250, MinimumLength = 3)]
 	public string Description { get; set; }
-	public string? Icon { get; set; }
+	[StringLength(200, MinimumLength = 3)]
+	public string Icon { get; set; }
 	public int CategoryId { get; set; }
 	public ICollection<ProductEntity>? Products { get; set; }
 }

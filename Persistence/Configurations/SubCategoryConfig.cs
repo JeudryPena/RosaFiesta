@@ -17,8 +17,8 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
 		builder.Property(x => x.Name).IsRequired();
 		builder.HasIndex(x => x.Name).IsUnique();
-		builder.Property(x => x.Description);
-		builder.Property(x => x.Icon);
+		builder.Property(x => x.Description).IsRequired();
+		builder.Property(x => x.Icon).IsRequired();
 		builder.Property(a => a.CreatedAt).IsRequired();
 		builder.Property(a => a.UpdatedAt);
 		builder.Property(a => a.IsDeleted).IsRequired();
@@ -31,7 +31,7 @@ public class SubCategoryConfig : IEntityTypeConfiguration<SubCategoryEntity>
 			Icon = "https://i.imgur.com/0jQYs1R.png",
 			CategoryId = CategoryId,
 			CreatedAt = DateTime.UtcNow,
-			IsDeleted = false
+			IsDeleted = false,
 		});
 	}
 }

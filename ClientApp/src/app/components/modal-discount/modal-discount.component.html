@@ -45,7 +45,7 @@
                 </div>
                 <div class="col">
                     <div class="input-container" [ngClass]="{'focus': valueFocused || valueInput.value.length > 0 }">
-                        <input #valueInput type="number" formControlName="value" class="input" min="0" value="0"
+                        <input #valueInput type="number" formControlName="value" class="input" min="0" 
                             (focus)="valueFocused = true" (blur)="valueFocused = false" />
                         <label>Valor</label>
                         <span>Valor</span>
@@ -69,7 +69,7 @@
                                 (focus)="startFocused = true" (blur)="startFocused = false" [(ngModel)]="model"
                                 ngbDatepicker #start="ngbDatepicker" />
 
-                            <button class="btn btn-outline-primary bi bi-calendar3" (click)="start.toggle()"
+                            <button class="btn btn-outline-light bi bi-calendar3" (click)="start.toggle()"
                                 type="button"></button>
                         </div>
                         <label>Inicio</label>

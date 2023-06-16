@@ -4,8 +4,8 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.dev";
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
-import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
+import { SortColumn, SortDirection } from '../directives/sortable.directive';
 
 interface SearchResult {
   categories: CategoryPreviewResponse[];
@@ -89,9 +89,17 @@ export class CategoriesService {
   AddCategory(category: CategoryDto): Observable<CategoryDto> {
     return this.http.post<CategoryDto>(this.apiUrl, category);
   }
-  
+
   GetCategories(): Observable<CategoryPreviewResponse[]> {
     return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
+  }
+
+  GetCategory(categoryId: number): Observable<CategoryPreviewResponse> {
+    return this.http.get<CategoryPreviewResponse>(`${this.apiUrl}${categoryId}/category-management`);
+  }
+
+  UpdateCategory(categoryId: number, category: CategoryDto) {
+    return this.http.put(`${this.apiUrl}${categoryId}`, category);
   }
 
   DeleteCategorie(categoryId: number) {

@@ -16,10 +16,12 @@ public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
 		builder.Property(x => x.Name).IsRequired();
 		builder.HasIndex(x => x.Name).IsUnique();
-		builder.Property(x => x.Description);
-		builder.Property(x => x.Icon);
+		builder.Property(x => x.Description).IsRequired();
+		builder.Property(x => x.Icon).IsRequired();
 		builder.Property(a => a.CreatedAt).IsRequired();
 		builder.Property(a => a.UpdatedAt);
+		builder.Property(a => a.CreatedBy).IsRequired();
+		builder.Property(a => a.UpdatedBy);
 		builder.Property(a => a.IsDeleted).IsRequired();
 		builder.HasMany(x => x.SubCategories).WithOne().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Cascade);
 		builder.HasData(new CategoryEntity
@@ -30,6 +32,7 @@ public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
 			Icon = "https://i.imgur.com/0jQYs1R.png",
 			IsDeleted = false,
 			CreatedAt = DateTime.UtcNow,
+			CreatedBy = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
 		});
 	}
 }
