@@ -7,6 +7,9 @@ import { CategoriesService } from '../../shared/services/categories.service';
 import { ProductsService } from '../../shared/services/products.service';
 import { ModalCategoryComponent } from '../modal-category/modal-category.component';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
+import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
+import { UsersService } from '../../shared/services/users.service';
+import { forEach } from 'mathjs';
 
 @Component({
   selector: 'app-management-categories',
@@ -15,14 +18,15 @@ import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categ
   providers: [ProductsService, DecimalPipe],
 })
 export class ManagementCategoriesComponent {
-  categories$: Observable<CategoryPreviewResponse[]> = new Observable<CategoryPreviewResponse[]>();
+  categories$: Observable<CategoryManagementResponse[]> = new Observable<CategoryManagementResponse[]>();
   total$: Observable<number> = new Observable<number>();
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
     public service: CategoriesService,
-    public modalService: NgbModal,
+    private userService: UsersService,
+    private modalService: NgbModal,
     config: NgbModalConfig
   ) {
     this.retrieveData();

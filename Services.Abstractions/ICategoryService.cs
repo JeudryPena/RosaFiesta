@@ -13,4 +13,5 @@ public interface ICategoryService
 	Task UpdateAsync(string userId, int categoryId, CategoryDto categoryUpdateDto, CancellationToken cancellationToken = default);
 	Task DeleteSubCategoryAsync(string userId, int categoryId, int subcategoryid, CancellationToken cancellationToken = default);
 	Task<CategoryPreviewResponse> GetManagementByIdAsync(int categoryId, CancellationToken cancellationToken = default);
+	Task<IEnumerable<CategoryManagementResponse>> GetAllCategoriesManagementAsync(CancellationToken cancellationToken = default);
 }

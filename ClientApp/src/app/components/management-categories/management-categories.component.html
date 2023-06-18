@@ -27,6 +27,8 @@
                                     Descripción</th>
                                 <th scope="col" class="table-cell">
                                     SubCategorias</th>
+                                <th scope="col" class="table-cell">Creación</th>
+                                <th scope="col" class="table-cell">Modificación</th>
                                 <th scope="col" class="table-cell"></th>
                             </tr>
                         </thead>
@@ -37,8 +39,8 @@
                                 <td>
                                     <img [src]="'' + item.icon" class="me-2" style="width: 20px" />
                                 </td>
-                                <td><ngb-highlight [result]="item.description"
-                                        [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="item.description | truncate:30"
+                                        [term]="service.searchTerm" placement="top" ngbTooltip="{{item.description}}"></ngb-highlight>
                                 </td>
                                 <td>
                                     <div *ngFor="let subcategory of item.subCategories"
@@ -52,10 +54,13 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td><ngb-highlight class="badge text-bg-dark" [result]="item.createdAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top" ngbTooltip="Creado por: {{item.createdBy}}" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight class="badge text-bg-secondary" [result]="item.updatedAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top" ngbTooltip="Modificado por: {{item.updatedBy}}" [term]="service.searchTerm"></ngb-highlight>
+                                </td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">
                                         <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown"
-                                            ngbDropdownToggle>Acciones</button>
+                                            ngbDropdownToggle></button>
                                         <div ngbDropdownMenu>
                                             <button ngbDropdownItem (click)="Retrieve(item.id)"><i class="fa-solid fa-eye pe-2"></i>Ver</button>
                                             <button ngbDropdownItem (click)="Modify(item.id)"><i class="fa-solid fa-pen pe-2"></i>Modificar</button>

@@ -104,6 +104,7 @@ import { StackedAreaChartComponent } from './helpers/stacked-area-chart/stacked-
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
 import { InventoryLayoutComponent } from './components/inventory-layout/inventory-layout.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
+import { TruncatePipe } from './shared/pipes/truncate.pipe';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -197,7 +198,8 @@ export function tokenGetter() {
     StackedAreaChartComponent,
     AdminLayoutComponent,
     InventoryLayoutComponent,
-    InventoryComponent
+    InventoryComponent,
+    TruncatePipe
 
   ],
   imports: [

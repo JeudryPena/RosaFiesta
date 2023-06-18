@@ -7,4 +7,5 @@ export interface CategoryPreviewResponse {
 	description: string | null;
 	subCategories: SubCategoryPreviewResponse[] | null;
 	expanded?: boolean;
+	
 }

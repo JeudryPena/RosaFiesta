@@ -30,6 +30,15 @@ public class UsersController : ControllerBase
 		return Ok(users);
 	}
 
+	[HttpGet("{userId}/user-name")]
+	public async Task<IActionResult> GetUserNameById(string userId, CancellationToken cancellationToken)
+	{
+		string userName = await _serviceManager.UserService.GetUserNameByIdAsync(userId, cancellationToken);
+
+		return Ok(new { UserName = userName });
+	}
+
+
 	[HttpGet("{userId}")]
 	public async Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken)
 	{

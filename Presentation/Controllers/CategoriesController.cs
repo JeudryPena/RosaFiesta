@@ -22,6 +22,14 @@ public class CategoriesController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet("categoriesManagement")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> GetCategoriesManagement(CancellationToken cancellationToken)
+	{
+		IEnumerable<CategoryManagementResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesManagementAsync(cancellationToken);
+		return Ok(categories);
+	}
+
 	[HttpGet("categoriesPreview")]
 	public async Task<IActionResult> GetCategoriesPreview(CancellationToken cancellationToken)
 	{

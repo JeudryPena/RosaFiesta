@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.dev";
+import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
+import { UsersService } from './users.service';
 
 interface SearchResult {
-  categories: CategoryPreviewResponse[];
+  categories: CategoryManagementResponse[];
   total: number;
 }
 
@@ -22,7 +24,7 @@ interface State {
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(categories: CategoryPreviewResponse[], column: SortColumn, direction: string): CategoryPreviewResponse[] {
+function sort(categories: CategoryManagementResponse[], column: SortColumn, direction: string): CategoryManagementResponse[] {
   if (direction === '' || column === '') {
     return categories;
   } else {
@@ -33,7 +35,7 @@ function sort(categories: CategoryPreviewResponse[], column: SortColumn, directi
   }
 }
 
-function matches(category: CategoryPreviewResponse, term: string, pipe: PipeTransform) {
+function matches(category: CategoryManagementResponse, term: string, pipe: PipeTransform) {
   return (
     category.name.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(category.id).includes(term)
@@ -47,9 +49,9 @@ export class CategoriesService {
   private apiUrl = `${config.apiURL}categories/`
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _categories$ = new BehaviorSubject<CategoryPreviewResponse[]>([]);
+  private _categories$ = new BehaviorSubject<CategoryManagementResponse[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  public categoriesData: CategoryPreviewResponse[] = [];
+  public categoriesData: CategoryManagementResponse[] = [];
 
   private _state: State = {
     page: 1,
@@ -61,14 +63,23 @@ export class CategoriesService {
 
   constructor(
     private pipe: DecimalPipe,
-    private http: HttpClient
+    private http: HttpClient,
+    private service: UsersService
   ) {
     this.RetrieveData();
   }
 
   RetrieveData() {
-    this.GetCategories().subscribe((data) => {
+    this.GetCategoryManagement().subscribe((data) => {
       this.categoriesData = data;
+      this.categoriesData.forEach(i => {
+        this.service.UserName(i.createdBy).subscribe((data) => {
+          i.createdBy = data.userName;
+        });
+        this.service.UserName(i.updatedBy).subscribe((data) => {
+          i.updatedBy = data.userName;
+        });
+      });
       this._search$
         .pipe(
           tap(() => this._loading$.next(true)),
@@ -88,6 +99,10 @@ export class CategoriesService {
 
   AddCategory(category: CategoryDto): Observable<CategoryDto> {
     return this.http.post<CategoryDto>(this.apiUrl, category);
+  }
+
+  GetCategoryManagement(): Observable<CategoryManagementResponse[]> {
+    return this.http.get<CategoryManagementResponse[]>(this.apiUrl + 'categoriesManagement');
   }
 
   GetCategories(): Observable<CategoryPreviewResponse[]> {
