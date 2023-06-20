@@ -83,7 +83,9 @@ internal sealed class OrderService : IOrderService
 		CancellationToken cancellationToken = default)
 	{
 		AppliedDiscountEntity appliedDiscount = await _repositoryManager.DiscountRepository.GetAppliedDiscount(purchaseNumber, cancellationToken);
-		_repositoryManager.DiscountRepository.DeleteAppliedDiscount(appliedDiscount);
+		appliedDiscount.IsDeleted = true;
+		appliedDiscount.UpdatedAt = DateTimeOffset.UtcNow;
+		_repositoryManager.DiscountRepository.UpdateAppliedDiscount(appliedDiscount);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}
 

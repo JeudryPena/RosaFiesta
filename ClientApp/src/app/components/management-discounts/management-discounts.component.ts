@@ -1,12 +1,10 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
+import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
-import { ProductsService } from '../../shared/services/products.service';
-import { ModalProductComponent } from '../modal-product/modal-product.component';
 import { DiscountsService } from '../../shared/services/discounts.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
-import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
 
 @Component({
   selector: 'app-management-discounts',
@@ -14,8 +12,12 @@ import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/m
   styleUrls: ['./management-discounts.component.scss']
 })
 export class ManagementDiscountsComponent {
-  discounts$: Observable<ManagementDiscountsResponse[]>;
-  total$: Observable<number>;
+  discounts$: Observable<ManagementDiscountsResponse[]> = new Observable<ManagementDiscountsResponse[]>();
+  total$: Observable<number> = new Observable<number>();
+  collectionSize = 0;
+  pageSize = 5;
+  page = 1;
+  maxSize = 10;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
@@ -24,10 +26,15 @@ export class ManagementDiscountsComponent {
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
-    this.discounts$ = service.discounts$;
-    this.total$ = service.total$;
+    this.retrieveData();
     // config.backdrop = 'static';
     // config.keyboard = false;
+  }
+
+  retrieveData() {
+    this.service.RetrieveData();
+    this.discounts$ = this.service.discounts$;
+    this.total$ = this.service.total$;
   }
 
   Retrieve(code: string) {
@@ -42,13 +49,20 @@ export class ManagementDiscountsComponent {
 
   }
 
+  DeleteProduct(code: string) {
+
+  }
+
   AddDiscount() {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.name = 'World';
+    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'xl', scrollable: true });
+    modalRef.componentInstance.title = 'Añadir Descuento';
+    modalRef.result.then((result) => {
+      if (result)
+        this.retrieveData();
+    });
   }
 
   onSort({ column, direction }: SortEvent) {
-    // resetting other headers
     this.headers.forEach((header) => {
       if (header.sortable !== column) {
         header.direction = '';
@@ -58,9 +72,4 @@ export class ManagementDiscountsComponent {
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
-
-  collectionSize = 0;
-  pageSize = 5;
-  page = 1;
-  maxSize = 10;
 }

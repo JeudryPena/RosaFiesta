@@ -15,13 +15,11 @@ internal sealed class DiscountRepository : IDiscountRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<IEnumerable<DiscountEntity>> ManagementGetAllAsync(CancellationToken cancellationToken = default) => await _dbContext.Discounts.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
-
 	public async Task<IEnumerable<DiscountEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-	=> await _dbContext.Discounts.Include(x => x.ProductsDiscounts).Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+	=> await _dbContext.Discounts.Include(x => x.ProductsDiscounts.Where(x => x.IsDeleted == false)).Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
 	public async Task<DiscountEntity> GetByIdAsync(string discountId, CancellationToken cancellationToken = default)
 	{
-		DiscountEntity? discount = await _dbContext.Discounts.Include(x => x.ProductsDiscounts).FirstOrDefaultAsync(x => x.Code == discountId, cancellationToken);
+		DiscountEntity? discount = await _dbContext.Discounts.Include(x => x.ProductsDiscounts.Where(x => x.IsDeleted == false)).FirstOrDefaultAsync(x => x.Code == discountId, cancellationToken);
 		if (discount == null)
 			throw new NullReferenceException("Value not found");
 		if (discount.IsDeleted)
@@ -41,6 +39,8 @@ internal sealed class DiscountRepository : IDiscountRepository
 			.FirstOrDefaultAsync(d => d.PurchaseOption.PurchaseNumber == purchaseNumber, cancellationToken);
 		if (appliedDiscount == null)
 			throw new NullReferenceException("Value not found");
+		if (appliedDiscount.IsDeleted)
+			throw new InvalidOperationException("Discount is deleted");
 		return appliedDiscount;
 	}
 
@@ -50,6 +50,8 @@ internal sealed class DiscountRepository : IDiscountRepository
 			.FirstOrDefaultAsync(d => d.AppliedDiscounts != null && d.AppliedDiscounts.Any(ad => ad.Id == detailAppliedId), cancellationToken);
 		if (discount == null)
 			throw new NullReferenceException("Value not found");
+		if (discount.IsDeleted)
+			throw new InvalidOperationException("Discount is deleted");
 		return discount;
 	}
 
@@ -89,6 +91,6 @@ internal sealed class DiscountRepository : IDiscountRepository
 		return discount;
 	}
 
-	public void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount)
-	=> _dbContext.AppliedDiscounts.Remove(appliedDiscount);
+	public void UpdateAppliedDiscount(AppliedDiscountEntity appliedDiscount)
+	=> _dbContext.AppliedDiscounts.Update(appliedDiscount);
 }

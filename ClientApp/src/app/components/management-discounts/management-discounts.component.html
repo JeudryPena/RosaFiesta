@@ -22,16 +22,18 @@
                         <thead class="tables">
                             <tr class="table-row">
                                 <th scope="col" class="table-cell" sortable="code" (sort)="onSort($event)">Código</th>
-                                <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Título</th>
+                                <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Nombre</th>
                                 <th scope="col" class="table-cell">Descripción</th>
                                 <th scope="col" class="table-cell">Valor</th>
-                                <th scope="col" class="table-cell">Uso Máx.</th>
+                                <th scope="col" class="table-cell">Máx.</th>
                                 <th scope="col" class="table-cell">
-                                    Inicio</th>
-                                <th scope="col" class="table-cell">
-                                    Fin</th>
+                                    Inicio y Fin</th>
                                 <th scope="col" class="table-cell">
                                     Productos</th>
+                                <th scope="col" class="table-cell">
+                                    Creación</th>
+                                <th scope="col" class="table-cell">
+                                    Modificación</th>
                                 <th scope="col" class="table-cell"></th>
                             </tr>
                         </thead>
@@ -51,19 +53,37 @@
                                 <td><ngb-highlight [result]="item.maxTimesApply | number"
                                         [term]="service.searchTerm"></ngb-highlight></td>
                                 <td><ngb-highlight [result]="item.start | date: 'dd/MM/yyyy' "
-                                        [term]="service.searchTerm"></ngb-highlight></td>
-                                <td><ngb-highlight [result]="item.end | date: 'dd/MM/yyyy'" [term]="service.searchTerm"></ngb-highlight></td>
+                                    [term]="service.searchTerm"></ngb-highlight>
+                                    <ngb-highlight [result]="item.end | date: 'dd/MM/yyyy'" [term]="service.searchTerm"></ngb-highlight>
+                                </td>
                                 <td>
-                                    
+                                    <div *ngFor="let productDiscount of item.productsDiscounts" class="d-flex justify-content-between">
+                                        <div ngbDropdown container="body">
+                                            <span class="badge text-bg-primary" ngbDropdownToggle>{{productDiscount.code}}</span>
+                                            <div ngbDropdownMenu>
+                                                <div *ngIf="" ngbDropdownItem>
+                                                    <strong>Nombre: </strong> {{productDiscount.optionId}}
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <button ngbDropdownItem (click)="DeleteProduct(productDiscount.code)"><i
+                                                        class="fa-solid fa-trash pe-2"></i>Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><ngb-highlight class="badge text-bg-dark" [result]="item.createdAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
+                                        ngbTooltip="Creado por: {{item.createdBy}}" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight class="badge text-bg-secondary" [result]="item.updatedAt | date: 'dd/MM/yyyy hh:mm:ss'"
+                                        placement="top" ngbTooltip="Modificado por: {{item.updatedBy}}" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td class="overflow-hidden">
                                     <div ngbDropdown container="body">
-                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown" ngbDropdownToggle>Acciones</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown" ngbDropdownToggle></button>
                                         <div ngbDropdownMenu>
-                                            <button ngbDropdownItem (click)="Retrieve(item.code)">Ver</button>
-                                            <button ngbDropdownItem (click)="Modify(item.code)">Modificar</button>
-                                            <div class="dropdown-divider" (click)="Delete(item.code)"></div>
-                                            <button ngbDropdownItem>Eliminar</button>
+                                            <button ngbDropdownItem (click)="Retrieve(item.code)"><i class="fa-solid fa-eye pe-2"></i>Ver</button>
+                                            <button ngbDropdownItem (click)="Modify(item.code)"><i class="fa-solid fa-pen pe-2"></i>Modificar</button>
+                                            <div class="dropdown-divider"></div>
+                                            <button ngbDropdownItem (click)="Delete(item.code)"><i class="fa-solid fa-trash pe-2"></i>Eliminar</button>
                                         </div>
                                     </div>
                                 </td>

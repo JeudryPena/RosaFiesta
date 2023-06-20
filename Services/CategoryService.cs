@@ -46,10 +46,10 @@ internal sealed class CategoryService : ICategoryService
 		return categoryResponse;
 	}
 
-	public async Task<CategoryPreviewResponse> GetManagementByIdAsync(int categoryId, CancellationToken cancellationToken = default)
+	public async Task<CategoryManagementResponse> GetManagementByIdAsync(int categoryId, CancellationToken cancellationToken = default)
 	{
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetManagementById(categoryId, cancellationToken);
-		var categoryResponse = category.Adapt<CategoryPreviewResponse>();
+		var categoryResponse = category.Adapt<CategoryManagementResponse>();
 		return categoryResponse;
 	}
 
@@ -69,7 +69,13 @@ internal sealed class CategoryService : ICategoryService
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
 		category.UpdatedBy = userId;
 		category.UpdatedAt = DateTimeOffset.UtcNow;
-		SubCategoryEntity subCategory = category.SubCategories.FirstOrDefault(x => x.Id == subcategoryid);
+		if (category.SubCategories == null)
+			throw new Exception("No subcategories found");
+		SubCategoryEntity? subCategory = category.SubCategories.FirstOrDefault(x => x.Id == subcategoryid);
+		if (subCategory == null)
+		{
+			throw new Exception("No subcategory found");
+		}
 		subCategory.IsDeleted = true;
 		_repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -93,6 +99,11 @@ internal sealed class CategoryService : ICategoryService
 		category = categoryUpdateDto.Adapt(category);
 		category.UpdatedAt = DateTimeOffset.UtcNow;
 		category.UpdatedBy = userId;
+		if (category.SubCategories != null)
+			foreach (var subcategory in category.SubCategories)
+			{
+				subcategory.UpdatedAt = DateTimeOffset.UtcNow;
+			}
 
 		_repositoryManager.CategoryRepository.Update(category);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);

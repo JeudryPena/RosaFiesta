@@ -4,9 +4,10 @@ export interface DiscountDto {
     code: string;
     name: string;
     type: number;
-    discount: number;
     start: string;
     end: string;
+    value: number;
+    maxTimesApply: number;
     description: string | null;
-    productsDiscount: ProductsDiscountDto[];
+    productsDiscounts: ProductsDiscountDto[];
 }

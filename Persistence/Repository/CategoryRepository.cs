@@ -22,7 +22,7 @@ public class CategoryRepository : ICategoryRepository
 
 	public async Task<CategoryEntity> GetByIdAsync(int categoryId, CancellationToken cancellationToken = default)
 	{
-		var category = await _rosaFiestaContext.Categories.Include(x => x.Products.Where(x => x.IsDeleted == false))
+		var category = await _rosaFiestaContext.Categories.Include(x => x.SubCategories.Where(x => x.IsDeleted == false)).Include(x => x.Products.Where(x => x.IsDeleted == false))
 			.FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
 		if (category == null)
 			throw new ArgumentNullException(nameof(category));
@@ -49,7 +49,7 @@ public class CategoryRepository : ICategoryRepository
 
 	public async Task<CategoryEntity> GetCategoryAndSubCategoryAsync(int categoryId, CancellationToken cancellationToken)
 	{
-		var category = await _rosaFiestaContext.Categories
+		var category = await _rosaFiestaContext.Categories.Include(x => x.SubCategories.Where(x => x.IsDeleted == false))
 			.FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
 		if (category == null)
 			throw new ArgumentNullException(nameof(category), "Category not found");

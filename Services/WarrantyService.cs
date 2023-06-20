@@ -58,7 +58,6 @@ internal sealed class WarrantyService : IWarrantyService
 		warranty.Period = warrantyDto.Period;
 		warranty.Conditions = warrantyDto.Conditions;
 		warranty.Type = warrantyDto.Type.Adapt<WarrantyType>();
-		warranty.ScopeType = warrantyDto.ScopeType.Adapt<WarrantyScopeType>();
 		_repositoryManager.WarrantyRepository.Update(warranty);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		var warrantyResponse = warranty.Adapt<WarrantyResponse>();

@@ -7,20 +7,9 @@ import { CategoryManagementResponse } from '../../interfaces/Product/Response/ca
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
+import { SearchResult } from './search-result';
+import { State } from './state';
 import { UsersService } from './users.service';
-
-interface SearchResult {
-  categories: CategoryManagementResponse[];
-  total: number;
-}
-
-interface State {
-  page: number;
-  pageSize: number;
-  searchTerm: string;
-  sortColumn: SortColumn;
-  sortDirection: SortDirection;
-}
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -55,7 +44,7 @@ export class CategoriesService {
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 5,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
@@ -70,7 +59,7 @@ export class CategoriesService {
   }
 
   RetrieveData() {
-    this.GetCategoryManagement().subscribe((data) => {
+    this.GetCategoriesManagement().subscribe((data) => {
       this.categoriesData = data;
       this.categoriesData.forEach(i => {
         this.service.UserName(i.createdBy).subscribe((data) => {
@@ -89,7 +78,7 @@ export class CategoriesService {
           tap(() => this._loading$.next(false)),
         )
         .subscribe((result) => {
-          this._categories$.next(result.categories);
+          this._categories$.next(result.items);
           this._total$.next(result.total);
         });
 
@@ -97,11 +86,11 @@ export class CategoriesService {
     });
   }
 
-  AddCategory(category: CategoryDto): Observable<CategoryDto> {
-    return this.http.post<CategoryDto>(this.apiUrl, category);
+  AddCategory(category: CategoryDto) {
+    return this.http.post(this.apiUrl, category);
   }
 
-  GetCategoryManagement(): Observable<CategoryManagementResponse[]> {
+  GetCategoriesManagement(): Observable<CategoryManagementResponse[]> {
     return this.http.get<CategoryManagementResponse[]>(this.apiUrl + 'categoriesManagement');
   }
 
@@ -109,8 +98,8 @@ export class CategoriesService {
     return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
   }
 
-  GetCategory(categoryId: number): Observable<CategoryPreviewResponse> {
-    return this.http.get<CategoryPreviewResponse>(`${this.apiUrl}${categoryId}/category-management`);
+  GetCategory(categoryId: number): Observable<CategoryManagementResponse> {
+    return this.http.get<CategoryManagementResponse>(`${this.apiUrl}${categoryId}/category-management`);
   }
 
   UpdateCategory(categoryId: number, category: CategoryDto) {
@@ -168,13 +157,13 @@ export class CategoriesService {
 
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-    let categories = sort(this.categoriesData, sortColumn, sortDirection);
+    let items = sort(this.categoriesData, sortColumn, sortDirection);
 
-    categories = categories.filter((category) => matches(category, searchTerm, this.pipe));
-    const total = categories.length;
+    items = items.filter((category) => matches(category, searchTerm, this.pipe));
+    const total = items.length;
 
-    categories = categories.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ categories, total });
+    items = items.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return of({ items, total });
   }
 }
 

@@ -7,5 +7,5 @@ public class CategoryManagementResponse : BaseResponse
 	public string? Description { get; set; }
 	public string CreatedBy { get; set; }
 	public string UpdatedBy { get; set; }
-	public ICollection<SubCategoryPreviewResponse>? SubCategories { get; set; }
+	public ICollection<SubCategoryManagementResponse>? SubCategories { get; set; }
 }

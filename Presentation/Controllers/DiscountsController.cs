@@ -30,11 +30,11 @@ public class DiscountsController : ControllerBase
 		return Ok(discounts);
 	}
 
-	[HttpGet]
-	public async Task<IActionResult> GetDiscounts(CancellationToken cancellationToken)
+	[HttpGet("{Code}/management")]
+	public async Task<IActionResult> GetManagementDiscount(string code, CancellationToken cancellationToken)
 	{
-		IEnumerable<DiscountResponse> discounts = await _serviceManager.DiscountService.GetAllAsync(cancellationToken);
-		return Ok(discounts);
+		ManagementDiscountsResponse discount = await _serviceManager.DiscountService.GetManagementDiscountAsync(code, cancellationToken);
+		return Ok(discount);
 	}
 
 	[HttpGet("{Code}")]
@@ -50,8 +50,8 @@ public class DiscountsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		DiscountResponse discountResponse = await _serviceManager.DiscountService.CreateDiscountAsync(userId, discount, cancellationToken);
-		return Ok(discountResponse);
+		await _serviceManager.DiscountService.CreateDiscountAsync(userId, discount, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("{Code}")]
@@ -60,8 +60,8 @@ public class DiscountsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		DiscountResponse discountResponse = await _serviceManager.DiscountService.UpdateDiscountAsync(userId, Code, discountDto, cancellationToken);
-		return Ok(discountResponse);
+		await _serviceManager.DiscountService.UpdateDiscountAsync(userId, Code, discountDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpGet("{Code}/delete")]

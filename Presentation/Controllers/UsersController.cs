@@ -33,7 +33,7 @@ public class UsersController : ControllerBase
 	[HttpGet("{userId}/user-name")]
 	public async Task<IActionResult> GetUserNameById(string userId, CancellationToken cancellationToken)
 	{
-		string userName = await _serviceManager.UserService.GetUserNameByIdAsync(userId, cancellationToken);
+		string? userName = await _serviceManager.UserService.GetUserNameByIdAsync(userId, cancellationToken);
 
 		return Ok(new { UserName = userName });
 	}

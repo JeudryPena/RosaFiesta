@@ -55,7 +55,7 @@ public class CategoriesController : ControllerBase
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> GetCategoryManagementById(int categoryId, CancellationToken cancellationToken)
 	{
-		CategoryPreviewResponse products = await _serviceManager.CategoryService.GetManagementByIdAsync(categoryId, cancellationToken);
+		CategoryManagementResponse products = await _serviceManager.CategoryService.GetManagementByIdAsync(categoryId, cancellationToken);
 		return Ok(products);
 	}
 

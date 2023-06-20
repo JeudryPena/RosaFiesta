@@ -25,6 +25,8 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
         builder.Property(x => x.Description);
         builder.Property(a => a.CreatedAt).IsRequired();
         builder.Property(a => a.UpdatedAt);
+        builder.Property(a => a.CreatedBy).IsRequired();
+        builder.Property(a => a.UpdatedBy);
         builder.Property(a => a.IsDeleted).IsRequired();
         builder.HasMany(x => x.ProductsDiscounts).WithOne().HasForeignKey(x => x.Code);
         builder.HasMany(x => x.AppliedDiscounts).WithOne().HasForeignKey(x => x.Code);
@@ -40,6 +42,7 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
             MaxTimesApply = 5,
             IsDeleted = false,
             CreatedAt = DateTimeOffset.UtcNow,
+            CreatedBy = "System"
         }, new DiscountEntity
         {
             Code = DefaultCode1,
@@ -52,7 +55,8 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
             MaxTimesApply = 1,
             IsDeleted = false,
             CreatedAt = DateTimeOffset.UtcNow,
-        }
+			CreatedBy = "System"
+		}
 
     );
     }

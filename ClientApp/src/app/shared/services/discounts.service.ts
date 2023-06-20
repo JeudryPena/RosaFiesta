@@ -2,23 +2,14 @@ import { DecimalPipe } from '@angular/common';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
-
 import { HttpClient } from '@angular/common/http';
 import { config } from "../../env/config.prod";
 import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
-
-interface SearchResult {
-  discounts: ManagementDiscountsResponse[];
-  total: number;
-}
-
-interface State {
-  page: number;
-  pageSize: number;
-  searchTerm: string;
-  sortColumn: SortColumn;
-  sortDirection: SortDirection;
-}
+import { SearchResult } from './search-result';
+import { State } from './state';
+import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
+import { UsersService } from './users.service';
+import { DiscountDto } from '../../interfaces/Product/discountDto';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -44,6 +35,7 @@ function matches(discount: ManagementDiscountsResponse, term: string, pipe: Pipe
   providedIn: 'root'
 })
 export class DiscountsService {
+  private apiUrl = `${config.apiURL}discounts/`
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _discounts$ = new BehaviorSubject<ManagementDiscountsResponse[]>([]);
@@ -53,7 +45,7 @@ export class DiscountsService {
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 5,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
@@ -61,22 +53,58 @@ export class DiscountsService {
 
   constructor(
     private pipe: DecimalPipe,
-    private http: HttpClient
+    private http: HttpClient,
+    private service: UsersService
   ) {
-    this._search$
-      .pipe(
-        tap(() => this._loading$.next(true)),
-        debounceTime(200),
-        switchMap(() => this._search()),
-        delay(200),
-        tap(() => this._loading$.next(false)),
-      )
-      .subscribe((result) => {
-        this._discounts$.next(result.discounts);
-        this._total$.next(result.total);
-      });
+    this.RetrieveData();
+  }
 
-    this._search$.next();
+  RetrieveData() {
+    this.GetDiscountsManagement().subscribe((data) => {
+      this._managementDiscounts$ = data;
+      this._managementDiscounts$.forEach(i => {
+        this.service.UserName(i.createdBy).subscribe((data) => {
+          i.createdBy = data.userName;
+        });
+        this.service.UserName(i.updatedBy).subscribe((data) => {
+          i.updatedBy = data.userName;
+        });
+      });
+      this._search$
+        .pipe(
+          tap(() => this._loading$.next(true)),
+          debounceTime(200),
+          switchMap(() => this._search()),
+          delay(200),
+          tap(() => this._loading$.next(false)),
+        )
+        .subscribe((result) => {
+          this._discounts$.next(result.items);
+          this._total$.next(result.total);
+        });
+
+      this._search$.next();
+    });
+  }
+
+  AddDiscount(category: DiscountDto) {
+    return this.http.post(this.apiUrl, category);
+  }
+
+  UpdateDiscount(code: string, category: DiscountDto) {
+    return this.http.put(`${this.apiUrl}/${code}`, category);
+  }
+
+  GetManagementDiscount(code: string): Observable<ManagementDiscountsResponse> {
+    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${code}/management`);
+  }
+
+  GetDiscountsManagement(): Observable<ManagementDiscountsResponse[]> {
+    return this.http.get<ManagementDiscountsResponse[]>(`${this.apiUrl}/management`);
+  }
+
+  DeleteDiscount(code: string) {
+    return this.http.get(`${this.apiUrl}${code}/delete`);
   }
 
   get discounts$() {
@@ -124,15 +152,15 @@ export class DiscountsService {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
     // 1. sort
-    let discounts = sort(this._managementDiscounts$, sortColumn, sortDirection);
+    let items = sort(this._managementDiscounts$, sortColumn, sortDirection);
 
     // 2. filter
-    discounts = discounts.filter((discount) => matches(discount, searchTerm, this.pipe));
-    const total = discounts.length;
+    items = items.filter((discount) => matches(discount, searchTerm, this.pipe));
+    const total = items.length;
 
     // 3. paginate
-    discounts = discounts.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ discounts, total });
+    items = items.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return of({ items, total });
   }
 }
 

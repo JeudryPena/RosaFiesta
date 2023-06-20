@@ -1,3 +1,8 @@
+.fa-trash {
+    color: red;
+}
+
+
 .dropdown {
     position: relative;
 }
@@ -34,15 +39,15 @@
 }
 
 .table .table-row .table-cell:nth-child(2) {
-    width: 140.25px;
+    width: 30px;
 }
 
 .table .table-row .table-cell:nth-child(3) {
-    width: 300px;
+    width: 250px;
 }
 
 .table .table-row .table-cell:nth-child(4) {
-    width: 100px;
+    width: 30px;
 }
 
 .table .table-row .table-cell:nth-child(5) {
@@ -50,7 +55,7 @@
 }
 
 .table .table-row .table-cell:nth-child(6) {
-    width: 80.59px;
+    width: 130.59px;
 }
 
 .table .table-row .table-cell:nth-child(7) {
@@ -152,7 +157,6 @@
 
 .input-group-sm .input-search {
     padding-right: 40px;
-    /* ajusta el valor según sea necesario para que el botón encaje correctamente */
 }
 
 .input-group-sm .input-search-expanded+.input-group-text {

@@ -5,7 +5,7 @@
         <form action="index.html" autocomplete="off" [formGroup]="categoryForm">
             <h3 class="title">{{title}}</h3>
             <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0}">
-                <input #titleInput type="text" required minlength="3" maxlength="50" formControlName="name"
+                <input [readOnly]="read" #titleInput type="text" required minlength="3" maxlength="50" formControlName="name"
                     class="input" (focus)="titleFocused = true" (blur)="titleFocused = false;" />
                 <label>Nombre *</label>
                 <span>Nombre *</span>
@@ -15,10 +15,10 @@
             <div class="input-container "
                 [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
                 <div class="input-group">
-                    <input #subCategoriesInput type="text" class="input wrap" (focus)="subCategoriesFocused = true"
+                    <input [readOnly]="read" #subCategoriesInput type="text" class="input wrap" (focus)="subCategoriesFocused = true"
                         (blur)="subCategoriesFocused = false" minlength="3" formControlName="subCategories"
                         maxlength="50" />
-                    <button class="btn btn-outline-light bi pe-3 ps-3" type="button"
+                    <button class="btn btn-outline-light bi pe-3 ps-3" type="button" 
                         [disabled]="subCategoriesInput.value.length < 3"
                         (click)="addNewSubcategory(subCategoriesInput.value)">
                         <i class="fas fa-plus"></i>
@@ -26,8 +26,8 @@
                 </div>
                 <label>Sub Categorías</label>
                 <span>Sub Categorías</span>
-                <h5 *ngIf="validate('subCategories', 'minlength', subCategoriesFocused)">La SubCategoría es<strong> muy
-                        corta</strong>
+                <h5 *ngIf="validate('subCategories', 'minlength', subCategoriesFocused)">El nombre de la SubCategoría es<strong> muy
+                        corto</strong>
                 </h5>
             </div>
             <div class="input-container">
@@ -36,15 +36,37 @@
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrap"
                                 (click)="selectSubCategory(i)">{{i+1}}. {{subcat.name}}</button>
-                            <button class="btn btn-outline-light list pe-3 ps-3" (click)="removeSubcategory(i)">
+                            <button [disabled]="read" class="btn btn-outline-light list pe-3 ps-3" (click)="removeSubcategory(i)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </li>
                 </ol>
             </div>
+            <div *ngIf="read">
+                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
+                    <input readOnly #createdAtInput type="text" formControlName="createdAt" [ngModel]="categoryForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input"/>
+                    <label>Fecha de Creación</label>
+                    <span>Fecha de Creación</span>
+                </div>
+                <div class="input-container" [ngClass]="{'focus': createdByInput.value.length > 0 }">
+                    <input readOnly #createdByInput type="text" formControlName="createdBy"  class="input"/>
+                    <label>Creado por</label>
+                    <span>Creado por</span>
+                </div>
+                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0 }">
+                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt" [ngModel]="categoryForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'"  class="input"/>
+                    <label>Fecha de Modificación</label>
+                    <span>Fecha de Modificación</span>
+                </div>
+                <div class="input-container" [ngClass]="{'focus': updatedByInput.value.length > 0 }">
+                    <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input"/>
+                    <label>Modificado por</label>
+                    <span>Modificado por</span>
+                </div>
+            </div>
             <div class="input-container" [ngClass]="{'focus': iconFocused || iconInput.value.length > 0 }">
-                <input #iconInput type="text" formControlName="icon" class="input" (focus)="iconFocused = true"
+                <input [readOnly]="read" #iconInput type="text" formControlName="icon" class="input" (focus)="iconFocused = true"
                     (blur)="iconFocused = false" required minlength="3" maxlength="200" />
                 <label>Icono *</label>
                 <span>Icono *</span>
@@ -53,7 +75,7 @@
             </div>
             <div class="input-container"
                 [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
-                <textarea #descriptionInput type="text" formControlName="description" class="input"
+                <textarea [readOnly]="read" #descriptionInput type="text" formControlName="description" class="input"
                     (focus)="descriptionFocused = true" (blur)="descriptionFocused = false" rows="3" required
                     minlength="5" maxlength="250"></textarea>
                 <label>Descripción *</label>
@@ -67,7 +89,7 @@
             </div>
             <div *ngIf="update == false; else updateCat" class="d-flex justify-content-between">
                 <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
-                <input type="submit" value="Crear" [disabled]="!categoryForm.valid" class="btn submit"
+                <input *ngIf="read == false" type="submit" value="Crear" [disabled]="!categoryForm.valid" class="btn submit"
                     (click)="AddCategory(categoryForm.value)" />
             </div>
             <ng-template #updateCat>
@@ -83,7 +105,7 @@
         <form action="index.html" autocomplete="off" [formGroup]="subCategoryForm">
             <h3 class="title">{{subCategoryTittle}}</h3>
             <div class="input-container" [ngClass]="{'focus': subTitleFocused || subTitleInput.value.length > 0 }">
-                <input #subTitleInput type="text" formControlName="name" class="input" (focus)="subTitleFocused = true"
+                <input [readOnly]="read" #subTitleInput type="text" formControlName="name" class="input" (focus)="subTitleFocused = true"
                     (blur)="subTitleFocused = false" required minlength="3" maxlength="50" />
                 <label>Nombre *</label>
                 <span>Nombre *</span>
@@ -92,8 +114,20 @@
                 <h5 *ngIf="validateSub('name', 'minlength', subTitleFocused)">El Nombre es<strong> muy corto</strong>
                 </h5>
             </div>
+            <div *ngIf="read">
+                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
+                    <input readOnly #createdAtInput type="text" formControlName="createdAt" [ngModel]="subCategoryForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'"  class="input" />
+                    <label>Fecha de Creación</label>
+                    <span>Fecha de Creación</span>
+                </div>
+                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0}">
+                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt" [ngModel]="subCategoryForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'"  class="input" />
+                    <label>Fecha de Modificación</label>
+                    <span>Fecha de Modificación</span>
+                </div>
+            </div>
             <div class="input-container" [ngClass]="{'focus': subIconFocused || subIconInput.value.length > 0 }">
-                <input #subIconInput type="text" formControlName="icon" class="input" (focus)="subIconFocused = true"
+                <input [readOnly]="read" #subIconInput type="text" formControlName="icon" class="input" (focus)="subIconFocused = true"
                     (blur)="subIconFocused = false" required minlength="3" maxlength="200" />
                 <label>Icono *</label>
                 <span>Icono *</span>
@@ -102,7 +136,7 @@
             </div>
             <div class="input-container"
                 [ngClass]="{'focus': subDescriptionFocused || subDescriptionInput.value.length > 0 }">
-                <textarea #subDescriptionInput type="text" formControlName="description" class="input"
+                <textarea [readOnly]="read" #subDescriptionInput type="text" formControlName="description" class="input"
                     (focus)="subDescriptionFocused = true" (blur)="subDescriptionFocused = false" rows="3" required
                     minlength="5" maxlength="250"></textarea>
                 <label>Descripción *</label>
@@ -122,8 +156,8 @@
             <ng-template #updateSub>
                 <div class="d-flex justify-content-between">
                     <input type="submit" value="Cancelar" class="btn btn-outline-light bi"
-                        (click)="cancelSubCategory()" />
-                    <input type="submit" [disabled]="!subCategoryForm.valid" value="Actualizar" class="btn submit"
+                        (click)="cancelSubCategory()"/>
+                    <input *ngIf="this.read == false" type="submit" [disabled]="!subCategoryForm.valid" value="Actualizar" class="btn submit"
                         (click)="updateSubCat(subCategoryForm.value)" />
                 </div>
             </ng-template>

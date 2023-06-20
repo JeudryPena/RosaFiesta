@@ -62,9 +62,9 @@ export class AuthenticateComponent {
             this.router.navigate(['']);
           }
         },
-        error: (error: HttpErrorResponse) => {
-          console.log(error.error);
-          this.toastService.show(`${error.error}`, { classname: 'bg-danger text-light', delay: 3000 });
+        error: (error) => {
+          console.log(error);
+          this.toastService.show(`${error}`, { classname: 'bg-danger text-light', delay: 3000 });
         }
       })
   }

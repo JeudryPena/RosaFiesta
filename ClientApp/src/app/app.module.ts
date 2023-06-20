@@ -4,7 +4,7 @@ import { RatingDirective } from './shared/directives/rating.directive';
 
 
 import { CommonModule, DecimalPipe, NgTemplateOutlet } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -105,6 +105,7 @@ import { AdminLayoutComponent } from './components/admin-layout/admin-layout.com
 import { InventoryLayoutComponent } from './components/inventory-layout/inventory-layout.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { ErrorHandlerService } from './shared/services/error-handler.service';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -231,7 +232,7 @@ export function tokenGetter() {
     NgbToastModule,
     NgTemplateOutlet
   ],
-  providers: [NgbRatingConfig, DecimalPipe
+  providers: [NgbRatingConfig, DecimalPipe, { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerService, multi: true }  
   ],
   bootstrap: [AppComponent],
 })

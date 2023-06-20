@@ -48,11 +48,6 @@ export class RegisterComponent {
     }
 
     const register = { ...registerFormValue };
-    console.log(register.birthDate);
-    
-    // convert register.birthDate to date like this: 2021-09-01
-
-    
 
     const userForRegister: RegisterDto = {
       userName: register.userName,
@@ -68,9 +63,8 @@ export class RegisterComponent {
           this.toastService.show('Registro exitoso!', { classname: 'bg-success text-light', delay: 2000 });
           this.router.navigate(['']);
         },
-        error: (error: HttpErrorResponse) => {
-          console.log(error.error);
-          this.toastService.show(`${error.error}`, { classname: 'bg-danger text-light', delay: 3000 });
+        error: (error) => {
+          this.toastService.show(`${error}`, { classname: 'bg-danger text-light', delay: 3000 });
         }
       })
   }
