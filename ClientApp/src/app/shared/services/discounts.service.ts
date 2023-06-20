@@ -96,15 +96,15 @@ export class DiscountsService {
   }
 
   GetManagementDiscount(code: string): Observable<ManagementDiscountsResponse> {
-    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${code}/management`);
+    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${code}management`);
   }
 
   GetDiscountsManagement(): Observable<ManagementDiscountsResponse[]> {
-    return this.http.get<ManagementDiscountsResponse[]>(`${this.apiUrl}/management`);
+    return this.http.get<ManagementDiscountsResponse[]>(`${this.apiUrl}management`);
   }
 
   DeleteDiscount(code: string) {
-    return this.http.get(`${this.apiUrl}${code}/delete`);
+    return this.http.get(`${this.apiUrl}${code}delete`);
   }
 
   get discounts$() {

@@ -1,6 +1,6 @@
-<div class="row p-3">
+<div class="row">
     <div class="col">
-        <div class="card text-start p-2">
+        <div class="card text-start p-0">
             <div class="card-body">
                 <div class="row">
                     <caption class="col">Descuentos&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
@@ -27,7 +27,15 @@
                                 <th scope="col" class="table-cell">Valor</th>
                                 <th scope="col" class="table-cell">Máx.</th>
                                 <th scope="col" class="table-cell">
-                                    Inicio y Fin</th>
+                                    <div class="input-group">
+                                        <span class="badge text-bg-success">
+                                            Inicio
+                                        </span>
+                                        <span class="badge text-bg-danger">
+                                            Fin
+                                        </span>
+                                    </div>
+                                     </th>
                                 <th scope="col" class="table-cell">
                                     Productos</th>
                                 <th scope="col" class="table-cell">
@@ -43,7 +51,7 @@
                                 <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
                                 <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
-                                <td><ngb-highlight [result]="item.description" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="item.description | truncate:25"  placement="top" ngbTooltip="{{item.description}}" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
                                     <ngb-highlight [result]="item.value | number"
@@ -52,9 +60,10 @@
                                 </td>
                                 <td><ngb-highlight [result]="item.maxTimesApply | number"
                                         [term]="service.searchTerm"></ngb-highlight></td>
-                                <td><ngb-highlight [result]="item.start | date: 'dd/MM/yyyy' "
+                                <td><ngb-highlight class="badge text-bg-success" [result]="item.start | date: 'dd/MM/yyyy hh:mm:ss' "
                                     [term]="service.searchTerm"></ngb-highlight>
-                                    <ngb-highlight [result]="item.end | date: 'dd/MM/yyyy'" [term]="service.searchTerm"></ngb-highlight>
+                                    <br>
+                                    <ngb-highlight class="badge text-bg-danger" [result]="item.end | date: 'dd/MM/yyyy hh:mm:ss'" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
                                     <div *ngFor="let productDiscount of item.productsDiscounts" class="d-flex justify-content-between">

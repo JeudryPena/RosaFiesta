@@ -44,7 +44,7 @@ internal sealed class DiscountService : IDiscountService
 	public async Task CreateDiscountAsync(string userId, DiscountDto discount, CancellationToken cancellationToken = default)
 	{
 		var discountEntity = discount.Adapt<DiscountEntity>();
-		discountEntity.ProductsDiscounts = discount.ProductsDiscount.Select(d => new ProductsDiscountsEntity()
+		discountEntity.ProductsDiscounts = discount.ProductsDiscounts.Select(d => new ProductsDiscountsEntity()
 		{
 			Code = discountEntity.Code,
 			ProductId = d.ProductCode ?? null,

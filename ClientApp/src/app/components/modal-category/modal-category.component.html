@@ -15,10 +15,10 @@
             <div class="input-container "
                 [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
                 <div class="input-group">
-                    <input [readOnly]="read" #subCategoriesInput type="text" class="input wrap" (focus)="subCategoriesFocused = true"
+                    <input [readOnly]="read" #subCategoriesInput type="text" class="input wrapper" (focus)="subCategoriesFocused = true"
                         (blur)="subCategoriesFocused = false" minlength="3" formControlName="subCategories"
                         maxlength="50" />
-                    <button class="btn btn-outline-light bi pe-3 ps-3" type="button" 
+                    <button class="btn btn-outline-light bi pe-2 ps-2 wrap" type="button" 
                         [disabled]="subCategoriesInput.value.length < 3"
                         (click)="addNewSubcategory(subCategoriesInput.value)">
                         <i class="fas fa-plus"></i>
@@ -34,9 +34,9 @@
                 <ol class="list-group list-group-numbered " *ngFor="let subcat of subCategories; let i = index">
                     <li>
                         <div class="input-group">
-                            <button type="text" class="btn text-md-start list btn-outline-light wrap"
+                            <button type="text" class="btn text-md-start list btn-outline-light wrapper"
                                 (click)="selectSubCategory(i)">{{i+1}}. {{subcat.name}}</button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-3 ps-3" (click)="removeSubcategory(i)">
+                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap" (click)="removeSubcategory(i)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>

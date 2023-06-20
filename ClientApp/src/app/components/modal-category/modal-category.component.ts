@@ -194,29 +194,31 @@ export class ModalCategoryComponent implements OnInit {
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
-      const category = { ...categoryFormValue };
+      if (result) {
+        const category = { ...categoryFormValue };
 
-      const categoryDto: CategoryDto = {
-        name: category.name,
-        icon: category.icon,
-        subCategories: this.subCategories,
-        description: category.description
-      }
-      this.service.UpdateCategory(this.categoryId, categoryDto).subscribe({
-        next: () => {
-          const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-          modalRef.componentInstance.title = 'Categoría actualizada!';
-          modalRef.componentInstance.status = Status.Success;
-
-          modalRef.result.then(result => {
-            this.activeModal.close(true);
-          });
-        }, error: (error) => {
-          const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-          modalRef.componentInstance.title = error;
-          modalRef.componentInstance.status = Status.Failed;
+        const categoryDto: CategoryDto = {
+          name: category.name,
+          icon: category.icon,
+          subCategories: this.subCategories,
+          description: category.description
         }
-      });
+        this.service.UpdateCategory(this.categoryId, categoryDto).subscribe({
+          next: () => {
+            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            modalRef.componentInstance.title = 'Categoría actualizada!';
+            modalRef.componentInstance.status = Status.Success;
+
+            modalRef.result.then(result => {
+              this.activeModal.close(true);
+            });
+          }, error: (error) => {
+            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            modalRef.componentInstance.title = error;
+            modalRef.componentInstance.status = Status.Failed;
+          }
+        });
+      }
     });
   }
 

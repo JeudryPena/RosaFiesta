@@ -9,6 +9,7 @@ import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/m
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { DiscountDto } from '../../interfaces/Product/discountDto';
+import { ProductsDiscountDto } from '../../interfaces/Product/productsDiscountDto';
 
 @Component({
   selector: 'app-modal-discount',
@@ -24,9 +25,10 @@ export class ModalDiscountComponent implements OnInit {
   discountForm: any;
   products: any[] = [];
   productForm: any;
+  model!: NgbDateStruct;
   
   updateProduct = false;
-  productTittle = '';
+  productTitle = '';
 
   codeFocused = false;
   nameFocused = false;
@@ -37,6 +39,9 @@ export class ModalDiscountComponent implements OnInit {
   startFocused = false;
   endFocused = false;
   productsDiscountsFocused = false;
+
+  productCodeFocused = false;
+  optionIdFocused = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -124,12 +129,11 @@ export class ModalDiscountComponent implements OnInit {
     }
   }
 
-  addNewProduct(name: string) {
-    this.productTittle = 'Añadir Producto'
+  addNewProduct(code: string) {
+    this.productTitle = 'Añadir Producto a descontar'
     this.productForm = new FormGroup({
-      name: new FormControl(name),
-      icon: new FormControl(''),
-      description: new FormControl('')
+      productCode: new FormControl(code),
+      optionId: new FormControl(''),
     })
     setTimeout(() => {
 
@@ -148,6 +152,101 @@ export class ModalDiscountComponent implements OnInit {
 
   close() {
     this.activeModal.close();
+  }
+
+  cancelProduct() {
+    this.updateProduct = false;
+    this.productForm = null;
+  }
+
+  UpdateProduct(productFormValue: any) {
+    const product = { ...productFormValue };
+
+    const productDto: ProductsDiscountDto = {
+      productCode: product.productCode,
+      optionId: product.optionId,
+    }
+
+    this.products[product.index] = productDto;
+    this.updateProduct = false;
+    this.productForm = null;
+  }
+
+  selectProduct(index: number) {
+    this.updateProduct = true;
+    this.productTitle = 'Modificar Descuento a descontar'
+    this.productForm = new FormGroup({
+      index: new FormControl(index),
+      productCode: new FormControl(this.products[index].productCode),
+      optionId: new FormControl(this.products[index].optionId),
+    })
+    if (this.read) {
+      this.productForm = new FormGroup({
+        index: new FormControl(index),
+        productCode: new FormControl(this.products[index].productCode),
+        optionId: new FormControl(this.products[index].optionId),
+        createdAt: new FormControl(this.products[index].createdAt),
+        updatedAt: new FormControl(this.products[index].updatedAt)
+      });
+    }
+
+    setTimeout(() => {
+
+    }, 10);
+  }
+
+  removeProduct(index: number) {
+    this.products.splice(index, 1);
+  }
+
+  saveProduct(productFormValue: any) {
+    const product = { ...productFormValue };
+    const productDto: ProductsDiscountDto = {
+      productCode: product.code,
+      optionId: product.name,
+    }
+
+    this.products.push(productDto);
+    this.productForm = null;
+  }
+  
+  updateDiscount = (discountFormValue: any) => {
+    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    modalRef.componentInstance.title = '¿Desea actualizar el descuento?';
+    modalRef.componentInstance.status = Status.Pending;
+
+    modalRef.result.then(result => {
+      if (result) {
+        const discount = { ...discountFormValue };
+
+        const discountDto: DiscountDto = {
+          code: this.code,
+          name: discount.name,
+          type: discount.type,
+          description: discount.description,
+          value: discount.value,
+          maxTimesApply: discount.maxTimesApply,
+          start: discount.start,
+          end: discount.end,
+          productsDiscounts: this.products
+        }
+        this.service.UpdateDiscount(this.code, discountDto).subscribe({
+          next: () => {
+            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            modalRef.componentInstance.title = 'Descuento actualizado!';
+            modalRef.componentInstance.status = Status.Success;
+
+            modalRef.result.then(() => {
+              this.activeModal.close(true);
+            });
+          }, error: (error) => {
+            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            modalRef.componentInstance.title = error;
+            modalRef.componentInstance.status = Status.Failed;
+          }
+        });
+      }
+    });
   }
 
   AddDiscount = (discountFormValue: any) => {
