@@ -99,12 +99,6 @@ internal sealed class CategoryService : ICategoryService
 		category = categoryUpdateDto.Adapt(category);
 		category.UpdatedAt = DateTimeOffset.UtcNow;
 		category.UpdatedBy = userId;
-		if (category.SubCategories != null)
-			foreach (var subcategory in category.SubCategories)
-			{
-				subcategory.UpdatedAt = DateTimeOffset.UtcNow;
-			}
-
 		_repositoryManager.CategoryRepository.Update(category);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 	}

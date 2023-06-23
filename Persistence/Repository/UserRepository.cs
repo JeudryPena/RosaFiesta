@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
 
 	public async Task<IEnumerable<UserEntity>> GetAllAsync(
 		CancellationToken cancellationToken = default
-	) => await _context.Users.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+	) => await _context.Users.ToListAsync(cancellationToken);
 
 	public async Task<UserEntity> GetByIdAsync(
 		string userId,
@@ -24,8 +24,6 @@ public class UserRepository : IUserRepository
 			.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
 		if (users == null)
 			throw new NullReferenceException("User not found");
-		if (users.IsDeleted)
-			throw new InvalidOperationException("User is deleted");
 		return users;
 	}
 
@@ -51,8 +49,6 @@ public class UserRepository : IUserRepository
 		AddressEntity? address = await _context.Addresses.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == addressId, cancellationToken);
 		if (address == null)
 			throw new NullReferenceException("Address not found");
-		if (address.IsDeleted)
-			throw new InvalidOperationException("Address is deleted");
 		return address;
 	}
 
@@ -61,7 +57,7 @@ public class UserRepository : IUserRepository
 
 	public async Task<string?> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken)
 	{
-		string? userName = await _context.Users.Where(x => x.Id == userId && x.IsDeleted == false).Select(x => x.UserName).FirstOrDefaultAsync(cancellationToken);
+		string? userName = await _context.Users.Where(x => x.Id == userId).Select(x => x.UserName).FirstOrDefaultAsync(cancellationToken);
 		if (userName == null)
 			return null;
 		return userName;

@@ -99,13 +99,13 @@
               "src/styles.css",
               "src/styles.scss",
               "src/styles/bootstrap.min.css",
-              "node_modules/@ng-bootstrap/ng-bootstrap//ng-bootstrap.css"
+              "node_modules/@ng-bootstrap/ng-bootstrap//ng-bootstrap.css",
+              "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
-             
             ]
           }
         }

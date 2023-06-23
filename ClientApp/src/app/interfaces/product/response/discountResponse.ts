@@ -5,7 +5,7 @@ import { ProductsDiscountResponse } from "./productsDiscountResponse";
 export interface DiscountResponse extends BaseResponse {
 	code: string;
 	name: string;
-	type: string;
+	type: number;
 	value: number;
 	maxTimesApply: number;
 	start: string;

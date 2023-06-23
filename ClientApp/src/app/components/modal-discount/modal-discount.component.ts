@@ -1,15 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CategoriesService } from '../../shared/services/categories.service';
-import { UsersService } from '../../shared/services/users.service';
-import { DiscountsService } from '../../shared/services/discounts.service';
-import { FormGroup, FormControl } from '@angular/forms';
-import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
-import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NgbActiveModal, NgbCalendar, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
+import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
 import { DiscountDto } from '../../interfaces/Product/discountDto';
 import { ProductsDiscountDto } from '../../interfaces/Product/productsDiscountDto';
+import { DiscountsService } from '../../shared/services/discounts.service';
+import { UsersService } from '../../shared/services/users.service';
 
 @Component({
   selector: 'app-modal-discount',
@@ -17,6 +15,7 @@ import { ProductsDiscountDto } from '../../interfaces/Product/productsDiscountDt
   styleUrls: ['./modal-discount.component.scss']
 })
 export class ModalDiscountComponent implements OnInit {
+
   @Input() read: boolean = false;
   @Input() update: boolean = false;
   @Input() title: string = '';
@@ -25,8 +24,10 @@ export class ModalDiscountComponent implements OnInit {
   discountForm: any;
   products: any[] = [];
   productForm: any;
-  model!: NgbDateStruct;
-  
+  date!: Date[];
+  minDate: Date;
+  maxDate: Date;
+
   updateProduct = false;
   productTitle = '';
 
@@ -39,17 +40,32 @@ export class ModalDiscountComponent implements OnInit {
   startFocused = false;
   endFocused = false;
   productsDiscountsFocused = false;
-
-  productCodeFocused = false;
   optionIdFocused = false;
 
   constructor(
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private service: DiscountsService,
-    private userService: UsersService
-  ) { 
+    private userService: UsersService,
+    private parserFormatter: NgbDateParserFormatter,
+    private calendar: NgbCalendar,
+    public el: ElementRef
+  ) {
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.minDate.setDate(this.minDate.getDate());
+    this.maxDate.setDate(this.maxDate.getDate() + 3648);
   }
+
+  changeTime(start: any, end: any) {
+    this.date = this.discountForm.value.date;
+    this.date[0].setUTCHours(start.getHours(), start.getMinutes(), start.getSeconds());
+    this.date[1].setUTCHours(end.getHours(), end.getMinutes(), end.getSeconds());
+    console.log(this.date);
+    this.discountForm.patchValue({
+      date: this.date
+    });
+  } 
 
   userName(id: string, id2: string) {
     this.userService.UserName(id).subscribe((response) => {
@@ -71,7 +87,8 @@ export class ModalDiscountComponent implements OnInit {
       type: new FormControl(0),
       description: new FormControl(''),
       value: new FormControl(0),
-      maxTimesApply: new FormControl(0), 
+      maxTimesApply: new FormControl(0),
+      date: new FormControl(''),
       start: new FormControl(''),
       end: new FormControl(''),
       productsDiscounts: new FormControl('')
@@ -79,6 +96,10 @@ export class ModalDiscountComponent implements OnInit {
 
     if (this.update) {
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
+        let start = new Date(response.start);
+        let end = new Date(response.end);
+        this.date = [start, end];
+        this.minDate.setDate(this.date[0].getDate());
         this.discountForm.patchValue({
           code: response.code,
           name: response.name,
@@ -88,10 +109,12 @@ export class ModalDiscountComponent implements OnInit {
           maxTimesApply: response.maxTimesApply,
           start: response.start,
           end: response.end,
+          date: this.date
         });
         this.products = response.productsDiscounts || [];
       });
     } else if (this.read) {
+
       this.discountForm = new FormGroup({
         code: new FormControl(''),
         name: new FormControl(''),
@@ -109,6 +132,11 @@ export class ModalDiscountComponent implements OnInit {
       })
 
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
+        let start = new Date(response.start);
+        let end = new Date(response.end);
+        this.date = [start, end];
+        this.minDate.setDate(this.date[0].getDate());
+        
         this.discountForm.patchValue({
           code: response.code,
           name: response.name,
@@ -120,10 +148,9 @@ export class ModalDiscountComponent implements OnInit {
           end: response.end,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
+          date: this.date
         });
-
         this.userName(response.createdBy, response.updatedBy);
-
         this.products = response.productsDiscounts || [];
       });
     }
@@ -132,8 +159,7 @@ export class ModalDiscountComponent implements OnInit {
   addNewProduct(code: string) {
     this.productTitle = 'Añadir Producto a descontar'
     this.productForm = new FormGroup({
-      productCode: new FormControl(code),
-      optionId: new FormControl(''),
+      optionId: new FormControl(code),
     })
     setTimeout(() => {
 
@@ -163,7 +189,6 @@ export class ModalDiscountComponent implements OnInit {
     const product = { ...productFormValue };
 
     const productDto: ProductsDiscountDto = {
-      productCode: product.productCode,
       optionId: product.optionId,
     }
 
@@ -177,18 +202,8 @@ export class ModalDiscountComponent implements OnInit {
     this.productTitle = 'Modificar Descuento a descontar'
     this.productForm = new FormGroup({
       index: new FormControl(index),
-      productCode: new FormControl(this.products[index].productCode),
       optionId: new FormControl(this.products[index].optionId),
     })
-    if (this.read) {
-      this.productForm = new FormGroup({
-        index: new FormControl(index),
-        productCode: new FormControl(this.products[index].productCode),
-        optionId: new FormControl(this.products[index].optionId),
-        createdAt: new FormControl(this.products[index].createdAt),
-        updatedAt: new FormControl(this.products[index].updatedAt)
-      });
-    }
 
     setTimeout(() => {
 
@@ -202,14 +217,13 @@ export class ModalDiscountComponent implements OnInit {
   saveProduct(productFormValue: any) {
     const product = { ...productFormValue };
     const productDto: ProductsDiscountDto = {
-      productCode: product.code,
-      optionId: product.name,
+      optionId: product.optionId,
     }
 
     this.products.push(productDto);
     this.productForm = null;
   }
-  
+
   updateDiscount = (discountFormValue: any) => {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea actualizar el descuento?';
@@ -218,16 +232,15 @@ export class ModalDiscountComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const discount = { ...discountFormValue };
-
         const discountDto: DiscountDto = {
-          code: this.code,
+          code: discount.code,
           name: discount.name,
           type: discount.type,
           description: discount.description,
           value: discount.value,
           maxTimesApply: discount.maxTimesApply,
-          start: discount.start,
-          end: discount.end,
+          start: this.date[0].toISOString(),
+          end: this.date[1].toISOString(),
           productsDiscounts: this.products
         }
         this.service.UpdateDiscount(this.code, discountDto).subscribe({
@@ -260,14 +273,14 @@ export class ModalDiscountComponent implements OnInit {
         const discount = { ...discountFormValue };
 
         const discountDto: DiscountDto = {
-          code: this.code,
+          code: discount.code,
           name: discount.name,
           type: discount.type,
           description: discount.description,
           value: discount.value,
           maxTimesApply: discount.maxTimesApply,
-          start: discount.start,
-          end: discount.end,
+          start: this.date[0].toISOString(),
+          end: this.date[1].toISOString(),
           productsDiscounts: this.products
         }
 
@@ -281,6 +294,7 @@ export class ModalDiscountComponent implements OnInit {
               this.activeModal.close(true);
             });
           }, error: (error) => {
+            console.log(error);
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;

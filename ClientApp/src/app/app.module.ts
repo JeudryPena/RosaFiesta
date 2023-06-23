@@ -13,8 +13,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxStarsModule } from 'ngx-stars';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -106,6 +110,7 @@ import { InventoryLayoutComponent } from './components/inventory-layout/inventor
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { ErrorHandlerService } from './shared/services/error-handler.service';
+import { TimePickerComponent } from './helpers/time-picker/time-picker.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -200,7 +205,8 @@ export function tokenGetter() {
     AdminLayoutComponent,
     InventoryLayoutComponent,
     InventoryComponent,
-    TruncatePipe
+    TruncatePipe,
+    TimePickerComponent
 
   ],
   imports: [
@@ -230,9 +236,12 @@ export function tokenGetter() {
     }),
     NgbTooltipModule,
     NgbToastModule,
-    NgTemplateOutlet
+    NgTemplateOutlet, 
+    BsDatepickerModule.forRoot(),
+    PopoverModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
-  providers: [NgbRatingConfig, DecimalPipe, { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerService, multi: true }  
+  providers: [NgbRatingConfig, DecimalPipe 
   ],
   bootstrap: [AppComponent],
 })

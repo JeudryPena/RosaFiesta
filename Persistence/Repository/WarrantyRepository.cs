@@ -15,15 +15,13 @@ internal sealed class WarrantyRepository : IWarrantyRepository
 	}
 
 	public async Task<IEnumerable<WarrantyEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-	=> await _dbContext.Warranties.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+	=> await _dbContext.Warranties.ToListAsync(cancellationToken);
 
 	public async Task<WarrantyEntity> GetByIdAsync(Guid warrantyId, CancellationToken cancellationToken = default)
 	{
 		WarrantyEntity? warranty = await _dbContext.Warranties.FirstOrDefaultAsync(x => x.Id == warrantyId, cancellationToken);
 		if (warranty == null)
 			throw new NullReferenceException($"Warranty with id {warrantyId} not found");
-		if (warranty.IsDeleted)
-			throw new Exception($"Warranty with id {warrantyId} is deleted");
 		return warranty;
 	}
 	public void Insert(WarrantyEntity warrantyEntity) => _dbContext.Warranties.Add(warrantyEntity);

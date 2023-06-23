@@ -5,7 +5,6 @@ using Domain.Entities.Security;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Persistence;
 
@@ -45,6 +44,8 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
 		modelBuilder.HasDefaultSchema(DefaultSchema);
 		modelBuilder.Entity<UserEntity>();
+
+
 
 		base.OnModelCreating(modelBuilder);
 	}

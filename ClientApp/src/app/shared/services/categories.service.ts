@@ -106,11 +106,11 @@ export class CategoriesService {
     return this.http.put(`${this.apiUrl}${categoryId}`, category);
   }
 
-  DeleteCategorie(categoryId: number) {
+  DeleteCategory(categoryId: number) {
     return this.http.get(`${this.apiUrl}${categoryId}/delete`);
   }
 
-  DeleteSubCategorie(categoryId: number, subCategoryId: number) {
+  DeleteSubCategory(categoryId: number, subCategoryId: number) {
     return this.http.get(`${this.apiUrl}${categoryId}/sub-category/${subCategoryId}/delete`);
   }
 

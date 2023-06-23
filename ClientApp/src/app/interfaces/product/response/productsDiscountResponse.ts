@@ -1,5 +1,6 @@
+
 export interface ProductsDiscountResponse {
-	productCode: string;
 	code: string;
-	optionId: number;
+	optionId: number | null;
+	isDeleted: boolean;
 }

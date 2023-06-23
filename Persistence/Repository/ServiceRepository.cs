@@ -14,15 +14,13 @@ internal sealed class ServiceRepository : IServiceRepository
 		_context = context;
 	}
 
-	public async Task<IEnumerable<ServiceEntity>> GetAllAsync(CancellationToken cancellationToken = default) => await _context.Services.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+	public async Task<IEnumerable<ServiceEntity>> GetAllAsync(CancellationToken cancellationToken = default) => await _context.Services.ToListAsync(cancellationToken);
 
 	public async Task<ServiceEntity> GetAsync(Guid serviceId, CancellationToken cancellationToken = default)
 	{
 		ServiceEntity? service = await _context.Services.FindAsync(serviceId);
 		if (service == null)
 			throw new Exception("Service not found");
-		if (service.IsDeleted)
-			throw new Exception("Service is deleted");
 		return service;
 	}
 
@@ -39,8 +37,6 @@ internal sealed class ServiceRepository : IServiceRepository
 			throw new Exception("Service not found");
 		if (service.QuantityAvaliable < quantity)
 			throw new Exception("You can't add more than the quantity available");
-		if (service.IsDeleted)
-			throw new Exception("Service is deleted");
 		service.QuantityAvaliable -= quantity;
 		_context.Services.Update(service);
 		return service;

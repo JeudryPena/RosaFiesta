@@ -36,7 +36,7 @@
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrapper"
                                 (click)="selectSubCategory(i)">{{i+1}}. {{subcat.name}}</button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap" (click)="removeSubcategory(i)">
+                            <button [disabled]="read || update" class="btn btn-outline-light list pe-2 ps-2 wrap" (click)="removeSubcategory(i)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -113,18 +113,6 @@
                 </h5>
                 <h5 *ngIf="validateSub('name', 'minlength', subTitleFocused)">El Nombre es<strong> muy corto</strong>
                 </h5>
-            </div>
-            <div *ngIf="read">
-                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
-                    <input readOnly #createdAtInput type="text" formControlName="createdAt" [ngModel]="subCategoryForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'"  class="input" />
-                    <label>Fecha de Creación</label>
-                    <span>Fecha de Creación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0}">
-                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt" [ngModel]="subCategoryForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'"  class="input" />
-                    <label>Fecha de Modificación</label>
-                    <span>Fecha de Modificación</span>
-                </div>
             </div>
             <div class="input-container" [ngClass]="{'focus': subIconFocused || subIconInput.value.length > 0 }">
                 <input [readOnly]="read" #subIconInput type="text" formControlName="icon" class="input" (focus)="subIconFocused = true"

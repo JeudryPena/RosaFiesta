@@ -10,5 +10,5 @@ public class DiscountDto
 	public DateTimeOffset Start { get; set; }
 	public DateTimeOffset End { get; set; }
 	public string? Description { get; set; }
-	public ICollection<ProductsDiscountDto> ProductsDiscounts { get; set; }
+	public ICollection<ProductsDiscountDto>? ProductsDiscounts { get; set; }
 }

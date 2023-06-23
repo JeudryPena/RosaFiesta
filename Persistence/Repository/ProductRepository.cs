@@ -15,10 +15,10 @@ public class ProductRepository : IProductRepository
 	}
 
 	public async Task<IEnumerable<ProductEntity>> ManagementGetAllAsync(CancellationToken cancellationToken = default) =>
-	await _dbContext.Products.Include(x => x.Options).Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+	await _dbContext.Products.Include(x => x.Options).ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-	await _dbContext.Products.Where(x => x.IsDeleted == false).Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
+	await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
 
 	public async Task<ProductEntity> GetProductDetail(string cartItemProductId, int optionId,
 		CancellationToken cancellationToken = default)
@@ -36,8 +36,6 @@ public class ProductRepository : IProductRepository
 		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Code == productCode, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
-		if (product.IsDeleted)
-			throw new ArgumentNullException(nameof(product));
 		return product;
 	}
 
@@ -45,8 +43,6 @@ public class ProductRepository : IProductRepository
 	{
 		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
 		if (product == null)
-			throw new ArgumentNullException(nameof(product));
-		if (product.IsDeleted)
 			throw new ArgumentNullException(nameof(product));
 		return product;
 	}
@@ -60,8 +56,6 @@ public class ProductRepository : IProductRepository
 		var product = await _dbContext.Products.Include(p => p.Supplier).Include(p => p.Warranty).Include(x => x.Options).ThenInclude(x => x.Reviews).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
-		if (product.IsDeleted)
-			throw new ArgumentNullException(nameof(product));
 		return product;
 	}
 
@@ -70,15 +64,11 @@ public class ProductRepository : IProductRepository
 		var option = await _dbContext.Options.FirstOrDefaultAsync(x => x.Id == optionId, cancellationToken);
 		if (option == null)
 			throw new ArgumentNullException(nameof(option));
-		if (option.IsDeleted)
-			throw new ArgumentNullException(nameof(option));
 		return option;
 	}
 
 	public void Update(ProductEntity product)
 	{
-		if (product.Options.Any(x => !x.IsDeleted))
-			product.IsDeleted = false;
 		_dbContext.Products.Update(product);
 	}
 

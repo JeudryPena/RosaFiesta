@@ -149,17 +149,6 @@ export class ModalCategoryComponent implements OnInit {
       icon: new FormControl(this.subCategories[index].icon),
       description: new FormControl(this.subCategories[index].description),
     })
-    if (this.read) {
-      this.subCategoryForm = new FormGroup({
-        index: new FormControl(index),
-        name: new FormControl(this.subCategories[index].name),
-        icon: new FormControl(this.subCategories[index].icon),
-        description: new FormControl(this.subCategories[index].description),
-        createdAt: new FormControl(this.subCategories[index].createdAt),
-        updatedAt: new FormControl(this.subCategories[index].updatedAt)
-      });
-    }
-
     setTimeout(() => {
 
     }, 10);

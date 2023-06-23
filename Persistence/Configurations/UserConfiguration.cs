@@ -19,9 +19,13 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 	{
 		builder.ToTable(nameof(UserEntity));
 		builder.HasKey(user => user.Id);
+		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
+		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
+		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(user => user.FullName).IsRequired();
 		builder.Property(user => user.Age).IsRequired();
 		builder.Property(user => user.CreatedAt).IsRequired();
+		builder.Property(user => user.UpdatedAt);
 		builder.Property(user => user.BirthDate).IsRequired();
 		builder.Property(user => user.RefreshToken);
 		builder.Property(user => user.RefreshTokenExpiryTime);

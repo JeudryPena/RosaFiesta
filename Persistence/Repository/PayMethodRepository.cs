@@ -20,14 +20,12 @@ internal sealed class PayMethodRepository : IPayMethodRepository
 		PayMethodEntity? payMethod = await _context.PayMethods.FirstOrDefaultAsync(x => x.Id == payMethodId);
 		if (payMethod == null)
 			throw new ArgumentNullException(nameof(payMethod));
-		if (payMethod.IsDeleted)
-			throw new InvalidOperationException("Pay method is deleted");
 		return payMethod;
 	}
 
 	public async Task<IEnumerable<PayMethodEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken)
 	{
-		IEnumerable<PayMethodEntity> payMethods = await _context.PayMethods.Where(x => x.UserId == userId && x.IsDeleted == false).ToListAsync(cancellationToken) ?? throw new ArgumentNullException(nameof(payMethods));
+		IEnumerable<PayMethodEntity> payMethods = await _context.PayMethods.Where(x => x.UserId == userId).ToListAsync(cancellationToken) ?? throw new ArgumentNullException(nameof(payMethods));
 		return payMethods;
 	}
 
@@ -36,8 +34,6 @@ internal sealed class PayMethodRepository : IPayMethodRepository
 		UserEntity? user = _context.Users.FirstOrDefault(x => x.Id == userId);
 		if (user == null)
 			throw new ArgumentNullException(nameof(user));
-		if (user.IsDeleted)
-			throw new InvalidOperationException("User is deleted");
 		return user.DefaultPayMethodId;
 	}
 
@@ -47,8 +43,6 @@ internal sealed class PayMethodRepository : IPayMethodRepository
 		UserEntity? user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId && x.DefaultPayMethodId == paymentId, cancellationToken);
 		if (user == null)
 			throw new ArgumentNullException(nameof(user));
-		if (user.IsDeleted)
-			throw new InvalidOperationException("User is deleted");
 		return user;
 	}
 

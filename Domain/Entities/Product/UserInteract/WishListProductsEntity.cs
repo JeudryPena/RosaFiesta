@@ -2,7 +2,8 @@
 
 public class WishListProductsEntity
 {
-    public int WishListId { get; set; }
-    public int OptionId { get; set; }
-    public OptionEntity Option { get; set; }
+	public int WishListId { get; set; }
+	public int OptionId { get; set; }
+	public OptionEntity Option { get; set; }
+	public bool IsDeleted { get; set; }
 }

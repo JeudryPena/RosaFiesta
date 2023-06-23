@@ -2,6 +2,6 @@
 
 public class OrderPreviewResponse
 {
-    public int SKU { get; set; }
+    public int Id { get; set; }
     public DateTimeOffset OrderDate { get; set; }
 }

@@ -246,7 +246,8 @@ public static class Program
 
 		string? postgresConnectionString = configuration.GetConnectionString(PostgresConnectionString);
 
-		void PgContextBuilder(DbContextOptionsBuilder b) =>
+		void PgContextBuilder(DbContextOptionsBuilder b)
+		{
 			b.UseNpgsql(
 				postgresConnectionString,
 				npg =>
@@ -259,6 +260,8 @@ public static class Program
 					npg.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
 				}
 			);
+			b.EnableSensitiveDataLogging();
+		};
 
 
 		/*void ContextBuilder(DbContextOptionsBuilder b) =>

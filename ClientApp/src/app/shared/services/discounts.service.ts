@@ -1,15 +1,14 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
-import { SortColumn, SortDirection } from '../directives/sortable.directive';
-import { HttpClient } from '@angular/common/http';
 import { config } from "../../env/config.prod";
 import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
+import { DiscountDto } from '../../interfaces/Product/discountDto';
+import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
-import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { UsersService } from './users.service';
-import { DiscountDto } from '../../interfaces/Product/discountDto';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -87,16 +86,16 @@ export class DiscountsService {
     });
   }
 
-  AddDiscount(category: DiscountDto) {
-    return this.http.post(this.apiUrl, category);
+  AddDiscount(discount: DiscountDto) {
+    return this.http.post(this.apiUrl, discount);
   }
 
-  UpdateDiscount(code: string, category: DiscountDto) {
-    return this.http.put(`${this.apiUrl}/${code}`, category);
+  UpdateDiscount(code: string, discount: DiscountDto) {
+    return this.http.put(`${this.apiUrl}${code}`, discount);
   }
 
   GetManagementDiscount(code: string): Observable<ManagementDiscountsResponse> {
-    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${code}management`);
+    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${code}/management`);
   }
 
   GetDiscountsManagement(): Observable<ManagementDiscountsResponse[]> {
@@ -104,7 +103,13 @@ export class DiscountsService {
   }
 
   DeleteDiscount(code: string) {
-    return this.http.get(`${this.apiUrl}${code}delete`);
+    return this.http.get(`${this.apiUrl}${code}/delete`);
+  }
+
+  DeleteDiscountProducts(code: string, optionId: number | null) {
+    if (!optionId)
+      optionId = 0;
+    return this.http.get(`${this.apiUrl}${code}/options/${optionId}/delete`);
   }
 
   get discounts$() {

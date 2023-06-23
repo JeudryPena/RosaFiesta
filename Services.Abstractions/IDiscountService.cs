@@ -12,4 +12,5 @@ public interface IDiscountService
 		CancellationToken cancellationToken = default);
 	Task DeleteDiscountAsync(string userId, string discountId, CancellationToken cancellationToken = default);
 	Task<ManagementDiscountsResponse> GetManagementDiscountAsync(string code, CancellationToken cancellationToken = default);
+	Task DeleteDiscountProductsAsync(string userId, string code, int? optionId, CancellationToken cancellationToken = default);
 }

@@ -70,7 +70,7 @@ internal sealed class OrderService : IOrderService
 					optionPurchase.UnitPrice -= Value;
 				}
 			}
-			detail.OrderSku = order.SKU;
+			detail.OrderId = order.Id;
 			detail.CartId = null;
 		}
 		_repositoryManager.OrderRepository.CreateAsync(order);
@@ -95,7 +95,6 @@ internal sealed class OrderService : IOrderService
 		if (detail.DiscountApplied == null)
 			detail.DiscountApplied = new AppliedDiscountEntity { UserId = userId };
 		detail.DiscountApplied.Code = Code;
-		detail.DiscountApplied.AppliedDate = DateTimeOffset.UtcNow;
 		_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(detail);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
 		ValidDiscountResponse validDiscountResponse = detail.DiscountApplied.Adapt<ValidDiscountResponse>();

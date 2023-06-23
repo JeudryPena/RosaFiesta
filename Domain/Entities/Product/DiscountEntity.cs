@@ -7,15 +7,14 @@ namespace Domain.Entities.Product;
 
 public class DiscountEntity : BaseEntity
 {
-	[StringLength(25, MinimumLength = 5)]
+	[StringLength(25, MinimumLength = 3)]
 	public string Code { get; set; }
-	[StringLength(50, MinimumLength = 5)]
+	[StringLength(50, MinimumLength = 3)]
 	public string Name { get; set; }
-	[StringLength(25, MinimumLength = 5)]
 	public DiscountType Type { get; set; }
 	[Range(1, 10000)]
 	public double Value { get; set; }
-	[Range(1, 10000)]
+	[Range(1, 5000)]
 	public int MaxTimesApply { get; set; }
 	public DateTimeOffset Start { get; set; }
 	public DateTimeOffset End { get; set; }

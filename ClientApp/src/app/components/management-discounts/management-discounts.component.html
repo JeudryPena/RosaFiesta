@@ -56,7 +56,7 @@
                                 <td>
                                     <ngb-highlight [result]="item.value | number"
                                         [term]="service.searchTerm"></ngb-highlight>
-                                        <span *ngIf="item.type == 'Porcentaje'">%</span>
+                                        <span *ngIf="item.type == 1">%</span>
                                 </td>
                                 <td><ngb-highlight [result]="item.maxTimesApply | number"
                                         [term]="service.searchTerm"></ngb-highlight></td>
@@ -68,14 +68,15 @@
                                 <td>
                                     <div *ngFor="let productDiscount of item.productsDiscounts" class="d-flex justify-content-between">
                                         <div ngbDropdown container="body">
-                                            <span class="badge text-bg-primary" ngbDropdownToggle>{{productDiscount.code}}</span>
+                                            <span class="badge text-bg-primary" ngbDropdownToggle>
+                                                {{productDiscount.optionId}}
+                                            </span>
                                             <div ngbDropdownMenu>
-                                                <div *ngIf="" ngbDropdownItem>
-                                                    <strong>Nombre: </strong> {{productDiscount.optionId}}
-                                                </div>
-                                                <div class="dropdown-divider"></div>
-                                                <button ngbDropdownItem (click)="DeleteProduct(productDiscount.code)"><i
+                                                <button ngbDropdownItem (click)="DeleteProducts(productDiscount.code, productDiscount.optionId)"><i
                                                         class="fa-solid fa-trash pe-2"></i>Eliminar</button>
+                                                <button ngbDropdownItem
+                                                    (click)="DeleteProducts(productDiscount.code, null)"><i
+                                                        class="fa-solid fa-trash pe-2"></i>Eliminar todos</button>
                                             </div>
                                         </div>
                                     </div>

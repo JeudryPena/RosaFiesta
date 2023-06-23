@@ -1,10 +1,8 @@
-import { BaseResponse } from "../../base-response";
-
-export interface SubCategoryResponse extends BaseResponse {
+export interface SubCategoryResponse {
 	id: number;
 	name: string;
 	description: string;
 	icon: string;
-	isActive: boolean;
+	isDeleted: boolean;
 	categoryId: number;
 }

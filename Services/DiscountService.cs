@@ -44,13 +44,12 @@ internal sealed class DiscountService : IDiscountService
 	public async Task CreateDiscountAsync(string userId, DiscountDto discount, CancellationToken cancellationToken = default)
 	{
 		var discountEntity = discount.Adapt<DiscountEntity>();
-		discountEntity.ProductsDiscounts = discount.ProductsDiscounts.Select(d => new ProductsDiscountsEntity()
-		{
-			Code = discountEntity.Code,
-			ProductId = d.ProductCode ?? null,
-			OptionId = d.OptionId ?? null,
-			CreatedAt = DateTimeOffset.UtcNow
-		}).ToList();
+		if (discount.ProductsDiscounts != null)
+			discountEntity.ProductsDiscounts = discount.ProductsDiscounts.Select(d => new ProductsDiscountsEntity()
+			{
+				Code = discountEntity.Code,
+				OptionId = d.OptionId,
+			}).ToList();
 		discountEntity.CreatedBy = userId;
 		_repositoryManager.DiscountRepository.Insert(discountEntity);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -61,7 +60,21 @@ internal sealed class DiscountService : IDiscountService
 		CancellationToken cancellationToken = default)
 	{
 		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
-		discount.Adapt(discountDto);
+		discount = discountDto.Adapt(discount);
+		// if a product discount in discount is not in discountDto, mark IsDeleted = true
+		if (discount.ProductsDiscounts != null)
+		{
+			if (discountDto.ProductsDiscounts == null)
+				discount.ProductsDiscounts.ToList().ForEach(d => d.IsDeleted = true);
+			else
+			{
+				foreach (var productDiscount in discount.ProductsDiscounts)
+				{
+					if (!discountDto.ProductsDiscounts.Any(d => d.OptionId == productDiscount.OptionId))
+						productDiscount.IsDeleted = true;
+				}
+			}
+		}
 		discount.UpdatedAt = DateTimeOffset.UtcNow;
 		discount.UpdatedBy = userId;
 		_repositoryManager.DiscountRepository.Update(discount);
@@ -73,6 +86,27 @@ internal sealed class DiscountService : IDiscountService
 	{
 		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetDiscountAsync(discountId, cancellationToken);
 		discount.IsDeleted = true;
+		discount.UpdatedAt = DateTimeOffset.UtcNow;
+		discount.UpdatedBy = userId;
+		_repositoryManager.DiscountRepository.Update(discount);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+	}
+
+	public async Task DeleteDiscountProductsAsync(string userId, string code, int? optionId, CancellationToken cancellationToken = default)
+	{
+		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(code, cancellationToken);
+		if (discount.ProductsDiscounts == null)
+			throw new Exception("Discount products not found");
+		else if (optionId != null)
+		{
+			var productDiscount = discount.ProductsDiscounts.FirstOrDefault(d => d.OptionId == optionId) ?? throw new Exception("Discount product not found");
+			productDiscount.UpdatedAt = DateTimeOffset.UtcNow;
+			productDiscount.IsDeleted = true;
+		}
+		else
+		{
+			discount.ProductsDiscounts = new List<ProductsDiscountsEntity>();
+		}
 		discount.UpdatedAt = DateTimeOffset.UtcNow;
 		discount.UpdatedBy = userId;
 		_repositoryManager.DiscountRepository.Update(discount);

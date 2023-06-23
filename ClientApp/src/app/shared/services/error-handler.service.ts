@@ -60,17 +60,15 @@ export class ErrorHandlerService implements HttpInterceptor {
   }
 
   private handleBadRequest = (error: HttpErrorResponse): string => {
-    if(this.router.url === '/register' ||
-      this.router.url.startsWith('/resetpassword')) {
+    if (!error.error.error) {
       let message = '';
       const values = Object.values(error.error.errors);
       values.map((m: any) => {
-        message += m + '<br>';
-      })
-      return message.slice(0, -4);
-    }
-    else{
-      return error.error ? error.error : error.message;
+        message += m + ' <br> ';
+      });
+      return message.slice(0, -6);
+    } else {
+      return error.message;
     }
   }
 }

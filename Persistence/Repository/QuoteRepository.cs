@@ -15,11 +15,11 @@ internal sealed class QuoteRepository : IQuoteRepository
 	}
 
 	public async Task<IEnumerable<QuoteEntity>> GetQuotesAsync(CancellationToken cancellationToken = default)
-	=> await _context.Quotes.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+	=> await _context.Quotes.ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<QuoteEntity>> GetQuotesByUserIdAsync(string userId, CancellationToken cancellationToken = default)
 	{
-		IEnumerable<QuoteEntity> quotes = await _context.Quotes.Where(q => q.UserId == userId && q.IsDeleted == false).ToListAsync(cancellationToken);
+		IEnumerable<QuoteEntity> quotes = await _context.Quotes.Where(q => q.UserId == userId).ToListAsync(cancellationToken);
 		return quotes;
 	}
 
@@ -28,8 +28,6 @@ internal sealed class QuoteRepository : IQuoteRepository
 		QuoteEntity? quote = await _context.Quotes.FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
 		if (quote == null)
 			throw new Exception("Quote not found");
-		if (quote.IsDeleted)
-			throw new Exception("Quote is deleted");
 		return quote;
 	}
 
@@ -44,8 +42,6 @@ internal sealed class QuoteRepository : IQuoteRepository
 		QuoteEntity? quote = await _context.Quotes.FirstOrDefaultAsync(q => q.Id == id && q.UserId == userId, cancellationToken);
 		if (quote == null)
 			throw new Exception("Quote not found");
-		if (quote.IsDeleted)
-			throw new Exception("Quote is deleted");
 		return quote;
 	}
 }

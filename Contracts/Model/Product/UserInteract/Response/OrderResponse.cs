@@ -4,7 +4,7 @@ namespace Contracts.Model.Product.UserInteract.Response;
 
 public class OrderResponse : BaseResponse
 {
-    public int SKU { get; set; }
+    public int Id { get; set; }
     public Guid PayMethodId { get; set; }
     public string UserId { get; set; }
     public DateTimeOffset OrderDate { get; set; }

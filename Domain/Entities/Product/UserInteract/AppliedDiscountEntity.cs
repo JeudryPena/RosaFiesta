@@ -9,5 +9,4 @@ public class AppliedDiscountEntity : BaseEntity
 	[StringLength(25, MinimumLength = 5)]
 	public string Code { get; set; }
 	public PurchaseDetailOptions PurchaseOption { get; set; }
-	public DateTimeOffset AppliedDate { get; set; }
 }

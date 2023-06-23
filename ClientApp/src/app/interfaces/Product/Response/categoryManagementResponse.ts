@@ -1,12 +1,12 @@
 import { BaseResponse } from '../../base-response';
-import { SubCategoryPreviewResponse } from './subCategoryPreviewResponse';
+import { SubCategoryManagementResponse } from './subCategoryManagementResponse';
 
 export interface CategoryManagementResponse extends BaseResponse {
 	id: number;
 	name: string;
 	icon: string;
 	description: string | null;
-	subCategories: SubCategoryPreviewResponse[] | null;
+	subCategories: SubCategoryManagementResponse[] | null;
 	expanded?: boolean;
 	createdBy: string;
 	updatedBy: string;

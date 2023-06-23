@@ -15,15 +15,13 @@ internal sealed class ReviewRepository : IReviewRepository
 	}
 
 	public async Task<IEnumerable<ReviewEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-		await _context.Reviews.Where(x => x.IsDeleted == false).ToListAsync(cancellationToken);
+		await _context.Reviews.ToListAsync(cancellationToken);
 
 	public async Task<ReviewEntity> GetByIdAsync(Guid reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity? review = await _context.Reviews.FirstOrDefaultAsync(x => x.Id == reviewId, cancellationToken);
 		if (review == null)
 			throw new NullReferenceException(nameof(ReviewEntity));
-		if (review.IsDeleted)
-			throw new ArgumentException("Review is deleted");
 		return review;
 	}
 
@@ -36,7 +34,5 @@ internal sealed class ReviewRepository : IReviewRepository
 		ReviewEntity? review = await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == userId && x.OptionId == optionId, cancellationToken);
 		if (review != null)
 			throw new ArgumentException("Review already exist");
-		if (review.IsDeleted)
-			throw new ArgumentException("Review is deleted");
 	}
 }

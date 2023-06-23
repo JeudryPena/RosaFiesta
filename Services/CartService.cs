@@ -62,8 +62,7 @@ internal sealed class CartService : ICartService
 					DiscountApplied = Code != null ? new AppliedDiscountEntity
 					{
 						Code = Code,
-						UserId = userId,
-						AppliedDate = DateTimeOffset.UtcNow,
+						UserId = userId
 					} : null,
 				});
 				cart.Details.Add(cartItemEntity);
@@ -79,7 +78,6 @@ internal sealed class CartService : ICartService
 					{
 						Code = Code,
 						UserId = userId,
-						AppliedDate = DateTimeOffset.UtcNow,
 					};
 			}
 		}
@@ -149,8 +147,7 @@ internal sealed class CartService : ICartService
 				DiscountApplied = Code != null ? new AppliedDiscountEntity
 				{
 					Code = Code,
-					UserId = userId,
-					AppliedDate = DateTimeOffset.UtcNow,
+					UserId = userId
 				} : null,
 			});
 			cart.Details.Add(detail);
@@ -166,8 +163,7 @@ internal sealed class CartService : ICartService
 				optionDetail.DiscountApplied = new AppliedDiscountEntity
 				{
 					Code = Code,
-					UserId = userId,
-					AppliedDate = DateTimeOffset.UtcNow,
+					UserId = userId
 				};
 			}
 		}

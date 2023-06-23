@@ -1,13 +1,13 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, HostListener, Input, OnDestroy, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 import { CategoriesService } from '../../shared/services/categories.service';
 import { SidenavService } from '../../shared/services/side-nav.service';
 import { dashboardData } from './dashboard-data';
-import { Layout } from './layout';
 import { inventoryData } from './inventory-data';
-import { Router } from '@angular/router';
+import { Layout } from './layout';
 
 
 
@@ -93,7 +93,6 @@ export class SidenavComponent implements OnDestroy {
   }
 
   Navigate(id: any): void {
-    console.log(id);
     if (this.layout === Layout.Normal) {
 
     } else if (this.layout === Layout.Dashboard) {

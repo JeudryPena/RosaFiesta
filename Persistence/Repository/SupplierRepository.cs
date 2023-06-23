@@ -11,15 +11,13 @@ internal sealed class SupplierRepository : ISupplierRepository
 	public SupplierRepository(RosaFiestaContext dbContext) => _dbContext = dbContext;
 
 	public async Task<IEnumerable<SupplierEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-	=> await _dbContext.Suppliers.Where(x => x.IsDeleted == false).Include(x => x.ProductsSupplied).ToListAsync(cancellationToken);
+	=> await _dbContext.Suppliers.Include(x => x.ProductsSupplied).ToListAsync(cancellationToken);
 
 	public async Task<SupplierEntity> GetByIdAsync(Guid supplierId, CancellationToken cancellationToken = default)
 	{
 		SupplierEntity? supplier = await _dbContext.Suppliers.Include(x => x.ProductsSupplied)
 			.FirstOrDefaultAsync(x => x.Id == supplierId, cancellationToken);
 		if (supplier == null)
-			throw new ArgumentNullException(nameof(supplier));
-		if (supplier.IsDeleted)
 			throw new ArgumentNullException(nameof(supplier));
 		return supplier;
 	}

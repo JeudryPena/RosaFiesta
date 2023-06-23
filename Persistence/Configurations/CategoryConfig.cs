@@ -7,32 +7,22 @@ namespace Persistence.Configurations;
 
 public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
 {
-	private const int CategoryId = 1;
 
 	public void Configure(EntityTypeBuilder<CategoryEntity> builder)
 	{
 		builder.ToTable(nameof(CategoryEntity));
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
+		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
+		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
+		builder.HasQueryFilter(x => !x.IsDeleted);
 		builder.Property(x => x.Name).IsRequired();
 		builder.HasIndex(x => x.Name).IsUnique();
 		builder.Property(x => x.Description).IsRequired();
 		builder.Property(x => x.Icon).IsRequired();
-		builder.Property(a => a.CreatedAt).IsRequired();
-		builder.Property(a => a.UpdatedAt);
 		builder.Property(a => a.CreatedBy).IsRequired();
 		builder.Property(a => a.UpdatedBy);
 		builder.Property(a => a.IsDeleted).IsRequired();
 		builder.HasMany(x => x.SubCategories).WithOne().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Cascade);
-		builder.HasData(new CategoryEntity
-		{
-			Id = CategoryId,
-			Name = "Peluches",
-			Description = "Peluches de todos los tipos",
-			Icon = "https://i.imgur.com/0jQYs1R.png",
-			IsDeleted = false,
-			CreatedAt = DateTime.UtcNow,
-			CreatedBy = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
-		});
 	}
 }

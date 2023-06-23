@@ -7,5 +7,5 @@ public class PurchaseDetailResponse : BaseResponse
 	public double TotalOptionsPrice => PurchaseOptions.Sum(x => x.TotalPrice);
 	public ICollection<PurchaseDetailOptionResponse> PurchaseOptions { get; set; }
 	public int CartId { get; set; }
-	public int? OrderSku { get; set; }
+	public int? OrderId { get; set; }
 }
