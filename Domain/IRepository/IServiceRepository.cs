@@ -10,4 +10,5 @@ public interface IServiceRepository
 	void Update(ServiceEntity service);
 	Task<ServiceEntity> AvaliableService(Guid serviceId, int qQuantity, CancellationToken cancellationToken = default);
 	Task RestoreQuantity(Guid qServiceId, int qQuantity, CancellationToken cancellationToken = default);
+	void Delete(ServiceEntity service);
 }

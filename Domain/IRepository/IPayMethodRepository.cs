@@ -5,6 +5,7 @@ namespace Domain.IRepository;
 
 public interface IPayMethodRepository
 {
+	void Delete(PayMethodEntity payment);
 	Task<PayMethodEntity> GetByIdAsync(Guid payMethodId, CancellationToken cancellationToken);
 	Task<IEnumerable<PayMethodEntity>> GetByUserIdAsync(string userId, CancellationToken cancellationToken);
 	Guid? GetDefaultPaymentId(string userId, CancellationToken cancellationToken);

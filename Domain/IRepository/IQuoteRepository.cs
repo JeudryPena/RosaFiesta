@@ -10,4 +10,5 @@ public interface IQuoteRepository
 	void CreateAsync(QuoteEntity quote, CancellationToken cancellationToken = default);
 	void Update(QuoteEntity quote);
 	Task<QuoteEntity> GetQuoteByUserIdAsync(int id, string userId, CancellationToken cancellationToken = default);
+	void Delete(QuoteEntity quote);
 }

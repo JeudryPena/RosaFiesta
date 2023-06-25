@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Product.UserInteract;
 
-public class WishListProductsEntity
+public class WishListProductsEntity : ISoftDelete
 {
 	public int WishListId { get; set; }
 	public int OptionId { get; set; }

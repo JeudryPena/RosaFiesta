@@ -36,9 +36,8 @@ internal sealed class SupplierService : ISupplierService
 	public async Task<SupplierResponse> CreateAsync(string userId, SupplierDto supplierDto, CancellationToken cancellationToken = default)
 	{
 		var supplier = supplierDto.Adapt<SupplierEntity>();
-		supplier.Id = Guid.NewGuid();
 		_repositoryManager.SupplierRepository.Insert(supplier);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		var supplierResponse = supplier.Adapt<SupplierResponse>();
 		return supplierResponse;
 	}
@@ -53,7 +52,7 @@ internal sealed class SupplierService : ISupplierService
 		supplier.Phone = supplierDto.Phone;
 		supplier.Email = supplierDto.Email;
 		_repositoryManager.SupplierRepository.Update(supplier);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		var supplierResponse = supplier.Adapt<SupplierResponse>();
 		return supplierResponse;
 	}
@@ -61,8 +60,7 @@ internal sealed class SupplierService : ISupplierService
 	public async Task DeleteAsync(string userId, Guid supplierId, CancellationToken cancellationToken = default)
 	{
 		SupplierEntity supplier = await _repositoryManager.SupplierRepository.GetByIdAsync(supplierId, cancellationToken);
-		supplier.IsDeleted = true;
-		_repositoryManager.SupplierRepository.Update(supplier);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.SupplierRepository.Delete(supplier);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

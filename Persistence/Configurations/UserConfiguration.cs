@@ -14,6 +14,12 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 	private const string productManagerId = "2301D884-221A-4E7D-B509-0113DCC043E1";
 	private const string salesManagerId = "2301D884-221A-4E7D-B509-0113DCC043E2";
 	private const string marketingManagerId = "2301D884-221A-4E7D-B509-0113DCC043E3";
+	private const string date1 = "1999-01-01";
+	private const string date2 = "1999-01-02";
+	private const string date3 = "1999-01-03";
+	private const string date4 = "1999-01-04";
+	private const string date5 = "1999-01-05";
+
 
 	public void Configure(EntityTypeBuilder<UserEntity> builder)
 	{
@@ -79,18 +85,15 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			Email = "user@example.com",
 			NormalizedEmail = "USER@EXAMPLE.COM",
 			EmailConfirmed = true,
-			SecurityStamp = Guid.NewGuid().ToString(),
-			ConcurrencyStamp = Guid.NewGuid().ToString(),
 			LockoutEnabled = false,
 			FullName = "Rosalba Pena",
 			Age = 45,
-			CreatedAt = DateTimeOffset.UtcNow,
 			PhoneNumber = "18497505944",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
 			LockoutEnd = null,
 			PromotionalMails = false,
-			BirthDate = new DateOnly(1996, 10, 10),
+			BirthDate = DateOnly.Parse(date1),
 			IsDeleted = false
 		};
 		var user = new UserEntity
@@ -101,18 +104,15 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			Email = "rosanny@gmail.com",
 			NormalizedEmail = "ROSANNY@GMAIL.COM",
 			EmailConfirmed = true,
-			SecurityStamp = Guid.NewGuid().ToString(),
-			ConcurrencyStamp = Guid.NewGuid().ToString(),
 			LockoutEnabled = false,
 			FullName = "Rosanny Pena",
 			Age = 15,
-			CreatedAt = DateTimeOffset.UtcNow,
 			PhoneNumber = "18497505945",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
 			LockoutEnd = null,
 			PromotionalMails = false,
-			BirthDate = new DateOnly(1996, 10, 10),
+			BirthDate = DateOnly.Parse(date2),
 			IsDeleted = false
 		};
 		var manager = new UserEntity
@@ -123,18 +123,15 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			Email = "rosalbapp@gmail.com",
 			NormalizedEmail = "ROSALBAPP@GMAIL.COM",
 			EmailConfirmed = true,
-			SecurityStamp = Guid.NewGuid().ToString(),
-			ConcurrencyStamp = Guid.NewGuid().ToString(),
 			LockoutEnabled = false,
 			FullName = "Rosalba Pena",
 			Age = 15,
-			CreatedAt = DateTimeOffset.UtcNow,
 			PhoneNumber = "18497505946",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
 			LockoutEnd = null,
 			PromotionalMails = false,
-			BirthDate = new DateOnly(1996, 10, 10),
+			BirthDate = DateOnly.Parse(date3),
 			IsDeleted = false
 		};
 		var sales = new UserEntity
@@ -145,18 +142,15 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			Email = "jendrypp@gmail.com",
 			NormalizedEmail = "JENDRYPP@GMAIL.COM",
 			EmailConfirmed = true,
-			SecurityStamp = Guid.NewGuid().ToString(),
-			ConcurrencyStamp = Guid.NewGuid().ToString(),
 			LockoutEnabled = false,
 			FullName = "Jendry Pena",
 			Age = 15,
-			CreatedAt = DateTimeOffset.UtcNow,
 			PhoneNumber = "18497505947",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
 			LockoutEnd = null,
 			PromotionalMails = false,
-			BirthDate = new DateOnly(1996, 10, 10),
+			BirthDate = DateOnly.Parse(date4),
 			IsDeleted = false
 		};
 		var marketing = new UserEntity
@@ -167,18 +161,15 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			Email = "rosmerypp@gmail.com",
 			NormalizedEmail = "ROSMERYPP@GMAIL.COM",
 			EmailConfirmed = true,
-			SecurityStamp = Guid.NewGuid().ToString(),
-			ConcurrencyStamp = Guid.NewGuid().ToString(),
 			LockoutEnabled = false,
 			FullName = "Rosmery Pena",
 			Age = 15,
-			CreatedAt = DateTimeOffset.UtcNow,
 			PhoneNumber = "18497505948",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
 			LockoutEnd = null,
 			PromotionalMails = false,
-			BirthDate = new DateOnly(1996, 10, 10),
+			BirthDate = DateOnly.Parse(date5),
 			IsDeleted = false
 		};
 		admin.PasswordHash = PassGenerate(admin);

@@ -10,10 +10,8 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
 	public void Configure(EntityTypeBuilder<PurchaseDetailEntity> builder)
 	{
 		builder.ToTable(nameof(PurchaseDetailEntity));
-		builder.HasKey(x => new { x.PurchaseNumber });
+		builder.HasKey(x => x.PurchaseNumber);
 		builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(x => x.CartId).IsRequired();
 		builder.Property(x => x.IsDeleted).HasDefaultValue(false);

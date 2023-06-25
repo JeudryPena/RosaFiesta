@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Enterprise;
 
-public class QuoteItemEntity : BaseEntity
+public class QuoteItemEntity : BaseEntity, IAutoUpdate
 {
 	public int Id { get; set; }
 	[StringLength(250, MinimumLength = 1)]

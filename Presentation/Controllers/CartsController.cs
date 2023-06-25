@@ -70,7 +70,10 @@ public class CartsController : ControllerBase
 	[HttpPut("detail/{purchaseNumber}/option/{optionId}/adjust")]
 	public async Task<IActionResult> AdjustCartItemQuantityAsync(int adjust, CancellationToken cancellationToken, int purchaseNumber, int optionId)
 	{
-		await _serviceManager.CartService.AdjustCartItemQuantityAsync(purchaseNumber, optionId, adjust, cancellationToken);
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		await _serviceManager.CartService.AdjustCartItemQuantityAsync(userId, purchaseNumber, optionId, adjust, cancellationToken);
 		return Ok();
 	}
 

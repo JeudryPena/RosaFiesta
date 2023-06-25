@@ -81,7 +81,7 @@ public class CategoriesController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("{categoryId}/delete")]
+	[HttpDelete("{categoryId}")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteCategory(int categoryId, CancellationToken cancellationToken)
 	{
@@ -92,7 +92,7 @@ public class CategoriesController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("{categoryId}/sub-category/{subcategoryid}/delete")]
+	[HttpDelete("{categoryId}/sub-category/{subcategoryid}")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteSubCategory(int categoryId, int subcategoryid, CancellationToken cancellationToken)
 	{

@@ -60,7 +60,7 @@ namespace Persistence.Migrations
                 {
                     Code = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Type = table.Column<int>(type: "integer", maxLength: 25, nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     MaxTimesApply = table.Column<int>(type: "integer", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -172,10 +172,8 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     Icon = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    CategoryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -299,8 +297,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Code = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    ProductId = table.Column<string>(type: "character varying(100)", nullable: true),
-                    OptionId = table.Column<int>(type: "integer", nullable: true),
+                    OptionId = table.Column<int>(type: "integer", nullable: false),
+                    ProductEntityCode = table.Column<string>(type: "character varying(100)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
@@ -320,10 +318,11 @@ namespace Persistence.Migrations
                         column: x => x.OptionId,
                         principalSchema: "RosaFiesta",
                         principalTable: "Options",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductsDiscountsEntity_ProductEntity_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_ProductsDiscountsEntity_ProductEntity_ProductEntityCode",
+                        column: x => x.ProductEntityCode,
                         principalSchema: "RosaFiesta",
                         principalTable: "ProductEntity",
                         principalColumn: "Code");
@@ -359,7 +358,6 @@ namespace Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Code = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    AppliedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
@@ -498,7 +496,8 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 columns: table => new
                 {
-                    CartId = table.Column<int>(type: "integer", nullable: false),
+                    CartId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -684,7 +683,10 @@ namespace Persistence.Migrations
                     Quantity = table.Column<int>(type: "integer", maxLength: 250, nullable: false),
                     QuoteId = table.Column<int>(type: "integer", maxLength: 36, nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -711,7 +713,8 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     WishListId = table.Column<int>(type: "integer", nullable: false),
-                    OptionId = table.Column<int>(type: "integer", nullable: false)
+                    OptionId = table.Column<int>(type: "integer", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -781,9 +784,10 @@ namespace Persistence.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     UnitPrice = table.Column<double>(type: "double precision", nullable: false),
                     AppliedId = table.Column<int>(type: "integer", nullable: true),
+                    IsReturned = table.Column<bool>(type: "boolean", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    IsReturned = table.Column<bool>(type: "boolean", nullable: true)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -826,53 +830,14 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Age", "BirthDate", "ConcurrencyStamp", "CreatedAt", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "Age", "BirthDate", "ConcurrencyStamp", "CreatedAt", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, 15, new DateOnly(1996, 10, 10), "b25bc3c8-391d-4107-b014-67e78ee049e5", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 126, DateTimeKind.Unspecified).AddTicks(2090), new TimeSpan(0, 0, 0, 0, 0)), null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSMERY2", "AQAAAAIAAYagAAAAENtV6JTCVXfMIAiQVynV2XX7vVOmrYVkQa1m7vh+MzZVWJHO4V07rgRI8af/ybu+1A==", "18497505946", true, false, null, null, "566b9200-62a2-4c4d-b402-458143e2e056", false, null, "Rosalba2" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, 15, new DateOnly(1996, 10, 10), "e4052c20-6475-439d-a978-a5ac085f6975", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 126, DateTimeKind.Unspecified).AddTicks(2100), new TimeSpan(0, 0, 0, 0, 0)), null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEPTCe6CVGK+JxookzkgRQRFqtmO15nFhd4AXoSav01u96WvoPGanmv9tdozj5WwUPQ==", "18497505947", true, false, null, null, "2634b749-c7b6-46b5-9772-6b8004a518b7", false, null, "jendry" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, 15, new DateOnly(1996, 10, 10), "9d966c8d-c306-4ad6-8579-5eeb5455b732", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 126, DateTimeKind.Unspecified).AddTicks(2111), new TimeSpan(0, 0, 0, 0, 0)), null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAELozt9NA1P1GLg2C/uoeuQkvJIFZQss/zIsJ6quX1iDu6Q10ywnkNuuhCtX+AET4dw==", "18497505948", true, false, null, null, "d3d04fe6-025a-4977-848f-66e8c3fc1fed", false, null, "Rosmery" },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, 15, new DateOnly(1996, 10, 10), "8b5fa9b9-6f8c-4671-b748-716617f9bca6", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 126, DateTimeKind.Unspecified).AddTicks(2079), new TimeSpan(0, 0, 0, 0, 0)), null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAEHkDKFCpX29AOk0blUT/O+OTlr7GSpepbdzzlbV67/5WqveMhhqcaYGBvXQ4vwRiyw==", "18497505945", true, false, null, null, "0ed0db97-893a-4f6a-9ba4-05b06608e356", false, null, "Rosanny" },
-                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, 45, new DateOnly(1996, 10, 10), "7f998e8e-e52c-4977-8c1f-bef7804eb38a", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 126, DateTimeKind.Unspecified).AddTicks(2047), new TimeSpan(0, 0, 0, 0, 0)), null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEJJMKNcfeWBhdIw7YTfBFlGKckKwPgyMfK6xsFLC8j39NiPIB/vDIyxvmWsoWd7yjg==", "18497505944", true, false, null, null, "ff83678d-24e0-48b0-a10e-0da779e3dab4", false, null, "Rosalba" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "CategoryEntity",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Icon", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 109, DateTimeKind.Unspecified).AddTicks(4875), new TimeSpan(0, 0, 0, 0, 0)), "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", "Peluches de todos los tipos", "https://i.imgur.com/0jQYs1R.png", false, "Peluches", null, null });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "DiscountEntity",
-                columns: new[] { "Code", "CreatedAt", "CreatedBy", "Description", "End", "IsDeleted", "MaxTimesApply", "Name", "Start", "Type", "UpdatedAt", "UpdatedBy", "Value" },
-                values: new object[,]
-                {
-                    { "ROSA", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 111, DateTimeKind.Unspecified).AddTicks(4227), new TimeSpan(0, 0, 0, 0, 0)), "System", "10% de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), false, 5, "Descuento Inicial", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 111, DateTimeKind.Unspecified).AddTicks(4220), new TimeSpan(0, 0, 0, 0, 0)), 1, null, null, 200.0 },
-                    { "WELCOME", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 111, DateTimeKind.Unspecified).AddTicks(4231), new TimeSpan(0, 0, 0, 0, 0)), "System", "100$ de descuento en todos los productos", new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), false, 1, "Descuento de Bienvenida", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 111, DateTimeKind.Unspecified).AddTicks(4230), new TimeSpan(0, 0, 0, 0, 0)), 0, null, null, 10.0 }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "SupplierEntity",
-                columns: new[] { "Id", "Address", "CreatedAt", "Description", "Email", "IsDeleted", "Name", "Phone", "UpdatedAt" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "La Capital", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 121, DateTimeKind.Unspecified).AddTicks(3036), new TimeSpan(0, 0, 0, 0, 0)), null, "suplidor@hotmail.com", false, "Supplier 1", "8095395539", null });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "Warranties",
-                columns: new[] { "Id", "Conditions", "CreatedAt", "Description", "IsDeleted", "Name", "Period", "Status", "Type", "UpdatedAt" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "Warranty 1", new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 498, DateTimeKind.Unspecified).AddTicks(6348), new TimeSpan(0, 0, 0, 0, 0)), "Warranty 1", false, "Warranty 1", "1 year", 1, 3, null });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "AppliedDiscounts",
-                columns: new[] { "Id", "AppliedDate", "Code", "CreatedAt", "IsDeleted", "UpdatedAt", "UserId" },
-                values: new object[,]
-                {
-                    { 1, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 107, DateTimeKind.Unspecified).AddTicks(3664), new TimeSpan(0, -4, 0, 0, 0)), "ROSA", new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 107, DateTimeKind.Unspecified).AddTicks(3624), new TimeSpan(0, -4, 0, 0, 0)), false, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { 2, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 107, DateTimeKind.Unspecified).AddTicks(3666), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 107, DateTimeKind.Unspecified).AddTicks(3665), new TimeSpan(0, -4, 0, 0, 0)), false, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { 3, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 107, DateTimeKind.Unspecified).AddTicks(3669), new TimeSpan(0, -4, 0, 0, 0)), "WELCOME", new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 107, DateTimeKind.Unspecified).AddTicks(3668), new TimeSpan(0, -4, 0, 0, 0)), false, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
+                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, 15, new DateOnly(1999, 1, 3), "036bd2aa-3ba6-4d05-86e8-9272ceedbf67", new DateTimeOffset(new DateTime(2023, 6, 23, 18, 53, 25, 441, DateTimeKind.Unspecified).AddTicks(794), new TimeSpan(0, -4, 0, 0, 0)), null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSMERY2", "AQAAAAIAAYagAAAAEFBHUBhjl7u5zdAcUysa5QKyuN3+AkylzpP8a5afXD6j8cdAfUeBj8Yd4F11/gFwmQ==", "18497505946", true, false, null, null, "3be44416-dff8-43a8-80f4-4e88049ae8d7", false, "Rosalba2" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, 15, new DateOnly(1999, 1, 4), "6c1dd6da-8e49-401d-8f0c-6278021b7eba", new DateTimeOffset(new DateTime(2023, 6, 23, 18, 53, 25, 441, DateTimeKind.Unspecified).AddTicks(818), new TimeSpan(0, -4, 0, 0, 0)), null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEKz9Ah6QjsPsPhErbnbGSxy4pAAmXeKwF4e+TTL/gMUpdvCQBKBcBoQQgwO63Jbk3A==", "18497505947", true, false, null, null, "6c8021ad-e155-4679-b3a4-d5f304e7e618", false, "jendry" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, 15, new DateOnly(1999, 1, 5), "7a00653d-db2a-4c32-abcc-b890dbf7b526", new DateTimeOffset(new DateTime(2023, 6, 23, 18, 53, 25, 441, DateTimeKind.Unspecified).AddTicks(829), new TimeSpan(0, -4, 0, 0, 0)), null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAEEJI6g6QEHzwK69zsep6/wo08f8FVoZn9zUVNb78wYUX+yHgR8b58XYXdlUJPyhv+A==", "18497505948", true, false, null, null, "77598d16-570d-4060-a281-e87d95bce4d5", false, "Rosmery" },
+                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, 15, new DateOnly(1999, 1, 2), "a02ba4fd-8f3d-4977-9234-57815359599b", new DateTimeOffset(new DateTime(2023, 6, 23, 18, 53, 25, 441, DateTimeKind.Unspecified).AddTicks(748), new TimeSpan(0, -4, 0, 0, 0)), null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAENmfqpFNVO9d0/cqcMbytymiHpDKZBSoFoorvRRjSV/xHwgOhTpRLN4wUZI5lAy9+w==", "18497505945", true, false, null, null, "eac63eaf-0e1e-4529-a4b3-82e3008d48ce", false, "Rosanny" },
+                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, 45, new DateOnly(1999, 1, 1), "d8650241-1501-48a8-8979-91f84f2181cd", new DateTimeOffset(new DateTime(2023, 6, 23, 18, 53, 25, 441, DateTimeKind.Unspecified).AddTicks(514), new TimeSpan(0, -4, 0, 0, 0)), null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEA4WHwSRr504miZVBLgZxFlg95rkTpm+InDgEvgmUHcgkhaqGKNOkSVOhw4kD7c8uw==", "18497505944", true, false, null, null, "38893068-2944-4bc2-8313-5452fb94b958", false, "Rosalba" }
                 });
 
             migrationBuilder.InsertData(
@@ -899,81 +864,6 @@ namespace Persistence.Migrations
                     { 3, "2301D884-221A-4E7D-B509-0113DCC043E1" },
                     { 4, "2301D884-221A-4E7D-B509-0113DCC043E2" },
                     { 5, "2301D884-221A-4E7D-B509-0113DCC043E3" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "PayMethodEntity",
-                columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "Name", "PayMethodType", "UpdatedAt", "UserId" },
-                values: new object[] { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 114, DateTimeKind.Unspecified).AddTicks(4085), new TimeSpan(0, -4, 0, 0, 0)), "Cash payment", false, "Cash", 2, null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "ProductEntity",
-                columns: new[] { "Code", "Brand", "CategoryId", "CreatedAt", "IsDeleted", "SubCategoryId", "SupplierId", "Title", "Type", "UpdatedAt", "WarrantyId" },
-                values: new object[,]
-                {
-                    { "SDA01", "Champion", 1, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 116, DateTimeKind.Unspecified).AddTicks(4739), new TimeSpan(0, -4, 0, 0, 0)), false, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Polo", 1, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") },
-                    { "SDA02", "Flores", 1, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 116, DateTimeKind.Unspecified).AddTicks(4768), new TimeSpan(0, -4, 0, 0, 0)), false, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"), "Flores", 1, null, new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6") }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "SubCategoryEntity",
-                columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "Icon", "IsDeleted", "Name", "UpdatedAt" },
-                values: new object[] { 1, 1, new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 121, DateTimeKind.Unspecified).AddTicks(953), new TimeSpan(0, 0, 0, 0, 0)), "Electronics", "https://i.imgur.com/0jQYs1R.png", false, "Electronics", null });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "Options",
-                columns: new[] { "Id", "Color", "Condition", "CreatedAt", "Description", "EndedAt", "GenderFor", "IsDeleted", "Material", "Price", "ProductCode", "QuantityAvaliable", "Size", "UpdatedAt", "Weight" },
-                values: new object[,]
-                {
-                    { 1, "Gold", 1, new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 112, DateTimeKind.Unspecified).AddTicks(9335), new TimeSpan(0, 0, 0, 0, 0)), "Polo de manga larga", null, 3, false, 6, 1200.0, "SDA01", 8, 1.7f, null, 0.7f },
-                    { 2, "White", 1, new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 112, DateTimeKind.Unspecified).AddTicks(9343), new TimeSpan(0, 0, 0, 0, 0)), "Polo de manga corta", null, 3, false, 6, 800.0, "SDA01", 10, 1.5f, null, 0.5f },
-                    { 3, "Green", 2, new DateTimeOffset(new DateTime(2023, 6, 22, 20, 14, 39, 112, DateTimeKind.Unspecified).AddTicks(9347), new TimeSpan(0, 0, 0, 0, 0)), "Polo XL", null, 3, false, 6, 1400.0, "SDA02", 10, 2f, null, 1f }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "PurchaseDetailEntity",
-                columns: new[] { "PurchaseNumber", "CartId", "CreatedAt", "OrderId", "ProductId", "UpdatedAt" },
-                values: new object[,]
-                {
-                    { 1, 1, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 117, DateTimeKind.Unspecified).AddTicks(5904), new TimeSpan(0, -4, 0, 0, 0)), null, "SDA01", null },
-                    { 2, 1, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 117, DateTimeKind.Unspecified).AddTicks(5915), new TimeSpan(0, -4, 0, 0, 0)), null, "SDA02", null }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "ProductsDiscountsEntity",
-                columns: new[] { "Id", "Code", "CreatedAt", "IsDeleted", "OptionId", "ProductId", "UpdatedAt" },
-                values: new object[,]
-                {
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"), "ROSA", new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 116, DateTimeKind.Unspecified).AddTicks(7957), new TimeSpan(0, -4, 0, 0, 0)), false, 1, "SDA01", null },
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f5"), "WELCOME", new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 116, DateTimeKind.Unspecified).AddTicks(7978), new TimeSpan(0, -4, 0, 0, 0)), false, 2, "SDA01", null },
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"), "WELCOME", new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 116, DateTimeKind.Unspecified).AddTicks(7980), new TimeSpan(0, -4, 0, 0, 0)), false, 3, "SDA02", null }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "PurchaseDetailOptions",
-                columns: new[] { "OptionId", "PurchaseNumber", "AppliedId", "CreatedAt", "IsReturned", "Quantity", "UnitPrice", "UpdatedAt" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 119, DateTimeKind.Unspecified).AddTicks(1342), new TimeSpan(0, -4, 0, 0, 0)), null, 3, 1200.0, null },
-                    { 2, 1, 2, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 119, DateTimeKind.Unspecified).AddTicks(1356), new TimeSpan(0, -4, 0, 0, 0)), null, 4, 800.0, null },
-                    { 3, 2, 3, new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 119, DateTimeKind.Unspecified).AddTicks(1360), new TimeSpan(0, -4, 0, 0, 0)), null, 2, 800.0, null }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "ReviewEntity",
-                columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "OptionId", "Rating", "Title", "UpdatedAt", "UserId" },
-                values: new object[,]
-                {
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"), new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 120, DateTimeKind.Unspecified).AddTicks(828), new TimeSpan(0, -4, 0, 0, 0)), "So so i liked the expierience a bit", false, 1, 3f, "Kinda love it", null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"), new DateTimeOffset(new DateTime(2023, 6, 22, 16, 14, 39, 120, DateTimeKind.Unspecified).AddTicks(822), new TimeSpan(0, -4, 0, 0, 0)), "Excellent", false, 1, 5f, "Nice product", null, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1138,10 +1028,10 @@ namespace Persistence.Migrations
                 column: "OptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductsDiscountsEntity_ProductId",
+                name: "IX_ProductsDiscountsEntity_ProductEntityCode",
                 schema: "RosaFiesta",
                 table: "ProductsDiscountsEntity",
-                column: "ProductId");
+                column: "ProductEntityCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseDetailEntity_CartId",
@@ -1239,17 +1129,17 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_SupplierEntity_Phone",
+                schema: "RosaFiesta",
+                table: "SupplierEntity",
+                column: "Phone",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Warranties_Name",
                 schema: "RosaFiesta",
                 table: "Warranties",
                 column: "Name");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WishesList_Title",
-                schema: "RosaFiesta",
-                table: "WishesList",
-                column: "Title",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_WishesList_UserId",

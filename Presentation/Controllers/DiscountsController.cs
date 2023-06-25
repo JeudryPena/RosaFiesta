@@ -64,7 +64,7 @@ public class DiscountsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("{Code}/delete")]
+	[HttpDelete("{Code}")]
 	public async Task<IActionResult> DeleteDiscount(string Code, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -74,7 +74,7 @@ public class DiscountsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("{code}/options/{optionId?}/delete")]
+	[HttpDelete("{code}/options/{optionId?}")]
 	public async Task<IActionResult> DeleteDiscountProducts(string code, CancellationToken cancellationToken, int? optionId = 0)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

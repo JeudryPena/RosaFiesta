@@ -2,7 +2,6 @@ namespace Domain.IRepository;
 
 public interface IUnitOfWork
 {
-     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-     
+	Task<int> SaveChangesAsync(string? userId, CancellationToken cancellationToken = default);
 }
 

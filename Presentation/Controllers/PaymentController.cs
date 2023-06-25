@@ -54,7 +54,7 @@ public class PaymentController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("MyPayments/{paymentId:guid}/delete")]
+	[HttpDelete("MyPayments/{paymentId:guid}")]
 	public async Task<IActionResult> DeleteMyPaymentById(Guid paymentId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

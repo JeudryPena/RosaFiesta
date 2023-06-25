@@ -53,4 +53,11 @@ public class CategoryRepository : ICategoryRepository
 
 	public void UpdateSubCategory(SubCategoryEntity subCategory)
 	=> _rosaFiestaContext.SubCategories.Update(subCategory);
+
+	public void Delete(CategoryEntity category)
+	=> _rosaFiestaContext.Categories.Remove(category);
+
+	public void DeleteSubCategory(SubCategoryEntity subCategory)
+		=> _rosaFiestaContext.SubCategories.Remove(subCategory);
+
 }

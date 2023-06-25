@@ -11,4 +11,6 @@ public interface ICategoryRepository
 	Task<CategoryEntity> GetCategoryAndSubCategoryAsync(int categoryId, CancellationToken cancellationToken);
 	Task<CategoryEntity> GetManagementById(int categoryId, CancellationToken cancellationToken = default);
 	void UpdateSubCategory(SubCategoryEntity subCategory);
+	void Delete(CategoryEntity category);
+	void DeleteSubCategory(SubCategoryEntity subCategory);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Product.UserInteract;
 
-public class PurchaseDetailEntity : BaseEntity
+public class PurchaseDetailEntity : BaseEntity, IAutoUpdate
 {
 	public int PurchaseNumber { get; set; }
 	public string ProductId { get; set; }

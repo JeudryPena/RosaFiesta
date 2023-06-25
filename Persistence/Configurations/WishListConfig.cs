@@ -11,8 +11,6 @@ public class WishListConfig : IEntityTypeConfiguration<WishListEntity>
 	{
 		builder.HasKey(w => w.Id);
 		builder.Property(w => w.Title);
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(w => w.Description);
 		builder.Property(a => a.CreatedAt).IsRequired();

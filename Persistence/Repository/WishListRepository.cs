@@ -72,4 +72,7 @@ internal sealed class WishListRepository : IWishListRepository
 
 	public void UpdateWishLists(IEnumerable<WishListEntity> wishListEntities)
 	=> _rosaFiestaContext.WishesList.UpdateRange(wishListEntities);
+
+	public void DeleteWishLists(IEnumerable<WishListEntity> wishListEntities)
+	=> _rosaFiestaContext.WishesList.RemoveRange(wishListEntities);
 }

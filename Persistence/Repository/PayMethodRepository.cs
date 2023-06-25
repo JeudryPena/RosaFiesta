@@ -15,6 +15,9 @@ internal sealed class PayMethodRepository : IPayMethodRepository
 		_context = context;
 	}
 
+	public void Delete(PayMethodEntity payment)
+	=> _context.PayMethods.Remove(payment);
+
 	public async Task<PayMethodEntity> GetByIdAsync(Guid payMethodId, CancellationToken cancellationToken)
 	{
 		PayMethodEntity? payMethod = await _context.PayMethods.FirstOrDefaultAsync(x => x.Id == payMethodId);

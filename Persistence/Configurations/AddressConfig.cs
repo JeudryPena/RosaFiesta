@@ -11,8 +11,6 @@ public class AddressConfig : IEntityTypeConfiguration<AddressEntity>
 	{
 		builder.HasKey(a => a.Id);
 		builder.Property(a => a.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(b => !b.IsDeleted);
 		builder.Property(a => a.Title).IsRequired();
 		builder.Property(a => a.City).IsRequired();

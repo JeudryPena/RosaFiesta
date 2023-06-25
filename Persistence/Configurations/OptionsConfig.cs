@@ -11,8 +11,6 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
 	{
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(x => x.Description);
 		builder.Property(x => x.Price).IsRequired();
@@ -24,8 +22,6 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
 		builder.Property(x => x.GenderFor);
 		builder.Property(x => x.Material);
 		builder.Property(x => x.Condition).IsRequired();
-		builder.Property(a => a.CreatedAt).IsRequired();
-		builder.Property(a => a.UpdatedAt);
 		builder.Property(a => a.IsDeleted).IsRequired();
 		builder.HasMany(product => product.Reviews)
 			.WithOne()

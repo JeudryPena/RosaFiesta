@@ -96,7 +96,7 @@ public class ProductsController : ControllerBase
 		return Ok(products);
 	}
 
-	[HttpGet("{productId}/option/{optionId?}")]
+	[HttpDelete("{productId}/option/{optionId?}")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteProductOrOption(string productId, CancellationToken cancellationToken, int? optionId = 0)
 	{

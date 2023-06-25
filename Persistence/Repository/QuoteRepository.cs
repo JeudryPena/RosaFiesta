@@ -44,4 +44,7 @@ internal sealed class QuoteRepository : IQuoteRepository
 			throw new Exception("Quote not found");
 		return quote;
 	}
+
+	public void Delete(QuoteEntity quote)
+	=> _context.Quotes.Remove(quote);
 }

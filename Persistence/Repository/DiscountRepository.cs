@@ -83,4 +83,10 @@ internal sealed class DiscountRepository : IDiscountRepository
 
 	public void UpdateAppliedDiscount(AppliedDiscountEntity appliedDiscount)
 	=> _dbContext.AppliedDiscounts.Update(appliedDiscount);
+
+	public void Delete(DiscountEntity discount)
+	=> _dbContext.Discounts.Remove(discount);
+
+	public void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount)
+	=> _dbContext.AppliedDiscounts.Remove(appliedDiscount);
 }

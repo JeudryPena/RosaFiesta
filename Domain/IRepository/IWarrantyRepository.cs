@@ -4,6 +4,7 @@ namespace Domain.IRepository;
 
 public interface IWarrantyRepository
 {
+	void Delete(WarrantyEntity warranty);
 	Task<IEnumerable<WarrantyEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 	Task<WarrantyEntity> GetByIdAsync(Guid warrantyId, CancellationToken cancellationToken = default);
 	void Insert(WarrantyEntity warrantyEntity);

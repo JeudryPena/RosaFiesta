@@ -11,8 +11,6 @@ public class ServiceConfig : IEntityTypeConfiguration<ServiceEntity>
 	{
 		builder.HasKey(s => s.Id);
 		builder.Property(s => s.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(s => s.Name).IsRequired();
 		builder.HasIndex(s => s.Name).IsUnique();

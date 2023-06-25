@@ -11,8 +11,6 @@ public class QuoteConfig : IEntityTypeConfiguration<QuoteEntity>
 	{
 		builder.HasKey(q => q.Id);
 		builder.Property(q => q.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(q => q.CustomerName).IsRequired();
 		builder.Property(q => q.ContactNumber).IsRequired();

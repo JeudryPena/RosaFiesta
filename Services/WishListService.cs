@@ -56,7 +56,7 @@ internal sealed class WishListService : IWishListService
 			}
 		}
 		_repositoryManager.WishListRepository.Insert(wishListEntity);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		WishListResponse wishListResponse = wishListEntity.Adapt<WishListResponse>();
 		return wishListResponse;
 	}
@@ -77,7 +77,7 @@ internal sealed class WishListService : IWishListService
 				OptionId = i.OptionId,
 			});
 		}
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		WishListProductsResponse wishListProductsResponse = wishListEntity.Adapt<WishListProductsResponse>();
 		return wishListProductsResponse;
 	}
@@ -86,7 +86,7 @@ internal sealed class WishListService : IWishListService
 	{
 		WishListProductsEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListOption(wishListId, optionId, cancellationToken);
 		_repositoryManager.WishListRepository.DeleteProduct(wishListEntity);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		WishListProductsResponse wishListProductsResponse = wishListEntity.Adapt<WishListProductsResponse>();
 		return wishListProductsResponse;
 	}
@@ -98,15 +98,14 @@ internal sealed class WishListService : IWishListService
 			throw new Exception("Wish list is alredy empty");
 		wishListEntity.ProductsWish.Clear();
 		_repositoryManager.WishListRepository.Update(wishListEntity);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 
 	public async Task DeleteWishListAsync(int wishListId, CancellationToken cancellationToken = default)
 	{
 		WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListByIdAsync(wishListId, cancellationToken);
-		wishListEntity.IsDeleted = true;
-		_repositoryManager.WishListRepository.Update(wishListEntity);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.WishListRepository.Delete(wishListEntity);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 
 	public async Task<WishListResponse> UpdateWishListAsync(string userId, int wishListId, WishListDto wishList, CancellationToken cancellationToken)
@@ -117,7 +116,7 @@ internal sealed class WishListService : IWishListService
 		wishListEntity.Title = wishList.Title;
 		wishListEntity.Description = wishList.Description;
 		_repositoryManager.WishListRepository.Update(wishListEntity);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		WishListResponse wishListResponse = wishListEntity.Adapt<WishListResponse>();
 		return wishListResponse;
 	}
@@ -125,11 +124,7 @@ internal sealed class WishListService : IWishListService
 	public async Task DeleteAllWishListsAsync(string userId, CancellationToken cancellationToken)
 	{
 		IEnumerable<WishListEntity> wishListEntities = await _repositoryManager.WishListRepository.GetWishListsAsync(userId, cancellationToken);
-		foreach (WishListEntity i in wishListEntities)
-		{
-			i.IsDeleted = true;
-		}
-		_repositoryManager.WishListRepository.UpdateWishLists(wishListEntities);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.WishListRepository.DeleteWishLists(wishListEntities);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 }

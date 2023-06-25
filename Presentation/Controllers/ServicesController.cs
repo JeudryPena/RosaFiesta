@@ -71,7 +71,7 @@ public class ServicesController : ControllerBase
 		return Ok(service);
 	}
 
-	[HttpGet("{serviceId:guid}")]
+	[HttpDelete("{serviceId:guid}")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteService(CancellationToken cancellationToken, Guid serviceId)
 	{

@@ -14,6 +14,9 @@ internal sealed class WarrantyRepository : IWarrantyRepository
 		_dbContext = dbContext;
 	}
 
+	public void Delete(WarrantyEntity warranty)
+	=> _dbContext.Warranties.Remove(warranty);
+
 	public async Task<IEnumerable<WarrantyEntity>> GetAllAsync(CancellationToken cancellationToken = default)
 	=> await _dbContext.Warranties.ToListAsync(cancellationToken);
 

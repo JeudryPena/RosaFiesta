@@ -74,4 +74,10 @@ public class ProductRepository : IProductRepository
 
 	public void Insert(ProductEntity product)
 		=> _dbContext.Products.Add(product);
+
+	public void DeleteOption(OptionEntity option)
+	=> _dbContext.Options.Remove(option);
+
+	public void Delete(ProductEntity product)
+	=> _dbContext.Products.Remove(product);
 }

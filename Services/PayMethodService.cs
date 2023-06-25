@@ -42,9 +42,8 @@ public class PayMethodService : IPayMethodService
 	public async Task DeleteAsync(Guid paymentId, CancellationToken cancellationToken)
 	{
 		PayMethodEntity payment = _repositoryManager.PayMethodRepository.GetByIdAsync(paymentId, cancellationToken).Result;
-		payment.IsDeleted = true;
-		_repositoryManager.PayMethodRepository.Update(payment);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.PayMethodRepository.Delete(payment);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 
 	public async Task MakePaymentDefaultAsync(Guid paymentId, string userId, CancellationToken cancellationToken = default)
@@ -52,6 +51,6 @@ public class PayMethodService : IPayMethodService
 		UserEntity user = await _repositoryManager.PayMethodRepository.GetUserByDefaultPayment(userId, paymentId, cancellationToken);
 		user.DefaultPayMethodId = paymentId;
 		_repositoryManager.UserRepository.Update(user);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 }

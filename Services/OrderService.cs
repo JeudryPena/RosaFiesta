@@ -47,7 +47,6 @@ internal sealed class OrderService : IOrderService
 		PayMethodEntity payMethod = await _repositoryManager.PayMethodRepository.GetByIdAsync(payMethodId, cancellationToken);
 		OrderEntity order = new();
 		order.AddressId = addressId;
-		order.OrderDate = DateTimeOffset.UtcNow;
 		order.PayMethodId = payMethod.Id;
 		order.UserId = userId;
 		order.Details = await _repositoryManager.CartRepository.GetCartDetails(userId, cancellationToken);
@@ -74,7 +73,7 @@ internal sealed class OrderService : IOrderService
 			detail.CartId = null;
 		}
 		_repositoryManager.OrderRepository.CreateAsync(order);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		OrderResponse orderResponse = order.Adapt<OrderResponse>();
 		return orderResponse;
 	}
@@ -83,10 +82,8 @@ internal sealed class OrderService : IOrderService
 		CancellationToken cancellationToken = default)
 	{
 		AppliedDiscountEntity appliedDiscount = await _repositoryManager.DiscountRepository.GetAppliedDiscount(purchaseNumber, cancellationToken);
-		appliedDiscount.IsDeleted = true;
-		appliedDiscount.UpdatedAt = DateTimeOffset.UtcNow;
-		_repositoryManager.DiscountRepository.UpdateAppliedDiscount(appliedDiscount);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.DiscountRepository.DeleteAppliedDiscount(appliedDiscount);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, string Code, int optionId, CancellationToken cancellationToken = default)
@@ -96,7 +93,7 @@ internal sealed class OrderService : IOrderService
 			detail.DiscountApplied = new AppliedDiscountEntity { UserId = userId };
 		detail.DiscountApplied.Code = Code;
 		_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(detail);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ValidDiscountResponse validDiscountResponse = detail.DiscountApplied.Adapt<ValidDiscountResponse>();
 		return validDiscountResponse;
 	}
@@ -121,6 +118,6 @@ internal sealed class OrderService : IOrderService
 			_repositoryManager.ProductRepository.UpdateOption(option);
 			_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(optionPurchase);
 		}
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

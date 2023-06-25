@@ -12,8 +12,6 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
 	{
 		builder.ToTable(nameof(DiscountEntity));
 		builder.HasKey(x => x.Code);
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(x => !x.IsDeleted);
 		builder.Property(x => x.Code).IsRequired();
 		builder.Property(x => x.Name).IsRequired();

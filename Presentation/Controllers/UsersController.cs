@@ -1,3 +1,6 @@
+using System.Net;
+using System.Security.Claims;
+
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
 
@@ -56,10 +59,12 @@ public class UsersController : ControllerBase
 		CancellationToken cancellationToken
 	)
 	{
-		string? username = User.Identity?.Name;
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
 		UsersResponse user = await _serviceManager.UserService.CreateAsync(
 			userForCreationDto,
-			username,
+			userId,
 			cancellationToken
 		);
 
@@ -109,7 +114,7 @@ public class UsersController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("{userId}/delete")]
+	[HttpDelete("{userId}")]
 	public async Task<IActionResult> DeleteUser(string userId, CancellationToken cancellationToken)
 	{
 		await _serviceManager.UserService.DeleteAsync(

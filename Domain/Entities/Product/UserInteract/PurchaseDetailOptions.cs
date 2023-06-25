@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product.UserInteract;
 
-public class PurchaseDetailOptions : BaseEntity
+public class PurchaseDetailOptions : BaseEntity, IAutoUpdate
 {
 	public int PurchaseNumber { get; set; }
 	[Range(0, 1000)]

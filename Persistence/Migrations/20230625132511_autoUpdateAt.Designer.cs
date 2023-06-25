@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    [Migration("20230623133714_requiredProductsDiscounts")]
-    partial class requiredProductsDiscounts
+    [Migration("20230625132511_autoUpdateAt")]
+    partial class autoUpdateAt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(15)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CustomerName")
@@ -72,6 +73,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -93,6 +95,13 @@ namespace Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -106,6 +115,10 @@ namespace Persistence.Migrations
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -123,6 +136,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -153,6 +167,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -172,6 +187,7 @@ namespace Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -197,7 +213,9 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 6, 25, 13, 25, 10, 389, DateTimeKind.Unspecified).AddTicks(3255), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
@@ -208,18 +226,6 @@ namespace Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("CategoryEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 967, DateTimeKind.Unspecified).AddTicks(8299), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedBy = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
-                            Description = "Peluches de todos los tipos",
-                            Icon = "https://i.imgur.com/0jQYs1R.png",
-                            IsDeleted = false,
-                            Name = "Peluches"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.DiscountEntity", b =>
@@ -229,6 +235,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(25)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -257,10 +264,10 @@ namespace Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Type")
-                        .HasMaxLength(25)
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UpdatedBy")
@@ -272,36 +279,6 @@ namespace Persistence.Migrations
                     b.HasKey("Code");
 
                     b.ToTable("DiscountEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Code = "ROSA",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 972, DateTimeKind.Unspecified).AddTicks(6761), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedBy = "System",
-                            Description = "10% de descuento en todos los productos",
-                            End = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            MaxTimesApply = 5,
-                            Name = "Descuento Inicial",
-                            Start = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 972, DateTimeKind.Unspecified).AddTicks(6721), new TimeSpan(0, 0, 0, 0, 0)),
-                            Type = 2,
-                            Value = 200.0
-                        },
-                        new
-                        {
-                            Code = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 972, DateTimeKind.Unspecified).AddTicks(6791), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedBy = "System",
-                            Description = "100$ de descuento en todos los productos",
-                            End = new DateTimeOffset(new DateTime(2023, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsDeleted = false,
-                            MaxTimesApply = 1,
-                            Name = "Descuento de Bienvenida",
-                            Start = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 972, DateTimeKind.Unspecified).AddTicks(6789), new TimeSpan(0, 0, 0, 0, 0)),
-                            Type = 1,
-                            Value = 10.0
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.MultipleOptionImages", b =>
@@ -343,6 +320,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -378,6 +356,7 @@ namespace Persistence.Migrations
                         .HasColumnType("real");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<float>("Weight")
@@ -388,56 +367,6 @@ namespace Persistence.Migrations
                     b.HasIndex("ProductCode");
 
                     b.ToTable("Options", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Color = "Gold",
-                            Condition = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 975, DateTimeKind.Unspecified).AddTicks(6672), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Polo de manga larga",
-                            GenderFor = 3,
-                            IsDeleted = false,
-                            Material = 6,
-                            Price = 1200.0,
-                            ProductCode = "SDA01",
-                            QuantityAvaliable = 8,
-                            Size = 1.7f,
-                            Weight = 0.7f
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Color = "White",
-                            Condition = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 975, DateTimeKind.Unspecified).AddTicks(6702), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Polo de manga corta",
-                            GenderFor = 3,
-                            IsDeleted = false,
-                            Material = 6,
-                            Price = 800.0,
-                            ProductCode = "SDA01",
-                            QuantityAvaliable = 10,
-                            Size = 1.5f,
-                            Weight = 0.5f
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Color = "Green",
-                            Condition = 2,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 975, DateTimeKind.Unspecified).AddTicks(6709), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Polo XL",
-                            GenderFor = 3,
-                            IsDeleted = false,
-                            Material = 6,
-                            Price = 1400.0,
-                            ProductCode = "SDA02",
-                            QuantityAvaliable = 10,
-                            Size = 2f,
-                            Weight = 1f
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.ProductEntity", b =>
@@ -454,6 +383,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -475,6 +405,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("WarrantyId")
@@ -491,32 +422,6 @@ namespace Persistence.Migrations
                     b.HasIndex("WarrantyId");
 
                     b.ToTable("ProductEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Code = "SDA01",
-                            Brand = "Champion",
-                            CategoryId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 980, DateTimeKind.Unspecified).AddTicks(9407), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
-                            Title = "Polo",
-                            Type = 1,
-                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6")
-                        },
-                        new
-                        {
-                            Code = "SDA02",
-                            Brand = "Flores",
-                            CategoryId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 980, DateTimeKind.Unspecified).AddTicks(9485), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            SupplierId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
-                            Title = "Flores",
-                            Type = 1,
-                            WarrantyId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6")
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.ProductsDiscountsEntity", b =>
@@ -531,18 +436,20 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(25)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("OptionId")
+                    b.Property<int>("OptionId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ProductCode")
+                    b.Property<string>("ProductEntityCode")
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -551,38 +458,9 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OptionId");
 
-                    b.HasIndex("ProductCode");
+                    b.HasIndex("ProductEntityCode");
 
                     b.ToTable("ProductsDiscountsEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
-                            Code = "ROSA",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 981, DateTimeKind.Unspecified).AddTicks(4395), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            OptionId = 1,
-                            ProductCode = "SDA01"
-                        },
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f5"),
-                            Code = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 981, DateTimeKind.Unspecified).AddTicks(4423), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            OptionId = 2,
-                            ProductCode = "SDA01"
-                        },
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
-                            Code = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 981, DateTimeKind.Unspecified).AddTicks(4426), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            OptionId = 3,
-                            ProductCode = "SDA02"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.SubCategoryEntity", b =>
@@ -595,9 +473,6 @@ namespace Persistence.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -617,9 +492,6 @@ namespace Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -628,18 +500,6 @@ namespace Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("SubCategoryEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 986, DateTimeKind.Unspecified).AddTicks(9027), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Electronics",
-                            Icon = "https://i.imgur.com/0jQYs1R.png",
-                            IsDeleted = false,
-                            Name = "Electronics"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.SupplierEntity", b =>
@@ -654,6 +514,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -677,6 +538,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(15)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -687,19 +549,10 @@ namespace Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("SupplierEntity", "RosaFiesta");
+                    b.HasIndex("Phone")
+                        .IsUnique();
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f9"),
-                            Address = "La Capital",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 987, DateTimeKind.Unspecified).AddTicks(5525), new TimeSpan(0, 0, 0, 0, 0)),
-                            Email = "suplidor@hotmail.com",
-                            IsDeleted = false,
-                            Name = "Supplier 1",
-                            Phone = "8095395539"
-                        });
+                    b.ToTable("SupplierEntity", "RosaFiesta");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.AppliedDiscountEntity", b =>
@@ -710,21 +563,20 @@ namespace Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("AppliedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -738,41 +590,15 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AppliedDiscounts", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 964, DateTimeKind.Unspecified).AddTicks(4646), new TimeSpan(0, -4, 0, 0, 0)),
-                            Code = "ROSA",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 964, DateTimeKind.Unspecified).AddTicks(4590), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 964, DateTimeKind.Unspecified).AddTicks(4652), new TimeSpan(0, -4, 0, 0, 0)),
-                            Code = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 964, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AppliedDate = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 964, DateTimeKind.Unspecified).AddTicks(4655), new TimeSpan(0, -4, 0, 0, 0)),
-                            Code = "WELCOME",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 964, DateTimeKind.Unspecified).AddTicks(4653), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.CartEntity", b =>
                 {
                     b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CartId"));
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -825,6 +651,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -843,6 +670,7 @@ namespace Persistence.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -878,6 +706,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -898,6 +727,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -909,18 +739,6 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PayMethodEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f4"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 978, DateTimeKind.Unspecified).AddTicks(880), new TimeSpan(0, -4, 0, 0, 0)),
-                            Description = "Cash payment",
-                            IsDeleted = false,
-                            Name = "Cash",
-                            PayMethodType = 2,
-                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailEntity", b =>
@@ -936,6 +754,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -951,6 +770,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("PurchaseNumber");
@@ -962,29 +782,12 @@ namespace Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("PurchaseDetailEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            PurchaseNumber = 1,
-                            CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 982, DateTimeKind.Unspecified).AddTicks(4012), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            ProductId = "SDA01"
-                        },
-                        new
-                        {
-                            PurchaseNumber = 2,
-                            CartId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 982, DateTimeKind.Unspecified).AddTicks(4032), new TimeSpan(0, -4, 0, 0, 0)),
-                            IsDeleted = false,
-                            ProductId = "SDA02"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailOptions", b =>
                 {
                     b.Property<int>("PurchaseNumber")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     b.Property<int>("OptionId")
@@ -994,7 +797,11 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<bool?>("IsReturned")
                         .HasColumnType("boolean");
@@ -1006,6 +813,7 @@ namespace Persistence.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("PurchaseNumber", "OptionId");
@@ -1016,35 +824,6 @@ namespace Persistence.Migrations
                     b.HasIndex("OptionId");
 
                     b.ToTable("PurchaseDetailOptions", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            PurchaseNumber = 1,
-                            OptionId = 1,
-                            AppliedId = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 983, DateTimeKind.Unspecified).AddTicks(9966), new TimeSpan(0, -4, 0, 0, 0)),
-                            Quantity = 3,
-                            UnitPrice = 1200.0
-                        },
-                        new
-                        {
-                            PurchaseNumber = 1,
-                            OptionId = 2,
-                            AppliedId = 2,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 983, DateTimeKind.Unspecified).AddTicks(9982), new TimeSpan(0, -4, 0, 0, 0)),
-                            Quantity = 4,
-                            UnitPrice = 800.0
-                        },
-                        new
-                        {
-                            PurchaseNumber = 2,
-                            OptionId = 3,
-                            AppliedId = 3,
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 983, DateTimeKind.Unspecified).AddTicks(9984), new TimeSpan(0, -4, 0, 0, 0)),
-                            Quantity = 2,
-                            UnitPrice = 800.0
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.ReviewEntity", b =>
@@ -1054,6 +833,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -1074,6 +854,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -1087,30 +868,6 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ReviewEntity", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f8"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 985, DateTimeKind.Unspecified).AddTicks(2066), new TimeSpan(0, -4, 0, 0, 0)),
-                            Description = "Excellent",
-                            IsDeleted = false,
-                            OptionId = 1,
-                            Rating = 5f,
-                            Title = "Nice product",
-                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
-                        },
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f2"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 9, 37, 12, 985, DateTimeKind.Unspecified).AddTicks(2091), new TimeSpan(0, -4, 0, 0, 0)),
-                            Description = "So so i liked the expierience a bit",
-                            IsDeleted = false,
-                            OptionId = 1,
-                            Rating = 3f,
-                            Title = "Kinda love it",
-                            UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.WishListEntity", b =>
@@ -1122,6 +879,7 @@ namespace Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -1136,6 +894,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -1143,9 +902,6 @@ namespace Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Title")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -1159,6 +915,9 @@ namespace Persistence.Migrations
 
                     b.Property<int>("OptionId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.HasKey("WishListId", "OptionId");
 
@@ -1179,6 +938,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -1208,6 +968,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -1215,20 +976,6 @@ namespace Persistence.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Warranties", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f6"),
-                            Conditions = "Warranty 1",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 13, 546, DateTimeKind.Unspecified).AddTicks(9274), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Warranty 1",
-                            IsDeleted = false,
-                            Name = "Warranty 1",
-                            Period = "1 year",
-                            Status = 1,
-                            Type = 3
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.AddressEntity", b =>
@@ -1248,6 +995,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -1264,6 +1012,7 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(40)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -1302,6 +1051,7 @@ namespace Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("DefaultAddressId")
@@ -1364,6 +1114,7 @@ namespace Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserName")
@@ -1392,9 +1143,9 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             Age = 45,
-                            BirthDate = new DateOnly(1996, 10, 10),
-                            ConcurrencyStamp = "3d7d43c9-3649-40d6-9afb-1b5022aebf24",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 997, DateTimeKind.Unspecified).AddTicks(8200), new TimeSpan(0, 0, 0, 0, 0)),
+                            BirthDate = new DateOnly(1999, 1, 1),
+                            ConcurrencyStamp = "4096bd34-ae9d-46ee-8416-76c29765c093",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 25, 9, 25, 10, 422, DateTimeKind.Unspecified).AddTicks(8080), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
@@ -1402,11 +1153,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGuA+OYmQmLrKzSJ1WW6HFrZ8Evsgm6D0ldAWgY2TUAEWRgxTwq4Zak7RwqlPUkx3Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAXJVPO0l9EnyEJLGkdpnA1z0t54tbH6n/ypvkSGxcpBpuTrhuU33tm01pGzCNk+Fw==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "959d69f3-2761-4a68-a820-805626b70b3a",
+                            SecurityStamp = "d2125914-c238-4c83-a75d-10062d998eec",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         },
@@ -1415,9 +1166,9 @@ namespace Persistence.Migrations
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
                             AccessFailedCount = 0,
                             Age = 15,
-                            BirthDate = new DateOnly(1996, 10, 10),
-                            ConcurrencyStamp = "6e3877a3-68be-466b-b6a3-9b59ebcfd453",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 997, DateTimeKind.Unspecified).AddTicks(8243), new TimeSpan(0, 0, 0, 0, 0)),
+                            BirthDate = new DateOnly(1999, 1, 2),
+                            ConcurrencyStamp = "bc1657bd-e879-422a-964f-31779b4e5c8e",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 25, 9, 25, 10, 422, DateTimeKind.Unspecified).AddTicks(8384), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosanny Pena",
@@ -1425,11 +1176,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
                             NormalizedUserName = "ROSANNY",
-                            PasswordHash = "AQAAAAIAAYagAAAAENqWeeo7XWgoCFw8cov++JQ+xVnjfQZVFJLnQHoYzBO/IdATqcW+Owkm8Kf/s4H7ow==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELZhyUNINXsXpjFdo3TrS8yi327DFohRR7jr2rEAf9IjneTqGU8YvLpCqZbhNAhX9A==",
                             PhoneNumber = "18497505945",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "a0861103-5484-47f0-91ae-bf5abde05e72",
+                            SecurityStamp = "8702b2a1-bda4-4330-844d-0a533c6af8b2",
                             TwoFactorEnabled = false,
                             UserName = "Rosanny"
                         },
@@ -1438,9 +1189,9 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
                             AccessFailedCount = 0,
                             Age = 15,
-                            BirthDate = new DateOnly(1996, 10, 10),
-                            ConcurrencyStamp = "00978f60-4c4b-4f23-b76b-b3eed7ecd141",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 997, DateTimeKind.Unspecified).AddTicks(8340), new TimeSpan(0, 0, 0, 0, 0)),
+                            BirthDate = new DateOnly(1999, 1, 3),
+                            ConcurrencyStamp = "804c2a9d-8081-4135-8dc1-be2770a632f6",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 25, 9, 25, 10, 422, DateTimeKind.Unspecified).AddTicks(8401), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
@@ -1448,11 +1199,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGYcQjL8wY4iSwOyA2ou9fwci8//d8DLcqxG3jQzhyizoeziH9pcRhc7jg+H5tfweg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBw9Pvr/z0B8DJ4B6bx+evMvsDamTBuCRMoaZP9pU8fFj5ysNBV7HlGyBGO062wx4w==",
                             PhoneNumber = "18497505946",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "86da46e0-c5f6-4271-a3b3-1d8fd69812ae",
+                            SecurityStamp = "be097474-d7c3-40e6-b9e5-04993b717bf9",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba2"
                         },
@@ -1461,9 +1212,9 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
                             AccessFailedCount = 0,
                             Age = 15,
-                            BirthDate = new DateOnly(1996, 10, 10),
-                            ConcurrencyStamp = "e26f9be7-6948-46f2-8206-a93ef4309963",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 997, DateTimeKind.Unspecified).AddTicks(8355), new TimeSpan(0, 0, 0, 0, 0)),
+                            BirthDate = new DateOnly(1999, 1, 4),
+                            ConcurrencyStamp = "82262bf2-c73a-4096-93f2-075b11c749c3",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 25, 9, 25, 10, 422, DateTimeKind.Unspecified).AddTicks(8420), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Jendry Pena",
@@ -1471,11 +1222,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
                             NormalizedUserName = "JENDRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOP2+u+PZ4VhwNtlTm349g20VsjEUBMno11hZndMYAh+RzaKrAXr4bKDx97niSbpgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJI88UvXpPUWBtiPAZTkWePeK5B5Y5UepeMY3CN5h4j2kH46+mlZ6VKvSaUWfde3Ig==",
                             PhoneNumber = "18497505947",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "e3995d34-f726-4635-9f42-1b6b61a1a873",
+                            SecurityStamp = "51b3a6b0-261f-482b-90b1-115ff9beefa0",
                             TwoFactorEnabled = false,
                             UserName = "jendry"
                         },
@@ -1484,9 +1235,9 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
                             AccessFailedCount = 0,
                             Age = 15,
-                            BirthDate = new DateOnly(1996, 10, 10),
-                            ConcurrencyStamp = "3ffa1e25-dc81-4b8a-b788-5b9ca421bc6c",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 23, 13, 37, 12, 997, DateTimeKind.Unspecified).AddTicks(8396), new TimeSpan(0, 0, 0, 0, 0)),
+                            BirthDate = new DateOnly(1999, 1, 5),
+                            ConcurrencyStamp = "8f7d6a02-594f-4f6e-914d-8faa8d0ac8cb",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 25, 9, 25, 10, 422, DateTimeKind.Unspecified).AddTicks(8434), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosmery Pena",
@@ -1494,11 +1245,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEITrvkKQI8AXAbY7OqBzuZxPa8ZZVSXNuEt+kj78Cw0Eoq3qJ4NmAM+ngfB0LsDAqw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEASbDtblO9jJIcVPAKEv3PMUJ1vHdloMQsxgA40btPVxbZnzgMtZ22Mc1Ef8/MXFiA==",
                             PhoneNumber = "18497505948",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "26697739-11da-4efe-b018-a75b91f3b5ca",
+                            SecurityStamp = "673a53ed-1130-487e-9d1c-af35397e75e5",
                             TwoFactorEnabled = false,
                             UserName = "Rosmery"
                         });
@@ -1772,11 +1523,13 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Product.OptionEntity", "Option")
                         .WithMany("ProductsDiscounts")
-                        .HasForeignKey("OptionId");
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Product.ProductEntity", null)
                         .WithMany("Discounts")
-                        .HasForeignKey("ProductCode");
+                        .HasForeignKey("ProductEntityCode");
 
                     b.Navigation("Option");
                 });

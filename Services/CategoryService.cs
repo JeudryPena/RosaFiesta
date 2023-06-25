@@ -57,49 +57,38 @@ internal sealed class CategoryService : ICategoryService
 		CancellationToken cancellationToken = default)
 	{
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
-		category.IsDeleted = true;
-		category.UpdatedBy = userId;
-		category.UpdatedAt = DateTimeOffset.UtcNow;
-		_repositoryManager.CategoryRepository.Update(category);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.CategoryRepository.Delete(category);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task DeleteSubCategoryAsync(string userId, int categoryId, int subcategoryid, CancellationToken cancellationToken)
 	{
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
-		category.UpdatedBy = userId;
-		category.UpdatedAt = DateTimeOffset.UtcNow;
 		if (category.SubCategories == null)
 			throw new Exception("No subcategories found");
 		SubCategoryEntity? subCategory = category.SubCategories.FirstOrDefault(x => x.Id == subcategoryid);
 		if (subCategory == null)
-		{
 			throw new Exception("No subcategory found");
-		}
-		subCategory.IsDeleted = true;
-		_repositoryManager.CategoryRepository.UpdateSubCategory(subCategory);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.CategoryRepository.DeleteSubCategory(subCategory);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task CreateAsync(string userId, CategoryDto categoryDto, CancellationToken cancellationToken = default)
 	{
 		var category = new CategoryEntity();
 		category = categoryDto.Adapt(category);
-		category.CreatedBy = userId;
 		if (categoryDto.SubCategories != null)
 			category.SubCategories = categoryDto.SubCategories.Adapt<List<SubCategoryEntity>>();
 
 		_repositoryManager.CategoryRepository.Insert(category);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task UpdateAsync(string userId, int categoryId, CategoryDto categoryUpdateDto, CancellationToken cancellationToken = default)
 	{
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
 		category = categoryUpdateDto.Adapt(category);
-		category.UpdatedAt = DateTimeOffset.UtcNow;
-		category.UpdatedBy = userId;
 		_repositoryManager.CategoryRepository.Update(category);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

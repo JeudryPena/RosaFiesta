@@ -39,18 +39,19 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpPost("login")]
-	public async Task<IActionResult> Login(LogingDto logingDto)
+	public async Task<IActionResult> Login(LogingDto logingDto, CancellationToken cancellationToken = default)
 	{
-		LoginResponse result = await _serviceManager.AuthenticateService.LoginAsync(logingDto);
+		LoginResponse result = await _serviceManager.AuthenticateService.LoginAsync(logingDto, cancellationToken);
 		if (!result.IsAuthSuccessful)
 			return Unauthorized(new { message = result.Message });
 		return Ok(result);
 	}
 
 	[HttpPost("FinishRegister")]
-	public async Task<FinishRegisterResponse> FinishRegister([FromBody] FinishRegisterDto finishRegisterDto, [FromQuery] string token, [FromQuery] string id)
+	public async Task<FinishRegisterResponse> FinishRegister([FromBody] FinishRegisterDto finishRegisterDto, [FromQuery] string token, [FromQuery] string id,
+		CancellationToken cancellationToken)
 	{
-		FinishRegisterResponse result = await _serviceManager.AuthenticateService.CreatePasswordAsync(finishRegisterDto, token, id).ConfigureAwait(false);
+		FinishRegisterResponse result = await _serviceManager.AuthenticateService.CreatePasswordAsync(finishRegisterDto, token, id, cancellationToken);
 		return result;
 	}
 
@@ -70,17 +71,19 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpPost("ResetPassword")]
-	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id)
+	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id,
+		CancellationToken cancellationToken)
 	{
-		await _serviceManager.AuthenticateService.ResetPasswordAsync(resetPasswordDto, passwordToken, id);
+		await _serviceManager.AuthenticateService.ResetPasswordAsync(resetPasswordDto, passwordToken, id, cancellationToken);
 		return Ok();
 	}
 
 	[HttpPost("ChangePassword")]
 	[Authorize]
-	public async Task<IActionResult> ChangePassword(changePasswordDto changePasswordDto)
+	public async Task<IActionResult> ChangePassword(changePasswordDto changePasswordDto,
+		CancellationToken cancellationToken)
 	{
-		await _serviceManager.AuthenticateService.ChangePasswordAsync(changePasswordDto);
+		await _serviceManager.AuthenticateService.ChangePasswordAsync(changePasswordDto, cancellationToken);
 		return Ok();
 	}
 

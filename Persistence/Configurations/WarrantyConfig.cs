@@ -12,8 +12,6 @@ public class WarrantyConfig : IEntityTypeConfiguration<WarrantyEntity>
 		builder.HasKey(w => w.Id);
 		builder.Property(w => w.Name);
 		builder.HasIndex(w => w.Name);
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(w => w.Type);
 		builder.Property(w => w.Period);

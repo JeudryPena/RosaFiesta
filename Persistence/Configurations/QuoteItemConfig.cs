@@ -12,8 +12,7 @@ public class QuoteItemConfig : IEntityTypeConfiguration<QuoteItemEntity>
 		builder.ToTable(nameof(QuoteItemEntity));
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
+		builder.Property(a => a.CreatedAt).IsRequired();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(x => x.QuoteId).IsRequired();
 		builder.Property(x => x.Price).IsRequired();

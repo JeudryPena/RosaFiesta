@@ -13,8 +13,6 @@ public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
 		builder.ToTable(nameof(CategoryEntity));
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(x => !x.IsDeleted);
 		builder.Property(x => x.Name).IsRequired();
 		builder.HasIndex(x => x.Name).IsUnique();

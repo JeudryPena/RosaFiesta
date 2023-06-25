@@ -11,8 +11,6 @@ public class PayMethodConfiguration : IEntityTypeConfiguration<PayMethodEntity>
 	{
 		builder.ToTable(nameof(PayMethodEntity));
 		builder.HasKey(e => e.Id);
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(e => e.Id).ValueGeneratedOnAdd();
 		builder.Property(e => e.Name).IsRequired();

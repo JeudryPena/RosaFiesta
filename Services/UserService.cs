@@ -64,7 +64,7 @@ internal sealed class UserService : IUserService
 		user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
 		user.BirthDate = userForUpdateDto.BirthDate;
 		_repositoryManager.UserRepository.Update(user);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task DeleteAsync(string userId, CancellationToken cancellationToken = default)
@@ -73,9 +73,8 @@ internal sealed class UserService : IUserService
 			userId,
 			cancellationToken
 		) ?? throw new UserNotFoundException(userId.ToString());
-		user.IsDeleted = true;
-		_repositoryManager.UserRepository.Update(user);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.UserRepository.Delete(user);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task UnlockUserAsync(string userId, string? username, CancellationToken cancellationToken)
@@ -88,14 +87,13 @@ internal sealed class UserService : IUserService
 		user.LockoutEnd = null;
 		user.AccessFailedCount = 0;
 		_repositoryManager.UserRepository.Update(user);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<UsersResponse> CreateAsync(UserForCreationDto userForCreationDto, string? username, CancellationToken cancellationToken = default)
+	public async Task<UsersResponse> CreateAsync(UserForCreationDto userForCreationDto, string userId, CancellationToken cancellationToken = default)
 	{
 		UserEntity user = userForCreationDto.Adapt<UserEntity>();
 		user.FullName = userForCreationDto.Name + " " + userForCreationDto.LastName;
-		user.CreatedAt = DateTimeOffset.UtcNow;
 		user.UserName = userForCreationDto.Email;
 		user.Email = userForCreationDto.Email;
 		user.EmailConfirmed = true;
@@ -109,7 +107,7 @@ internal sealed class UserService : IUserService
 		user.Cart = new CartEntity();
 
 		_repositoryManager.UserRepository.CreateAsync(user);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 
 		UsersResponse usersResponse = user.Adapt<UsersResponse>();
 		return usersResponse;
@@ -126,7 +124,7 @@ internal sealed class UserService : IUserService
 		user.AccessFailedCount = 0;
 		_repositoryManager.UserRepository.Update(user);
 
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task<IEnumerable<AddressPreviewResponse>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
@@ -154,10 +152,8 @@ internal sealed class UserService : IUserService
 	{
 		AddressEntity address = addressDto.Adapt<AddressEntity>();
 		address.UserId = userId;
-		address.CreatedAt = DateTimeOffset.UtcNow;
-		address.UpdatedAt = DateTimeOffset.UtcNow;
 		_repositoryManager.UserRepository.CreateAddress(address);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		AddressResponse addressResponse = address.Adapt<AddressResponse>();
 		return addressResponse;
 	}
@@ -166,9 +162,8 @@ internal sealed class UserService : IUserService
 	{
 		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
 		address = addressDto.Adapt(address);
-		address.UpdatedAt = DateTimeOffset.UtcNow;
 		_repositoryManager.UserRepository.UpdateAddress(address);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		AddressResponse addressResponse = address.Adapt<AddressResponse>();
 		return addressResponse;
 	}
@@ -176,9 +171,7 @@ internal sealed class UserService : IUserService
 	public async Task DisableAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken)
 	{
 		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
-		address.IsDeleted = true;
-		address.UpdatedAt = DateTimeOffset.UtcNow;
-		_repositoryManager.UserRepository.UpdateAddress(address);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.UserRepository.DeleteAddress(address);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 }

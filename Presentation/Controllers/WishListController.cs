@@ -78,7 +78,7 @@ public class WishListController : ControllerBase
 		return Ok();
 	}
 
-	[HttpGet("deleteAll")]
+	[HttpDelete("deleteAll")]
 	public async Task<IActionResult> DeleteAllWishListsAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -46,7 +46,7 @@ internal sealed class QuoteService : IQuoteService
 		foreach (var q in quote.QuoteItems)
 			await _repositoryManager.ServiceRepository.AvaliableService(q.ServiceId, q.Quantity, cancellationToken);
 		_repositoryManager.QuoteRepository.CreateAsync(quote, cancellationToken);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		QuoteResponse quoteResponse = quote.Adapt<QuoteResponse>();
 		return quoteResponse;
 	}
@@ -58,7 +58,7 @@ internal sealed class QuoteService : IQuoteService
 		foreach (var q in quote.QuoteItems)
 			await _repositoryManager.ServiceRepository.AvaliableService(q.ServiceId, q.Quantity, cancellationToken);
 		_repositoryManager.QuoteRepository.CreateAsync(quote, cancellationToken);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		QuoteResponse quoteResponse = quote.Adapt<QuoteResponse>();
 		return quoteResponse;
 	}
@@ -68,12 +68,11 @@ internal sealed class QuoteService : IQuoteService
 	{
 		QuoteEntity quote = await _repositoryManager.QuoteRepository.GetQuoteByUserIdAsync(id, userId, cancellationToken);
 		quoteDto.Adapt(quote);
-		quote.UpdatedAt = DateTimeOffset.Now;
 		if (quoteDto.QuoteItems != null)
 			foreach (var q in quote.QuoteItems)
 				await _repositoryManager.ServiceRepository.AvaliableService(q.ServiceId, q.Quantity, cancellationToken);
 		_repositoryManager.QuoteRepository.Update(quote);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		QuoteResponse quoteResponse = quote.Adapt<QuoteResponse>();
 		return quoteResponse;
 	}
@@ -83,9 +82,7 @@ internal sealed class QuoteService : IQuoteService
 		QuoteEntity quote = await _repositoryManager.QuoteRepository.GetQuoteByUserIdAsync(id, userId, cancellationToken);
 		foreach (var q in quote.QuoteItems)
 			await _repositoryManager.ServiceRepository.RestoreQuantity(q.ServiceId, q.Quantity, cancellationToken);
-		quote.IsDeleted = true;
-		quote.UpdatedAt = DateTimeOffset.Now;
-		_repositoryManager.QuoteRepository.Update(quote);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.QuoteRepository.Delete(quote);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

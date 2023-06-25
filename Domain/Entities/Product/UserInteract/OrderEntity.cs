@@ -5,7 +5,7 @@ using Domain.Entities.Security;
 
 namespace Domain.Entities.Product.UserInteract;
 
-public class OrderEntity : BaseEntity
+public class OrderEntity : BaseEntity, IAutoUpdate
 {
 	public int Id { get; set; }
 	public string? UserId { get; set; }

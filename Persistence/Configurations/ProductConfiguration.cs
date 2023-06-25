@@ -18,8 +18,7 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
 		builder.ToTable(nameof(ProductEntity));
 		builder.HasKey(product => product.Code);
 		builder.Property(product => product.Code).IsRequired();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
+		builder.Property(a => a.CreatedAt).IsRequired();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(product => product.Title).IsRequired();
 		builder.Property(product => product.Brand);

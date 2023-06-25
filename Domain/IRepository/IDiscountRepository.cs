@@ -17,4 +17,6 @@ public interface IDiscountRepository
 	Task<DiscountEntity> GetValidDiscount(string productCode, int optionId, string userId,
 		CancellationToken cancellationToken = default);
 	void UpdateAppliedDiscount(AppliedDiscountEntity appliedDiscount);
+	void Delete(DiscountEntity discount);
+	void DeleteAppliedDiscount(AppliedDiscountEntity appliedDiscount);
 }

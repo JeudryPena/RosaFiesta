@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product.UserInteract;
 
-public class AppliedDiscountEntity : BaseEntity
+public class AppliedDiscountEntity : BaseEntity, IAutoUpdate
 {
 	public int Id { get; set; }
 	public string UserId { get; set; }

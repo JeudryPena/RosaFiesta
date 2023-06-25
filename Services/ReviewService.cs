@@ -38,11 +38,9 @@ internal sealed class ReviewService : IReviewService
 	{
 		var review = reviewDto.Adapt<ReviewEntity>();
 		await _repositoryManager.ReviewRepository.AlredyExistAsync(optionId, userId, cancellationToken);
-		review.CreatedAt = DateTimeOffset.UtcNow;
-		review.UserId = userId;
 		review.OptionId = optionId;
 		_repositoryManager.ReviewRepository.Insert(review);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		var reviewResponse = review.Adapt<ReviewResponse>();
 		return reviewResponse;
 	}
@@ -51,9 +49,8 @@ internal sealed class ReviewService : IReviewService
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
 		review = reviewDto.Adapt(review);
-		review.UpdatedAt = DateTimeOffset.Now;
 		_repositoryManager.ReviewRepository.Update(review);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		var reviewResponse = review.Adapt<ReviewResponse>();
 		return reviewResponse;
 	}
@@ -61,8 +58,7 @@ internal sealed class ReviewService : IReviewService
 	public async Task DeleteAsync(Guid reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
-		review.IsDeleted = true;
 		_repositoryManager.ReviewRepository.Update(review);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities.Security;
 
-public class UserEntity : IdentityUser
+public class UserEntity : IdentityUser, IAutoBy
 {
 	[StringLength(120, MinimumLength = 3)]
 	public string FullName { get; set; } = String.Empty;
@@ -16,8 +16,10 @@ public class UserEntity : IdentityUser
 	public DateOnly BirthDate { get; set; }
 	public string? RefreshToken { get; set; }
 	public bool PromotionalMails { get; set; }
-	public DateTimeOffset CreatedAt { get; set; }
+	public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
 	public DateTimeOffset? UpdatedAt { get; set; }
+	public string CreatedBy { get; set; } = String.Empty;
+	public string? UpdatedBy { get; set; }
 	public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
 	public CartEntity Cart { get; set; }
 	public ICollection<ReviewEntity>? Reviews { get; set; }

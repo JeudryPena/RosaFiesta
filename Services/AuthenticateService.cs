@@ -52,8 +52,6 @@ internal sealed class AuthenticateService : IAuthenticateService
 			UserName = registerDto.UserName,
 			Email = registerDto.Email,
 			BirthDate = registerDto.BirthDate,
-			CreatedAt = DateTimeOffset.UtcNow,
-			IsDeleted = false,
 		};
 		var result = await _userManager.AddToRoleAsync(user, "Client")
 			.ConfigureAwait(false);
@@ -61,7 +59,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		result = await _userManager.CreateAsync(user, registerDto.Password)
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
-
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 		await RegisterEmailAsync(user.Email);
 	}
 
@@ -85,7 +83,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		await _emailSender.SendEmailAsync(message);
 	}
 
-	public async Task<FinishRegisterResponse> CreatePasswordAsync(FinishRegisterDto finishRegisterDto, string token, string id)
+	public async Task<FinishRegisterResponse> CreatePasswordAsync(FinishRegisterDto finishRegisterDto, string token, string id, CancellationToken cancellationToken = default)
 	{
 		var user = await _userManager.FindByIdAsync(id).ConfigureAwait(false) ?? throw new UserNotFoundException(id);
 
@@ -99,6 +97,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		user.FullName = finishRegisterDto.Name + " " + finishRegisterDto.LastName;
 		user.Cart = new CartEntity();
 		await _userManager.UpdateAsync(user).ConfigureAwait(false);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 
 		return new FinishRegisterResponse
 		{
@@ -134,7 +133,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		await _emailSender.SendEmailAsync(message).ConfigureAwait(false);
 	}
 
-	public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto, string passwordToken, string id)
+	public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto, string passwordToken, string id, CancellationToken cancellationToken = default)
 	{
 		var user = await _userManager.FindByIdAsync(id).ConfigureAwait(false) ?? throw new UserNotFoundException(id);
 
@@ -145,9 +144,11 @@ internal sealed class AuthenticateService : IAuthenticateService
 			IdentityResultMessage(resetPassResult);
 
 		await _userManager.SetLockoutEndDateAsync(user, null).ConfigureAwait(false);
+
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 
-	public async Task ChangePasswordAsync(changePasswordDto changePasswordDto)
+	public async Task ChangePasswordAsync(changePasswordDto changePasswordDto, CancellationToken cancellationToken = default)
 	{
 		var userId = CurrentUserId();
 		var user = await _userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException(userId);
@@ -155,6 +156,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		var changePassResult = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
 		if (!changePassResult.Succeeded)
 			IdentityResultMessage(changePassResult);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 
 	public async Task LogoutAsync()
@@ -166,7 +168,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		await _userManager.UpdateAsync(user).ConfigureAwait(false);
 	}
 
-	public async Task<LoginResponse> LoginAsync(LogingDto logingDto)
+	public async Task<LoginResponse> LoginAsync(LogingDto logingDto, CancellationToken cancellationToken = default)
 	{
 		var user = await _userManager.FindByNameAsync(logingDto.Username).ConfigureAwait(false);
 		if (user == null)
@@ -199,6 +201,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			await _userManager.SetLockoutEndDateAsync(user, null).ConfigureAwait(false);
 			await _userManager.ResetAccessFailedCountAsync(user);
 			await _userManager.UpdateAsync(user);
+			await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 
 			return new LoginResponse
 			{

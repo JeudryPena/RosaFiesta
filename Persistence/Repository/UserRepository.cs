@@ -62,4 +62,10 @@ public class UserRepository : IUserRepository
 			return null;
 		return userName;
 	}
+
+	public void Delete(UserEntity user)
+	=> _context.Users.Remove(user);
+
+	public void DeleteAddress(AddressEntity address)
+	=> _context.Addresses.Remove(address);
 }

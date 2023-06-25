@@ -64,11 +64,11 @@ internal sealed class ProductService : IProductService
 				category.SubCategories = productForCreationDto.Category.SubCategories.Adapt<List<SubCategoryEntity>>();
 			}
 			_repositoryManager.CategoryRepository.Insert(category);
-			await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+			await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 			product.CategoryId = category.Id;
 		}
 		_repositoryManager.ProductRepository.Insert(product);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ProductResponse productResponse = new();
 		productResponse.Adapt(product);
 		return productResponse;
@@ -85,7 +85,7 @@ internal sealed class ProductService : IProductService
 		product.Adapt(productForUpdateDto);
 		product.Options.Add(option);
 		_repositoryManager.ProductRepository.Update(product);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ProductResponse productAndOptionResponse = product.Adapt<ProductResponse>();
 		return productAndOptionResponse;
 	}
@@ -99,15 +99,12 @@ internal sealed class ProductService : IProductService
 			OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
 			if (option == null)
 				throw new Exception("Option not found");
-			option.IsDeleted = true;
-			_repositoryManager.ProductRepository.Update(product);
+			_repositoryManager.ProductRepository.DeleteOption(option);
 		}
 		else
-		{
-			product.IsDeleted = true;
-			_repositoryManager.ProductRepository.Update(product);
-		}
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+			_repositoryManager.ProductRepository.Delete(product);
+
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task<ProductDetailResponse> GetProductDetail(string productCode, int optionId,
@@ -126,23 +123,8 @@ internal sealed class ProductService : IProductService
 		OptionEntity option = product.Options[0];
 		option.QuantityAvaliable += count;
 		_repositoryManager.ProductRepository.Update(product);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		OptionAdjustResponse optionAdjustResponse = option.Adapt<OptionAdjustResponse>();
 		return optionAdjustResponse;
-	}
-
-	public async Task<ProductResponse> CreateOptionAsync(string userId, string productId,
-		OptionDto optionForCreationDto,
-		CancellationToken cancellationToken = default)
-	{
-		ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
-		var option = optionForCreationDto.Adapt<OptionEntity>();
-		product.Options.Add(option);
-		_repositoryManager.ProductRepository.Update(product);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
-		ProductResponse optionResponse = new();
-		optionResponse.Adapt(product);
-		optionResponse.Adapt(option);
-		return optionResponse;
 	}
 }

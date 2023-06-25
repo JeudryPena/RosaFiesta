@@ -13,8 +13,6 @@ public class SupplierConfig : IEntityTypeConfiguration<SupplierEntity>
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Name).IsRequired();
 		builder.HasIndex(x => x.Name).IsUnique();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(x => x.Email);
 		builder.HasIndex(x => x.Email).IsUnique();

@@ -9,7 +9,7 @@ public interface ICartService
 	Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, string productCode, int optionId, CancellationToken cancellationToken = default);
 	Task<CartResponse> AddPackToCartAsync(string userId, int optionId, string? Code, List<PurchaseDetailDto> cartItems,
 		CancellationToken cancellationToken = default);
-	Task AdjustCartItemQuantityAsync(int purchaseNumber, int optionId, int adjust,
+	Task AdjustCartItemQuantityAsync(string userId, int purchaseNumber, int optionId, int adjust,
 		CancellationToken cancellationToken = default);
 	Task<CartResponse> RemoveCartItemAsync(string userId, string productId, int? optionId,
 		CancellationToken cancellationToken = default);

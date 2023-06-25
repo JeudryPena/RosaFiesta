@@ -37,7 +37,7 @@ internal sealed class ServiceService : IServiceService
 	{
 		ServiceEntity service = serviceDto.Adapt<ServiceEntity>();
 		_repositoryManager.ServiceRepository.Create(service);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();
 		return serviceResponse;
 	}
@@ -54,7 +54,7 @@ internal sealed class ServiceService : IServiceService
 			service.QuantityAvaliable += count;
 		}
 		_repositoryManager.ServiceRepository.Update(service);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();
 		return serviceResponse;
 	}
@@ -66,7 +66,7 @@ internal sealed class ServiceService : IServiceService
 		service.Quantity += count;
 		service.QuantityAvaliable += count;
 		_repositoryManager.ServiceRepository.Update(service);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();
 		return serviceResponse;
 	}
@@ -74,8 +74,7 @@ internal sealed class ServiceService : IServiceService
 	public async Task DeleteAsync(string userId, Guid serviceId, CancellationToken cancellationToken)
 	{
 		ServiceEntity service = await _repositoryManager.ServiceRepository.GetAsync(serviceId, cancellationToken);
-		service.IsDeleted = true;
-		_repositoryManager.ServiceRepository.Update(service);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.ServiceRepository.Delete(service);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

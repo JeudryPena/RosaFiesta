@@ -42,10 +42,9 @@ internal sealed class WarrantyService : IWarrantyService
 	public async Task<WarrantyResponse> CreateWarrantyAsync(string userId, WarrantyDto warranty, CancellationToken cancellationToken = default)
 	{
 		var warrantyEntity = warranty.Adapt<WarrantyEntity>();
-		warrantyEntity.Id = Guid.NewGuid();
 		warrantyEntity.Status = WarrantyStatusType.Active;
 		_repositoryManager.WarrantyRepository.Insert(warrantyEntity);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		var warrantyResponse = warrantyEntity.Adapt<WarrantyResponse>();
 		return warrantyResponse;
 	}
@@ -59,7 +58,7 @@ internal sealed class WarrantyService : IWarrantyService
 		warranty.Conditions = warrantyDto.Conditions;
 		warranty.Type = warrantyDto.Type.Adapt<WarrantyType>();
 		_repositoryManager.WarrantyRepository.Update(warranty);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		var warrantyResponse = warranty.Adapt<WarrantyResponse>();
 		return warrantyResponse;
 	}
@@ -67,9 +66,8 @@ internal sealed class WarrantyService : IWarrantyService
 	public async Task DeleteWarrantyAsync(string userId, Guid warrantyId, CancellationToken cancellationToken = default)
 	{
 		WarrantyEntity warranty = await _repositoryManager.WarrantyRepository.GetByIdAsync(warrantyId, cancellationToken);
-		warranty.IsDeleted = true;
-		_repositoryManager.WarrantyRepository.Update(warranty);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		_repositoryManager.WarrantyRepository.Delete(warranty);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task<WarrantyResponse> UpdateWarrantyStatusAsync(string userId, Guid warrantyId, int warrantyStatus, CancellationToken cancellationToken = default)
@@ -77,7 +75,7 @@ internal sealed class WarrantyService : IWarrantyService
 		WarrantyEntity warranty = await _repositoryManager.WarrantyRepository.GetByIdAsync(warrantyId, cancellationToken);
 		warranty.Status = (WarrantyStatusType)warrantyStatus;
 		_repositoryManager.WarrantyRepository.Update(warranty);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		var warrantyResponse = warranty.Adapt<WarrantyResponse>();
 		return warrantyResponse;
 	}

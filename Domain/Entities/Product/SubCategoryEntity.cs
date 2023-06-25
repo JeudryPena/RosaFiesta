@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Product;
 
-public class SubCategoryEntity
+public class SubCategoryEntity : ISoftDelete
 {
 	public int Id { get; set; }
 	[StringLength(50, MinimumLength = 3)]

@@ -12,8 +12,6 @@ public class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
 		builder.ToTable(nameof(ReviewEntity));
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(x => x.Description);
 		builder.Property(x => x.Rating).IsRequired();

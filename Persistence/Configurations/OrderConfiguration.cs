@@ -12,8 +12,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
 		builder.ToTable(nameof(OrderEntity));
 		builder.HasKey(bill => bill.Id);
 		builder.Property(bill => bill.Id).ValueGeneratedOnAdd();
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.Property(bill => bill.UserId);
 		builder.Property(bill => bill.PayMethodId).IsRequired();

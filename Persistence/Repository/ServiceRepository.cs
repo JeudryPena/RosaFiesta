@@ -50,4 +50,7 @@ internal sealed class ServiceRepository : IServiceRepository
 		service.QuantityAvaliable += quantity;
 		_context.Services.Update(service);
 	}
+
+	public void Delete(ServiceEntity service)
+	=> _context.Services.Remove(service);
 }

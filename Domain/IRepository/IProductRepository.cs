@@ -16,4 +16,6 @@ public interface IProductRepository
 	Task<ProductEntity> GetProductAndOption(string productCode, int optionId, CancellationToken cancellationToken = default);
 	Task<ProductEntity> GetProductById(string productId, CancellationToken cancellationToken = default);
 	void UpdateOption(OptionEntity option);
+	void DeleteOption(OptionEntity option);
+	void Delete(ProductEntity product);
 }
