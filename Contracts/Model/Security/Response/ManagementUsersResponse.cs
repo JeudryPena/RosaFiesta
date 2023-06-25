@@ -1,5 +1,5 @@
 ﻿namespace Contracts.Model.Security.Response;
-public class ManagementUsersResponse : BaseResponse
+public class ManagementUsersResponse : ByBaseResponse
 {
 	public Guid Id { get; set; }
 	public string FullName { get; set; }

@@ -1,6 +1,6 @@
-import { BaseResponse } from "../../base-response";
+import { ByBaseResponse } from "../../by-base-response";
 
-export interface ServiceResponse extends BaseResponse {
+export interface ServiceResponse extends ByBaseResponse {
     id: string;
     name: string;
     description: string;
