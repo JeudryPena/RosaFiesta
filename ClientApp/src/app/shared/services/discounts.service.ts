@@ -109,7 +109,7 @@ export class DiscountsService {
   DeleteDiscountProducts(code: string, optionId: number | null) {
     if (!optionId)
       optionId = 0;
-    return this.http.get(`${this.apiUrl}${code}/options/${optionId}/delete`);
+    return this.http.delete(`${this.apiUrl}${code}/options/${optionId}`);
   }
 
   get discounts$() {

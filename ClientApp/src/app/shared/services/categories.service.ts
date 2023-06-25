@@ -5,11 +5,13 @@ import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMa
 import { config } from "../../env/config.dev";
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
+import { SubCategoriesList } from '../../interfaces/Product/Response/sub-categories-list';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
 import { UsersService } from './users.service';
+import { SubCategoryPreviewResponse } from '../../interfaces/Product/Response/subCategoryPreviewResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -111,7 +113,7 @@ export class CategoriesService {
   }
 
   DeleteSubCategory(categoryId: number, subCategoryId: number) {
-    return this.http.get(`${this.apiUrl}${categoryId}/sub-category/${subCategoryId}/delete`);
+    return this.http.delete(`${this.apiUrl}${categoryId}/sub-category/${subCategoryId}`);
   }
 
   get categories$() {
