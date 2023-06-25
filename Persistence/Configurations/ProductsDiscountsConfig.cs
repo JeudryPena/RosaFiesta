@@ -9,7 +9,6 @@ public class ProductsDiscountsConfig : IEntityTypeConfiguration<ProductsDiscount
 {
 	public void Configure(EntityTypeBuilder<ProductsDiscountsEntity> builder)
 	{
-		builder.ToTable(nameof(ProductsDiscountsEntity));
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);

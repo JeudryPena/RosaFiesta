@@ -62,17 +62,6 @@ public class ProductsController : ControllerBase
 		return Ok(productAndOptionDto);
 	}
 
-	[HttpPost("{productId}/option")]
-	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> CreateOption(string productId, [FromBody] OptionDto optionForCreationDto, CancellationToken cancellationToken)
-	{
-		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		if (userId == null)
-			return StatusCode((int)HttpStatusCode.Unauthorized);
-		ProductResponse option = await _serviceManager.ProductService.CreateOptionAsync(userId, productId, optionForCreationDto, cancellationToken);
-		return Ok(option);
-	}
-
 	[HttpPut("{productId}/option/{optionId}")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> UpdateProduct(string productId, int optionId, [FromBody] ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken)

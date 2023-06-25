@@ -12,7 +12,6 @@ public class UserEntity : IdentityUser, IAutoBy
 	[StringLength(120, MinimumLength = 3)]
 	public string FullName { get; set; } = String.Empty;
 	[Range(16, 150)]
-	public int Age { get; set; }
 	public DateOnly BirthDate { get; set; }
 	public string? RefreshToken { get; set; }
 	public bool PromotionalMails { get; set; }

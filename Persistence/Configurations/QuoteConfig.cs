@@ -12,14 +12,6 @@ public class QuoteConfig : IEntityTypeConfiguration<QuoteEntity>
 		builder.HasKey(q => q.Id);
 		builder.Property(q => q.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);
-		builder.Property(q => q.CustomerName).IsRequired();
-		builder.Property(q => q.ContactNumber).IsRequired();
-		builder.Property(q => q.EventName).IsRequired();
-		builder.Property(q => q.EventDate).IsRequired();
-		builder.Property(a => a.CreatedAt).IsRequired();
-		builder.Property(a => a.UpdatedAt);
-		builder.Property(a => a.IsDeleted).IsRequired();
-		builder.Property(q => q.Location).IsRequired();
 		builder.HasMany(q => q.QuoteItems).WithOne().HasForeignKey(qi => qi.QuoteId);
 	}
 }

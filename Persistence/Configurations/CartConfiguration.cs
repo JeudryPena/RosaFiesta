@@ -19,10 +19,8 @@ public class CartConfiguration : IEntityTypeConfiguration<CartEntity>
 	private const string marketingManagerId = "2301D884-221A-4E7D-B509-0113DCC043E3";
 	public void Configure(EntityTypeBuilder<CartEntity> builder)
 	{
-		builder.ToTable(nameof(CartEntity));
 		builder.HasKey(x => x.CartId);
 		builder.Property(x => x.CartId).ValueGeneratedOnAdd();
-		builder.Property(x => x.UserId).IsRequired();
 		builder.HasMany(x => x.Details).WithOne().HasForeignKey(x => x.CartId);
 		builder.HasData(new CartEntity
 		{

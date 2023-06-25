@@ -11,7 +11,5 @@ public class MultipleOptionImagesConfig : IEntityTypeConfiguration<MultipleOptio
 	{
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
-		builder.Property(x => x.Image).IsRequired();
-		builder.Property(x => x.OptionId).IsRequired();
 	}
 }

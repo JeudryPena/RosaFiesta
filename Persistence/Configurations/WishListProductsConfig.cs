@@ -9,10 +9,8 @@ public class WishListProductsConfig : IEntityTypeConfiguration<WishListProductsE
 {
 	public void Configure(EntityTypeBuilder<WishListProductsEntity> builder)
 	{
-		builder.ToTable(nameof(WishListProductsEntity));
 		builder.HasKey(x => new { x.WishListId, x.OptionId });
 		builder.HasQueryFilter(a => !a.IsDeleted);
-		builder.Property(x => x.OptionId);
 		builder.HasOne(x => x.Option).WithMany().HasForeignKey(x => x.OptionId);
 	}
 }

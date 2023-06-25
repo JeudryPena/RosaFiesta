@@ -23,20 +23,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 
 	public void Configure(EntityTypeBuilder<UserEntity> builder)
 	{
-		builder.ToTable(nameof(UserEntity));
 		builder.HasKey(user => user.Id);
-		builder.Property(a => a.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-		builder.Property(a => a.UpdatedAt).ValueGeneratedOnUpdate();
 		builder.HasQueryFilter(a => !a.IsDeleted);
-		builder.Property(user => user.FullName).IsRequired();
-		builder.Property(user => user.Age).IsRequired();
-		builder.Property(user => user.CreatedAt).IsRequired();
-		builder.Property(user => user.UpdatedAt);
-		builder.Property(user => user.BirthDate).IsRequired();
-		builder.Property(user => user.RefreshToken);
-		builder.Property(user => user.RefreshTokenExpiryTime);
-		builder.Property(user => user.PromotionalMails).IsRequired();
-		builder.Property(user => user.IsDeleted).IsRequired();
 		builder.HasMany(user => user.Quotes)
 			.WithOne()
 			.HasForeignKey(quote => quote.UserId);
@@ -87,7 +75,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			EmailConfirmed = true,
 			LockoutEnabled = false,
 			FullName = "Rosalba Pena",
-			Age = 45,
 			PhoneNumber = "18497505944",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
@@ -106,7 +93,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			EmailConfirmed = true,
 			LockoutEnabled = false,
 			FullName = "Rosanny Pena",
-			Age = 15,
 			PhoneNumber = "18497505945",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
@@ -125,7 +111,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			EmailConfirmed = true,
 			LockoutEnabled = false,
 			FullName = "Rosalba Pena",
-			Age = 15,
 			PhoneNumber = "18497505946",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
@@ -144,7 +129,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			EmailConfirmed = true,
 			LockoutEnabled = false,
 			FullName = "Jendry Pena",
-			Age = 15,
 			PhoneNumber = "18497505947",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,
@@ -163,7 +147,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			EmailConfirmed = true,
 			LockoutEnabled = false,
 			FullName = "Rosmery Pena",
-			Age = 15,
 			PhoneNumber = "18497505948",
 			PhoneNumberConfirmed = true,
 			TwoFactorEnabled = false,

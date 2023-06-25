@@ -12,11 +12,5 @@ public class AddressConfig : IEntityTypeConfiguration<AddressEntity>
 		builder.HasKey(a => a.Id);
 		builder.Property(a => a.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(b => !b.IsDeleted);
-		builder.Property(a => a.Title).IsRequired();
-		builder.Property(a => a.City).IsRequired();
-		builder.Property(a => a.Country).IsRequired();
-		builder.Property(a => a.Street).IsRequired();
-		builder.Property(a => a.IsDeleted).IsRequired();
-		builder.Property(a => a.ZipCode).IsRequired();
 	}
 }
