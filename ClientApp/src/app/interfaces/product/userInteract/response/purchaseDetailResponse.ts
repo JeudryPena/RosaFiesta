@@ -7,5 +7,5 @@ export interface PurchaseDetailResponse extends BaseResponse {
     totalOptionsPrice: number;
     purchaseOptions: PurchaseDetailOptionResponse[];
     cartId: number;
-    orderSku: number | null;
+    orderId: number | null;
 }

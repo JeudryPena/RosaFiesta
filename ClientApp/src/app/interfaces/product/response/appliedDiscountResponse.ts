@@ -1,7 +1,7 @@
 export interface AppliedDiscountResponse {
 	id: number;
 	userId: string;
-	code: string;
+	discountId: string;
 	timesApplied: number;
 	appliedDate: string;
 	orderId: number;

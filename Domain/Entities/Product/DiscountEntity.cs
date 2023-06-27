@@ -7,8 +7,7 @@ namespace Domain.Entities.Product;
 
 public class DiscountEntity : ByBaseEntity, IAutoBy
 {
-	[StringLength(25, MinimumLength = 3)]
-	public string Code { get; set; }
+	public Guid Id { get; set; }
 	[StringLength(50, MinimumLength = 3)]
 	public string Name { get; set; }
 	public DiscountType Type { get; set; }

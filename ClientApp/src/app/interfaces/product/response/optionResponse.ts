@@ -1,5 +1,6 @@
 export interface OptionResponse {
 	id: number;
+	title: string;
 	color: string | null;
 	size: number | null;
 	weight: number;

@@ -1,7 +1,7 @@
 import { OptionPreviewResponse } from "./optionPreviewResponse";
 
 export interface ProductPreviewResponse {
-	code: string;
+	discountId: string;
 	title: string;
 	options: OptionPreviewResponse;
 }

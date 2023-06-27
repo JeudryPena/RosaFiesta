@@ -22,21 +22,31 @@ internal sealed class DiscountService : IDiscountService
 	public async Task<IEnumerable<ManagementDiscountsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<DiscountEntity> discounts = await _repositoryManager.DiscountRepository.GetAllAsync(cancellationToken);
-		var discountResponse = discounts.Adapt<IEnumerable<ManagementDiscountsResponse>>();
+		foreach (var discount in discounts)
+		{
+			discount.CreatedBy = await _repositoryManager.UserRepository.GetUserNameByIdAsync(discount.CreatedBy, cancellationToken);
+			if (discount.UpdatedBy != null)
+				discount.UpdatedBy = await _repositoryManager.UserRepository.GetUserNameByIdAsync(discount.UpdatedBy, cancellationToken);
+		}
+		IEnumerable<ManagementDiscountsResponse> discountResponse = discounts.Adapt<IEnumerable<ManagementDiscountsResponse>>();
 		return discountResponse;
 	}
 
-	public async Task<ManagementDiscountsResponse> GetManagementDiscountAsync(string code, CancellationToken cancellationToken = default)
+	public async Task<ManagementDiscountsResponse> GetManagementDiscountAsync(Guid discountId, CancellationToken cancellationToken = default)
 	{
-		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(code, cancellationToken);
+		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
 		var discountResponse = discount.Adapt<ManagementDiscountsResponse>();
+		discountResponse.CreatedBy = await _repositoryManager.UserRepository.GetUserNameByIdAsync(discount.CreatedBy, cancellationToken);
+		if (discount.UpdatedBy != null)
+			discountResponse.UpdatedBy = await _repositoryManager.UserRepository.GetUserNameByIdAsync(discount.UpdatedBy, cancellationToken);
 		return discountResponse;
 	}
 
-	public async Task<DiscountResponse> GetDiscountAsync(string discountId,
+	public async Task<DiscountResponse> GetDiscountAsync(Guid discountId,
 		CancellationToken cancellationToken = default)
 	{
 		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
+
 		var discountResponse = discount.Adapt<DiscountResponse>();
 		return discountResponse;
 	}
@@ -44,18 +54,11 @@ internal sealed class DiscountService : IDiscountService
 	public async Task CreateDiscountAsync(string userId, DiscountDto discount, CancellationToken cancellationToken = default)
 	{
 		var discountEntity = discount.Adapt<DiscountEntity>();
-		if (discount.ProductsDiscounts != null)
-			discountEntity.ProductsDiscounts = discount.ProductsDiscounts.Select(d => new ProductsDiscountsEntity()
-			{
-				Code = discountEntity.Code,
-				OptionId = d.OptionId,
-			}).ToList();
-		discountEntity.CreatedBy = userId;
 		_repositoryManager.DiscountRepository.Insert(discountEntity);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task UpdateDiscountAsync(string userId, string discountId,
+	public async Task UpdateDiscountAsync(string userId, Guid discountId,
 		DiscountDto discountDto,
 		CancellationToken cancellationToken = default)
 	{
@@ -78,7 +81,7 @@ internal sealed class DiscountService : IDiscountService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task DeleteDiscountAsync(string userId, string discountId,
+	public async Task DeleteDiscountAsync(string userId, Guid discountId,
 		CancellationToken cancellationToken = default)
 	{
 		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetDiscountAsync(discountId, cancellationToken);
@@ -86,9 +89,9 @@ internal sealed class DiscountService : IDiscountService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task DeleteDiscountProductsAsync(string userId, string code, int? optionId, CancellationToken cancellationToken = default)
+	public async Task DeleteDiscountProductsAsync(string userId, Guid discountId, int? optionId, CancellationToken cancellationToken = default)
 	{
-		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(code, cancellationToken);
+		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
 		if (discount.ProductsDiscounts == null)
 			throw new Exception("Discount products not found");
 		else if (optionId != null)

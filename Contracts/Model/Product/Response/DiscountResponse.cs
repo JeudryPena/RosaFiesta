@@ -2,7 +2,7 @@
 
 public class DiscountResponse : BaseResponse
 {
-	public string Code { get; set; } = string.Empty;
+	public Guid Id { get; set; }
 	public string Name { get; set; } = string.Empty;
 	public int Type { get; set; }
 	public double Value { get; set; }

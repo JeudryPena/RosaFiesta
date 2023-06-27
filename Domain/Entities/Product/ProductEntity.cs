@@ -7,9 +7,10 @@ namespace Domain.Entities.Product;
 
 public class ProductEntity : ByBaseEntity, IAutoBy
 {
-	[StringLength(100, MinimumLength = 3)]
+	public Guid Id { get; set; }
+	[StringLength(500, MinimumLength = 3)]
 	public string? Code { get; set; }
-	[StringLength(100, MinimumLength = 5)]
+	[StringLength(100, MinimumLength = 3)]
 	public string Title { get; set; }
 	[StringLength(50, MinimumLength = 3)]
 	public string? Brand { get; set; }

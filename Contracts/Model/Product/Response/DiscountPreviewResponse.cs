@@ -2,7 +2,7 @@
 
 public class DiscountPreviewResponse
 {
-     public string Code { get; set; } 
-     public int Type { get; set; }
-     public double Value { get; set; }
+	public Guid Id { get; set; }
+	public int Type { get; set; }
+	public double Value { get; set; }
 }

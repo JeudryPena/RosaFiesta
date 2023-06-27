@@ -1,12 +1,14 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbCalendar, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
+import { OptionsListResponse } from '../../interfaces/Product/Response/options-list-response';
 import { DiscountDto } from '../../interfaces/Product/discountDto';
-import { ProductsDiscountDto } from '../../interfaces/Product/productsDiscountDto';
 import { DiscountsService } from '../../shared/services/discounts.service';
+import { ProductsService } from '../../shared/services/products.service';
 import { UsersService } from '../../shared/services/users.service';
 
 @Component({
@@ -23,10 +25,19 @@ export class ModalDiscountComponent implements OnInit {
 
   discountForm: any;
   products: any[] = [];
-  productForm: any;
   date!: Date[];
   minDate: Date;
   maxDate: Date;
+  optionsList: OptionsListResponse[] = [];
+  selected?: string;
+
+  onSelect(event: TypeaheadMatch): void {
+    this.products.push({
+      optionId: event.item.id,
+      title: event.item.title
+    });
+    this.selected = '';
+  }
 
   updateProduct = false;
   productTitle = '';
@@ -47,14 +58,18 @@ export class ModalDiscountComponent implements OnInit {
     private modalService: NgbModal,
     private service: DiscountsService,
     private userService: UsersService,
-    private parserFormatter: NgbDateParserFormatter,
-    private calendar: NgbCalendar,
-    public el: ElementRef
+    public el: ElementRef,
+    private productService: ProductsService
   ) {
     this.minDate = new Date();
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
     this.maxDate.setDate(this.maxDate.getDate() + 3648);
+  }
+
+  existingOption(option: any) {
+
+    console.log(option)
   }
 
   changeTime(start: any, end: any) {
@@ -65,22 +80,11 @@ export class ModalDiscountComponent implements OnInit {
     this.discountForm.patchValue({
       date: this.date
     });
-  } 
-
-  userName(id: string, id2: string) {
-    this.userService.UserName(id).subscribe((response) => {
-      this.discountForm.patchValue({
-        createdBy: response.userName
-      });
-    });
-    this.userService.UserName(id2).subscribe((response) => {
-      this.discountForm.patchValue({
-        updatedBy: response.userName
-      });
-    });
   }
 
   ngOnInit(): void {
+
+
     this.discountForm = new FormGroup({
       code: new FormControl(''),
       name: new FormControl(''),
@@ -101,7 +105,7 @@ export class ModalDiscountComponent implements OnInit {
         this.date = [start, end];
         this.minDate.setDate(this.date[0].getDate());
         this.discountForm.patchValue({
-          code: response.code,
+          id: response.id,
           name: response.name,
           type: response.type,
           description: response.description,
@@ -116,7 +120,6 @@ export class ModalDiscountComponent implements OnInit {
     } else if (this.read) {
 
       this.discountForm = new FormGroup({
-        code: new FormControl(''),
         name: new FormControl(''),
         type: new FormControl(0),
         description: new FormControl(''),
@@ -124,6 +127,7 @@ export class ModalDiscountComponent implements OnInit {
         maxTimesApply: new FormControl(0),
         start: new FormControl(''),
         end: new FormControl(''),
+        date: new FormControl(''),
         productsDiscounts: new FormControl(''),
         createdAt: new FormControl(''),
         createdBy: new FormControl(''),
@@ -136,9 +140,8 @@ export class ModalDiscountComponent implements OnInit {
         let end = new Date(response.end);
         this.date = [start, end];
         this.minDate.setDate(this.date[0].getDate());
-        
+
         this.discountForm.patchValue({
-          code: response.code,
           name: response.name,
           type: response.type,
           description: response.description,
@@ -148,22 +151,22 @@ export class ModalDiscountComponent implements OnInit {
           end: response.end,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
+          createdBy: response.createdBy,
+          updatedBy: response.updatedBy,
           date: this.date
         });
-        this.userName(response.createdBy, response.updatedBy);
+
         this.products = response.productsDiscounts || [];
       });
     }
-  }
 
-  addNewProduct(code: string) {
-    this.productTitle = 'Añadir Producto a descontar'
-    this.productForm = new FormGroup({
-      optionId: new FormControl(code),
-    })
-    setTimeout(() => {
-
-    }, 10);
+    this.productService.GetOptions().subscribe({
+      next: (response: OptionsListResponse[]) => {
+        this.optionsList = response;
+      }, error: (error) => {
+        console.log(error);
+      }
+    });
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
@@ -171,57 +174,12 @@ export class ModalDiscountComponent implements OnInit {
     return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
-  validateProduct = (controlName: string, errorName: string, isFocused: boolean) => {
-    const control = this.productForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
-  }
-
   close() {
     this.activeModal.close();
   }
 
-  cancelProduct() {
-    this.updateProduct = false;
-    this.productForm = null;
-  }
-
-  UpdateProduct(productFormValue: any) {
-    const product = { ...productFormValue };
-
-    const productDto: ProductsDiscountDto = {
-      optionId: product.optionId,
-    }
-
-    this.products[product.index] = productDto;
-    this.updateProduct = false;
-    this.productForm = null;
-  }
-
-  selectProduct(index: number) {
-    this.updateProduct = true;
-    this.productTitle = 'Modificar Descuento a descontar'
-    this.productForm = new FormGroup({
-      index: new FormControl(index),
-      optionId: new FormControl(this.products[index].optionId),
-    })
-
-    setTimeout(() => {
-
-    }, 10);
-  }
-
   removeProduct(index: number) {
     this.products.splice(index, 1);
-  }
-
-  saveProduct(productFormValue: any) {
-    const product = { ...productFormValue };
-    const productDto: ProductsDiscountDto = {
-      optionId: product.optionId,
-    }
-
-    this.products.push(productDto);
-    this.productForm = null;
   }
 
   updateDiscount = (discountFormValue: any) => {
@@ -233,7 +191,6 @@ export class ModalDiscountComponent implements OnInit {
       if (result) {
         const discount = { ...discountFormValue };
         const discountDto: DiscountDto = {
-          code: discount.code,
           name: discount.name,
           type: discount.type,
           description: discount.description,
@@ -273,7 +230,6 @@ export class ModalDiscountComponent implements OnInit {
         const discount = { ...discountFormValue };
 
         const discountDto: DiscountDto = {
-          code: discount.code,
           name: discount.name,
           type: discount.type,
           description: discount.description,

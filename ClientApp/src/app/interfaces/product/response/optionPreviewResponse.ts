@@ -4,6 +4,7 @@ import { ReviewPreviewResponse } from "./reviewPreviewResponse";
 
 export interface OptionPreviewResponse extends BaseResponse {
 	price: number;
+	title: string;
 	offerPrice: number | null;
 	discountSave: number | null;
 	images: string | null;

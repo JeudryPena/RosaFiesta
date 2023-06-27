@@ -4,6 +4,7 @@ import { MultipleImagesResponse } from "./multipleImagesResponse";
 
 export interface OptionDetailResponse {
 	id: number;
+	title: string;
 	description: string | null;
 	images: MultipleImagesResponse[] | null;
 	price: number;

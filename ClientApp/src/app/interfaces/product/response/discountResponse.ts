@@ -3,7 +3,7 @@ import { ProductsDiscountResponse } from "./productsDiscountResponse";
 
 
 export interface DiscountResponse extends BaseResponse {
-	code: string;
+	id: string;
 	name: string;
 	type: number;
 	value: number;

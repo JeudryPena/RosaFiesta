@@ -40,11 +40,14 @@ export class ManagementDiscountsComponent {
   }
 
   Retrieve(code: string) {
-
+    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    modalRef.componentInstance.title = 'Consultar Descuento';
+    modalRef.componentInstance.code = code;
+    modalRef.componentInstance.read = true;
   }
 
   Modify(code: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Modificar Descuento';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.code = code;
@@ -105,7 +108,7 @@ export class ManagementDiscountsComponent {
   }
 
   AddDiscount() {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Añadir Descuento';
     modalRef.result.then((result) => {
       if (result)

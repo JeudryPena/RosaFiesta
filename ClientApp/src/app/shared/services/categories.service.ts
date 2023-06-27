@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMa
 import { config } from "../../env/config.dev";
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
-import { SubCategoriesList } from '../../interfaces/Product/Response/sub-categories-list';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';

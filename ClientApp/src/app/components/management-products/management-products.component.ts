@@ -2,11 +2,10 @@ import { DecimalPipe } from '@angular/common';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
+import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { ProductsService } from '../../shared/services/products.service';
 import { ModalProductComponent } from '../modal-product/modal-product.component';
-import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
 
 @Component({
   selector: 'app-management-products',
@@ -33,7 +32,7 @@ export class ManagementProductsComponent {
   }
 
   Retrieve(code: string) {
-    
+
   }
 
   Modify(code: string) {

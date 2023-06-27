@@ -21,7 +21,7 @@
                     <table class="table table-striped table-hover align-middle ">
                         <thead class="tables">
                             <tr class="table-row">
-                                <th scope="col" class="table-cell" sortable="code" (sort)="onSort($event)">Codigo</th>
+                                <th scope="col" class="table-cell">Codigo</th>
                                 <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Titulo</th>
                                 <th scope="col" class="table-cell" >Stock</th>
                                 <th scope="col" class="table-cell" >Precio</th>
@@ -54,9 +54,9 @@
                                     <div ngbDropdown container="body">
                                         <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown" ngbDropdownToggle>Acciones</button>
                                         <div ngbDropdownMenu>
-                                            <button ngbDropdownItem (click)="Retrieve(item.code)">Ver</button>
-                                            <button ngbDropdownItem (click)="Modify(item.code)">Modificar</button>
-                                            <div class="dropdown-divider" (click)="Delete(item.code)"></div>
+                                            <button ngbDropdownItem (click)="Retrieve(item.id)">Ver</button>
+                                            <button ngbDropdownItem (click)="Modify(item.id)">Modificar</button>
+                                            <div class="dropdown-divider" (click)="Delete(item.id)"></div>
                                             <button ngbDropdownItem>Eliminar</button>
                                         </div>
                                     </div>

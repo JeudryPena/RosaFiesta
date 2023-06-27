@@ -20,10 +20,10 @@ public class ProductRepository : IProductRepository
 	public async Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
 	await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
 
-	public async Task<ProductEntity> GetProductDetail(string cartItemProductId, int optionId,
+	public async Task<ProductEntity> GetProductDetail(Guid cartItemProductId, int optionId,
 		CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options.Where(x => x.Id == optionId)).FirstOrDefaultAsync(x => x.Code == cartItemProductId, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options.Where(x => x.Id == optionId)).FirstOrDefaultAsync(x => x.Id == cartItemProductId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		if (product.IsDeleted)
@@ -31,29 +31,37 @@ public class ProductRepository : IProductRepository
 		return product;
 	}
 
-	public async Task<ProductEntity> GetProductAndOption(string productCode, int optionId, CancellationToken cancellationToken = default)
+	public async Task<ProductEntity> GetProductAndOption(Guid productId, int optionId, CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Code == productCode, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
 	}
 
-	public async Task<ProductEntity> GetProductById(string productId, CancellationToken cancellationToken = default)
+	public async Task<ProductEntity> GetProductById(Guid productId, CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
+	}
+
+	public async Task<string> GetOptionTitle(int optionId, CancellationToken cancellationToken)
+	{
+		var option = await _dbContext.Options.FirstOrDefaultAsync(x => x.Id == optionId, cancellationToken);
+		if (option == null)
+			throw new ArgumentNullException(nameof(option));
+		return option.Title;
 	}
 
 	public void UpdateOption(OptionEntity option)
 	=> _dbContext.Options.Update(option);
 
-	public async Task<ProductEntity> GetByIdAsync(string productId, int cartItemOptionId,
+	public async Task<ProductEntity> GetByIdAsync(Guid productId, int cartItemOptionId,
 		CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(p => p.Supplier).Include(p => p.Warranty).Include(x => x.Options).ThenInclude(x => x.Reviews).FirstOrDefaultAsync(x => x.Code == productId, cancellationToken);
+		var product = await _dbContext.Products.Include(p => p.Supplier).Include(p => p.Warranty).Include(x => x.Options).ThenInclude(x => x.Reviews).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
@@ -80,4 +88,10 @@ public class ProductRepository : IProductRepository
 
 	public void Delete(ProductEntity product)
 	=> _dbContext.Products.Remove(product);
+
+	public async Task<IEnumerable<OptionEntity>> GetOptionsAsync(CancellationToken cancellationToken)
+	{
+		IEnumerable<OptionEntity> options = await _dbContext.Options.ToListAsync(cancellationToken);
+		return options;
+	}
 }

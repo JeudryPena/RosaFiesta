@@ -26,7 +26,7 @@ function sort(discounts: ManagementDiscountsResponse[], column: SortColumn, dire
 function matches(discount: ManagementDiscountsResponse, term: string, pipe: PipeTransform) {
   return (
     discount.name.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(discount.code).includes(term)
+    pipe.transform(discount.id).includes(term)
   );
 }
 
@@ -61,14 +61,6 @@ export class DiscountsService {
   RetrieveData() {
     this.GetDiscountsManagement().subscribe((data) => {
       this._managementDiscounts$ = data;
-      this._managementDiscounts$.forEach(i => {
-        this.service.UserName(i.createdBy).subscribe((data) => {
-          i.createdBy = data.userName;
-        });
-        this.service.UserName(i.updatedBy).subscribe((data) => {
-          i.updatedBy = data.userName;
-        });
-      });
       this._search$
         .pipe(
           tap(() => this._loading$.next(true)),

@@ -30,17 +30,17 @@ public class DiscountsController : ControllerBase
 		return Ok(discounts);
 	}
 
-	[HttpGet("{Code}/management")]
-	public async Task<IActionResult> GetManagementDiscount(string code, CancellationToken cancellationToken)
+	[HttpGet("{discountId:guid}/management")]
+	public async Task<IActionResult> GetManagementDiscount(Guid discountId, CancellationToken cancellationToken)
 	{
-		ManagementDiscountsResponse discount = await _serviceManager.DiscountService.GetManagementDiscountAsync(code, cancellationToken);
+		ManagementDiscountsResponse discount = await _serviceManager.DiscountService.GetManagementDiscountAsync(discountId, cancellationToken);
 		return Ok(discount);
 	}
 
-	[HttpGet("{Code}")]
-	public async Task<IActionResult> GetDiscount(string Code, CancellationToken cancellationToken)
+	[HttpGet("{discountId:guid}")]
+	public async Task<IActionResult> GetDiscount(Guid discountId, CancellationToken cancellationToken)
 	{
-		DiscountResponse discount = await _serviceManager.DiscountService.GetDiscountAsync(Code, cancellationToken);
+		DiscountResponse discount = await _serviceManager.DiscountService.GetDiscountAsync(discountId, cancellationToken);
 		return Ok(discount);
 	}
 
@@ -54,35 +54,35 @@ public class DiscountsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPut("{Code}")]
-	public async Task<IActionResult> UpdateDiscount(string Code, [FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
+	[HttpPut("{discountId:guid}")]
+	public async Task<IActionResult> UpdateDiscount(Guid discountId, [FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.DiscountService.UpdateDiscountAsync(userId, Code, discountDto, cancellationToken);
+		await _serviceManager.DiscountService.UpdateDiscountAsync(userId, discountId, discountDto, cancellationToken);
 		return Ok();
 	}
 
-	[HttpDelete("{Code}")]
-	public async Task<IActionResult> DeleteDiscount(string Code, CancellationToken cancellationToken)
+	[HttpDelete("{discountId:guid}")]
+	public async Task<IActionResult> DeleteDiscount(Guid discountId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.DiscountService.DeleteDiscountAsync(userId, Code, cancellationToken);
+		await _serviceManager.DiscountService.DeleteDiscountAsync(userId, discountId, cancellationToken);
 		return Ok();
 	}
 
-	[HttpDelete("{code}/options/{optionId?}")]
-	public async Task<IActionResult> DeleteDiscountProducts(string code, CancellationToken cancellationToken, int? optionId = 0)
+	[HttpDelete("{discountId:guid}/options/{optionId?}")]
+	public async Task<IActionResult> DeleteDiscountProducts(Guid discountId, CancellationToken cancellationToken, int? optionId = 0)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
 		if (optionId == 0)
 			optionId = null;
-		await _serviceManager.DiscountService.DeleteDiscountProductsAsync(userId, code, optionId, cancellationToken);
+		await _serviceManager.DiscountService.DeleteDiscountProductsAsync(userId, discountId, optionId, cancellationToken);
 		return Ok();
 	}
 

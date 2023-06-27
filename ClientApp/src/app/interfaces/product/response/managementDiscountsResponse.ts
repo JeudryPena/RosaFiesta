@@ -2,7 +2,7 @@ import { ByBaseResponse } from "../../by-base-response";
 import { ProductsDiscountResponse } from "./productsDiscountResponse";
 
 export interface ManagementDiscountsResponse extends ByBaseResponse {
-	code: string;
+	id: string;
 	name: string;
 	type: number;
 	value: number;

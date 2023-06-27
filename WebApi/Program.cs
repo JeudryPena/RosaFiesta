@@ -62,10 +62,8 @@ public static class Program
 			o.MultipartBodyLengthLimit = int.MaxValue;
 			o.MemoryBufferThreshold = int.MaxValue;
 		});
-
 		builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 		builder.Services.AddEndpointsApiExplorer();
-
 
 		var app = builder.Build();
 
@@ -127,12 +125,11 @@ public static class Program
 		builder.Services
 			.AddControllers()
 			.AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-
-		// Nose que es
 		builder.Services
 			.AddControllers()
 			.AddJsonOptions(opt =>
 			{
+
 				opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 			});
 		// Newtonsoft

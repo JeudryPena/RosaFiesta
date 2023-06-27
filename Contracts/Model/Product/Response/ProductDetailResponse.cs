@@ -2,7 +2,7 @@
 
 public class ProductDetailResponse : BaseResponse
 {
-	public string Code { get; set; }
+	public Guid Id { get; set; }
 	public string Title { get; set; }
 	public string? Brand { get; set; }
 	public int? CategoryId { get; set; }

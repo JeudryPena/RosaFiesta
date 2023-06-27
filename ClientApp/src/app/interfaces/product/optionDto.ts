@@ -12,6 +12,5 @@ export interface OptionDto {
     material: number | null;
     condition: number;
     images: MultipleImageDto[] | null;
-    thumbnail: string | null;
     quantityAvaliable: number;
 }

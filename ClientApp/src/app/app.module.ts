@@ -18,7 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -239,7 +239,8 @@ export function tokenGetter() {
     NgTemplateOutlet, 
     BsDatepickerModule.forRoot(),
     PopoverModule.forRoot(),
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    TypeaheadModule.forRoot(),
   ],
   providers: [NgbRatingConfig, DecimalPipe 
   ],

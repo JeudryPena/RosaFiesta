@@ -86,12 +86,12 @@ internal sealed class OrderService : IOrderService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, string Code, int optionId, CancellationToken cancellationToken = default)
+	public async Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, Guid? discountId, int optionId, CancellationToken cancellationToken = default)
 	{
 		PurchaseDetailOptions detail = await _repositoryManager.PurchaseDetailRepository.GetDetailOptionByIdAsync(optionId, purchaseNumber, cancellationToken);
 		if (detail.DiscountApplied == null)
 			detail.DiscountApplied = new AppliedDiscountEntity { UserId = userId };
-		detail.DiscountApplied.Code = Code;
+		detail.DiscountApplied.DiscountId = (Guid)discountId;
 		_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(detail);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ValidDiscountResponse validDiscountResponse = detail.DiscountApplied.Adapt<ValidDiscountResponse>();

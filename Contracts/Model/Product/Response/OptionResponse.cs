@@ -2,6 +2,7 @@
 public class OptionResponse
 {
 	public int Id { get; set; }
+	public string Title { get; set; }
 	public string? Color { get; set; }
 	public float? Size { get; set; }
 	public float Weight { get; set; }

@@ -1,6 +1,7 @@
 
 export interface ProductsDiscountResponse {
-	code: string;
+	discountId: string;
 	optionId: number | null;
+	title: string | null;
 	isDeleted: boolean;
 }

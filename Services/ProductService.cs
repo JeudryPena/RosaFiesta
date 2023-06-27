@@ -39,7 +39,14 @@ internal sealed class ProductService : IProductService
 		return productPreviewResponse;
 	}
 
-	public async Task<ProductResponse> GetByIdAsync(string productId, int optionId,
+	public async Task<IEnumerable<OptionsListResponse>> GetOptionsAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<OptionEntity> options = await _repositoryManager.ProductRepository.GetOptionsAsync(cancellationToken);
+		IEnumerable<OptionsListResponse> optionsListResponse = options.Adapt<IEnumerable<OptionsListResponse>>();
+		return optionsListResponse;
+	}
+
+	public async Task<ProductResponse> GetByIdAsync(Guid productId, int optionId,
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, optionId, cancellationToken);
@@ -51,7 +58,7 @@ internal sealed class ProductService : IProductService
 		return productResponse;
 	}
 
-	public async Task<ProductResponse> CreateAsync(string userId, ProductDto productForCreationDto,
+	public async Task CreateAsync(string userId, ProductDto productForCreationDto,
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = productForCreationDto.Adapt<ProductEntity>();
@@ -69,12 +76,9 @@ internal sealed class ProductService : IProductService
 		}
 		_repositoryManager.ProductRepository.Insert(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		ProductResponse productResponse = new();
-		productResponse.Adapt(product);
-		return productResponse;
 	}
 
-	public async Task<ProductResponse> UpdateAsync(string userId, int optionId, string productId,
+	public async Task UpdateAsync(string userId, int optionId, Guid productId,
 		ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
@@ -86,11 +90,9 @@ internal sealed class ProductService : IProductService
 		product.Options.Add(option);
 		_repositoryManager.ProductRepository.Update(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		ProductResponse productAndOptionResponse = product.Adapt<ProductResponse>();
-		return productAndOptionResponse;
 	}
 
-	public async Task DeleteAsync(string userId, string productId, int? optionId,
+	public async Task DeleteAsync(string userId, Guid productId, int? optionId,
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
@@ -107,7 +109,7 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<ProductDetailResponse> GetProductDetail(string productCode, int optionId,
+	public async Task<ProductDetailResponse> GetProductDetail(Guid productCode, int optionId,
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productCode, optionId, cancellationToken);
@@ -117,7 +119,7 @@ internal sealed class ProductService : IProductService
 		return productDetailResponse;
 	}
 
-	public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string userId, int optionId, string productId, int count, CancellationToken cancellationToken = default)
+	public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string userId, int optionId, Guid productId, int count, CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
 		OptionEntity option = product.Options[0];

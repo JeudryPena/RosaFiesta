@@ -2,7 +2,7 @@ import { ReviewResponse } from "../UserInteract/Response/reviewResponse";
 import { OptionPreviewResponse } from "./optionPreviewResponse";
 
 export interface ProductResponse {
-	code: string | null;
+	id: string;
 	title: string;
 	brand: string | null;
 	type: string;

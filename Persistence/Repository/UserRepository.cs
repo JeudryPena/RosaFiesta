@@ -55,11 +55,11 @@ public class UserRepository : IUserRepository
 	public void CreateAddress(AddressEntity address) => _context.Addresses.Add(address);
 	public void UpdateAddress(AddressEntity address) => _context.Addresses.Update(address);
 
-	public async Task<string?> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken)
+	public async Task<string> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken)
 	{
 		string? userName = await _context.Users.Where(x => x.Id == userId).Select(x => x.UserName).FirstOrDefaultAsync(cancellationToken);
 		if (userName == null)
-			return null;
+			return "Unkhown";
 		return userName;
 	}
 

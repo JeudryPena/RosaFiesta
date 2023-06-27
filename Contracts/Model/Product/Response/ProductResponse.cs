@@ -4,7 +4,7 @@ namespace Contracts.Model.Product.Response;
 
 public class ProductResponse
 {
-	public string? Code { get; set; }
+	public Guid Id { get; set; }
 	public string Title { get; set; } = string.Empty;
 	public string? Brand { get; set; }
 	public string Type { get; set; }

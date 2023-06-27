@@ -2,6 +2,7 @@
 
 public class ProductsDiscountResponse
 {
-	public string Code { get; set; }
 	public int OptionId { get; set; }
+	public string Title => Option.Title;
+	public OptionsListResponse Option { get; set; }
 }

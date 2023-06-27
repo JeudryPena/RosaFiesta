@@ -4,9 +4,9 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../env/config.prod";
-import { ProductPreviewResponse } from '../../interfaces/Product/Response/productPreviewResponse';
-import { SortColumn, SortDirection } from '../directives/sortable.directive';
+import { OptionsListResponse } from '../../interfaces/Product/Response/options-list-response';
 import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
+import { SortColumn, SortDirection } from '../directives/sortable.directive';
 
 interface SearchResult {
   products: ProductsResponse[];
@@ -66,7 +66,7 @@ export class ProductsService {
   ) {
     this.getProducts();
     this._search$
-      .pipe( 
+      .pipe(
         tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this._search()),
@@ -79,6 +79,10 @@ export class ProductsService {
       });
 
     this._search$.next();
+  }
+
+  GetOptions(): Observable<OptionsListResponse[]> {
+    return this.http.get<OptionsListResponse[]>(`${this.apiUrl}options-list`);
   }
 
   getProducts() {

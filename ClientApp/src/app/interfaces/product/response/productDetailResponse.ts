@@ -3,7 +3,7 @@ import { OptionDetailResponse } from "./optionDetailResponse";
 import { OptionPreviewResponse } from "./optionPreviewResponse";
 
 export interface ProductDetailResponse extends BaseResponse {
-	code: string;
+	id: string;
 	title: string;
 	brand: string | null;
 	categoryId: number | null;

@@ -9,7 +9,9 @@ public class OptionEntity : ISoftDelete
 {
 	public int Id { get; set; }
 	[StringLength(100, MinimumLength = 3)]
-	public string ProductCode { get; set; }
+	public string Title { get; set; }
+	[StringLength(100, MinimumLength = 3)]
+	public Guid ProductId { get; set; }
 	[StringLength(1000, MinimumLength = 3)]
 	public string? Description { get; set; }
 	[Range(0.01, 999999.99)]
