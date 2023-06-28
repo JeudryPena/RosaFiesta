@@ -11,5 +11,5 @@ public class ManagementUsersResponse : ByBaseResponse
 	public bool EmailConfirmed { get; set; }
 	public bool LockoutEnabled { get; set; }
 	public DateTimeOffset? LockoutEnd { get; set; }
-	public IEnumerable<UserRoleResponse> UserRole { get; set; }
+	public IEnumerable<UserRoleResponse> UserRoles { get; set; }
 }

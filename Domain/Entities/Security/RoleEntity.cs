@@ -3,5 +3,5 @@
 namespace Domain.Entities.Security;
 public class RoleEntity : IdentityRole<string>
 {
-	public ICollection<UserRole>? UserRoles { get; set; }
+	public virtual ICollection<UserRole>? UserRoles { get; set; }
 }

@@ -30,5 +30,5 @@ public class UsersResponse : BaseResponse
 	public string? PasswordHash { get; set; }
 
 	public bool PromotionalMails { get; set; }
-	public IEnumerable<UserRoleResponse> UserRole { get; set; }
+	public IEnumerable<UserRoleResponse> UserRoles { get; set; }
 }

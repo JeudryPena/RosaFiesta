@@ -18,21 +18,6 @@ namespace Persistence.Migrations
                 name: "RosaFiesta");
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 schema: "RosaFiesta",
                 columns: table => new
@@ -75,6 +60,21 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Discounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,29 +146,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SubCategories",
                 schema: "RosaFiesta",
                 columns: table => new
@@ -189,6 +166,29 @@ namespace Persistence.Migrations
                         column: x => x.CategoryId,
                         principalSchema: "RosaFiesta",
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleClaims",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -381,132 +381,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    ProviderKey = table.Column<string>(type: "text", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
-                    RoleId1 = table.Column<string>(type: "text", nullable: true),
-                    UserEntityId = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId1",
-                        column: x => x.RoleId1,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    FullName = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
-                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    RefreshToken = table.Column<string>(type: "text", nullable: true),
-                    PromotionalMails = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    DefaultAddressId = table.Column<Guid>(type: "uuid", nullable: true),
-                    DefaultPayMethodId = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Addresses_DefaultAddressId",
-                        column: x => x.DefaultAddressId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Carts",
                 schema: "RosaFiesta",
                 columns: table => new
@@ -518,129 +392,6 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Carts", x => x.CartId);
-                    table.ForeignKey(
-                        name: "FK_Carts_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PayMethods",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    PayMethodType = table.Column<int>(type: "integer", maxLength: 10, nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PayMethods", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PayMethods_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Quotes",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CustomerName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    ContactNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
-                    ExtraInfo = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: true),
-                    Email = table.Column<string>(type: "character varying(7)", maxLength: 7, nullable: true),
-                    EventName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    EventDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Location = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Quotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Quotes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reviews",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    Rating = table.Column<float>(type: "real", nullable: false),
-                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    OptionId = table.Column<int>(type: "integer", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Options_OptionId",
-                        column: x => x.OptionId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "Options",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WishesList",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WishesList", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WishesList_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -671,81 +422,6 @@ namespace Persistence.Migrations
                         column: x => x.AddressId,
                         principalSchema: "RosaFiesta",
                         principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Orders_PayMethods_PayMethodId",
-                        column: x => x.PayMethodId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "PayMethods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "QuoteItems",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Quantity = table.Column<int>(type: "integer", maxLength: 250, nullable: false),
-                    QuoteId = table.Column<int>(type: "integer", maxLength: 36, nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QuoteItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QuoteItems_Quotes_QuoteId",
-                        column: x => x.QuoteId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "Quotes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_QuoteItems_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WishesListProducts",
-                schema: "RosaFiesta",
-                columns: table => new
-                {
-                    WishListId = table.Column<int>(type: "integer", nullable: false),
-                    OptionId = table.Column<int>(type: "integer", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WishesListProducts", x => new { x.WishListId, x.OptionId });
-                    table.ForeignKey(
-                        name: "FK_WishesListProducts_Options_OptionId",
-                        column: x => x.OptionId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "Options",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WishesListProducts_WishesList_WishListId",
-                        column: x => x.WishListId,
-                        principalSchema: "RosaFiesta",
-                        principalTable: "WishesList",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -828,9 +504,326 @@ namespace Persistence.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PayMethods",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    PayMethodType = table.Column<int>(type: "integer", maxLength: 10, nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PayMethods", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    FullName = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    RefreshToken = table.Column<string>(type: "text", nullable: true),
+                    PromotionalMails = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    DefaultAddressId = table.Column<Guid>(type: "uuid", nullable: true),
+                    DefaultPayMethodId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Addresses_DefaultAddressId",
+                        column: x => x.DefaultAddressId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Users_PayMethods_DefaultPayMethodId",
+                        column: x => x.DefaultPayMethodId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "PayMethods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Quotes",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CustomerName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    ContactNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    ExtraInfo = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: true),
+                    Email = table.Column<string>(type: "character varying(7)", maxLength: 7, nullable: true),
+                    EventName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    EventDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Location = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Quotes_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
+                    Rating = table.Column<float>(type: "real", nullable: false),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    OptionId = table.Column<int>(type: "integer", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Options_OptionId",
+                        column: x => x.OptionId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Options",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserClaims",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLogins",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_UserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTokens",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_UserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WishesList",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WishesList", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WishesList_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuoteItems",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Quantity = table.Column<int>(type: "integer", maxLength: 250, nullable: false),
+                    QuoteId = table.Column<int>(type: "integer", maxLength: 36, nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuoteItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_QuoteItems_Quotes_QuoteId",
+                        column: x => x.QuoteId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Quotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_QuoteItems_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WishesListProducts",
+                schema: "RosaFiesta",
+                columns: table => new
+                {
+                    WishListId = table.Column<int>(type: "integer", nullable: false),
+                    OptionId = table.Column<int>(type: "integer", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WishesListProducts", x => new { x.WishListId, x.OptionId });
+                    table.ForeignKey(
+                        name: "FK_WishesListProducts_Options_OptionId",
+                        column: x => x.OptionId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "Options",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WishesListProducts_WishesList_WishListId",
+                        column: x => x.WishListId,
+                        principalSchema: "RosaFiesta",
+                        principalTable: "WishesList",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
-                table: "AspNetRoles",
+                table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
@@ -843,28 +836,15 @@ namespace Persistence.Migrations
 
             migrationBuilder.InsertData(
                 schema: "RosaFiesta",
-                table: "AspNetUsers",
+                table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName" },
                 values: new object[,]
                 {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, new DateOnly(1999, 1, 3), "ed83a00f-b087-403a-8398-b08ccdf7610e", new DateTimeOffset(new DateTime(2023, 6, 27, 22, 21, 6, 627, DateTimeKind.Unspecified).AddTicks(4997), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSMERY2", "AQAAAAIAAYagAAAAEBwXi7mO85leCuFQ+kGwepBlbtXYI4a1eCYi4E0eqKAjJP7FFnIJNAcv2m/ACKpVxA==", "18497505946", true, false, null, null, "8f7a9dfd-b779-4fe5-810d-bf84e30eb8d8", false, null, null, "Rosalba2" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, new DateOnly(1999, 1, 4), "35d9ec2d-4b0b-4328-abbe-cbff1b935060", new DateTimeOffset(new DateTime(2023, 6, 27, 22, 21, 6, 627, DateTimeKind.Unspecified).AddTicks(5016), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEFFnzlNiz237ARlJmzeFyZMTwQhmTDbREZUIxI83HIxOQj5nQD+Q/Hcku9+KDPtttA==", "18497505947", true, false, null, null, "f12f3dd1-7c3e-41e6-8e3b-c69a956e787e", false, null, null, "jendry" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, new DateOnly(1999, 1, 5), "3f9d88ff-77ee-49f9-b78d-43bdbd85f34c", new DateTimeOffset(new DateTime(2023, 6, 27, 22, 21, 6, 627, DateTimeKind.Unspecified).AddTicks(5026), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAEOsQjwIk9ZwTpmKL5kKo/YCXbJzsnPXLUbZzmG2tOKBglZQA4tZRIrqys0RKi1JrTg==", "18497505948", true, false, null, null, "9b33bdd8-16eb-427a-a89a-7cc58959e96f", false, null, null, "Rosmery" },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, new DateOnly(1999, 1, 2), "eb59f78c-5100-4abb-ac80-d697f1516ffb", new DateTimeOffset(new DateTime(2023, 6, 27, 22, 21, 6, 627, DateTimeKind.Unspecified).AddTicks(4986), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAECHp9TCEbNpYJxhJ4m4VqBFGVRpybXwK/cdAtO0fQsjimbTUbgQkaTFKs4ioCNl4wA==", "18497505945", true, false, null, null, "223bc04a-ab98-4366-bf83-a5458265255b", false, null, null, "Rosanny" },
-                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, new DateOnly(1999, 1, 1), "cb675563-475f-4fc1-b526-a3f6a8ce46fa", new DateTimeOffset(new DateTime(2023, 6, 27, 22, 21, 6, 627, DateTimeKind.Unspecified).AddTicks(4800), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEDc5+dONH3kqPBwmLsXHf5z+G6M1r/OClgc2TbHHglPO+KoOf/k8FCWHjfO7iVGbgg==", "18497505944", true, false, null, null, "690a5e03-7882-4a95-bfbf-9a6cc68180c5", false, null, null, "Rosalba" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "RosaFiesta",
-                table: "AspNetUserRoles",
-                columns: new[] { "RoleId", "UserId", "RoleId1", "UserEntityId" },
-                values: new object[,]
-                {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", "2301D884-221A-4E7D-B509-0113DCC043E1", null, null },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", "2301D884-221A-4E7D-B509-0113DCC043E2", null, null },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E4", "2301D884-221A-4E7D-B509-0113DCC043E3", null, null },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", null, null },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", null, null }
+                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, new DateOnly(1999, 1, 3), "67b959a8-4ec6-470a-8e05-1009bf38949c", new DateTimeOffset(new DateTime(2023, 6, 28, 9, 10, 12, 395, DateTimeKind.Unspecified).AddTicks(3183), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSMERY2", "AQAAAAIAAYagAAAAEG9Y6nunDELxfkbDKtKe0AxWfJwwKw25/x7IjrCUe4XdoHXhbEEuUTBZlVWp1roirw==", "18497505946", true, false, null, null, "d2d796eb-58aa-45f1-8b2a-6310ca9b855f", false, null, null, "Rosalba2" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, new DateOnly(1999, 1, 4), "3f9b1f34-5392-417a-b0bd-aea8c6147e18", new DateTimeOffset(new DateTime(2023, 6, 28, 9, 10, 12, 395, DateTimeKind.Unspecified).AddTicks(3202), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAELysAElvTWuxmK2ATTSZVBSVmG5zTA2Mz9J/52NpzjPku1kLQE12rQXpaVlwT6PU9A==", "18497505947", true, false, null, null, "9d55d38b-04e0-4068-a0ef-4a94b2a17f3d", false, null, null, "jendry" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, new DateOnly(1999, 1, 5), "b2f9c5aa-8f63-4d76-b50f-5fcd0fc964fd", new DateTimeOffset(new DateTime(2023, 6, 28, 9, 10, 12, 395, DateTimeKind.Unspecified).AddTicks(3216), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAEB5aHWF0pfwlwETZ2rIRKER5u1lBw7RO9Z9ZgPeRDFVev4IwVFMxsHLpDazhaoaoig==", "18497505948", true, false, null, null, "1bcb5219-6a1a-4888-acb5-53a752a4b66e", false, null, null, "Rosmery" },
+                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, new DateOnly(1999, 1, 2), "4d4c5221-1ccd-4407-bb38-2a3f6fcdaa23", new DateTimeOffset(new DateTime(2023, 6, 28, 9, 10, 12, 395, DateTimeKind.Unspecified).AddTicks(3161), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAEPMCUesdEUprGeuKbbRV5BYu6wdYQyx1FKZln9tnfkNpfQplaGSi97hU8XM+v8lWAg==", "18497505945", true, false, null, null, "cabaf052-e168-407c-a5a0-327a573bd1b8", false, null, null, "Rosanny" },
+                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, new DateOnly(1999, 1, 1), "cc5877e7-536d-4ef7-9570-2741521ebd5a", new DateTimeOffset(new DateTime(2023, 6, 28, 9, 10, 12, 395, DateTimeKind.Unspecified).AddTicks(2884), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEDzyQrtSF6dD0ZnHttEj/YoBt9ABzTuAIEChOlrOPBEQntl1xR4Ak/Y//oejctTr1A==", "18497505944", true, false, null, null, "40867bd1-f1a7-4feb-8351-00a12755bfa2", false, null, null, "Rosalba" }
                 });
 
             migrationBuilder.InsertData(
@@ -878,6 +858,19 @@ namespace Persistence.Migrations
                     { 3, "2301D884-221A-4E7D-B509-0113DCC043E1" },
                     { 4, "2301D884-221A-4E7D-B509-0113DCC043E2" },
                     { 5, "2301D884-221A-4E7D-B509-0113DCC043E3" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "RosaFiesta",
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "2301D884-221A-4E7D-B509-0113DCC043E2", "2301D884-221A-4E7D-B509-0113DCC043E1" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E3", "2301D884-221A-4E7D-B509-0113DCC043E2" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E4", "2301D884-221A-4E7D-B509-0113DCC043E3" },
+                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", "7D9B7113-A8F8-4035-99A7-A20DD400F6A3" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E1", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -897,75 +890,6 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta",
                 table: "AppliedDiscounts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                schema: "RosaFiesta",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                schema: "RosaFiesta",
-                table: "AspNetRoles",
-                column: "NormalizedName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                schema: "RosaFiesta",
-                table: "AspNetUserClaims",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                schema: "RosaFiesta",
-                table: "AspNetUserLogins",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                schema: "RosaFiesta",
-                table: "AspNetUserRoles",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId1",
-                schema: "RosaFiesta",
-                table: "AspNetUserRoles",
-                column: "RoleId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_UserEntityId",
-                schema: "RosaFiesta",
-                table: "AspNetUserRoles",
-                column: "UserEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                schema: "RosaFiesta",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_DefaultAddressId",
-                schema: "RosaFiesta",
-                table: "AspNetUsers",
-                column: "DefaultAddressId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_DefaultPayMethodId",
-                schema: "RosaFiesta",
-                table: "AspNetUsers",
-                column: "DefaultPayMethodId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                schema: "RosaFiesta",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",
@@ -1128,6 +1052,19 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoleClaims_RoleId",
+                schema: "RosaFiesta",
+                table: "RoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                schema: "RosaFiesta",
+                table: "Roles",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Services_Name",
                 schema: "RosaFiesta",
                 table: "Services",
@@ -1155,6 +1092,50 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserClaims_UserId",
+                schema: "RosaFiesta",
+                table: "UserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLogins_UserId",
+                schema: "RosaFiesta",
+                table: "UserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                schema: "RosaFiesta",
+                table: "UserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                schema: "RosaFiesta",
+                table: "Users",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_DefaultAddressId",
+                schema: "RosaFiesta",
+                table: "Users",
+                column: "DefaultAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_DefaultPayMethodId",
+                schema: "RosaFiesta",
+                table: "Users",
+                column: "DefaultPayMethodId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                schema: "RosaFiesta",
+                table: "Users",
+                column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Warranties_Name",
                 schema: "RosaFiesta",
                 table: "Warranties",
@@ -1173,107 +1154,77 @@ namespace Persistence.Migrations
                 column: "OptionId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_AspNetUsers_UserId",
+                name: "FK_Addresses_Users_UserId",
                 schema: "RosaFiesta",
                 table: "Addresses",
                 column: "UserId",
                 principalSchema: "RosaFiesta",
-                principalTable: "AspNetUsers",
+                principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AppliedDiscounts_AspNetUsers_UserId",
+                name: "FK_AppliedDiscounts_Users_UserId",
                 schema: "RosaFiesta",
                 table: "AppliedDiscounts",
                 column: "UserId",
                 principalSchema: "RosaFiesta",
-                principalTable: "AspNetUsers",
+                principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                name: "FK_Carts_Users_UserId",
                 schema: "RosaFiesta",
-                table: "AspNetUserClaims",
+                table: "Carts",
                 column: "UserId",
                 principalSchema: "RosaFiesta",
-                principalTable: "AspNetUsers",
+                principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                name: "FK_Orders_PayMethods_PayMethodId",
                 schema: "RosaFiesta",
-                table: "AspNetUserLogins",
-                column: "UserId",
-                principalSchema: "RosaFiesta",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserRoles_AspNetUsers_UserEntityId",
-                schema: "RosaFiesta",
-                table: "AspNetUserRoles",
-                column: "UserEntityId",
-                principalSchema: "RosaFiesta",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                schema: "RosaFiesta",
-                table: "AspNetUserRoles",
-                column: "UserId",
-                principalSchema: "RosaFiesta",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_PayMethods_DefaultPayMethodId",
-                schema: "RosaFiesta",
-                table: "AspNetUsers",
-                column: "DefaultPayMethodId",
+                table: "Orders",
+                column: "PayMethodId",
                 principalSchema: "RosaFiesta",
                 principalTable: "PayMethods",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Orders_Users_UserId",
+                schema: "RosaFiesta",
+                table: "Orders",
+                column: "UserId",
+                principalSchema: "RosaFiesta",
+                principalTable: "Users",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PayMethods_Users_UserId",
+                schema: "RosaFiesta",
+                table: "PayMethods",
+                column: "UserId",
+                principalSchema: "RosaFiesta",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_AspNetUsers_UserId",
+                name: "FK_Addresses_Users_UserId",
                 schema: "RosaFiesta",
                 table: "Addresses");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_PayMethods_AspNetUsers_UserId",
+                name: "FK_PayMethods_Users_UserId",
                 schema: "RosaFiesta",
                 table: "PayMethods");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims",
-                schema: "RosaFiesta");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims",
-                schema: "RosaFiesta");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins",
-                schema: "RosaFiesta");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles",
-                schema: "RosaFiesta");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens",
-                schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
                 name: "OptionImages",
@@ -1296,11 +1247,27 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
-                name: "WishesListProducts",
+                name: "RoleClaims",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles",
+                name: "UserClaims",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "UserLogins",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "UserTokens",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "WishesListProducts",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
@@ -1317,6 +1284,10 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Services",
+                schema: "RosaFiesta");
+
+            migrationBuilder.DropTable(
+                name: "Roles",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
@@ -1360,7 +1331,7 @@ namespace Persistence.Migrations
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers",
+                name: "Users",
                 schema: "RosaFiesta");
 
             migrationBuilder.DropTable(

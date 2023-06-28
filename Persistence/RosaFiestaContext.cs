@@ -41,6 +41,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
+		base.OnModelCreating(modelBuilder);
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
 		modelBuilder.HasDefaultSchema(DefaultSchema);
 		modelBuilder.Entity<UserEntity>().ToTable("Users");
@@ -50,12 +51,12 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 		modelBuilder.Entity<UserLogin>().ToTable("UserLogins");
 		modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims");
 		modelBuilder.Entity<UserToken>().ToTable("UserTokens");
+
 		modelBuilder.Entity<UserEntity>()
 		.HasMany(u => u.UserRoles)
-		.WithOne()
+		.WithOne(u => u.User)
 		.HasForeignKey(ur => ur.UserId);
 		modelBuilder.Entity<UserRole>().HasOne(ur => ur.Role).WithMany(x => x.UserRoles).HasForeignKey(ur => ur.RoleId);
-		base.OnModelCreating(modelBuilder);
 	}
 
 	public DbSet<AddressEntity> Addresses { get; set; }

@@ -3,5 +3,6 @@
 namespace Domain.Entities.Security;
 public class UserRole : IdentityUserRole<string>
 {
-	public RoleEntity? Role { get; set; }
+	public virtual UserEntity? User { get; set; }
+	public virtual RoleEntity? Role { get; set; }
 }
