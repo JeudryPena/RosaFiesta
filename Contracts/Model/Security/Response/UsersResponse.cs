@@ -1,6 +1,3 @@
-using Contracts.Model.Product.Response;
-using Contracts.Model.Product.UserInteract.Response;
-
 namespace Contracts.Model.Security.Response;
 
 public class UsersResponse : BaseResponse
@@ -13,8 +10,8 @@ public class UsersResponse : BaseResponse
 
 	public string UserName { get; set; } = string.Empty;
 
-	public int Age { get; set; }
-	public DateTimeOffset BirthDate { get; set; }
+	public int Age => DateTime.UtcNow.Year - BirthDate.Year;
+	public DateOnly BirthDate { get; set; }
 
 	public string PhoneNumber { get; set; } = string.Empty;
 
@@ -33,12 +30,5 @@ public class UsersResponse : BaseResponse
 	public string? PasswordHash { get; set; }
 
 	public bool PromotionalMails { get; set; }
-
-	public ICollection<OrderResponse>? Orders { get; set; }
-
-	public ICollection<ReviewResponse>? Reviews { get; set; }
-
-	public ICollection<WishListResponse>? WishLists { get; set; }
-
-	public ICollection<AppliedDiscountResponse>? AppliedDiscounts { get; set; }
+	public IEnumerable<UserRoleResponse> UserRole { get; set; }
 }

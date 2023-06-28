@@ -23,13 +23,22 @@ public class UsersController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet("roles")]
+	public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
+	{
+		IEnumerable<RolesResponse> roles = await _serviceManager.UserService.GetAllRolesAsync(
+					cancellationToken
+							);
+		return Ok(roles);
+	}
+
 	[HttpGet]
 	public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
 	{
 		IEnumerable<ManagementUsersResponse> users = await _serviceManager.UserService.GetAllUserAsync(
 			cancellationToken
 		);
-
+		
 		return Ok(users);
 	}
 

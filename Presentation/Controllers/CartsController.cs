@@ -43,8 +43,8 @@ public class CartsController : ControllerBase
 		return Ok(cart);
 	}
 
-	[HttpPut("discount/{discountId:guid?=00000000-0000-0000-0000-000000000000}/AddProductToCart")]
-	public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken, Guid discountId)
+	[HttpPut("discount/{discountId}/AddProductToCart")]
+	public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken, Guid? discountId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -53,7 +53,7 @@ public class CartsController : ControllerBase
 		return Ok(cart);
 	}
 
-	[HttpPut("/option/{optionId}/discounts/{discountId?:guid=00000000-0000-0000-0000-000000000000}/AddPackToCart")]
+	[HttpPut("/option/{optionId}/discounts/{discountId}/AddPackToCart")]
 	public async Task<IActionResult> AddPackToCartAsync([FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken, int optionId, Guid? discountId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

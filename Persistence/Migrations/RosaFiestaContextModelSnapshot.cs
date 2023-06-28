@@ -1006,6 +1006,114 @@ namespace Persistence.Migrations
                     b.ToTable("Addresses", "RosaFiesta");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Security.RoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", "RosaFiesta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.RoleEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", "RosaFiesta");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
+                            Name = "Client",
+                            NormalizedName = "CLIENTE"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            Name = "ProductsManager",
+                            NormalizedName = "PRODUCTSMANAGER"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            Name = "SalesManager",
+                            NormalizedName = "SALESMANAGER"
+                        },
+                        new
+                        {
+                            Id = "2301D884-221A-4E7D-B509-0113DCC043E4",
+                            Name = "MarketingManager",
+                            NormalizedName = "MARKETINGMANAGER"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.UserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", "RosaFiesta");
+                });
+
             modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -1119,8 +1227,8 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 1),
-                            ConcurrencyStamp = "ad870611-cd0c-4440-84e1-a50ec7aac6e9",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 26, 20, 11, 38, 973, DateTimeKind.Unspecified).AddTicks(6626), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "dec660c5-b620-4e17-9e3a-cba8a2e1b736",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 27, 22, 26, 10, 379, DateTimeKind.Unspecified).AddTicks(1728), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = "",
                             Email = "user@example.com",
                             EmailConfirmed = true,
@@ -1129,11 +1237,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK8V7ca17+Hn7UEsb8jJ95EAMsWzgsWd/126dN820UbFFVJeW05+p3JvG6mKU5uw2Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHnFrgjHNEQ2Fq0kHrz3w9xuQh+a9cpTA8C9OOdzwQjdkQ9GucxvLJZFJM+4x5KvSA==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "d4475a56-ed77-442a-8965-4afdb435160a",
+                            SecurityStamp = "c9fb7484-74a5-497c-af45-39ab17149554",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         },
@@ -1142,8 +1250,8 @@ namespace Persistence.Migrations
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 2),
-                            ConcurrencyStamp = "9fe276c9-4705-44fb-aeac-4f60cce59d8e",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 26, 20, 11, 38, 973, DateTimeKind.Unspecified).AddTicks(9563), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "47048236-5910-4c75-a57f-8a39a7e66049",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 27, 22, 26, 10, 379, DateTimeKind.Unspecified).AddTicks(2062), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = "",
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
@@ -1152,11 +1260,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
                             NormalizedUserName = "ROSANNY",
-                            PasswordHash = "AQAAAAIAAYagAAAAELfCuMV1DvA2+t1DuUUXm2gqbtpIT7JYY+DFlTMtKmcXxiZ4g+OZ2d8IwBgBB/8mfQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMU7ebIFdC3FgIaqiUlQYhEssf5AV7BlYcjlmsS1n8jtQMXEMhdHlG2f7eP4//qHGA==",
                             PhoneNumber = "18497505945",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "f449825b-9e67-41ac-a072-00c210973b46",
+                            SecurityStamp = "63e402de-5592-4135-9712-bb65c9964004",
                             TwoFactorEnabled = false,
                             UserName = "Rosanny"
                         },
@@ -1165,8 +1273,8 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 3),
-                            ConcurrencyStamp = "ae698297-ac17-49fa-93f5-e1e16b25adec",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 26, 20, 11, 38, 973, DateTimeKind.Unspecified).AddTicks(9612), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "67325824-f93a-4801-90e0-9e61c41fb2d3",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 27, 22, 26, 10, 379, DateTimeKind.Unspecified).AddTicks(2106), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = "",
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
@@ -1175,11 +1283,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFwIubQ9+j2hehFVbWkBOjrDXBmxaLl022Em2sU+zadZM/BNlNx3PVoi1137tl1ygg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHwDK4zHycuAaZreyjyKDck3JE4iqmOJh4SZXBCkfp00QE+LsrwX62Um69UwgqzjHw==",
                             PhoneNumber = "18497505946",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "6884ac18-b450-43f6-a878-8a94d7bf044a",
+                            SecurityStamp = "07abf466-da8d-4a70-878c-6dcbf026b31b",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba2"
                         },
@@ -1188,8 +1296,8 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 4),
-                            ConcurrencyStamp = "5ef4a581-bc77-4333-a040-2a3ca85e615b",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 26, 20, 11, 38, 973, DateTimeKind.Unspecified).AddTicks(9804), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "9542383c-a6a0-49ec-91ba-bfbee8f01eb3",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 27, 22, 26, 10, 379, DateTimeKind.Unspecified).AddTicks(2144), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = "",
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
@@ -1198,11 +1306,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
                             NormalizedUserName = "JENDRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHYoweKr99/lNGofX0HmplGAXv8w6OoPmwAj7FQ1xrGHdZ1Di9dhZvZEbVnfEkz5Tw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKLkx4uM6mNmnReWDBwbTMKEWGKz3Gcdho/7wJLIG1wO7J8UbYmSRNcaTjldceHeFQ==",
                             PhoneNumber = "18497505947",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "6c33021d-aa8c-4427-a829-d84d0e72d744",
+                            SecurityStamp = "45ee3301-e3f2-4ddb-a575-028f6b79397f",
                             TwoFactorEnabled = false,
                             UserName = "jendry"
                         },
@@ -1211,8 +1319,8 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 5),
-                            ConcurrencyStamp = "6e68c54b-4a4e-4603-8688-7f4d6411444a",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 26, 20, 11, 38, 973, DateTimeKind.Unspecified).AddTicks(9846), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "19f621f2-8094-4b7e-ac81-75ede9c588f6",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 6, 27, 22, 26, 10, 379, DateTimeKind.Unspecified).AddTicks(2202), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = "",
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
@@ -1221,125 +1329,17 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF4AFq2f+H1Fd4njTLzX0I3BC/GHV0OOwxOWhAUFd2rGiwRWE9I8oA3/pOBMwK3WkQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHudqGt2LbyEHE1TQh0/uFJxsVVeofzrPS0Ag6Cso3SbOXplTReJbZLWxT8VyTimgg==",
                             PhoneNumber = "18497505948",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "421364eb-eecf-4b5d-ba8b-1255d8677ac5",
+                            SecurityStamp = "327832c3-40f1-47c1-9bec-8f3b301b0383",
                             TwoFactorEnabled = false,
                             UserName = "Rosmery"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", "RosaFiesta");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
-                            Name = "Client",
-                            NormalizedName = "CLIENTE"
-                        },
-                        new
-                        {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
-                            Name = "ProductsManager",
-                            NormalizedName = "PRODUCTSMANAGER"
-                        },
-                        new
-                        {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
-                            Name = "SalesManager",
-                            NormalizedName = "SALESMANAGER"
-                        },
-                        new
-                        {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E4",
-                            Name = "MarketingManager",
-                            NormalizedName = "MARKETINGMANAGER"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", "RosaFiesta");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", "RosaFiesta");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Domain.Entities.Security.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -1361,7 +1361,7 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserLogins", "RosaFiesta");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Domain.Entities.Security.UserRole", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -1369,9 +1369,19 @@ namespace Persistence.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("text");
 
+                    b.Property<string>("RoleId1")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEntityId")
+                        .HasColumnType("text");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.HasIndex("UserEntityId");
 
                     b.ToTable("AspNetUserRoles", "RosaFiesta");
 
@@ -1403,7 +1413,7 @@ namespace Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Domain.Entities.Security.UserToken", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -1669,6 +1679,24 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Security.RoleClaim", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.RoleEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Security.UserClaim", b =>
+                {
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
                 {
                     b.HasOne("Domain.Entities.Security.AddressEntity", "DefaultAddress")
@@ -1686,16 +1714,7 @@ namespace Persistence.Migrations
                     b.Navigation("PayMethod");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Domain.Entities.Security.UserLogin", b =>
                 {
                     b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
@@ -1704,31 +1723,32 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Domain.Entities.Security.UserRole", b =>
                 {
-                    b.HasOne("Domain.Entities.Security.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Domain.Entities.Security.RoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Security.RoleEntity", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("Domain.Entities.Security.UserEntity", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserEntityId");
+
                     b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Domain.Entities.Security.UserToken", b =>
                 {
                     b.HasOne("Domain.Entities.Security.UserEntity", null)
                         .WithMany()
@@ -1817,6 +1837,11 @@ namespace Persistence.Migrations
                     b.Navigation("ProductsWish");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Security.RoleEntity", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("Domain.Entities.Security.UserEntity", b =>
                 {
                     b.Navigation("Addresses");
@@ -1833,6 +1858,8 @@ namespace Persistence.Migrations
                     b.Navigation("Quotes");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("UserRoles");
 
                     b.Navigation("WishLists");
                 });

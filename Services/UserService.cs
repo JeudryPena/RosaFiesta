@@ -23,6 +23,15 @@ internal sealed class UserService : IUserService
 		_repositoryManager = repositoryManager;
 	}
 
+	public async Task<IEnumerable<RolesResponse>> GetAllRolesAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<RoleEntity> roles = await _repositoryManager.UserRepository.GetAllRolesAsync(
+					cancellationToken
+							);
+		IEnumerable<RolesResponse> rolesResponse = roles.Adapt<IEnumerable<RolesResponse>>();
+		return rolesResponse;
+	}
+
 	public async Task<string?> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken = default)
 	{
 		string? userName = await _repositoryManager.UserRepository.GetUserNameByIdAsync(userId, cancellationToken);

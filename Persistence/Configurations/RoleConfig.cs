@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Identity;
+using Domain.Entities.Security;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-internal sealed class RoleConfig : IEntityTypeConfiguration<IdentityRole>
+internal sealed class RoleConfig : IEntityTypeConfiguration<RoleEntity>
 {
 	private const string adminId = "2301D884-221A-4E7D-B509-0113DCC043E1";
 	private const string clientId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3";
@@ -12,34 +13,34 @@ internal sealed class RoleConfig : IEntityTypeConfiguration<IdentityRole>
 	private const string salesManagerId = "2301D884-221A-4E7D-B509-0113DCC043E3";
 	private const string marketingManagerId = "2301D884-221A-4E7D-B509-0113DCC043E4";
 
-	public void Configure(EntityTypeBuilder<IdentityRole> builder)
+	public void Configure(EntityTypeBuilder<RoleEntity> builder)
 	{
 		builder.HasData(
-			new IdentityRole
+			new RoleEntity
 			{
 				Id = adminId,
 				Name = "Admin",
 				NormalizedName = "ADMIN"
 			},
-			new IdentityRole
+			new RoleEntity
 			{
 				Id = clientId,
 				Name = "Client",
 				NormalizedName = "CLIENTE"
 			},
-			new IdentityRole
+			new RoleEntity
 			{
 				Id = productsManagerId,
 				Name = "ProductsManager",
 				NormalizedName = "PRODUCTSMANAGER"
 			},
-			new IdentityRole
+			new RoleEntity
 			{
 				Id = salesManagerId,
 				Name = "SalesManager",
 				NormalizedName = "SALESMANAGER"
 			},
-			new IdentityRole
+			new RoleEntity
 			{
 				Id = marketingManagerId,
 				Name = "MarketingManager",

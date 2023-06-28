@@ -1,5 +1,7 @@
 using Domain.Entities.Security;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace Domain.IRepository;
 
 public interface IUserRepository
@@ -16,4 +18,5 @@ public interface IUserRepository
 	Task<string> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken);
 	void Delete(UserEntity user);
 	void DeleteAddress(AddressEntity address);
+	Task<IEnumerable<RoleEntity>> GetAllRolesAsync(CancellationToken cancellationToken = default);
 }

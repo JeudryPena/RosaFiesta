@@ -92,8 +92,8 @@ public class PurchaseController : ControllerBase
 		return Ok(cart);
 	}
 
-	[HttpPut("{purchaseNumber}/option{optionId}/discount/{discount?:guid=00000000-0000-0000-0000-000000000000}/SelectDiscount")]
-	public async Task<IActionResult> SelectDiscountAsync(int purchaseNumber, int optionId, Guid discountId, CancellationToken cancellationToken)
+	[HttpPut("{purchaseNumber}/option{optionId}/discount/{discount:guid}/SelectDiscount")]
+	public async Task<IActionResult> SelectDiscountAsync(int purchaseNumber, int optionId, Guid? discountId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

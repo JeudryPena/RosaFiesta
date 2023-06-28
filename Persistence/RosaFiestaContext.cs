@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence;
 
-public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
+public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity, string, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
 {
 	public const string DefaultSchema = "RosaFiesta";
 
@@ -43,10 +43,18 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity>
 	{
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(RosaFiestaContext).Assembly);
 		modelBuilder.HasDefaultSchema(DefaultSchema);
-		modelBuilder.Entity<UserEntity>();
-
-
-
+		modelBuilder.Entity<UserEntity>().ToTable("Users");
+		modelBuilder.Entity<RoleEntity>().ToTable("Roles");
+		modelBuilder.Entity<UserClaim>().ToTable("UserClaims");
+		modelBuilder.Entity<UserRole>().ToTable("UserRoles");
+		modelBuilder.Entity<UserLogin>().ToTable("UserLogins");
+		modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims");
+		modelBuilder.Entity<UserToken>().ToTable("UserTokens");
+		modelBuilder.Entity<UserEntity>()
+		.HasMany(u => u.UserRoles)
+		.WithOne()
+		.HasForeignKey(ur => ur.UserId);
+		modelBuilder.Entity<UserRole>().HasOne(ur => ur.Role).WithMany(x => x.UserRoles).HasForeignKey(ur => ur.RoleId);
 		base.OnModelCreating(modelBuilder);
 	}
 

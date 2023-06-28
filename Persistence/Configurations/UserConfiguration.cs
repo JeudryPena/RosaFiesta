@@ -64,7 +64,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			.HasForeignKey(appliedDiscount => appliedDiscount.UserId)
 			.OnDelete(DeleteBehavior.Cascade);
 
-
 		var admin = new UserEntity
 		{
 			Id = AdminId,

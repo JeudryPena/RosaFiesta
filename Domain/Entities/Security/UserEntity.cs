@@ -33,4 +33,5 @@ public class UserEntity : IdentityUser, IAutoBy
 	public Guid? DefaultPayMethodId { get; set; }
 	public ICollection<QuoteEntity>? Quotes { get; set; }
 	public bool IsDeleted { get; set; }
+	public IEnumerable<UserRole> UserRoles { get; set; }
 }

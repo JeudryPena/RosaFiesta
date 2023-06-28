@@ -13,20 +13,23 @@ public class UserRepository : IUserRepository
 
 	public async Task<IEnumerable<UserEntity>> GetAllAsync(
 		CancellationToken cancellationToken = default
-	) => await _context.Users.ToListAsync(cancellationToken);
+	) => await _context.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).ToListAsync(cancellationToken);
 
 	public async Task<UserEntity> GetByIdAsync(
 		string userId,
 		CancellationToken cancellationToken = default
 	)
 	{
-		var users = await _context.Users
+		var users = await _context.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role)
 			.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
-		if (users == null)
-			throw new NullReferenceException("User not found");
 		return users;
 	}
 
+	public async Task<IEnumerable<RoleEntity>> GetAllRolesAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<RoleEntity> roles = await _context.Roles.ToListAsync(cancellationToken);
+		return roles;
+	}
 
 	public void Insert(UserEntity user) => _context.Users.Add(user);
 

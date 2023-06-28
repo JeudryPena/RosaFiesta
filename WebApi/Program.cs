@@ -290,7 +290,7 @@ public static class Program
 	private static void AddIdentity(IServiceCollection services, ConfigurationManager configuration)
 	{
 		services
-			.AddIdentity<UserEntity, IdentityRole>(opts =>
+			.AddIdentity<UserEntity, RoleEntity>(opts =>
 			{
 				opts.Password.RequiredLength = 8;
 				opts.Password.RequireDigit = true;
