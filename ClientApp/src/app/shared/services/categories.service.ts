@@ -1,16 +1,15 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.dev";
+import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
-import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
 import { UsersService } from './users.service';
-import { SubCategoryPreviewResponse } from '../../interfaces/Product/Response/subCategoryPreviewResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
