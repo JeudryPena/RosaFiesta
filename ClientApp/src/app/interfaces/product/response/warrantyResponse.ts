@@ -1,4 +1,5 @@
 import { ByBaseResponse } from "../../by-base-response";
+import { ProductsListResponse } from "./products-list-response";
 
 export interface WarrantyResponse extends ByBaseResponse {
 	id: string;
@@ -8,4 +9,5 @@ export interface WarrantyResponse extends ByBaseResponse {
 	period: number;
 	description: string;
 	conditions: string;
+	products: ProductsListResponse[];
 }

@@ -1,3 +1,5 @@
+import { WarrantyProductsDto } from "./warranty-products-dto";
+
 export interface WarrantyDto {
     name: string;
     type: number;
@@ -5,4 +7,5 @@ export interface WarrantyDto {
     period: number;
     description: string;
     conditions: string;
+    products: WarrantyProductsDto[];
 }
