@@ -21,7 +21,7 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
 			.WithMany(category => category.Products)
 			.HasForeignKey(product => product.CategoryId);
 		builder.HasOne(product => product.Warranty)
-			.WithMany()
+			.WithMany(x => x.Products)
 			.HasForeignKey(product => product.WarrantyId);
 		builder.HasMany(product => product.Details)
 			.WithOne()

@@ -1,4 +1,5 @@
 import { ByBaseResponse } from "../../by-base-response";
+import { UserRoleResponse } from "./user-role-response";
 
 export interface ManagementUsersResponse extends ByBaseResponse {
 	id: string;
@@ -11,4 +12,5 @@ export interface ManagementUsersResponse extends ByBaseResponse {
 	emailConfirmed: boolean;
 	lockoutEnabled: boolean;
 	lockoutEnd: string | null;
+	userRoles: UserRoleResponse[];
 }

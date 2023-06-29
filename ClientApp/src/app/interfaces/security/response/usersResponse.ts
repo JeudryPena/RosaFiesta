@@ -3,6 +3,7 @@ import { OrderResponse } from "../../Product/UserInteract/Response/orderResponse
 import { ReviewResponse } from "../../Product/UserInteract/Response/reviewResponse";
 import { WishListResponse } from "../../Product/UserInteract/Response/wishListResponse";
 import { BaseResponse } from "../../base-response";
+import { UserRoleResponse } from "./user-role-response";
 
 export interface UsersResponse extends BaseResponse {
 	id: string;
@@ -20,8 +21,5 @@ export interface UsersResponse extends BaseResponse {
 	lockoutEnd: string | null;
 	passwordHash: string | null;
 	promotionalMails: boolean;
-	orders: OrderResponse[] | null;
-	reviews: ReviewResponse[] | null;
-	wishLists: WishListResponse[] | null;
-	appliedDiscounts: AppliedDiscountResponse[] | null;
+	userRoles: UserRoleResponse[];
 }

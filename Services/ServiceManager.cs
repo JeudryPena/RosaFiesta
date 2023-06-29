@@ -30,9 +30,9 @@ public sealed class ServiceManager : IServiceManager
 	private readonly Lazy<IQuoteService> _lazyQuoteService;
 	private readonly Lazy<IServiceService> _lazyServiceService;
 
-	public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor contextAccessor, IConfiguration configuration)
+	public ServiceManager(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, IEmailSender emailSender, IHttpContextAccessor contextAccessor, IConfiguration configuration, RoleManager<RoleEntity> roleManager)
 	{
-		_lazyUserService = new Lazy<IUserService>(() => new UserService(repositoryManager));
+		_lazyUserService = new Lazy<IUserService>(() => new UserService(repositoryManager, userManager, roleManager));
 		_lazyProductService = new Lazy<IProductService>(() => new ProductService(repositoryManager));
 		_lazyAuthenticateService = new Lazy<IAuthenticateService>(() => new AuthenticateService(userManager, emailSender, contextAccessor, configuration, repositoryManager));
 		_lazyCategoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager));

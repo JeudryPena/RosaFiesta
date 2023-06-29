@@ -43,7 +43,7 @@ internal sealed class CartService : ICartService
 		{
 			var product = await _repositoryManager.ProductRepository.GetProductDetail(cartItem.ProductId, cartItem.OptionId, cancellationToken);
 			var productOption = product.Options[0];
-			if (productOption.QuantityAvaliable < cartItem.Quantity + cart.Details.Where(cd => cd.ProductId == cartItem.ProductId).Sum(cd => cd.PurchaseOptions.Sum(po => po.Quantity)))
+			if (productOption.QuantityAvailable < cartItem.Quantity + cart.Details.Where(cd => cd.ProductId == cartItem.ProductId).Sum(cd => cd.PurchaseOptions.Sum(po => po.Quantity)))
 				throw new Exception("Not enough quantity available");
 			PurchaseDetailEntity? cartItemEntity =
 				cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
@@ -92,7 +92,7 @@ internal sealed class CartService : ICartService
 	{
 		PurchaseDetailOptions optionDetail = await _repositoryManager.PurchaseDetailRepository.GetOptionDetailAsync(optionId, purchaseNumber, cancellationToken);
 		OptionEntity option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionId, cancellationToken);
-		if (option.QuantityAvaliable < optionDetail.Quantity + adjust)
+		if (option.QuantityAvailable < optionDetail.Quantity + adjust)
 			throw new Exception("Not enough quantity available");
 		optionDetail.Quantity -= adjust;
 		_repositoryManager.CartRepository.UpdateDetailOption(optionDetail);
@@ -135,8 +135,8 @@ internal sealed class CartService : ICartService
 		var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(cartItem.OptionId, cancellationToken);
 		if (detail == null)
 		{
-			if (option.QuantityAvaliable < cartItem.Quantity)
-				throw new Exception($"You are adding {cartItem.Quantity - option.QuantityAvaliable} more items than the quantity available");
+			if (option.QuantityAvailable < cartItem.Quantity)
+				throw new Exception($"You are adding {cartItem.Quantity - option.QuantityAvailable} more items than the quantity available");
 			detail = new PurchaseDetailEntity();
 			detail.ProductId = cartItem.ProductId;
 			detail.PurchaseOptions.Add(new PurchaseDetailOptions
@@ -156,8 +156,8 @@ internal sealed class CartService : ICartService
 		{
 			PurchaseDetailOptions optionDetail = detail.PurchaseOptions.FirstOrDefault(po => po.OptionId == cartItem.OptionId) ?? throw new Exception("Option not found");
 			optionDetail.Quantity += cartItem.Quantity;
-			if (optionDetail.Quantity < option.QuantityAvaliable)
-				throw new Exception($"You are adding {optionDetail.Quantity - option.QuantityAvaliable} more items than the quantity available");
+			if (optionDetail.Quantity < option.QuantityAvailable)
+				throw new Exception($"You are adding {optionDetail.Quantity - option.QuantityAvailable} more items than the quantity available");
 			if (Code != null && optionDetail.AppliedId == null)
 			{
 				optionDetail.DiscountApplied = new AppliedDiscountEntity

@@ -110,7 +110,9 @@ export class CategoriesService {
     return this.http.get(`${this.apiUrl}${categoryId}/delete`);
   }
 
-  DeleteSubCategory(categoryId: number, subCategoryId: number) {
+  DeleteSubCategory(categoryId: number, subCategoryId: number | null) {
+    if (subCategoryId == null)
+      subCategoryId = 0;
     return this.http.delete(`${this.apiUrl}${categoryId}/sub-category/${subCategoryId}`);
   }
 

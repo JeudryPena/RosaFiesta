@@ -7,8 +7,6 @@ export interface UserForCreationDto {
     phoneNumber: string;
     name: string;
     lastName: string;
-    address: string;
-    city: string;
-    state: string;
+    roleId: string[];
     promotionalMails: boolean;
 }

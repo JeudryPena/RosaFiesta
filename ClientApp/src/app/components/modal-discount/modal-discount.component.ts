@@ -26,19 +26,10 @@ export class ModalDiscountComponent implements OnInit {
   discountForm: any;
   products: any[] = [];
   date!: Date[];
-  minDate: Date;
-  maxDate: Date;
+  minDate!: Date;
+  maxDate!: Date;
   optionsList: OptionsListResponse[] = [];
   selected?: string;
-
-  onSelect(event: TypeaheadMatch): void {
-    this.products.push({
-      optionId: event.item.id,
-      title: event.item.title
-    });
-    this.selected = '';
-  }
-
   updateProduct = false;
   productTitle = '';
 
@@ -61,32 +52,30 @@ export class ModalDiscountComponent implements OnInit {
     public el: ElementRef,
     private productService: ProductsService
   ) {
-    this.minDate = new Date();
-    this.maxDate = new Date();
-    this.minDate.setDate(this.minDate.getDate());
-    this.maxDate.setDate(this.maxDate.getDate() + 3648);
   }
 
-  existingOption(option: any) {
-
-    console.log(option)
+  onSelect(event: TypeaheadMatch): void {
+    this.products.push({
+      optionId: event.item.id,
+      title: event.item.title
+    });
+    this.selected = '';
   }
 
   changeTime(start: any, end: any) {
     this.date = this.discountForm.value.date;
     this.date[0].setUTCHours(start.getHours(), start.getMinutes(), start.getSeconds());
     this.date[1].setUTCHours(end.getHours(), end.getMinutes(), end.getSeconds());
-    console.log(this.date);
     this.discountForm.patchValue({
       date: this.date
     });
+    console.log(this.discountForm.value.date);
   }
 
   ngOnInit(): void {
-
-
+    this.minDate = new Date();
+    this.maxDate = new Date();
     this.discountForm = new FormGroup({
-      code: new FormControl(''),
       name: new FormControl(''),
       type: new FormControl(0),
       description: new FormControl(''),
@@ -96,16 +85,21 @@ export class ModalDiscountComponent implements OnInit {
       start: new FormControl(''),
       end: new FormControl(''),
       productsDiscounts: new FormControl('')
-    })
-
-    if (this.update) {
+    });
+    if (!this.update && !this.read){
+      this.maxDate.setDate(this.minDate.getDate() + 3648);
+      this.maxDate.setHours(this.maxDate.getHours(), this.maxDate.getMinutes(), this.maxDate.getSeconds() + 1);
+      this.discountForm.patchValue({
+        start: this.minDate,
+        end: this.maxDate
+      });
+    } else if(this.update) {
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
         let start = new Date(response.start);
         let end = new Date(response.end);
         this.date = [start, end];
         this.minDate.setDate(this.date[0].getDate());
         this.discountForm.patchValue({
-          id: response.id,
           name: response.name,
           type: response.type,
           description: response.description,
@@ -115,32 +109,37 @@ export class ModalDiscountComponent implements OnInit {
           end: response.end,
           date: this.date
         });
+        this.maxDate.setDate(this.minDate.getDate() + 3648);
+        this.maxDate.setHours(this.maxDate.getHours(), this.maxDate.getMinutes(), this.maxDate.getSeconds() + 1);
+        this.discountForm.patchValue({
+          start: this.minDate,
+          end: this.maxDate
+        });
         this.products = response.productsDiscounts || [];
       });
-    } else if (this.read) {
-
+    } else if(this.read) {
       this.discountForm = new FormGroup({
         name: new FormControl(''),
         type: new FormControl(0),
         description: new FormControl(''),
         value: new FormControl(0),
         maxTimesApply: new FormControl(0),
+        date: new FormControl(''),
         start: new FormControl(''),
         end: new FormControl(''),
-        date: new FormControl(''),
         productsDiscounts: new FormControl(''),
         createdAt: new FormControl(''),
         createdBy: new FormControl(''),
         updatedAt: new FormControl(''),
         updatedBy: new FormControl('')
       })
-
+      
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
+        
         let start = new Date(response.start);
         let end = new Date(response.end);
         this.date = [start, end];
-        this.minDate.setDate(this.date[0].getDate());
-
+        
         this.discountForm.patchValue({
           name: response.name,
           type: response.type,
@@ -149,17 +148,17 @@ export class ModalDiscountComponent implements OnInit {
           maxTimesApply: response.maxTimesApply,
           start: response.start,
           end: response.end,
+          date: this.date,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
           createdBy: response.createdBy,
           updatedBy: response.updatedBy,
-          date: this.date
         });
 
         this.products = response.productsDiscounts || [];
       });
     }
-
+    
     this.productService.GetOptions().subscribe({
       next: (response: OptionsListResponse[]) => {
         this.optionsList = response;

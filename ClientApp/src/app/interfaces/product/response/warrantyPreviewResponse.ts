@@ -1,11 +1,9 @@
-import { BaseResponse } from "../../base-response";
 
-export interface WarrantyPreviewResponse extends BaseResponse {
+export interface WarrantyPreviewResponse {
 	id: string;
-	name: string | null;
+	name: string;
 	type: string;
-	scopeType: string;
-	status: string | null;
+	status: string;
 	period: string;
 	description: string;
 	conditions: string;

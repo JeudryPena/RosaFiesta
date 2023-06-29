@@ -4,7 +4,7 @@ import { OptionPreviewResponse } from "./optionPreviewResponse";
 
 export interface ProductDetailResponse extends BaseResponse {
 	id: string;
-	title: string;
+	name: string;
 	brand: string | null;
 	categoryId: number | null;
 	optionId: number | null;

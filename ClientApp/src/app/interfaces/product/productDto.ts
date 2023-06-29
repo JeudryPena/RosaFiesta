@@ -1,13 +1,12 @@
-import { CategoryDto } from "./categoryDto";
 import { OptionDto } from "./optionDto";
 
 export interface ProductDto {
     code: string | null;
-    title: string;
+    name: string;
+    brand: string | null;
     options: OptionDto[];
-    type: number;
-    categoryId: number | null;
-    category: CategoryDto | null;
+    categoryId: number;
+    subCategoryId: number | null;
     warrantyId: string | null;
     supplierId: string | null;
 }

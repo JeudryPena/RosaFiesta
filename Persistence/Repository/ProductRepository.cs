@@ -15,7 +15,7 @@ public class ProductRepository : IProductRepository
 	}
 
 	public async Task<IEnumerable<ProductEntity>> ManagementGetAllAsync(CancellationToken cancellationToken = default) =>
-	await _dbContext.Products.Include(x => x.Options).ToListAsync(cancellationToken);
+	await _dbContext.Products.Include(x => x.Options).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
 	await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
@@ -58,10 +58,10 @@ public class ProductRepository : IProductRepository
 	public void UpdateOption(OptionEntity option)
 	=> _dbContext.Options.Update(option);
 
-	public async Task<ProductEntity> GetByIdAsync(Guid productId, int cartItemOptionId,
+	public async Task<ProductEntity> GetByIdAsync(Guid productId,
 		CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(p => p.Supplier).Include(p => p.Warranty).Include(x => x.Options).ThenInclude(x => x.Reviews).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;

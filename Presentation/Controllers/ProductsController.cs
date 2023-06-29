@@ -23,9 +23,10 @@ public class ProductsController : ControllerBase
 	}
 
 	[HttpGet]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> GetManagementProducts(CancellationToken cancellationToken)
 	{
-		ICollection<ProductsResponse> products = await _serviceManager.ProductService.ManagementGetAllAsync(cancellationToken);
+		ICollection<ManagementProductsResponse> products = await _serviceManager.ProductService.ManagementGetAllAsync(cancellationToken);
 		return Ok(products);
 	}
 
@@ -44,10 +45,11 @@ public class ProductsController : ControllerBase
 		return Ok(productAndOption);
 	}
 
-	[HttpGet("{productCode:guid}/option/{optionId}")]
-	public async Task<IActionResult> GetProductById(Guid productCode, int optionId, CancellationToken cancellationToken)
+	[HttpGet("{productCode:guid}")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> GetProductById(Guid productCode, CancellationToken cancellationToken)
 	{
-		ProductResponse productAndOption = await _serviceManager.ProductService.GetByIdAsync(productCode, optionId, cancellationToken);
+		ProductResponse productAndOption = await _serviceManager.ProductService.GetByIdAsync(productCode, cancellationToken);
 		return Ok(productAndOption);
 	}
 

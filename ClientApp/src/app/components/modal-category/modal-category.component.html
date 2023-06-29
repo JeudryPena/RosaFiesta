@@ -12,7 +12,7 @@
                 <h5 *ngIf="validate('name', 'required', titleFocused)">El Nombre es<strong> Requerido</strong></h5>
                 <h5 *ngIf="validate('name', 'minlength', titleFocused)">El Nombre es<strong> muy corto</strong></h5>
             </div>
-            <div class="input-container "
+            <div class="input-container " *ngIf="!read"
                 [ngClass]="{'focus': subCategoriesFocused || subCategoriesInput.value.length > 0 }">
                 <div class="input-group">
                     <input [readOnly]="read" #subCategoriesInput type="text" class="input wrapper" (focus)="subCategoriesFocused = true"

@@ -9,7 +9,7 @@ export interface OptionPreviewResponse extends BaseResponse {
 	discountSave: number | null;
 	images: string | null;
 	stock: string;
-	quantityAvaliable: number;
+	quantityAvailable: number;
 	condition: string;
 	averageRating: number | null;
 	totalReviews: number | null;

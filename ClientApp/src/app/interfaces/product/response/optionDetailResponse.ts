@@ -15,7 +15,7 @@ export interface OptionDetailResponse {
 	material: string | null;
 	type: string;
 	stock: string;
-	quantityAvaliable: number;
+	quantityAvailable: number;
 	offerPrice: number | null;
 	discountSave: number | null;
 	discount: DiscountPreviewResponse | null;

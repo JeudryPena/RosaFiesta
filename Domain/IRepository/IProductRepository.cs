@@ -7,7 +7,7 @@ public interface IProductRepository
 	void Insert(ProductEntity product);
 	Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 	Task<IEnumerable<ProductEntity>> ManagementGetAllAsync(CancellationToken cancellationToken = default);
-	Task<ProductEntity> GetByIdAsync(Guid productId, int cartItemOptionId,
+	Task<ProductEntity> GetByIdAsync(Guid productId,
 		CancellationToken cancellationToken = default);
 	Task<OptionEntity> GetOptionByIdAsync(int? optionId, CancellationToken cancellationToken = default);
 	void Update(ProductEntity product);

@@ -4,26 +4,17 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../env/config.prod";
+import { ManagementProductsResponse } from '../../interfaces/Product/Response/ManagementProductsResponse';
 import { OptionsListResponse } from '../../interfaces/Product/Response/options-list-response';
-import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
+import { ProductResponse } from '../../interfaces/Product/Response/productResponse';
+import { ProductDto } from '../../interfaces/Product/productDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
-
-interface SearchResult {
-  products: ProductsResponse[];
-  total: number;
-}
-
-interface State {
-  page: number;
-  pageSize: number;
-  searchTerm: string;
-  sortColumn: SortColumn;
-  sortDirection: SortDirection;
-}
+import { SearchResult } from './search-result';
+import { State } from './state';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(products: ProductsResponse[], column: SortColumn, direction: string): ProductsResponse[] {
+function sort(products: ManagementProductsResponse[], column: SortColumn, direction: string): ManagementProductsResponse[] {
   if (direction === '' || column === '') {
     return products;
   } else {
@@ -34,9 +25,9 @@ function sort(products: ProductsResponse[], column: SortColumn, direction: strin
   }
 }
 
-function matches(product: ProductsResponse, term: string, pipe: PipeTransform) {
+function matches(product: ManagementProductsResponse, term: string, pipe: PipeTransform) {
   return (
-    product.title.toLowerCase().includes(term.toLowerCase()) ||
+    product.name.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(product.code).includes(term)
   );
 }
@@ -48,13 +39,13 @@ export class ProductsService {
   private apiUrl = `${config.apiURL}products/`
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _products$ = new BehaviorSubject<ProductsResponse[]>([]);
-  private _managementProducts$: ProductsResponse[] = [];
+  private _products$ = new BehaviorSubject<ManagementProductsResponse[]>([]);
+  private _managementProducts$: ManagementProductsResponse[] = [];
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 5,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
@@ -64,31 +55,54 @@ export class ProductsService {
     private pipe: DecimalPipe,
     private http: HttpClient
   ) {
-    this.getProducts();
-    this._search$
-      .pipe(
-        tap(() => this._loading$.next(true)),
-        debounceTime(200),
-        switchMap(() => this._search()),
-        delay(200),
-        tap(() => this._loading$.next(false)),
-      )
-      .subscribe((result) => {
-        this._products$.next(result.products);
-        this._total$.next(result.total);
-      });
+    this.RetrieveData();
+  }
 
-    this._search$.next();
+  RetrieveData() {
+    this.getProducts().subscribe((data: ManagementProductsResponse[]) => {
+      this._managementProducts$ = data;
+      this._search$
+        .pipe(
+          tap(() => this._loading$.next(true)),
+          debounceTime(200),
+          switchMap(() => this._search()),
+          delay(200),
+          tap(() => this._loading$.next(false)),
+        )
+        .subscribe((result) => {
+          this._products$.next(result.items);
+          this._total$.next(result.total);
+          console.log(result.items);
+        });
+
+      this._search$.next();
+    });
   }
 
   GetOptions(): Observable<OptionsListResponse[]> {
     return this.http.get<OptionsListResponse[]>(`${this.apiUrl}options-list`);
   }
 
-  getProducts() {
-    return this.http.get<ProductsResponse[]>(this.apiUrl).subscribe((data) => {
-      this._managementProducts$ = data;
-    });
+  getProducts(): Observable<ManagementProductsResponse[]> {
+    return this.http.get<ManagementProductsResponse[]>(this.apiUrl);
+  }
+
+  GetProduct(id: string): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(`${this.apiUrl}${id}`);
+  }
+
+  AddProduct(product: ProductDto) {
+    return this.http.post(this.apiUrl, product);
+  }
+
+  UpdateProduct(id: string, product: ProductDto) {
+    return this.http.put(`${this.apiUrl}${id}`, product);
+  }
+
+  DeleteProduct(id: string, optionId: number | null) {
+    if (optionId === null)
+      optionId = 0;
+    return this.http.delete(`${this.apiUrl}${id}/option/${optionId}`);
   }
 
   get products$() {
@@ -134,12 +148,12 @@ export class ProductsService {
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
-    let products = sort(this._managementProducts$, sortColumn, sortDirection);
+    let items = sort(this._managementProducts$, sortColumn, sortDirection);
 
-    products = products.filter((product) => matches(product, searchTerm, this.pipe));
-    const total = products.length;
+    items = items.filter((product) => matches(product, searchTerm, this.pipe));
+    const total = items.length;
 
-    products = products.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ products, total });
+    items = items.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return of({ items, total });
   }
 }

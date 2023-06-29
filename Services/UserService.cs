@@ -1,7 +1,6 @@
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
 
-using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
@@ -17,10 +16,13 @@ namespace Services;
 internal sealed class UserService : IUserService
 {
 	private readonly IRepositoryManager _repositoryManager;
-
-	public UserService(IRepositoryManager repositoryManager)
+	private readonly UserManager<UserEntity> _userManager;
+	private readonly RoleManager<RoleEntity> _roleManager;
+	public UserService(IRepositoryManager repositoryManager, UserManager<UserEntity> userManager, RoleManager<RoleEntity> roleManager)
 	{
 		_repositoryManager = repositoryManager;
+		_userManager = userManager;
+		_roleManager = roleManager;
 	}
 
 	public async Task<IEnumerable<RolesResponse>> GetAllRolesAsync(CancellationToken cancellationToken = default)
@@ -69,9 +71,23 @@ internal sealed class UserService : IUserService
 			userId,
 			cancellationToken
 		) ?? throw new UserNotFoundException(userId);
-
+		user = userForUpdateDto.Adapt(user);
 		user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
-		user.BirthDate = userForUpdateDto.BirthDate;
+		IEnumerable<string> newRoles = new List<string>();
+		foreach (var rol in userForUpdateDto.RoleId)
+		{
+			var role = await _roleManager.FindByIdAsync(rol);
+			if (role == null)
+				throw new NullReferenceException(rol);
+			newRoles.Append(role.Name);
+		}
+		var currentRoles = await _userManager.GetRolesAsync(user);
+		var rolesToRemove = currentRoles.Except(newRoles).ToList();
+		foreach (var role in rolesToRemove)
+			await _userManager.RemoveFromRoleAsync(user, role);
+		var rolesToAdd = newRoles.Except(currentRoles).ToList();
+		foreach (var role in rolesToAdd)
+			await _userManager.AddToRoleAsync(user, role);
 		_repositoryManager.UserRepository.Update(user);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
@@ -99,27 +115,25 @@ internal sealed class UserService : IUserService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<UsersResponse> CreateAsync(UserForCreationDto userForCreationDto, string userId, CancellationToken cancellationToken = default)
+	public async Task CreateAsync(UserForCreationDto userForCreationDto, string userId, CancellationToken cancellationToken = default)
 	{
 		UserEntity user = userForCreationDto.Adapt<UserEntity>();
 		user.FullName = userForCreationDto.Name + " " + userForCreationDto.LastName;
-		user.UserName = userForCreationDto.Email;
-		user.Email = userForCreationDto.Email;
 		user.EmailConfirmed = true;
 		user.LockoutEnabled = true;
 		user.LockoutEnd = null;
 		user.AccessFailedCount = 0;
-		user.NormalizedEmail = userForCreationDto.Email.ToUpper();
-		user.NormalizedUserName = userForCreationDto.Email.ToUpper();
 		user.SecurityStamp = Guid.NewGuid().ToString();
-		user.PasswordHash = new PasswordHasher<UserEntity>().HashPassword(user, userForCreationDto.Password);
-		user.Cart = new CartEntity();
-
-		_repositoryManager.UserRepository.CreateAsync(user);
+		user.Cart = new();
+		foreach (var rol in userForCreationDto.RoleId)
+		{
+			var role = await _roleManager.FindByIdAsync(rol);
+			if (role == null)
+				throw new NullReferenceException(rol);
+			await _userManager.AddToRoleAsync(user, role.Name);
+		}
+		await _userManager.CreateAsync(user, userForCreationDto.Password);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-
-		UsersResponse usersResponse = user.Adapt<UsersResponse>();
-		return usersResponse;
 	}
 
 	public async Task LockUserAsync(string userId, string? username, CancellationToken cancellationToken = default)

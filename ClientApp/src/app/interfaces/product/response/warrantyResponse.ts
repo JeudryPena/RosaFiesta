@@ -1,12 +1,13 @@
-import { BaseResponse } from "../../base-response";
+import { ByBaseResponse } from "../../by-base-response";
+import { ProductsListResponse } from "./products-list-response";
 
-export interface WarrantyResponse extends BaseResponse {
+export interface WarrantyResponse extends ByBaseResponse {
 	id: string;
-	name: string | null;
+	name: string;
 	type: string;
-	scopeType: string;
-	status: string | null;
-	period: string;
+	status: string;
+	period: number;
 	description: string;
 	conditions: string;
+	products: ProductsListResponse[];
 }

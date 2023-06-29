@@ -62,7 +62,7 @@ public class UserRepository : IUserRepository
 	{
 		string? userName = await _context.Users.Where(x => x.Id == userId).Select(x => x.UserName).FirstOrDefaultAsync(cancellationToken);
 		if (userName == null)
-			return "Unkhown";
+			return "";
 		return userName;
 	}
 
