@@ -55,9 +55,9 @@ internal sealed class OrderService : IOrderService
 			foreach (var optionPurchase in detail.PurchaseOptions)
 			{
 				var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionPurchase.OptionId, cancellationToken);
-				if (option.QuantityAvaliable < optionPurchase.Quantity)
+				if (option.QuantityAvailable < optionPurchase.Quantity)
 					throw new Exception("You can't add more than the quantity available");
-				option.QuantityAvaliable -= optionPurchase.Quantity;
+				option.QuantityAvailable -= optionPurchase.Quantity;
 				_repositoryManager.ProductRepository.UpdateOption(option);
 
 				var discount = await _repositoryManager.DiscountRepository.GetByAppliedId(optionPurchase.AppliedId, cancellationToken);
@@ -113,7 +113,7 @@ internal sealed class OrderService : IOrderService
 		foreach (var optionPurchase in detail.PurchaseOptions)
 		{
 			var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionPurchase.OptionId, cancellationToken);
-			option.QuantityAvaliable += optionPurchase.Quantity;
+			option.QuantityAvailable += optionPurchase.Quantity;
 			optionPurchase.IsReturned = true;
 			_repositoryManager.ProductRepository.UpdateOption(option);
 			_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(optionPurchase);

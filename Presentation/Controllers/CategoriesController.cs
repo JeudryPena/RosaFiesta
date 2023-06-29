@@ -92,13 +92,15 @@ public class CategoriesController : ControllerBase
 		return Ok();
 	}
 
-	[HttpDelete("{categoryId}/sub-category/{subcategoryid}")]
+	[HttpDelete("{categoryId}/sub-category/{subcategoryid?}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeleteSubCategory(int categoryId, int subcategoryid, CancellationToken cancellationToken)
+	public async Task<IActionResult> DeleteSubCategories(int categoryId, CancellationToken cancellationToken, int? subcategoryid = 0)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
+		if (subcategoryid == 0)
+			subcategoryid = null;
 		await _serviceManager.CategoryService.DeleteSubCategoryAsync(userId, categoryId, subcategoryid, cancellationToken);
 		return Ok();
 	}

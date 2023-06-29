@@ -1,10 +1,10 @@
 import { MultipleImageDto } from "./UserInteract/multipleImageDto";
 
 export interface OptionDto {
+    title: string;
     description: string | null;
     price: number;
-    quantity: number;
-    brand: string | null;
+    quantityAvailable: number;
     color: string | null;
     size: number | null;
     weight: number;
@@ -12,5 +12,4 @@ export interface OptionDto {
     material: number | null;
     condition: number;
     images: MultipleImageDto[] | null;
-    quantityAvaliable: number;
 }

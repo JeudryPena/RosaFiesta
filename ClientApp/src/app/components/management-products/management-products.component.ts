@@ -2,7 +2,9 @@ import { DecimalPipe } from '@angular/common';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
+import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
+import { Status } from '../../helpers/save-modal/status';
+import { ManagementProductsResponse } from '../../interfaces/Product/Response/ManagementProductsResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { ProductsService } from '../../shared/services/products.service';
 import { ModalProductComponent } from '../modal-product/modal-product.component';
@@ -14,9 +16,12 @@ import { ModalProductComponent } from '../modal-product/modal-product.component'
   providers: [ProductsService, DecimalPipe],
 })
 export class ManagementProductsComponent {
-
-  products$: Observable<ProductsResponse[]>;
-  total$: Observable<number>;
+  products$: Observable<ManagementProductsResponse[]> = new Observable<ManagementProductsResponse[]>();
+  total$: Observable<number> = new Observable<number>();
+  collectionSize = 0;
+  pageSize = 5;
+  page = 1;
+  maxSize = 10;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
@@ -25,31 +30,71 @@ export class ManagementProductsComponent {
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
-    this.products$ = service.products$;
-    this.total$ = service.total$;
+    this.retrieveData();
+
     // config.backdrop = 'static';
     // config.keyboard = false;
   }
 
-  Retrieve(code: string) {
-
+  retrieveData() {
+    this.service.RetrieveData();
+    this.products$ = this.service.products$;
+    this.total$ = this.service.total$;
   }
 
-  Modify(code: string) {
-
+  Retrieve(id: string) {
+    const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
+    modalRef.componentInstance.title = 'Consultar Producto';
+    modalRef.componentInstance.productId = id;
+    modalRef.componentInstance.read = true;
   }
 
-  Delete(code: string) {
+  Modify(id: string) {
+    const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
+    modalRef.componentInstance.title = 'Modificar Producto';
+    modalRef.componentInstance.update = true;
+    modalRef.componentInstance.productId = id;
+    modalRef.result.then((result) => {
+      if (result)
+        this.retrieveData();
+    });
+  }
 
+  Delete(id: string, optionId: number | null) {
+    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    modalRef.componentInstance.title = '¿Desea eliminar el producto?';
+    modalRef.componentInstance.status = Status.Pending;
+    modalRef.result.then((result) => {
+      if (result) {
+        this.service.DeleteProduct(id, optionId).subscribe({
+          next: () => {
+            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            modalRef.componentInstance.title = 'Producto eliminado!';
+            modalRef.componentInstance.status = Status.Success;
+
+            modalRef.result.then(() => {
+              this.retrieveData()
+            });
+          }, error: (error) => {
+            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            modalRef.componentInstance.title = error;
+            modalRef.componentInstance.status = Status.Failed;
+          }
+        });
+      }
+    });
   }
 
   AddProduct() {
     const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.name = 'World';
+    modalRef.componentInstance.title = 'Añadir Producto';
+    modalRef.result.then((result) => {
+      if (result)
+        this.retrieveData();
+    });
   }
 
   onSort({ column, direction }: SortEvent) {
-    // resetting other headers
     this.headers.forEach((header) => {
       if (header.sortable !== column) {
         header.direction = '';
@@ -60,8 +105,4 @@ export class ManagementProductsComponent {
     this.service.sortDirection = direction;
   }
 
-  collectionSize = 0;
-  pageSize = 5;
-  page = 1;
-  maxSize = 10;
 }

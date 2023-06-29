@@ -1,3 +1,7 @@
+.fa-trash {
+    color: red;
+}
+
 .dropdown {
     position: relative;
 }
@@ -30,31 +34,27 @@
 }
 
 .table .table-row .table-cell:nth-child(1) {
-    width: 90px;
+    width: 30px;
 }
 
 .table .table-row .table-cell:nth-child(2) {
-    width: 140.25px;
+    width: 50px;
 }
 
 .table .table-row .table-cell:nth-child(3) {
-    width: 300px;
+    width: 30px;
 }
 
 .table .table-row .table-cell:nth-child(4) {
-    width: 100px;
-}
-
-.table .table-row .table-cell:nth-child(5) {
     width: 30.65px;
 }
 
-.table .table-row .table-cell:nth-child(6) {
-    width: 80.59px;
+.table .table-row .table-cell:nth-child(5) {
+    width: 30.59px;
 }
 
-.table .table-row .table-cell:nth-child(7) {
-    width: 70.28px;
+.table .table-row .table-cell:nth-child(6) {
+    width: 30.28px;
 }
 
 .btn-dropdown {
@@ -72,7 +72,7 @@
     color: var(--clr-white);
     background-color: var(--clr-slate-grey);
     border-color: var(--clr-slate-grey);
-} 
+}
 
 .btn-add {
     font-size: 14px;
@@ -122,7 +122,7 @@
     background-color: #555;
 }
 
-.form-select{
+.form-select {
     height: 1.8rem;
     padding: 0 1.6rem 0 0.3rem;
     font-size: 18px;
@@ -152,7 +152,6 @@
 
 .input-group-sm .input-search {
     padding-right: 40px;
-    /* ajusta el valor según sea necesario para que el botón encaje correctamente */
 }
 
 .input-group-sm .input-search-expanded+.input-group-text {

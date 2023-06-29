@@ -7,5 +7,5 @@ export interface ServiceResponse extends ByBaseResponse {
     price: number;
     image: string;
     quantity: number;
-    quantityAvaliable: number;
+    quantityAvailable: number;
 }

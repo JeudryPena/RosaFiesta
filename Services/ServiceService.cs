@@ -51,7 +51,7 @@ internal sealed class ServiceService : IServiceService
 		{
 			int count = (int)(serviceDto.Quantity - service.Quantity);
 			service.Quantity = service.Quantity;
-			service.QuantityAvaliable += count;
+			service.QuantityAvailable += count;
 		}
 		_repositoryManager.ServiceRepository.Update(service);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
@@ -64,7 +64,7 @@ internal sealed class ServiceService : IServiceService
 	{
 		ServiceEntity service = await _repositoryManager.ServiceRepository.GetAsync(serviceId, cancellationToken);
 		service.Quantity += count;
-		service.QuantityAvaliable += count;
+		service.QuantityAvailable += count;
 		_repositoryManager.ServiceRepository.Update(service);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ServiceResponse serviceResponse = service.Adapt<ServiceResponse>();

@@ -19,7 +19,7 @@ public class OptionEntity : ISoftDelete
 	public DateTimeOffset? EndedAt { get; set; }
 	public ICollection<MultipleOptionImages>? Images { get; set; }
 	[Range(0, 1000)]
-	public int QuantityAvaliable { get; set; }
+	public int QuantityAvailable { get; set; }
 	[StringLength(100, MinimumLength = 3)]
 	public string? Color { get; set; }
 	[Range(0, 5000)]

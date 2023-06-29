@@ -39,31 +39,31 @@ export class ManagementDiscountsComponent {
     this.total$ = this.service.total$;
   }
 
-  Retrieve(code: string) {
+  Retrieve(id: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Consultar Descuento';
-    modalRef.componentInstance.code = code;
+    modalRef.componentInstance.code = id;
     modalRef.componentInstance.read = true;
   }
 
-  Modify(code: string) {
+  Modify(id: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Modificar Descuento';
     modalRef.componentInstance.update = true;
-    modalRef.componentInstance.code = code;
+    modalRef.componentInstance.code = id;
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
     });
   }
 
-  Delete(code: string) {
+  Delete(id: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar el descuento?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscount(code).subscribe({
+        this.service.DeleteDiscount(id).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
             modalRef.componentInstance.title = 'Descuento eliminado!';
@@ -82,13 +82,14 @@ export class ManagementDiscountsComponent {
     });
   }
 
-  DeleteProducts(code: string, optionId: number | null) {
+  DeleteProducts(id: string, optionId: number | null) {
+    console.log(id, optionId)
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar el descuento del producto?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscountProducts(code, optionId).subscribe({
+        this.service.DeleteDiscountProducts(id, optionId).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
             modalRef.componentInstance.title = 'Descuento de producto eliminado!';

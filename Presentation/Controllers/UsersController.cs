@@ -38,7 +38,7 @@ public class UsersController : ControllerBase
 		IEnumerable<ManagementUsersResponse> users = await _serviceManager.UserService.GetAllUserAsync(
 			cancellationToken
 		);
-		
+
 		return Ok(users);
 	}
 
@@ -71,13 +71,13 @@ public class UsersController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		UsersResponse user = await _serviceManager.UserService.CreateAsync(
+		await _serviceManager.UserService.CreateAsync(
 			userForCreationDto,
 			userId,
 			cancellationToken
 		);
 
-		return Ok(user);
+		return Ok();
 	}
 
 	[HttpGet("{userId}/unlock")]

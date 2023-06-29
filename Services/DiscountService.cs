@@ -101,9 +101,9 @@ internal sealed class DiscountService : IDiscountService
 		}
 		else
 		{
-			discount.ProductsDiscounts = new List<ProductsDiscountsEntity>();
+			discount.ProductsDiscounts.Clear();
 		}
-		_repositoryManager.DiscountRepository.Delete(discount);
+		_repositoryManager.DiscountRepository.Update(discount);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

@@ -86,7 +86,7 @@ export class ManagementCategoriesComponent {
     });
   }
 
-  DeleteSub(id: number, subId: number) {
+  DeleteSub(id: number, subId: number | null) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar la subCategoría?';
     modalRef.componentInstance.status = Status.Pending;

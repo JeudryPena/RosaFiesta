@@ -1,8 +1,9 @@
 export interface OptionsResponse {
+    id: number;
     price: number;
     title: string;
     image: string | null;
     stock: string;
-    quantityAvaliable: number;
+    quantityAvailable: number;
     condition: string;
 }

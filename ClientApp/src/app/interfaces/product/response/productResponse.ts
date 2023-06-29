@@ -1,19 +1,15 @@
-import { ReviewResponse } from "../UserInteract/Response/reviewResponse";
+import { ByBaseResponse } from "../../by-base-response";
 import { OptionPreviewResponse } from "./optionPreviewResponse";
+import { OptionResponse } from "./optionResponse";
 
-export interface ProductResponse {
+export interface ProductResponse extends ByBaseResponse {
 	id: string;
-	title: string;
+	code: string;
+	name: string;
 	brand: string | null;
-	type: string;
-	categoryId: number | null;
+	categoryId: number;
+	subCategoryId: number | null;
 	warrantyId: string | null;
 	supplierId: string | null;
-	optionId: number;
-	lastDate: string | null;
-	averageRating: number | null;
-	totalReviews: number | null;
-	reviews: ReviewResponse[] | null;
-	totalOptions: number;
-	options: OptionPreviewResponse[];
+	options: OptionResponse[];
 }

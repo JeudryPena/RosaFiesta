@@ -14,7 +14,7 @@ public class OptionDetailResponse
 	public string? Material { get; set; }
 	public string Type { get; set; }
 	public string Stock => StockCalculate().ToString();
-	public int QuantityAvaliable { get; set; }
+	public int QuantityAvailable { get; set; }
 	public double? OfferPrice => Discount == null ? null : Discount.Type == 1 ? Price - Price * Discount.Value / 100 : Price - Discount.Value;
 	public float? DiscountSave { get; set; }
 	public DiscountPreviewResponse? Discount { get; set; }
@@ -25,11 +25,11 @@ public class OptionDetailResponse
 	public string Condition { get; set; }
 	private StockStatusType StockCalculate()
 	{
-		if (QuantityAvaliable == 0)
+		if (QuantityAvailable == 0)
 			return StockStatusType.OutOfStock;
-		if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
+		if (QuantityAvailable > 0 && QuantityAvailable < 10)
 			return StockStatusType.LowStock;
-		if (QuantityAvaliable >= 10)
+		if (QuantityAvailable >= 10)
 			return StockStatusType.InStock;
 		return StockStatusType.InStock;
 	}

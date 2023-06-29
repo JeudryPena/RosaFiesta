@@ -8,7 +8,7 @@ public class OptionPreviewResponse : BaseResponse
 	public float? DiscountSave { get; set; }
 	public string? Images { get; set; }
 	public string Stock => StockCalculate().ToString();
-	public int QuantityAvaliable { get; set; }
+	public int QuantityAvailable { get; set; }
 	public string Condition { get; set; }
 	public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.Rating);
 	public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
@@ -17,11 +17,11 @@ public class OptionPreviewResponse : BaseResponse
 
 	private StockStatusType StockCalculate()
 	{
-		if (QuantityAvaliable == 0)
+		if (QuantityAvailable == 0)
 			return StockStatusType.OutOfStock;
-		if (QuantityAvaliable > 0 && QuantityAvaliable < 10)
+		if (QuantityAvailable > 0 && QuantityAvailable < 10)
 			return StockStatusType.LowStock;
-		if (QuantityAvaliable >= 10)
+		if (QuantityAvailable >= 10)
 			return StockStatusType.InStock;
 		return StockStatusType.InStock;
 	}

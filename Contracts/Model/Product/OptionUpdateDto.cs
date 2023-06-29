@@ -16,5 +16,5 @@ public class OptionUpdateDto
 	public int? Material { get; set; }
 	public int? Condition { get; set; }
 	public ICollection<MultipleImageDto>? Images { get; set; }
-	public int QuantityAvaliable { get; set; }
+	public int QuantityAvailable { get; set; }
 }

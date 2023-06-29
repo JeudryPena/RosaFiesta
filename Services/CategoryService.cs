@@ -61,15 +61,22 @@ internal sealed class CategoryService : ICategoryService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task DeleteSubCategoryAsync(string userId, int categoryId, int subcategoryid, CancellationToken cancellationToken)
+	public async Task DeleteSubCategoryAsync(string userId, int categoryId, int? subcategoryid, CancellationToken cancellationToken)
 	{
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
 		if (category.SubCategories == null)
 			throw new Exception("No subcategories found");
-		SubCategoryEntity? subCategory = category.SubCategories.FirstOrDefault(x => x.Id == subcategoryid);
-		if (subCategory == null)
-			throw new Exception("No subcategory found");
-		_repositoryManager.CategoryRepository.DeleteSubCategory(subCategory);
+		if (subcategoryid != null)
+		{
+			SubCategoryEntity? subCategory = category.SubCategories.FirstOrDefault(x => x.Id == subcategoryid);
+			if (subCategory == null)
+				throw new Exception("No subcategory found");
+			category.SubCategories.Remove(subCategory);
+		}
+		else
+		{
+			category.SubCategories.Clear();
+		}
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 

@@ -15,7 +15,7 @@ public class ServiceEntity : ByBaseEntity, IAutoBy
 	public string Image { get; set; }
 	public ICollection<QuoteItemEntity> QuoteItems { get; set; }
 	[Range(0, 1000)]
-	public int QuantityAvaliable { get; set; }
+	public int QuantityAvailable { get; set; }
 	[Range(0, 1000)]
 	public int Quantity { get; set; }
 }

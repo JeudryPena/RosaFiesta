@@ -1,11 +1,9 @@
-import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
-import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
-import { AuthenticateService } from '../../shared/services/authenticate.service';
-import { ProductsService } from '../../shared/services/products.service';
-import { CartsService } from '../../shared/services/carts.service';
 import { CartResponse } from '../../interfaces/Product/Response/cartResponse';
+import { AuthenticateService } from '../../shared/services/authenticate.service';
+import { CartsService } from '../../shared/services/carts.service';
 import { SidenavService } from '../../shared/services/side-nav.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 

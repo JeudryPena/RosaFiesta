@@ -35,9 +35,9 @@ internal sealed class ServiceRepository : IServiceRepository
 		ServiceEntity? service = await _context.Services.FindAsync(serviceId, cancellationToken);
 		if (service == null)
 			throw new Exception("Service not found");
-		if (service.QuantityAvaliable < quantity)
+		if (service.QuantityAvailable < quantity)
 			throw new Exception("You can't add more than the quantity available");
-		service.QuantityAvaliable -= quantity;
+		service.QuantityAvailable -= quantity;
 		_context.Services.Update(service);
 		return service;
 	}
@@ -47,7 +47,7 @@ internal sealed class ServiceRepository : IServiceRepository
 		ServiceEntity? service = await _context.Services.FindAsync(serviceId, cancellationToken);
 		if (service == null)
 			throw new Exception("Service not found");
-		service.QuantityAvaliable += quantity;
+		service.QuantityAvailable += quantity;
 		_context.Services.Update(service);
 	}
 

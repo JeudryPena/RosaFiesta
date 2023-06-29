@@ -4,10 +4,18 @@
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off" [formGroup]="discountForm">
             <h3 class="title">{{title}}</h3>
-            <div class="input-container"
+            <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
+                <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required minlength="3"
+                    maxlength="50" (focus)="nameFocused = true" (blur)="nameFocused = false" />
+                <label>Nombre</label>
+                <span>Nombre</span>
+                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy corto</strong></h5>
+            </div>
+            <div class="input-container" *ngIf="!read"
                 [ngClass]="{'focus': productsDiscountsFocused || productsDiscountsInput.value.length > 0 }">
                 <div class="input-group">
-                    <input [readOnly]="read" #productsDiscountsInput type="search" 
+                    <input #productsDiscountsInput type="search" [disabled]="read"
                         formControlName="productsDiscounts" class="input"
                         (focus)="productsDiscountsFocused = true;" (blur)="productsDiscountsFocused = false"
                         id="typeahead-focus" [adaptivePosition]="true"
@@ -34,14 +42,6 @@
                         </div>
                     </li>
                 </ol>
-            </div>
-            <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
-                <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required
-                    minlength="3" maxlength="50" (focus)="nameFocused = true" (blur)="nameFocused = false" />
-                <label>Nombre</label>
-                <span>Nombre</span>
-                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong> Requerido</strong></h5>
-                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy corto</strong></h5>
             </div>
             <div class="input-container"
                 [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
@@ -82,7 +82,7 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': maxTimesApplyFocused || maxTimesApplyInput.value.length > 0 }">
-                        <input [readOnly]="read" #maxTimesApplyInput type="text" formControlName="maxTimesApply"
+                        <input [readOnly]="read" #maxTimesApplyInput type="number" formControlName="maxTimesApply"
                             required class="input" (focus)="maxTimesApplyFocused = true"
                             (blur)="maxTimesApplyFocused = false" />
                         <label>Uso Máximo</label>
@@ -104,9 +104,9 @@
                         [minDate]="minDate" [maxDate]="maxDate" (blur)="startFocused = false"
                         (focus)="startFocused = true" />
                     <ng-template #iconTemplate>
-                        <timepicker [formControlName]="'start'">
+                        <timepicker [min]="minDate" [formControlName]="'start'">
                         </timepicker>
-                        <timepicker [formControlName]="'end'">
+                        <timepicker [min]="maxDate" [formControlName]="'end'">
                         </timepicker>
                         <button
                             (click)="p.toggle(); changeTime(discountForm.get('start')?.value, discountForm.get('end')?.value)"

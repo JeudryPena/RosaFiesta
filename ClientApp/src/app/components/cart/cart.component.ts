@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { ProductsResponse } from '../../interfaces/Product/Response/productsResponse';
+import { ManagementProductsResponse } from '../../interfaces/Product/Response/ManagementProductsResponse';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { ProductsService } from '../../shared/services/products.service';
 
@@ -14,7 +14,7 @@ import { ProductsService } from '../../shared/services/products.service';
 })
 export class CartComponent {
   viewCart: boolean = false;
-  products$: Observable<ProductsResponse[]> = new Observable<ProductsResponse[]>();
+  products$: Observable<ManagementProductsResponse[]> = new Observable<ManagementProductsResponse[]>();
   total$: Observable<number> = new Observable<number>();
   isUserAuthenticated: boolean = false;
 
@@ -24,15 +24,15 @@ export class CartComponent {
     config: NgbModalConfig,
     private authService: AuthenticateService
   ) {
-    
-    
+
+
     this.authService.authChanged
       .subscribe(res => {
         this.isUserAuthenticated = res;
       })
   }
 
-  
+
 
   updateUnits(operation: string, id: string) {
 
