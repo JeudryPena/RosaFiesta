@@ -20,15 +20,22 @@ internal sealed class WarrantyService : IWarrantyService
 		_repositoryManager = repositoryManager;
 	}
 
+	public async Task<IEnumerable<WarrantyResponse>> GetAllForManagementAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<WarrantyEntity> warranty = await _repositoryManager.WarrantyRepository.GetAllAsync(cancellationToken);
+		var warrantyResponse = warranty.Adapt<IEnumerable<WarrantyResponse>>();
+		return warrantyResponse;
+	}
+
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public async Task<IEnumerable<WarrantyResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<WarrantyPreviewResponse>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<WarrantyEntity> warranty = await _repositoryManager.WarrantyRepository.GetAllAsync(cancellationToken);
-		var warrantyResponse = warranty.Adapt<IEnumerable<WarrantyResponse>>();
+		var warrantyResponse = warranty.Adapt<IEnumerable<WarrantyPreviewResponse>>();
 		return warrantyResponse;
 	}
 
@@ -78,5 +85,15 @@ internal sealed class WarrantyService : IWarrantyService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		var warrantyResponse = warranty.Adapt<WarrantyResponse>();
 		return warrantyResponse;
+	}
+
+	public async Task DeleteWarrantyProductAsync(string userId, Guid warrantyId, Guid productId, CancellationToken cancellationToken = default)
+	{
+		WarrantyEntity warranty = await _repositoryManager.WarrantyRepository.GetByIdAsync(warrantyId, cancellationToken);
+		if (warranty.Products == null)
+			throw new Exception("Warranty does not have any products");
+		warranty.Products.Remove(warranty.Products.FirstOrDefault(x => x.Id == productId));
+		_repositoryManager.WarrantyRepository.Update(warranty);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 }

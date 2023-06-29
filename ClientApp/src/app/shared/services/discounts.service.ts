@@ -8,7 +8,6 @@ import { DiscountDto } from '../../interfaces/Product/discountDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
-import { UsersService } from './users.service';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -52,8 +51,7 @@ export class DiscountsService {
 
   constructor(
     private pipe: DecimalPipe,
-    private http: HttpClient,
-    private service: UsersService
+    private http: HttpClient
   ) {
     this.RetrieveData();
   }

@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class warrantiesFixed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -129,9 +129,9 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Type = table.Column<int>(type: "integer", maxLength: 50, nullable: false),
-                    Status = table.Column<int>(type: "integer", maxLength: 50, nullable: true),
-                    Period = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Period = table.Column<int>(type: "integer", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     Conditions = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -202,7 +202,6 @@ namespace Persistence.Migrations
                     Code = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Brand = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     SubCategoryId = table.Column<int>(type: "integer", nullable: true),
                     WarrantyId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -840,11 +839,11 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName" },
                 values: new object[,]
                 {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, new DateOnly(1999, 1, 3), "d85a77ad-8018-497e-a068-8cb5380cd993", new DateTimeOffset(new DateTime(2023, 6, 29, 10, 5, 56, 859, DateTimeKind.Unspecified).AddTicks(7603), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSMERY2", "AQAAAAIAAYagAAAAEKHap+Pr0c1FNYUC3tXWs5+3+8ZGF63oz25EOJ7U64xxdCk0OZPxQlacHBg77JZrWQ==", "18497505946", true, false, null, null, "86f3ee55-fde6-47a7-a394-86cbd06b525e", false, null, null, "Rosalba2" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, new DateOnly(1999, 1, 4), "97d652c8-622f-41bf-96c9-cbed08bc1e8d", new DateTimeOffset(new DateTime(2023, 6, 29, 10, 5, 56, 859, DateTimeKind.Unspecified).AddTicks(7618), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEEFFoOIULbtfB1MBUZ3lBWkv9GHHM9CMq+pHxbzcDhX2ic3oFtJ8X3f3yYMMo1as8w==", "18497505947", true, false, null, null, "6b18bfd2-44b7-40ad-95ef-92b68a04dd73", false, null, null, "jendry" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, new DateOnly(1999, 1, 5), "59aef040-516a-44e3-91ed-2c9c090f2a8c", new DateTimeOffset(new DateTime(2023, 6, 29, 10, 5, 56, 859, DateTimeKind.Unspecified).AddTicks(7636), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAEBupZSPlG2hOtjvA7LnXAFlhsknv2p0mNvWww4UIBTuGd0wWn4CWZnGHljIo6XibDg==", "18497505948", true, false, null, null, "3082d9de-d909-4510-8968-71443ac824e9", false, null, null, "Rosmery" },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, new DateOnly(1999, 1, 2), "e7401672-f472-4818-8603-33a8b90e7b2b", new DateTimeOffset(new DateTime(2023, 6, 29, 10, 5, 56, 859, DateTimeKind.Unspecified).AddTicks(7560), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAEGOPYqurMJkmL5IVqxyd94GLmhDTxsj+HKI/D3I4/h8wfNbb/YN/OR3As794ubpKbQ==", "18497505945", true, false, null, null, "93896029-80c7-4993-8d95-e06490b84dbb", false, null, null, "Rosanny" },
-                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, new DateOnly(1999, 1, 1), "3e98cc73-f5a4-4c15-8546-9d7a5444874c", new DateTimeOffset(new DateTime(2023, 6, 29, 10, 5, 56, 859, DateTimeKind.Unspecified).AddTicks(6832), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEHwEXOUB+ganyz9haws7oEiRpIqglCsXDFcMZT1lH0Tt1nUIOOP/zpQDBqiGGpeJZg==", "18497505944", true, false, null, null, "2985db7c-4369-4eaa-9ebe-ec07f4b97ba0", false, null, null, "Rosalba" }
+                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, new DateOnly(1999, 1, 3), "46fff8a3-baff-4e3f-866f-3031bff91262", new DateTimeOffset(new DateTime(2023, 6, 29, 12, 3, 25, 235, DateTimeKind.Unspecified).AddTicks(7866), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSMERY2", "AQAAAAIAAYagAAAAENR5MB73Z9aqa8LkSCDPQ7GyG9G2KT4iqH/K7gKw9+mJ2v7lYJGayzW9ud4zauK1Dg==", "18497505946", true, false, null, null, "0432d061-d081-41bc-8a7f-2108f8588876", false, null, null, "Rosalba2" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, new DateOnly(1999, 1, 4), "638808f4-6ee4-4d8e-8469-353c15bf47d5", new DateTimeOffset(new DateTime(2023, 6, 29, 12, 3, 25, 235, DateTimeKind.Unspecified).AddTicks(7875), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEDVGCTG5+mIHKI2NTMCBoxUThDZnPH/2KxGZlipSENW9KozhziigwYp/3mZKLpuHYQ==", "18497505947", true, false, null, null, "a4b46876-727f-4bd4-9e5b-b5809e55379d", false, null, null, "jendry" },
+                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, new DateOnly(1999, 1, 5), "8fcf22ce-7c3b-4fa9-a376-e9c2d6f4dc6f", new DateTimeOffset(new DateTime(2023, 6, 29, 12, 3, 25, 235, DateTimeKind.Unspecified).AddTicks(7914), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAEGInoaF9DFGWeDZ+cbbZ4vVGh0TVc1L7HVojafdatV6m8ZO5WYj+JzJIjnrGZ0rRWg==", "18497505948", true, false, null, null, "ae8f6230-3075-4ac4-9219-f2b7a4a779de", false, null, null, "Rosmery" },
+                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, new DateOnly(1999, 1, 2), "d0aa1cb5-ba1f-4fe1-baf4-539dfc2b487a", new DateTimeOffset(new DateTime(2023, 6, 29, 12, 3, 25, 235, DateTimeKind.Unspecified).AddTicks(7855), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAEO8gWqT20FksoUZJdi22tpPlexoLakIMcP/tfYx2FgNhTie+jCDMsT0VXne7/gJ6Ng==", "18497505945", true, false, null, null, "cd47fcd5-ad10-424c-b0a8-98daa562129e", false, null, null, "Rosanny" },
+                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, new DateOnly(1999, 1, 1), "acb77258-3d55-49d6-8157-21a752a0e276", new DateTimeOffset(new DateTime(2023, 6, 29, 12, 3, 25, 235, DateTimeKind.Unspecified).AddTicks(7659), new TimeSpan(0, -4, 0, 0, 0)), "", null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEPPE8NMSkZxmUWUR04BAoGfQsQWX2rGAx04neHMuoKk/pTZHJyVOF7YlPsf++9E7Yw==", "18497505944", true, false, null, null, "2af8b1d2-0f30-4444-a129-0b79d88bfc6c", false, null, null, "Rosalba" }
                 });
 
             migrationBuilder.InsertData(

@@ -22,17 +22,24 @@ public class WarrantiesController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet]
+	[HttpGet("management")]
 	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> GetWarrantiesForManagement(CancellationToken cancellationToken)
+	{
+		IEnumerable<WarrantyResponse> warranties = await _serviceManager.WarrantyService.GetAllForManagementAsync(cancellationToken);
+		return Ok(warranties);
+	}
+
+	[HttpGet]
 	public async Task<IActionResult> GetWarranties(CancellationToken cancellationToken)
 	{
-		IEnumerable<WarrantyResponse> suppliers = await _serviceManager.WarrantyService.GetAllAsync(cancellationToken);
+		IEnumerable<WarrantyPreviewResponse> suppliers = await _serviceManager.WarrantyService.GetAllAsync(cancellationToken);
 		return Ok(suppliers);
 	}
 
 	[HttpGet("{warrantyId:guid}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetWarranty(Guid warrantyId, CancellationToken cancellationToken)
+	public async Task<IActionResult> GetManagementWarranty(Guid warrantyId, CancellationToken cancellationToken)
 	{
 		WarrantyResponse warranty = await _serviceManager.WarrantyService.GetWarrantyAsync(warrantyId, cancellationToken);
 		return Ok(warranty);
@@ -71,7 +78,7 @@ public class WarrantiesController : ControllerBase
 		return Ok(warrantyResponse);
 	}
 
-	[HttpDelete("{warrantyId:guid}/delete")]
+	[HttpDelete("{warrantyId:guid}")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteWarranty(Guid warrantyId, CancellationToken cancellationToken)
 	{
@@ -79,6 +86,17 @@ public class WarrantiesController : ControllerBase
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.WarrantyService.DeleteWarrantyAsync(userId, warrantyId, cancellationToken);
+		return Ok();
+	}
+
+	[HttpDelete("{warrantyId:guid}/products/{productId:guid}")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> DeleteWarrantyProduct(Guid warrantyId, Guid productId, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		await _serviceManager.WarrantyService.DeleteWarrantyProductAsync(userId, warrantyId, productId, cancellationToken);
 		return Ok();
 	}
 }
