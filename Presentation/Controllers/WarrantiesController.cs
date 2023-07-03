@@ -22,6 +22,14 @@ public class WarrantiesController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet("warrantiesList")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> GetWarrantiesForAdmin(CancellationToken cancellationToken)
+	{
+		IEnumerable<WarrantiesListResponse> warranties = await _serviceManager.WarrantyService.GetAllForAdminAsync(cancellationToken);
+		return Ok(warranties);
+	}
+
 	[HttpGet("management")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> GetWarrantiesForManagement(CancellationToken cancellationToken)

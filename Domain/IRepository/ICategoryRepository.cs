@@ -13,4 +13,5 @@ public interface ICategoryRepository
 	void UpdateSubCategory(SubCategoryEntity subCategory);
 	void Delete(CategoryEntity category);
 	void DeleteSubCategory(SubCategoryEntity subCategory);
+	Task<IEnumerable<SubCategoryEntity>> GetSubCategoriesListAsync(int categoryId, CancellationToken cancellationToken = default);
 }

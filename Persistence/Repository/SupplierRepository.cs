@@ -10,6 +10,8 @@ internal sealed class SupplierRepository : ISupplierRepository
 	private readonly RosaFiestaContext _dbContext;
 	public SupplierRepository(RosaFiestaContext dbContext) => _dbContext = dbContext;
 
+	public async Task<IEnumerable<SupplierEntity>> GetSuppliersAsync(CancellationToken cancellationToken = default) => await _dbContext.Suppliers.ToListAsync(cancellationToken);
+
 	public void Delete(SupplierEntity supplier)
 	=> _dbContext.Suppliers.Remove(supplier);
 

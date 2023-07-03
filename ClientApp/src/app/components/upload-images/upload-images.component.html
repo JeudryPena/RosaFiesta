@@ -1,0 +1,35 @@
+<ngx-file-drop class="drop-zone" ngxFileDrop (onFileDrop)="dropped($event)">
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        <div class="drop-content" (click)="openFileSelector()">
+            Arrastra tus imágenes aquí o haz click para seleccionarlas
+        </div>
+    </ng-template>
+</ngx-file-drop>
+<div *ngIf="pictures">
+    <div class="row pe-2">
+        <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let pic of pictures; let i = index">
+            <div class="image-container" >
+                <img [src]="pic" [ngbTooltip]="uploadFiles[i].name"/>
+                <button class="btn btn-outline-danger btn-sm"  (click)="removePicture(i)">
+                    <i class="fas fa-trash" ></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-md-4" *ngIf="showError; else uploading">
+        <h5 class="error-msg"> {{ errorMessage }} </h5>
+    </div>
+    <ng-template #uploading>
+        <div class="col-md-4">
+            <div class="upload" *ngIf="progress > 0">
+                {{progress}}%
+            </div>
+            <div class="upload" *ngIf="message">
+                {{message}}
+            </div>
+        </div>
+    </ng-template>
+</div>

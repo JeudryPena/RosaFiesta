@@ -38,7 +38,7 @@
                         </thead>
 
                         <tbody class="rows">
-                            <tr class="scroll" *ngFor="let item of products$ | async ">
+                            <tr class="scroll" *ngFor="let item of products$ | async">
                                 <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>

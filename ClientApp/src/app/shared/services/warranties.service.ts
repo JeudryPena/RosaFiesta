@@ -8,6 +8,7 @@ import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
+import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -89,6 +90,10 @@ export class WarrantiesService {
 
   GetWarrantiesManagement(): Observable<WarrantyResponse[]> {
     return this.http.get<WarrantyResponse[]>(`${this.apiUrl}management`);
+  }
+
+  GetWarrantiesList(): Observable<WarrantiesListResponse[]> {
+    return this.http.get<WarrantiesListResponse[]>(`${this.apiUrl}warrantiesList`);
   }
 
   DeleteWarranty(id: string) {

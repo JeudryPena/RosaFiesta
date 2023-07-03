@@ -9,7 +9,6 @@ import { OptionsListResponse } from '../../interfaces/Product/Response/options-l
 import { DiscountDto } from '../../interfaces/Product/discountDto';
 import { DiscountsService } from '../../shared/services/discounts.service';
 import { ProductsService } from '../../shared/services/products.service';
-import { UsersService } from '../../shared/services/users.service';
 
 @Component({
   selector: 'app-modal-discount',
@@ -48,7 +47,6 @@ export class ModalDiscountComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private service: DiscountsService,
-    private userService: UsersService,
     public el: ElementRef,
     private productService: ProductsService
   ) {
@@ -86,14 +84,14 @@ export class ModalDiscountComponent implements OnInit {
       end: new FormControl(''),
       productsDiscounts: new FormControl('')
     });
-    if (!this.update && !this.read){
+    if (!this.update && !this.read) {
       this.maxDate.setDate(this.minDate.getDate() + 3648);
       this.maxDate.setHours(this.maxDate.getHours(), this.maxDate.getMinutes(), this.maxDate.getSeconds() + 1);
       this.discountForm.patchValue({
         start: this.minDate,
         end: this.maxDate
       });
-    } else if(this.update) {
+    } else if (this.update) {
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
         let start = new Date(response.start);
         let end = new Date(response.end);
@@ -117,7 +115,7 @@ export class ModalDiscountComponent implements OnInit {
         });
         this.products = response.productsDiscounts || [];
       });
-    } else if(this.read) {
+    } else if (this.read) {
       this.discountForm = new FormGroup({
         name: new FormControl(''),
         type: new FormControl(0),
@@ -133,13 +131,13 @@ export class ModalDiscountComponent implements OnInit {
         updatedAt: new FormControl(''),
         updatedBy: new FormControl('')
       })
-      
+
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
-        
+
         let start = new Date(response.start);
         let end = new Date(response.end);
         this.date = [start, end];
-        
+
         this.discountForm.patchValue({
           name: response.name,
           type: response.type,
@@ -158,7 +156,7 @@ export class ModalDiscountComponent implements OnInit {
         this.products = response.productsDiscounts || [];
       });
     }
-    
+
     this.productService.GetOptions().subscribe({
       next: (response: OptionsListResponse[]) => {
         this.optionsList = response;

@@ -4,10 +4,19 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
+import { CategoriesListResponse } from '../../interfaces/Product/Response/categories-list-response';
 import { ProductResponse } from '../../interfaces/Product/Response/productResponse';
+import { SubCategoriesListResponse } from '../../interfaces/Product/Response/sub-categories-list-response';
+import { SuppliersListResponse } from '../../interfaces/Product/Response/suppliers-list-response';
+import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
+import { MultipleImageDto } from '../../interfaces/Product/UserInteract/multipleImageDto';
 import { OptionDto } from '../../interfaces/Product/optionDto';
 import { ProductDto } from '../../interfaces/Product/productDto';
+import { CategoriesService } from '../../shared/services/categories.service';
 import { ProductsService } from '../../shared/services/products.service';
+import { SuppliersService } from '../../shared/services/suppliers.service';
+import { WarrantiesService } from '../../shared/services/warranties.service';
+import { FilesService } from '../../shared/services/files.service';
 
 @Component({
   selector: 'app-modal-product',
@@ -48,20 +57,59 @@ export class ModalProductComponent implements OnInit {
   productForm: any;
   options: any[] = [];
   optionForm: any;
+  categoryForm!: CategoriesListResponse;
+  subCategoryForm: SubCategoriesListResponse = {
+    id: 0,
+    name: ''
+  }
+  warrantyForm: WarrantiesListResponse = {
+    id: '',
+    name: ''
+  }
+  supplierForm: SuppliersListResponse = {
+    id: '',
+    name: ''
+  }
+  categorySelected?: string;
+  subCategorySelected!: string;
+  warrantySelected!: string;
+  supplierSelected!: string;
+  categories: CategoriesListResponse[] = [];
+  subCategories: SubCategoriesListResponse[] = [];
+  warranties: WarrantiesListResponse[] = [];
+  suppliers: SuppliersListResponse[] = [];
+  responseImgs: MultipleImageDto[] = [];
+  uploadFiles: any[] = [];
 
   constructor(
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
     private service: ProductsService,
+    private categoriesService: CategoriesService,
+    private warrantiesService: WarrantiesService,
+    private suppliersService: SuppliersService,
+    private filesService: FilesService
   ) {
-
+    
   }
 
-  onSelect(event: TypeaheadMatch): void {
-
+  onSelect(event: TypeaheadMatch, form: string): void {
+    if (form == 'category') {
+      this.categoryForm = event.item;
+      this.categoriesService.GetSubCategoriesList(this.categoryForm.id).subscribe((response: SubCategoriesListResponse[]) => {
+        this.subCategories = response;
+      });
+    }
+    else if (form == 'subCategory') {
+      this.subCategoryForm = event.item;
+    }
+    else if (form == 'warranty') {
+      this.warrantyForm = event.item;
+    }
+    else if (form == 'supplier') {
+      this.supplierForm = event.item;
+    }
   }
-
-
 
   ngOnInit(): void {
     this.productForm = new FormGroup({
@@ -120,12 +168,42 @@ export class ModalProductComponent implements OnInit {
         this.options = response.options || [];
       });
     }
+    this.categoriesService.GetCategoriesList().subscribe({
+      next: (response) => {
+        this.categories = response;
+      }, error: (error) => {
+        console.log(error);
+      }
+    });
+    this.warrantiesService.GetWarrantiesList().subscribe({
+      next: (response) => {
+        this.warranties = response;
+      }, error: (error) => {
+        console.log(error);
+      }
+    });
+
+    this.suppliersService.GetList().subscribe({
+      next: (response) => {
+        this.suppliers = response;
+      }, error: (error) => {
+        console.log(error);
+      }
+    });
+  }
+
+  uploadImagesFinished = (event: any) => {
+    console.log(event);
+    this.responseImgs.push({
+      image: event
+    });
+    console.log(this.responseImgs);
   }
 
   addNewOption(name: string) {
     this.optionTitle = 'Añadir Opción'
     this.optionForm = new FormGroup({
-      title: new FormControl(''),
+      title: new FormControl(name),
       description: new FormControl(''),
       price: new FormControl(0),
       color: new FormControl(''),
@@ -144,6 +222,7 @@ export class ModalProductComponent implements OnInit {
 
   saveOption(optionFormValue: any) {
     const option = { ...optionFormValue };
+    option.images = this.uploadFiles;
     const optionDto: OptionDto = {
       title: option.title,
       description: option.description,
@@ -157,14 +236,14 @@ export class ModalProductComponent implements OnInit {
       images: option.images,
       quantityAvailable: option.quantityAvailable
     }
-
     this.options.push(optionDto);
+    this.uploadFiles = [];
     this.optionForm = null;
   }
 
   updateOpt(optionFormValue: any) {
     const option = { ...optionFormValue };
-
+    option.images = this.uploadFiles;
     const optionDto: OptionDto = {
       title: option.title,
       description: option.description,
@@ -178,7 +257,7 @@ export class ModalProductComponent implements OnInit {
       images: option.images,
       quantityAvailable: option.quantityAvailable
     }
-
+    this.uploadFiles = [];
     this.options[option.index] = optionDto;
     this.updateOption = false;
     this.optionForm = null;
@@ -198,7 +277,9 @@ export class ModalProductComponent implements OnInit {
       material: new FormControl(this.options[index].material),
       condition: new FormControl(this.options[index].condition),
       images: new FormControl(this.options[index].images),
+      quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
+    this.uploadFiles = this.options[index].images; 
     setTimeout(() => {
 
     }, 10);
@@ -266,7 +347,6 @@ export class ModalProductComponent implements OnInit {
   }
 
   AddProduct = (productFormValue: any) => {
-
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea guardar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
@@ -274,18 +354,23 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const product = { ...productFormValue };
-
+        this.options.forEach(option => {
+          const images = this.filesService.UploadFiles(option.images);
+          option.images.push({ ...option, images: images });
+          console.log(this.options);
+          console.log(images);
+        });
         const productDto: ProductDto = {
           code: product.code,
           name: product.name,
           brand: product.brand,
-          categoryId: product.categoryId,
-          subCategoryId: product.subCategoryId,
-          warrantyId: product.warrantyId,
-          supplierId: product.supplierId,
+          categoryId: this.categoryForm.id,
+          subCategoryId: this.subCategoryForm.id || null,
+          warrantyId: this.warrantyForm.id || null,
+          supplierId: this.supplierForm.id || null,
           options: this.options,
         }
-
+        console.log(productDto);
         this.service.AddProduct(productDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
@@ -296,6 +381,7 @@ export class ModalProductComponent implements OnInit {
               this.activeModal.close(true);
             });
           }, error: (error) => {
+            console.log(error);
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;

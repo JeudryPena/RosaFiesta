@@ -20,6 +20,13 @@ internal sealed class WarrantyService : IWarrantyService
 		_repositoryManager = repositoryManager;
 	}
 
+	public async Task<IEnumerable<WarrantiesListResponse>> GetAllForAdminAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<WarrantyEntity> warranty = await _repositoryManager.WarrantyRepository.GetWarrantiesList(cancellationToken);
+		var warrantyResponse = warranty.Adapt<IEnumerable<WarrantiesListResponse>>();
+		return warrantyResponse;
+	}
+
 	public async Task<IEnumerable<WarrantyResponse>> GetAllForManagementAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<WarrantyEntity> warranty = await _repositoryManager.WarrantyRepository.GetAllAsync(cancellationToken);

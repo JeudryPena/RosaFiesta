@@ -14,6 +14,17 @@ public class CategoryRepository : ICategoryRepository
 		_rosaFiestaContext = rosaFiestaContext;
 	}
 
+	public async Task<IEnumerable<SubCategoryEntity>> GetSubCategoriesListAsync(int categoryId, CancellationToken cancellationToken = default)
+	{
+		var category = await _rosaFiestaContext.Categories.Include(x => x.SubCategories)
+			.FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
+		if (category == null)
+			throw new ArgumentNullException(nameof(category));
+		if (category.SubCategories == null)
+			return category.SubCategories = new List<SubCategoryEntity>();
+		return category.SubCategories;
+	}
+
 	public async Task<IEnumerable<CategoryEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
 		await _rosaFiestaContext.Categories.Include(x => x.SubCategories).ToListAsync(cancellationToken);
 

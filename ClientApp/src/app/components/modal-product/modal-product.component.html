@@ -5,24 +5,24 @@
         <form action="index.html" autocomplete="off" [formGroup]="productForm">
             <h3 class="title">{{title}}</h3>
             <div class="input-container" [ngClass]="{'focus': codeFocused || codeInput.value.length > 0 }">
-                <input [readOnly]="read" #codeInput type="text" formControlName="code" class="input" required minlength="3" maxlength="500"
-                    (focus)="codeFocused = true"  (blur)="codeFocused = false" />
+                <input [readOnly]="read" #codeInput type="text" formControlName="code" class="input" required
+                    minlength="3" maxlength="500" (focus)="codeFocused = true" (blur)="codeFocused = false" />
                 <label>Código *</label>
                 <span>Código *</span>
                 <h5 *ngIf="validate('code', 'required', codeFocused)">El Código es<strong> Requerido</strong></h5>
                 <h5 *ngIf="validate('code', 'minlength', codeFocused)">El Código es<strong> muy Corto</strong></h5>
             </div>
             <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
-                <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required minlength="3" maxlength="100"
-                    (focus)="nameFocused = true"  (blur)="nameFocused = false" />
+                <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required
+                    minlength="3" maxlength="100" (focus)="nameFocused = true" (blur)="nameFocused = false" />
                 <label>Nombre *</label>
-                <span>Nombre *</span> 
+                <span>Nombre *</span>
                 <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong> Requerido</strong></h5>
                 <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy Corto</strong></h5>
             </div>
             <div class="input-container" [ngClass]="{'focus': brandFocused || brandInput.value.length > 0 }">
-                <input [readOnly]="read" #brandInput type="text" formControlName="brand" class="input" required minlength="3" maxlength="50"
-                    (focus)="brandFocused = true" (blur)="brandFocused = false" />
+                <input [readOnly]="read" #brandInput type="text" formControlName="brand" class="input" required
+                    minlength="3" maxlength="50" (focus)="brandFocused = true" (blur)="brandFocused = false" />
                 <label>Marca *</label>
                 <span>Marca *</span>
                 <h5 *ngIf="validate('brand', 'required', brandFocused)">La Marca es<strong> Requerida</strong></h5>
@@ -73,7 +73,7 @@
                     <li>
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrapper"
-                                (click)="selectOption(i)">{{i+1}}. {{option.name}}</button>
+                                (click)="selectOption(i)">{{i+1}}. {{option.title}}</button>
                             <button [disabled]="read || update" class="btn btn-outline-light list pe-2 ps-2 wrap"
                                 (click)="removeOption(i)">
                                 <i class="fas fa-trash"></i>
@@ -83,46 +83,52 @@
                 </ol>
             </div>
             <div class="input-container" [ngClass]="{'focus': categoryIdFocused || categoryIdInput.value.length > 0 }">
-                <select #categoryIdInput class="input form-select form-select-sm" aria-label=".form-select-sm example"
-                    (focus)="categoryIdFocused = true" (blur)="categoryIdFocused = false" formControlName="categoryId">
-                    <option hidden selected></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <div class="input-group">
+                    <input #categoryIdInput type="search" formControlName="categoryId" class="input" [readOnly]="read"
+                        (focus)="categoryIdFocused = true;" (blur)="categoryIdFocused = false" id="typeahead-focus"
+                        [adaptivePosition]="true" [(ngModel)]="categorySelected" [typeaheadSingleWords]="true"
+                        [typeaheadOptionsLimit]="7" [typeahead]="categories" typeaheadOptionField="name"
+                        (typeaheadOnSelect)="onSelect($event, 'category')" [typeaheadMinLength]="0"
+                        [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
+                </div>
                 <label>Categoría</label>
                 <span>Categoría</span>
             </div>
-            <div class="input-container" [ngClass]="{'focus': subCategoryIdFocused || subCategoryIdInput.value.length > 0 }">
-                <select #subCategoryIdInput class="input form-select form-select-sm" aria-label=".form-select-sm example"
-                    (focus)="subCategoryIdFocused = true" (blur)="subCategoryIdFocused = false" formControlName="subCategoryId">
-                    <option hidden selected></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+            <div *ngIf="categoryForm != null" class="input-container"
+                [ngClass]="{'focus': subCategoryIdFocused || subCategoryIdInput.value.length > 0 }">
+                <div class="input-group">
+                    <input #subCategoryIdInput type="search" formControlName="subCategoryId" class="input"
+                        [readOnly]="read" (focus)="subCategoryIdFocused = true;" (blur)="subCategoryIdFocused = false"
+                        id="typeahead-focus" [adaptivePosition]="true" [(ngModel)]="subCategorySelected"
+                        [typeaheadSingleWords]="true" [typeaheadOptionsLimit]="7" [typeahead]="subCategories"
+                        typeaheadOptionField="name" (typeaheadOnSelect)="onSelect($event, 'subCategory')"
+                        [typeaheadMinLength]="0" [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20"
+                        [isAnimated]="true" />
+                </div>
                 <label>Sub Categoría</label>
                 <span>Sub Categoría</span>
             </div>
             <div class="input-container" [ngClass]="{'focus': warrantyIdFocused || warrantyIdInput.value.length > 0 }">
-                <select #warrantyIdInput class="input form-select form-select-sm" aria-label=".form-select-sm example"
-                    (focus)="warrantyIdFocused = true" (blur)="warrantyIdFocused = false">
-                    <option hidden selected></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <div class="input-group">
+                    <input #warrantyIdInput type="search" formControlName="warrantyId" class="input" [readOnly]="read"
+                        (focus)="warrantyIdFocused = true;" (blur)="warrantyIdFocused = false" id="typeahead-focus"
+                        [adaptivePosition]="true" [(ngModel)]="warrantySelected" [typeaheadSingleWords]="true"
+                        [typeaheadOptionsLimit]="7" [typeahead]="warranties" typeaheadOptionField="name"
+                        (typeaheadOnSelect)="onSelect($event, 'warranty')" [typeaheadMinLength]="0"
+                        [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
+                </div>
                 <label>Garantía</label>
                 <span>Garantía</span>
             </div>
             <div class="input-container" [ngClass]="{'focus': supplierIdFocused || supplierIdInput.value.length > 0 }">
-                <select #supplierIdInput class="input form-select form-select-sm" aria-label=".form-select-sm example"
-                    (focus)="supplierIdFocused = true" (blur)="supplierIdFocused = false">
-                    <option hidden selected></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <div class="input-group">
+                    <input #supplierIdInput type="search" formControlName="supplierId" class="input" [readOnly]="read"
+                        (focus)="supplierIdFocused = true;" (blur)="supplierIdFocused = false" id="typeahead-focus"
+                        [adaptivePosition]="true" [(ngModel)]="supplierSelected" [typeaheadSingleWords]="true"
+                        [typeaheadOptionsLimit]="7" [typeahead]="suppliers" typeaheadOptionField="name"
+                        (typeaheadOnSelect)="onSelect($event, 'supplier')" [typeaheadMinLength]="0"
+                        [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
+                </div>
                 <label>Suplidor</label>
                 <span>Suplidor</span>
             </div>
@@ -153,11 +159,9 @@
                 <h5 *ngIf="validateOption('title', 'minlength', titleFocused)">El Título es<strong> muy Corto</strong>
                 </h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': imagesInput.value.length > 0 }">
-                <input [readOnly]="read" #imagesInput type="text" formControlName="images" class="input" (focus)="imagesFocused = true"
-                    (blur)="imagesFocused = false"/>
-                <label>Imágenes</label>
-                <span>Imágenes</span>
+            <div class="input-container">
+                <app-upload-images [uploadFiles]="uploadFiles" [multiple]="true"
+                    (onImagesUploadFinished)="uploadImagesFinished($event)"></app-upload-images>
             </div>
             <div class="input-container"
                 [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
@@ -186,7 +190,8 @@
                     (blur)="quantityAvailableFocused = false" />
                 <label>Cantidad Disponible *</label>
                 <span>Cantidad Disponible *</span>
-                <h5 *ngIf="validateOption('quantityAvailable', 'required', quantityAvailableFocused)">La Cantidad Disponible
+                <h5 *ngIf="validateOption('quantityAvailable', 'required', quantityAvailableFocused)">La Cantidad
+                    Disponible
                     es<strong> Requerida</strong>
                 </h5>
                 <h5 *ngIf="validateOption('quantityAvailable', 'min', quantityAvailableFocused)">La Cantidad Disponible
@@ -231,13 +236,13 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': genderForFocused || genderForInput.value.length > 0 }">
-                        <select #genderForInput class="input form-select form-select-sm"
+                        <select #genderForInput class="input form-select form-select-sm" formControlName="genderFor"
                             aria-label=".form-select-sm example" (focus)="genderForFocused = true"
                             (blur)="genderForFocused = false">
                             <option hidden selected></option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="1">Varón</option>
+                            <option value="2">Hembra</option>
+                            <option value="3">Both</option>
                         </select>
                         <label>Genero</label>
                         <span>Genero</span>
@@ -248,13 +253,17 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': materialFocused || materialInput.value.length > 0 }">
-                        <select #materialInput class="input form-select form-select-sm"
+                        <select #materialInput class="input form-select form-select-sm" formControlName="material"
                             aria-label=".form-select-sm example" (focus)="materialFocused = true"
                             (blur)="materialFocused = false">
                             <option hidden selected></option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="1">Papel</option>
+                            <option value="2">Plástico</option>
+                            <option value="3">Vidrio</option>
+                            <option value="4">Metal</option>
+                            <option value="5">Madera</option>
+                            <option value="6">Algodón</option>
+                            <option value="7">Other</option>
                         </select>
                         <label>Material</label>
                         <span>Material</span>
@@ -263,13 +272,13 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': conditionFocused || conditionInput.value.length > 0 }">
-                        <select #conditionInput class="input form-select form-select-sm"
+                        <select #conditionInput class="input form-select form-select-sm" formControlName="condition"
                             aria-label=".form-select-sm example" (focus)="conditionFocused = true"
                             (blur)="conditionFocused = false">
                             <option hidden selected></option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="1">Nuevo</option>
+                            <option value="2">Usado</option>
+                            <option value="3">Renovado</option>
                         </select>
                         <label>Condición</label>
                         <span>Condición</span>

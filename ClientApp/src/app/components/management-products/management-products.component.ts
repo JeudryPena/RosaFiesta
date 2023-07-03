@@ -60,6 +60,10 @@ export class ManagementProductsComponent {
     });
   }
 
+  public createImgPath = (serverPath: string) => {
+    return `https://localhost:5001/${serverPath}`;
+  }
+
   Delete(id: string, optionId: number | null) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar el producto?';

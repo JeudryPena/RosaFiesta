@@ -1,5 +1,5 @@
 ﻿namespace Contracts.Model.Product;
-public class WarrantyProductsDto
+public class ProductsDto
 {
 	public Guid Id { get; set; }
 }

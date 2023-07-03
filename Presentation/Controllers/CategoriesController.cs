@@ -22,6 +22,20 @@ public class CategoriesController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet("categoriesList")]
+	public async Task<IActionResult> GetCategoriesList(CancellationToken cancellationToken)
+	{
+		IEnumerable<CategoriesListResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesListAsync(cancellationToken);
+		return Ok(categories);
+	}
+
+	[HttpGet("{CategoryId}/subCategoriesList")]
+	public async Task<IActionResult> GetSubCategoriesList(int CategoryId, CancellationToken cancellationToken = default)
+	{
+		IEnumerable<SubCategoriesListResponse> categories = await _serviceManager.CategoryService.GetSubCategoriesListAsync(CategoryId, cancellationToken);
+		return Ok(categories);
+	}
+
 	[HttpGet("categoriesManagement")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> GetCategoriesManagement(CancellationToken cancellationToken)

@@ -40,7 +40,6 @@ const routes: Routes = [
     path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent },
       { path: 'products', component: ProductsComponent },
-      { path: 'coupens', component: CoupensComponent },
       { path: 'pages', component: PagesComponent },
       { path: 'media', component: MediaComponent },
       { path: 'settings', component: SettingsComponent },
@@ -80,7 +79,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'authenticate', component: AuthenticateComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'navbar', component: NavbarComponent }
+  { path: 'navbar', component: NavbarComponent },
+  { path: 'coupens', component: CoupensComponent },
 ];
 
 @NgModule({

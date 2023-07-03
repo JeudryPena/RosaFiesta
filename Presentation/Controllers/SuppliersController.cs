@@ -23,10 +23,17 @@ public class SuppliersController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet("suppliersList")]
+	public async Task<IActionResult> GetSuppliersList(CancellationToken cancellationToken)
+	{
+		IEnumerable<SuppliersListResponse> suppliers = await _serviceManager.SupplierService.GetSuppliersAsync(cancellationToken);
+		return Ok(suppliers);
+	}
+
 	[HttpGet]
 	public async Task<IActionResult> GetSuppliers(CancellationToken cancellationToken)
 	{
-		IEnumerable<ManagementSuppliers> suppliers = await _serviceManager.SupplierService.GetAllAsync(cancellationToken);
+		IEnumerable<SupplierResponse> suppliers = await _serviceManager.SupplierService.GetAllAsync(cancellationToken);
 		return Ok(suppliers);
 	}
 
