@@ -3,9 +3,9 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
+import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
-import { DiscountsService } from '../../shared/services/discounts.service';
+import { WarrantiesService } from '../../shared/services/warranties.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
 
 @Component({
@@ -13,8 +13,8 @@ import { ModalDiscountComponent } from '../modal-discount/modal-discount.compone
   templateUrl: './management-warranties.component.html',
   styleUrls: ['./management-warranties.component.scss']
 })
-export class ManagementDiscountsComponent {
-  discounts$: Observable<ManagementDiscountsResponse[]> = new Observable<ManagementDiscountsResponse[]>();
+export class ManagementWarrantiesComponent {
+  warranties$: Observable<WarrantyResponse[]> = new Observable<WarrantyResponse[]>();
   total$: Observable<number> = new Observable<number>();
   collectionSize = 0;
   pageSize = 5;
@@ -24,7 +24,7 @@ export class ManagementDiscountsComponent {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
-    public service: DiscountsService,
+    public service:   WarrantiesService,
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
@@ -35,38 +35,38 @@ export class ManagementDiscountsComponent {
 
   retrieveData() {
     this.service.RetrieveData();
-    this.discounts$ = this.service.discounts$;
+    this.warranties$ = this.service.warranties$; 
     this.total$ = this.service.total$;
   }
 
-  Retrieve(code: string) {
+  Retrieve(id: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Consultar Descuento';
-    modalRef.componentInstance.code = code;
+    modalRef.componentInstance.title = 'Consultar Garantia';
+    modalRef.componentInstance.id = id;
     modalRef.componentInstance.read = true;
   }
 
-  Modify(code: string) {
+  Modify(id: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Modificar Descuento';
+    modalRef.componentInstance.title = 'Modificar Garantia';
     modalRef.componentInstance.update = true;
-    modalRef.componentInstance.code = code;
+    modalRef.componentInstance.id = id;
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
     });
   }
 
-  Delete(code: string) {
+  Delete(id: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el descuento?';
+    modalRef.componentInstance.title = '¿Desea eliminar la garantia?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscount(code).subscribe({
+        this.service.DeleteWarranty(id).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento eliminado!';
+            modalRef.componentInstance.title = 'Garantia eliminada!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -82,16 +82,16 @@ export class ManagementDiscountsComponent {
     });
   }
 
-  DeleteProducts(code: string, optionId: number | null) {
+  DeleteProducts(id: string, productId: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el descuento del producto?';
+    modalRef.componentInstance.title = '¿Desea eliminar la garantia del producto?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscountProducts(code, optionId).subscribe({
+        this.service.DeleteWarrantyProducts(id, productId).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento de producto eliminado!';
+            modalRef.componentInstance.title = 'Garantia del producto eliminado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -107,9 +107,9 @@ export class ManagementDiscountsComponent {
     });
   }
 
-  AddDiscount() {
+  AddWarranty() {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Añadir Descuento';
+    modalRef.componentInstance.title = 'Añadir Garantia';
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();

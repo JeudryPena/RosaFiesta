@@ -13,7 +13,7 @@ import { ModalDiscountComponent } from '../modal-discount/modal-discount.compone
   templateUrl: './management-suppliers.component.html',
   styleUrls: ['./management-suppliers.component.scss']
 })
-export class ManagementDiscountsComponent {
+export class ManagementSuppliersComponent {
   discounts$: Observable<ManagementDiscountsResponse[]> = new Observable<ManagementDiscountsResponse[]>();
   total$: Observable<number> = new Observable<number>();
   collectionSize = 0;
