@@ -1,8 +1,7 @@
 import { FileResponse } from "./fileResponse";
 
 export interface MultipleFilesResponse {
-    files: FileResponse[];
+    image: string[];
     isSuccesful: boolean;
     message: string;
-    totalFiles: number;
 }

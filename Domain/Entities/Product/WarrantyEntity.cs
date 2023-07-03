@@ -10,7 +10,7 @@ public class WarrantyEntity : ByBaseEntity, IAutoBy
 	[StringLength(100, MinimumLength = 5)]
 	public string Name { get; set; }
 	public WarrantyType Type { get; set; }
-	public WarrantyStatusType Status { get; set; }
+	public WarrantyStatusType Status { get; set; } = WarrantyStatusType.Active;
 	[StringLength(100, MinimumLength = 5)]
 	public int Period { get; set; }
 	[StringLength(1000, MinimumLength = 5)]

@@ -18,6 +18,14 @@ internal sealed class CategoryService : ICategoryService
 		_repositoryManager = repositoryManager;
 	}
 
+
+	public async Task<IEnumerable<CategoriesListResponse>> GetAllCategoriesListAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
+		var categoryResponse = categories.Adapt<IEnumerable<CategoriesListResponse>>();
+		return categoryResponse;
+	}
+
 	public async Task<IEnumerable<CategoryManagementResponse>> GetAllCategoriesManagementAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
@@ -97,5 +105,12 @@ internal sealed class CategoryService : ICategoryService
 		category = categoryUpdateDto.Adapt(category);
 		_repositoryManager.CategoryRepository.Update(category);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+	}
+
+	public async Task<IEnumerable<SubCategoriesListResponse>> GetSubCategoriesListAsync(int categoryId, CancellationToken cancellationToken = default)
+	{
+		IEnumerable<SubCategoryEntity> subCategories = await _repositoryManager.CategoryRepository.GetSubCategoriesListAsync(categoryId, cancellationToken);
+		var subCategoryResponse = subCategories.Adapt<IEnumerable<SubCategoriesListResponse>>();
+		return subCategoryResponse;
 	}
 }

@@ -19,10 +19,17 @@ internal sealed class SupplierService : ISupplierService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<ManagementSuppliers>> GetAllAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<SuppliersListResponse>> GetSuppliersAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<SupplierEntity> suppliers = await _repositoryManager.SupplierRepository.GetSuppliersAsync(cancellationToken);
+		var supplierResponse = suppliers.Adapt<IEnumerable<SuppliersListResponse>>();
+		return supplierResponse;
+	}
+
+	public async Task<IEnumerable<SupplierResponse>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<SupplierEntity> suppliers = await _repositoryManager.SupplierRepository.GetAllAsync(cancellationToken);
-		var supplierResponse = suppliers.Adapt<IEnumerable<ManagementSuppliers>>();
+		var supplierResponse = suppliers.Adapt<IEnumerable<SupplierResponse>>();
 		return supplierResponse;
 	}
 

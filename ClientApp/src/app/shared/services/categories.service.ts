@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.dev";
-import { CategoryDto } from '../../interfaces/Product/categoryDto';
+import { CategoriesListResponse } from '../../interfaces/Product/Response/categories-list-response';
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
+import { SubCategoriesListResponse } from '../../interfaces/Product/Response/sub-categories-list-response';
+import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
@@ -88,6 +90,14 @@ export class CategoriesService {
 
   AddCategory(category: CategoryDto) {
     return this.http.post(this.apiUrl, category);
+  }
+
+  GetCategoriesList(): Observable<CategoriesListResponse[]> {
+    return this.http.get<CategoriesListResponse[]>(this.apiUrl + 'categoriesList');
+  }
+
+  GetSubCategoriesList(categoryId: number): Observable<SubCategoriesListResponse[]> {
+    return this.http.get<SubCategoriesListResponse[]>(`${this.apiUrl}${categoryId}/subCategoriesList`);
   }
 
   GetCategoriesManagement(): Observable<CategoryManagementResponse[]> {

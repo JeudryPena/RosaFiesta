@@ -33,6 +33,7 @@
     "ngx-avatar": "^4.1.0",
     "ngx-bootstrap": "^10.2.0",
     "ngx-datatable": "^1.0.3",
+    "ngx-file-drop": "^15.0.0",
     "ngx-stars": "^1.6.4",
     "popper.js": "^1.16.1",
     "rxjs": "~7.5.0",

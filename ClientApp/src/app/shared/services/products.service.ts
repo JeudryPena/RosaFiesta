@@ -72,7 +72,6 @@ export class ProductsService {
         .subscribe((result) => {
           this._products$.next(result.items);
           this._total$.next(result.total);
-          console.log(result.items);
         });
 
       this._search$.next();

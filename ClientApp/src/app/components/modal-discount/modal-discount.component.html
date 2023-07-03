@@ -15,7 +15,7 @@
             <div class="input-container" *ngIf="!read"
                 [ngClass]="{'focus': productsDiscountsFocused || productsDiscountsInput.value.length > 0 }">
                 <div class="input-group">
-                    <input #productsDiscountsInput type="search" [disabled]="read"
+                    <input #productsDiscountsInput type="search" 
                         formControlName="productsDiscounts" class="input"
                         (focus)="productsDiscountsFocused = true;" (blur)="productsDiscountsFocused = false"
                         id="typeahead-focus" [adaptivePosition]="true"

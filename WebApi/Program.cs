@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -55,13 +56,6 @@ public static class Program
 		AddRepository(builder.Services);
 		AddService(builder.Services);
 		AddFileManage(builder.Services, builder);
-
-		builder.Services.Configure<FormOptions>(o =>
-		{
-			o.ValueLengthLimit = int.MaxValue;
-			o.MultipartBodyLengthLimit = int.MaxValue;
-			o.MemoryBufferThreshold = int.MaxValue;
-		});
 		builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 		builder.Services.AddEndpointsApiExplorer();
 
@@ -76,13 +70,14 @@ public static class Program
 			app.UseSwagger();
 			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 		}
+
 		app.UseStaticFiles();
 		app.UseStaticFiles(new StaticFileOptions()
 		{
 			FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
 			RequestPath = new PathString("/Resources")
 		});
-		app.UseMiddleware<ExceptionHandlingMiddleware>();
+		//app.UseMiddleware<ExceptionHandlingMiddleware>();
 		app.UseCors();
 		app.UseHttpsRedirection();
 		app.UseAuthorization();
@@ -102,10 +97,7 @@ public static class Program
 
 	private static void AddFileManage(IServiceCollection services, WebApplicationBuilder builder)
 	{
-		builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
-		{
-			loggerConf.WriteTo.Console().WriteTo.Debug().ReadFrom.Configuration(hostBuilderCtx.Configuration);
-		});
+		
 
 		services.Configure<FormOptions>(o =>
 		{

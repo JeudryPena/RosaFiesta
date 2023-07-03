@@ -14,6 +14,8 @@ internal sealed class WarrantyRepository : IWarrantyRepository
 		_dbContext = dbContext;
 	}
 
+	public async Task<IEnumerable<WarrantyEntity>> GetWarrantiesList(CancellationToken cancellationToken = default) => await _dbContext.Warranties.ToListAsync(cancellationToken);
+
 	public async Task<IEnumerable<WarrantyEntity>> GetAllManagementAsync(CancellationToken cancellationToken = default) =>
 		await _dbContext.Warranties.Include(x => x.Products).ToListAsync(cancellationToken);
 
