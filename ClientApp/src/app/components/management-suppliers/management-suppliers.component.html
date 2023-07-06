@@ -1,11 +1,11 @@
-<!-- <div class="row">
+<div class="row">
     <div class="col">
         <div class="card text-start p-0">
             <div class="card-body">
                 <div class="row">
-                    <caption class="col">Descuentos&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
-                            ngbAutofocus (click)="AddDiscount()">
-                            Añadir Descuento
+                    <caption class="col">Suplidores&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
+                            ngbAutofocus (click)="AddSupplier()">
+                            Añadir suplidor
                         </button></caption>
                     <span class="col col-sm-auto col-form-label" *ngIf="service.loading$ | async">
                         <i class="fas fa-spinner fa-spin"
@@ -21,20 +21,13 @@
                     <table class="table table-striped table-hover align-middle ">
                         <thead class="tables">
                             <tr class="table-row">
-                                <th scope="col" class="table-cell" sortable="title" (sort)="onSort($event)">Nombre</th>
+
+                                <th scope="col" class="table-cell">Nombre</th>
+                                <th scope="col" class="table-cell">Email</th>
                                 <th scope="col" class="table-cell">Descripción</th>
-                                <th scope="col" class="table-cell">Valor</th>
-                                <th scope="col" class="table-cell">Máx.</th>
-                                <th scope="col" class="table-cell">
-                                    <div class="input-group">
-                                        <span class="badge text-bg-success">
-                                            Inicio
-                                        </span>
-                                        <span class="badge text-bg-danger">
-                                            Fin
-                                        </span>
-                                    </div>
-                                </th>
+                                <th scope="col" class="table-cell">Teléfono</th>
+                                <th scope="col" class="table-cell">Dirección</th>
+
                                 <th scope="col" class="table-cell">
                                     Productos</th>
                                 <th scope="col" class="table-cell">
@@ -46,52 +39,43 @@
                         </thead>
 
                         <tbody class="rows">
-                            <tr class="scroll" *ngFor="let item of discounts$ | async ">
-                                <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
+                            <tr class="scroll" *ngFor="let supplier of suppliers$ | async ">
+
+                                <td><ngb-highlight [result]="supplier.name" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
-                                <td><ngb-highlight [result]="item.description | truncate:25" placement="top"
-                                        ngbTooltip="{{item.description}}" [term]="service.searchTerm"></ngb-highlight>
+
+                                <td><ngb-highlight [result]="supplier.email" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
+
+                                <td><ngb-highlight [result]="supplier.description | truncate:25" placement="top"
+                                        ngbTooltip="{{supplier.description}}" [term]="service.searchTerm"></ngb-highlight></td>
+
+                                <td><ngb-highlight [result]="supplier.phone" [term]="service.searchTerm"></ngb-highlight></td>
+
+                                <td><ngb-highlight [result]="supplier.address" [term]="service.searchTerm"></ngb-highlight></td>
+
                                 <td>
-                                    <ngb-highlight [result]="item.value | number"
-                                        [term]="service.searchTerm"></ngb-highlight>
-                                    <span *ngIf="item.type == 1">%</span>
-                                </td>
-                                <td><ngb-highlight [result]="item.maxTimesApply | number"
-                                        [term]="service.searchTerm"></ngb-highlight></td>
-                                <td><ngb-highlight class="badge text-bg-success"
-                                        [result]="item.start | date: 'dd/MM/yyyy hh:mm:ss' "
-                                        [term]="service.searchTerm"></ngb-highlight>
-                                    <br>
-                                    <ngb-highlight class="badge text-bg-danger"
-                                        [result]="item.end | date: 'dd/MM/yyyy hh:mm:ss'"
-                                        [term]="service.searchTerm"></ngb-highlight>
-                                </td>
-                                <td>
-                                    <div *ngFor="let productDiscount of item.productsDiscounts"
+                                    <div *ngFor="let product of supplier.productsSupplied"
                                         class="d-flex justify-content-between">
                                         <div ngbDropdown container="body">
                                             <span class="badge text-bg-primary" ngbDropdownToggle>
-                                                {{productDiscount.title}}
+                                                {{product.name}}
                                             </span>
                                             <div ngbDropdownMenu>
                                                 <button ngbDropdownItem
-                                                    (click)="DeleteProducts(productDiscount.discountId, productDiscount.optionId)"><i
+                                                    (click)="DeleteProducts(supplier.id, product.id)"><i
                                                         class="fa-solid fa-trash pe-2"></i>Eliminar</button>
-                                                <button ngbDropdownItem
-                                                    (click)="DeleteProducts(productDiscount.discountId, null)"><i
-                                                        class="fa-solid fa-trash pe-2"></i>Eliminar todos</button>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td><ngb-highlight class="badge text-bg-dark"
-                                        [result]="item.createdAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
-                                        ngbTooltip="Creado por: {{item.createdBy}}"
+                                        [result]="supplier.createdAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
+                                        ngbTooltip="Creado por: {{supplier.createdBy}}"
                                         [term]="service.searchTerm"></ngb-highlight>
                                 <td><ngb-highlight class="badge text-bg-secondary"
-                                        [result]="item.updatedAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
-                                        ngbTooltip="Modificado por: {{item.updatedBy}}"
+                                        [result]="supplier.updatedAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
+                                        ngbTooltip="Modificado por: {{supplier.updatedBy}}"
                                         [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td class="overflow-hidden">
@@ -99,12 +83,12 @@
                                         <button type="button" class="btn btn-outline-primary btn-sm btn-dropdown"
                                             ngbDropdownToggle></button>
                                         <div ngbDropdownMenu>
-                                            <button ngbDropdownItem (click)="Retrieve(item.id)"><i
+                                            <button ngbDropdownItem (click)="Retrieve(supplier.id)"><i
                                                     class="fa-solid fa-eye pe-2"></i>Ver</button>
-                                            <button ngbDropdownItem (click)="Modify(item.id)"><i
+                                            <button ngbDropdownItem (click)="Modify(supplier.id)"><i
                                                     class="fa-solid fa-pen pe-2"></i>Modificar</button>
                                             <div class="dropdown-divider"></div>
-                                            <button ngbDropdownItem (click)="Delete(item.id)"><i
+                                            <button ngbDropdownItem (click)="Delete(supplier.id)"><i
                                                     class="fa-solid fa-trash pe-2"></i>Eliminar</button>
                                         </div>
                                     </div>

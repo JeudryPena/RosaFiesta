@@ -1,12 +1,12 @@
-import { BaseResponse } from "../../base-response";
-import { ProductResponse } from "./productResponse";
+import { ByBaseResponse } from "../../by-base-response";
+import { ProductsListResponse } from "./products-list-response";
 
-export interface SupplierResponse extends BaseResponse {
+export interface SupplierResponse extends ByBaseResponse {
 	id: string;
 	name: string;
 	email: string | null;
 	description: string | null;
 	phone: string | null;
 	address: string;
-	productsSupplied: ProductResponse[] | null;
+	productsSupplied: ProductsListResponse[] | null;
 }

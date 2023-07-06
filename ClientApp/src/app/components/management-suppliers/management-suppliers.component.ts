@@ -3,9 +3,9 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
+import { SupplierResponse } from '../../interfaces/Product/Response/supplierResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
-import { DiscountsService } from '../../shared/services/discounts.service';
+import { SuppliersService } from '../../shared/services/suppliers.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { ModalDiscountComponent } from '../modal-discount/modal-discount.compone
   styleUrls: ['./management-suppliers.component.scss']
 })
 export class ManagementSuppliersComponent {
-  discounts$: Observable<ManagementDiscountsResponse[]> = new Observable<ManagementDiscountsResponse[]>();
+  suppliers$: Observable<SupplierResponse[]> = new Observable<SupplierResponse[]>();
   total$: Observable<number> = new Observable<number>();
   collectionSize = 0;
   pageSize = 5;
@@ -24,7 +24,7 @@ export class ManagementSuppliersComponent {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
-    public service: DiscountsService,
+    public service: SuppliersService,
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
@@ -35,7 +35,7 @@ export class ManagementSuppliersComponent {
 
   retrieveData() {
     this.service.RetrieveData();
-    this.discounts$ = this.service.discounts$;
+    this.suppliers$ = this.service.suppliers$;
     this.total$ = this.service.total$;
   }
 
@@ -48,7 +48,7 @@ export class ManagementSuppliersComponent {
 
   Modify(code: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Modificar Descuento';
+    modalRef.componentInstance.title = 'Modificar Suplidor';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.code = code;
     modalRef.result.then((result) => {
@@ -57,16 +57,16 @@ export class ManagementSuppliersComponent {
     });
   }
 
-  Delete(code: string) {
+  Delete(id: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el descuento?';
+    modalRef.componentInstance.title = '¿Desea eliminar el Suplidor?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscount(code).subscribe({
+        this.service.Delete(id).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento eliminado!';
+            modalRef.componentInstance.title = 'Suplidor eliminado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -82,16 +82,16 @@ export class ManagementSuppliersComponent {
     });
   }
 
-  DeleteProducts(code: string, optionId: number | null) {
+  DeleteProducts(id: string, productId: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el descuento del producto?';
+    modalRef.componentInstance.title = '¿Desea eliminar el suplidor del producto?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscountProducts(code, optionId).subscribe({
+        this.service.DeleteProducts(id, productId).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento de producto eliminado!';
+            modalRef.componentInstance.title = 'Suplidor del producto eliminado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -107,9 +107,9 @@ export class ManagementSuppliersComponent {
     });
   }
 
-  AddDiscount() {
+  AddSupplier() {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Añadir Descuento';
+    modalRef.componentInstance.title = 'Añadir suplidor';
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();

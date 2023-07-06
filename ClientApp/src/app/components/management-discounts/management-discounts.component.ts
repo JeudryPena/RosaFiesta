@@ -110,7 +110,7 @@ export class ManagementDiscountsComponent {
 
   AddDiscount() {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Añadir Descuento';
+    modalRef.componentInstance.title = 'Añadir descuento';
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
