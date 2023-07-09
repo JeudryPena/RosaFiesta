@@ -6,7 +6,7 @@ import { Status } from '../../helpers/save-modal/status';
 import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { WarrantiesService } from '../../shared/services/warranties.service';
-import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
+import { ModalWarrantyComponent } from '../modal-warranty/modal-warranty.component';
 
 @Component({
   selector: 'app-management-warranties',
@@ -40,14 +40,14 @@ export class ManagementWarrantiesComponent {
   }
 
   Retrieve(id: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalWarrantyComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Consultar Garantía';
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.read = true;
   }
 
   Modify(id: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalWarrantyComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Modificar Garantía';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.id = id;
@@ -108,7 +108,7 @@ export class ManagementWarrantiesComponent {
   }
 
   AddWarranty() {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalWarrantyComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Añadir Garantía';
     modalRef.result.then((result) => {
       if (result)

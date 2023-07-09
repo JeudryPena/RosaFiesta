@@ -46,8 +46,8 @@ export class ModalWarrantyComponent {
 
   onSelect(event: TypeaheadMatch): void {
     this.products.push({
-      optionId: event.item.id,
-      title: event.item.title
+      id: event.item.id,
+      name: event.item.name
     });
     this.selected = '';
   }

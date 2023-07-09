@@ -45,14 +45,30 @@
                     </li>
                 </ol>
             </div>
-
+            <div class="input-container" [ngClass]="{'focus': typeFocused || typeInput.value.length > 0 }">
+                <select [disabled]="read" #typeInput class="input form-select form-select-sm" required
+                    aria-label=".form-select-sm example" type="text" formControlName="type"
+                    (focus)="typeFocused = true" (blur)="typeFocused = false">
+                    <option hidden selected></option>
+                    <option value="1">Porcentaje</option>
+                    <option value="2">Monto</option>
+                </select>
+                <label>Tipo</label>
+                <span>Tipo</span>
+                <h5 *ngIf="validate('type', 'required', typeFocused)">El Tipo es<strong> Requerido</strong></h5>
+            </div>
             <div class="input-container" [ngClass]="{'focus': typeFocused || typeInput.value.length > 0 }"> 
-                <input [readOnly]="read" #typeInput type="number" formControltype="type" class="input" required 
-                     (focus)="typeFocused = true" (blur)="typeFocused = false" />
+                <select [disabled]="read" #typeInput type="number" formControltype="type" class="input form-select form-select-sm" required 
+                     (focus)="typeFocused = true" (blur)="typeFocused = false">
+                     <option hidden selected></option>
+                    <option value=1>Reembolso</option>
+                    <option value=2>Reparar</option>
+                    <option value=3>Cambiar</option>
+                    <option value=4>Implicito</option>
+                </select>
                 <label>Tipo</label>
                 <span>Tipo</span>
                 <h5 *ngIf="validate('type', 'required', typeFocused)">El tipo es<strong> requerido</strong></h5>
-                <h5 *ngIf="validate('type', 'minlength', typeFocused)">El tipo es<strong> muy corto</strong></h5>
             </div>
             <div class="input-container" [ngClass]="{'focus': periodFocused || periodInput.value.length > 0 }"> 
                 <input [readOnly]="read" #periodInput type="number" formControlperiod="period" class="input" required 
@@ -76,6 +92,9 @@
             <div class="input-container" [ngClass]="{'focus': conditionsFocused || conditionsInput.value.length > 0 }"> 
                 <input [readOnly]="read" #conditionsInput type="string" formControlconditions="conditions" class="input" required 
                      (focus)="conditionsFocused = true" (blur)="conditionsFocused = false" />
+                     <textarea [readOnly]="read" #conditionsInput type="text" formControlName="conditions" class="input" required
+                    minlength="3" maxlength="500" (focus)="conditionsFocused = true"
+                    (blur)="conditionsFocused = false" rows="3"></textarea>
                 <label>Condiciones</label>
                 <span>Condiciones</span>
                 <h5 *ngIf="validate('conditions', 'required', conditionsFocused)">Las condiciones son<strong> requeridas</strong></h5>
