@@ -1,4 +1,4 @@
-import { WarrantyProductsDto } from "./warranty-products-dto";
+import { ProductsDto } from "./products-dto";
 
 export interface WarrantyDto {
     name: string;
@@ -6,5 +6,5 @@ export interface WarrantyDto {
     period: number;
     description: string;
     conditions: string;
-    products: WarrantyProductsDto[];
+    products: ProductsDto[];
 } 

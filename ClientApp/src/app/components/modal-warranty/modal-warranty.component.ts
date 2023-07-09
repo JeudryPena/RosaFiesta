@@ -4,10 +4,9 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { DiscountDto } from '../../interfaces/Product/discountDto';
-import { OptionsListResponse } from '../../interfaces/Product/Response/options-list-response';
 import { ProductsListResponse } from '../../interfaces/Product/Response/products-list-response';
 import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
+import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
 import { ProductsService } from '../../shared/services/products.service';
 import { WarrantiesService } from '../../shared/services/warranties.service';
 
@@ -108,8 +107,8 @@ export class ModalWarrantyComponent {
       });
     }
 
-    this.productService.getProducts().subscribe({
-      next: (response: OptionsListResponse[]) => {
+    this.productService.GetProductsList().subscribe({
+      next: (response: ProductsListResponse[]) => {
         this.productsList = response;
       }, error: (error) => {
         console.log(error);
@@ -118,7 +117,7 @@ export class ModalWarrantyComponent {
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
-    const control = this.discountForm.get(controlName);
+    const control = this.warrantyForm.get(controlName);
     return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
@@ -130,28 +129,26 @@ export class ModalWarrantyComponent {
     this.products.splice(index, 1);
   }
 
-  updateDiscount = (discountFormValue: any) => {
+  updateWarranty = (warrantyFormValue: any) => {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea actualizar el descuento?';
+    modalRef.componentInstance.title = '¿Desea actualizar la garantía?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const discount = { ...discountFormValue };
-        const discountDto: DiscountDto = {
-          name: discount.name,
-          type: discount.type,
-          description: discount.description,
-          value: discount.value,
-          maxTimesApply: discount.maxTimesApply,
-          start: this.date[0].toISOString(),
-          end: this.date[1].toISOString(),
-          productsDiscounts: this.products
+        const warranty = { ...warrantyFormValue };
+        const warrantyDto: WarrantyDto = {
+          name: warranty.name,
+          type: warranty.type,
+          period: warranty.period,
+          description: warranty.description,
+          conditions: warranty.conditions,
+          products: this.products,
         }
-        this.service.UpdateDiscount(this.code, discountDto).subscribe({
+        this.service.UpdateWarranty(this.id, warrantyDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento actualizado!';
+            modalRef.componentInstance.title = 'Garantía actualizada!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -167,31 +164,29 @@ export class ModalWarrantyComponent {
     });
   }
 
-  AddDiscount = (discountFormValue: any) => {
+  AddWarranty = (warrantyFormValue: any) => {
 
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea guardar el descuento?';
+    modalRef.componentInstance.title = '¿Desea guardar la garantía?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const discount = { ...discountFormValue };
+        const warranty = { ...warrantyFormValue };
 
-        const discountDto: DiscountDto = {
-          name: discount.name,
-          type: discount.type,
-          description: discount.description,
-          value: discount.value,
-          maxTimesApply: discount.maxTimesApply,
-          start: this.date[0].toISOString(),
-          end: this.date[1].toISOString(),
-          productsDiscounts: this.products
+        const warrantyDto: WarrantyDto = {
+          name: warranty.name,
+          type: warranty.type,
+          period: warranty.period,
+          description: warranty.description,
+          conditions: warranty.conditions,
+          products: this.products,
         }
 
-        this.service.AddDiscount(discountDto).subscribe({
+        this.service.AddWarranty(warrantyDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento guardado!';
+            modalRef.componentInstance.title = 'Garantía guardado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(result => {

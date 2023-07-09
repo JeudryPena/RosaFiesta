@@ -1,4 +1,4 @@
-import { WarrantyProductsDto as ProductsDto } from "./warranty-products-dto";
+import { ProductsDto } from "./products-dto";
 
 export interface SupplierDto {
     name: string;

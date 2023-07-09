@@ -41,14 +41,14 @@ export class ManagementWarrantiesComponent {
 
   Retrieve(id: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Consultar Garantia';
+    modalRef.componentInstance.title = 'Consultar Garantía';
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.read = true;
   }
 
   Modify(id: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Modificar Garantia';
+    modalRef.componentInstance.title = 'Modificar Garantía';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.id = id;
     modalRef.result.then((result) => {
@@ -59,14 +59,14 @@ export class ManagementWarrantiesComponent {
 
   Delete(id: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar la garantia?';
+    modalRef.componentInstance.title = '¿Desea eliminar la garantía?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
         this.service.DeleteWarranty(id).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Garantia eliminada!';
+            modalRef.componentInstance.title = 'Garantía eliminada!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -84,14 +84,14 @@ export class ManagementWarrantiesComponent {
 
   DeleteProducts(id: string, productId: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar la garantia del producto?';
+    modalRef.componentInstance.title = '¿Desea eliminar la Garantía del producto?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
         this.service.DeleteWarrantyProducts(id, productId).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Garantia del producto eliminado!';
+            modalRef.componentInstance.title = 'Garantía del producto eliminado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -109,7 +109,7 @@ export class ManagementWarrantiesComponent {
 
   AddWarranty() {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Añadir Garantia';
+    modalRef.componentInstance.title = 'Añadir Garantía';
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
