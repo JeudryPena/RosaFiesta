@@ -20,4 +20,6 @@ public interface IProductRepository
 	void Delete(ProductEntity product);
 	Task<IEnumerable<OptionEntity>> GetOptionsAsync(CancellationToken cancellationToken);
 	Task<string> GetOptionTitle(int optionId, CancellationToken cancellationToken);
+	Task<List<string>> GetOptionImages(int optionId, CancellationToken cancellationToken);
+	Task<IEnumerable<ProductEntity>> GetProductsList(CancellationToken cancellationToken = default);
 }

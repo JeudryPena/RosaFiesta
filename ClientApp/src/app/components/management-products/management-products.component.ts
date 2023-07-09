@@ -65,6 +65,7 @@ export class ManagementProductsComponent {
   }
 
   Delete(id: string, optionId: number | null) {
+    console.log(id)
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar el producto?';
     modalRef.componentInstance.status = Status.Pending;

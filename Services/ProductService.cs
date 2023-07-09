@@ -19,6 +19,13 @@ internal sealed class ProductService : IProductService
 		_repositoryManager = repositoryManager;
 	}
 
+	public async Task<ICollection<ProductsListResponse>> GetProductsList(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetProductsList(cancellationToken);
+		ICollection<ProductsListResponse> productsListResponse = products.Adapt<ICollection<ProductsListResponse>>();
+		return productsListResponse;
+	}
+
 	public async Task<ICollection<ManagementProductsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.ManagementGetAllAsync(cancellationToken);
@@ -56,16 +63,11 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task UpdateAsync(string userId, int optionId, Guid productId,
-		ProductUpdateDto productForUpdateDto, CancellationToken cancellationToken = default)
+	public async Task UpdateAsync(string userId, Guid productId,
+		ProductDto productForUpdateDto, CancellationToken cancellationToken = default)
 	{
-		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
-		OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
-		if (option == null)
-			throw new Exception("Option not found");
-		option.Adapt(productForUpdateDto);
-		product.Adapt(productForUpdateDto);
-		product.Options.Add(option);
+		ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
+		product = productForUpdateDto.Adapt(product);
 		_repositoryManager.ProductRepository.Update(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
@@ -74,7 +76,7 @@ internal sealed class ProductService : IProductService
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
-		if (optionId == null)
+		if (optionId != null)
 		{
 			OptionEntity? option = product.Options.FirstOrDefault(x => x.Id == optionId);
 			if (option == null)
@@ -106,5 +108,11 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		OptionAdjustResponse optionAdjustResponse = option.Adapt<OptionAdjustResponse>();
 		return optionAdjustResponse;
+	}
+
+	public async Task<IList<string>> GetOptionImages(int optionId, CancellationToken cancellationToken)
+	{
+		List<string> images = await _repositoryManager.ProductRepository.GetOptionImages(optionId, cancellationToken);
+		return images;
 	}
 }

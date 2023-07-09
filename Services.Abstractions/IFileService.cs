@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Contracts.Model.Product.UserInteract;
+
+using Microsoft.AspNetCore.Http;
 
 namespace Services.Abstractions;
 
 public interface IFileService
 {
-	Task<string> FileManage(IFormFile file, string folder);
-	Task<IList<string>> MultipleFilesManage(IFormFileCollection files, string folder);
+	Task<MultipleImageDto> FileManage(IFormFile file, string folder);
+	Task<IList<MultipleImageDto>> MultipleFilesManage(IFormFileCollection files, string folder);
 }

@@ -15,15 +15,12 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Persistence;
 using Persistence.Repository;
-
-using Serilog;
 
 using Services;
 using Services.Abstractions;
@@ -35,6 +32,7 @@ namespace WebApi;
 [ExcludeFromCodeCoverage]
 public static class Program
 {
+	private const string AllowOriginKey = "AllowOrigin";
 	private const string OriginsKey = "Origins";
 	private const string SqlConnectionString = "SqlServerConnection";
 	private const string PostgresConnectionString = "PostgreConnection";
@@ -60,6 +58,8 @@ public static class Program
 		builder.Services.AddEndpointsApiExplorer();
 
 		var app = builder.Build();
+		app.UseRouting();
+		app.UseCors(AllowOriginKey);
 
 		AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -77,15 +77,16 @@ public static class Program
 			FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
 			RequestPath = new PathString("/Resources")
 		});
-		//app.UseMiddleware<ExceptionHandlingMiddleware>();
-		app.UseCors();
-		app.UseHttpsRedirection();
-		app.UseAuthorization();
-		app.UseResponseCompression();
+
+		app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+
 		app.MapControllers();
-		app.UseRouting();
+
 		app.UseAuthentication();
 		app.UseAuthorization();
+		app.UseHttpsRedirection();
+		app.UseResponseCompression();
 		app.UseEndpoints(endpoints => endpoints.MapControllers());
 		using var serviceScope = app.Services.CreateScope();
 		using var context = serviceScope.ServiceProvider.GetService<RosaFiestaContext>();
@@ -97,7 +98,7 @@ public static class Program
 
 	private static void AddFileManage(IServiceCollection services, WebApplicationBuilder builder)
 	{
-		
+
 
 		services.Configure<FormOptions>(o =>
 		{
@@ -209,18 +210,14 @@ public static class Program
 
 		services.AddCors(
 			c =>
-				c.AddDefaultPolicy(
+				c.AddPolicy(AllowOriginKey,
 					builder =>
 						builder
-							.WithOrigins(origins)
+							.AllowAnyOrigin()
 							.AllowAnyMethod()
 							.AllowAnyHeader()
-							.AllowCredentials()
-							.WithExposedHeaders(
-								"Content-Disposition",
-								"downloadfilename",
-								"IsEditable"
-							)
+							.AllowAnyMethod()
+							.SetIsOriginAllowed(origin => true)
 				)
 		);
 	}

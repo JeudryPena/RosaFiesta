@@ -114,6 +114,7 @@ import { ToastContainerComponent } from './helpers/toast-container/toast-contain
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
 import { TreeMapChartComponent } from './helpers/tree-map-chart/tree-map-chart.component';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { DownloadComponent } from './components/download/download.component';
 import { ModalWarrantyComponent } from './components/modal-warranty/modal-warranty.component';
 
 export function tokenGetter() {
@@ -212,6 +213,7 @@ export function tokenGetter() {
     TruncatePipe,
     TimePickerComponent,
     UploadImagesComponent,
+    DownloadComponent,
     ModalWarrantyComponent
   ],
   imports: [
