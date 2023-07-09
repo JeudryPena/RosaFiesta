@@ -11,6 +11,8 @@ public class UserRepository : IUserRepository
 
 	public UserRepository(RosaFiestaContext context) => _context = context;
 
+	public async Task<IEnumerable<UserEntity>> GetUsersList(CancellationToken cancellationToken = default) => await _context.Users.ToListAsync(cancellationToken);
+
 	public async Task<IEnumerable<UserEntity>> GetAllAsync(
 		CancellationToken cancellationToken = default
 	) => await _context.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).ToListAsync(cancellationToken);
@@ -71,4 +73,6 @@ public class UserRepository : IUserRepository
 
 	public void DeleteAddress(AddressEntity address)
 	=> _context.Addresses.Remove(address);
+
+	public async Task<IEnumerable<RoleEntity>> GetRolesList(CancellationToken cancellationToken = default) => await _context.Roles.ToListAsync(cancellationToken);
 }

@@ -34,6 +34,8 @@ internal sealed class UserService : IUserService
 		return rolesResponse;
 	}
 
+
+
 	public async Task<string?> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken = default)
 	{
 		string? userName = await _repositoryManager.UserRepository.GetUserNameByIdAsync(userId, cancellationToken);
@@ -196,5 +198,19 @@ internal sealed class UserService : IUserService
 		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
 		_repositoryManager.UserRepository.DeleteAddress(address);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
+	}
+
+	public async Task<IEnumerable<UsersListResponse>> GetUsersListAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<UserEntity> users = await _repositoryManager.UserRepository.GetUsersList(cancellationToken);
+		var usersDto = users.Adapt<IEnumerable<UsersListResponse>>();
+		return usersDto;
+	}
+
+	public async Task<IEnumerable<RolesListResponse>> GetRolesListAsync(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<RoleEntity> roles = await _repositoryManager.UserRepository.GetRolesList(cancellationToken);
+		var rolesResponse = roles.Adapt<IEnumerable<RolesListResponse>>();
+		return rolesResponse;
 	}
 }

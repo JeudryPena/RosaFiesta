@@ -32,6 +32,25 @@ public class UsersController : ControllerBase
 		return Ok(roles);
 	}
 
+	[HttpGet("rolesList")]
+	public async Task<IActionResult> GetRolesList(CancellationToken cancellationToken)
+	{
+		IEnumerable<RolesListResponse> roles = await _serviceManager.UserService.GetRolesListAsync(
+							cancellationToken
+														);
+		return Ok(roles);
+	}
+
+	[HttpGet("listaUsuarios")]
+	public async Task<IActionResult> GetListaUsuarios(CancellationToken cancellationToken)
+	{
+		IEnumerable<UsersListResponse> users = await _serviceManager.UserService.GetUsersListAsync(
+					cancellationToken
+							);
+		return Ok(users);
+	}
+
+
 	[HttpGet]
 	public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
 	{
