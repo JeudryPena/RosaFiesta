@@ -7,6 +7,7 @@ import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResp
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { WarrantiesService } from '../../shared/services/warranties.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
+import { ModalWarrantyComponent } from '../modal-warranty/modal-warranty.component';
 
 @Component({
   selector: 'app-management-warranties',
@@ -108,7 +109,7 @@ export class ManagementWarrantiesComponent {
   }
 
   AddWarranty() {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalWarrantyComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Añadir Garantía';
     modalRef.result.then((result) => {
       if (result)

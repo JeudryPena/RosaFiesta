@@ -371,14 +371,13 @@ export class ModalProductComponent implements OnInit {
         if (this.options.length !== 0) {
           this.options.forEach(option => {
             const files = option.images.filter((image: any) => image instanceof File);
-            uploadsCompleted++;
             if (files != null && files.length > 0) {
-              const 
-              this.filesService.UpdateFiles(option.images, option.id).subscribe({
-                next: (response) => {
-                  option.images = response;
-                }, error: (error) => {
-                  console.log(error);
+              const response$ = this.filesService.UploadFiles(files);
+              lastValueFrom(response$).then(response => {
+                option.images = response
+                uploadsCompleted++;
+                if (uploadsCompleted === this.options.length) {
+                  this.OnUpdateProduct(product);
                 }
               });
             } else {
@@ -388,7 +387,7 @@ export class ModalProductComponent implements OnInit {
               }
             }
           });
-        } else 
+        } else
           this.OnUpdateProduct(product);
       }
     });
@@ -432,7 +431,8 @@ export class ModalProductComponent implements OnInit {
         let uploadsCompleted = 0;
         if (this.options.length !== 0) {
           this.options.forEach(async option => {
-            if (option.images != null && option.images.length > 0) {
+            const files = option.images.filter((image: any) => image instanceof File);
+            if (files != null && files.length > 0) {
               const response$ = this.filesService.UploadFiles(option.images);
               let response: any = await lastValueFrom(response$);
               console.log(response);
