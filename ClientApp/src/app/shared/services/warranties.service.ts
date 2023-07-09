@@ -3,16 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.prod";
+import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
+import { WarrantiesManagementResponse } from '../../interfaces/Product/Response/warranties-management-response';
 import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
 import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
-import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(warranties: WarrantyResponse[], column: SortColumn, direction: string): WarrantyResponse[] {
+function sort(warranties: WarrantiesManagementResponse[], column: SortColumn, direction: string): WarrantiesManagementResponse[] {
   if (direction === '' || column === '') {
     return warranties;
   } else {
@@ -23,7 +24,7 @@ function sort(warranties: WarrantyResponse[], column: SortColumn, direction: str
   }
 }
 
-function matches(warranty: WarrantyResponse, term: string, pipe: PipeTransform) {
+function matches(warranty: WarrantiesManagementResponse, term: string, pipe: PipeTransform) {
   return (
     warranty.name.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(warranty.id).includes(term)
@@ -37,8 +38,8 @@ export class WarrantiesService {
   private apiUrl = `${config.apiURL}warranties/`
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _warranties$ = new BehaviorSubject<WarrantyResponse[]>([]);
-  private _managementWarranties$ = Array<WarrantyResponse>();
+  private _warranties$ = new BehaviorSubject<WarrantiesManagementResponse[]>([]);
+  private _managementWarranties$ = Array<WarrantiesManagementResponse>();
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -88,8 +89,8 @@ export class WarrantiesService {
     return this.http.get<WarrantyResponse>(`${this.apiUrl}${id}`);
   }
 
-  GetWarrantiesManagement(): Observable<WarrantyResponse[]> {
-    return this.http.get<WarrantyResponse[]>(`${this.apiUrl}management`);
+  GetWarrantiesManagement(): Observable<WarrantiesManagementResponse[]> {
+    return this.http.get<WarrantiesManagementResponse[]>(`${this.apiUrl}management`);
   }
 
   GetWarrantiesList(): Observable<WarrantiesListResponse[]> {

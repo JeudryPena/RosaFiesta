@@ -68,8 +68,7 @@ export class ModalWarrantyComponent {
           type: response.type,
           period: response.period,
           description: response.description,
-          conditions: response.conditions,       
-          products: response.products || [],
+          conditions: response.conditions,
         });
 
         this.products = response.products || [];
@@ -96,7 +95,6 @@ export class ModalWarrantyComponent {
           period: response.period,
           description: response.description,
           conditions: response.conditions,
-          products: response.products || [],
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
           createdBy: response.createdBy,
@@ -143,7 +141,7 @@ export class ModalWarrantyComponent {
           period: warranty.period,
           description: warranty.description,
           conditions: warranty.conditions,
-          products: this.products,
+          warrantyProducts: this.products,
         }
         this.service.UpdateWarranty(this.id, warrantyDto).subscribe({
           next: () => {
@@ -180,7 +178,7 @@ export class ModalWarrantyComponent {
           period: warranty.period,
           description: warranty.description,
           conditions: warranty.conditions,
-          products: this.products,
+          warrantyProducts: this.products,
         }
 
         this.service.AddWarranty(warrantyDto).subscribe({

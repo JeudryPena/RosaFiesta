@@ -8,6 +8,7 @@ public interface IWarrantyRepository
 	Task<IEnumerable<WarrantyEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 	Task<WarrantyEntity> GetByIdAsync(Guid warrantyId, CancellationToken cancellationToken = default);
 	Task<IEnumerable<WarrantyEntity>> GetWarrantiesList(CancellationToken cancellationToken = default);
+	Task<IEnumerable<WarrantyEntity>> GetAllManagementAsync(CancellationToken cancellationToken = default);
 	void Insert(WarrantyEntity warrantyEntity);
 	void Update(WarrantyEntity warranty);
 }

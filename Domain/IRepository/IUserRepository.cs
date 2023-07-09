@@ -19,4 +19,6 @@ public interface IUserRepository
 	void Delete(UserEntity user);
 	void DeleteAddress(AddressEntity address);
 	Task<IEnumerable<RoleEntity>> GetAllRolesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<UserEntity>> GetUsersList(CancellationToken cancellationToken = default);
+	Task<IEnumerable<RoleEntity>> GetRolesList(CancellationToken cancellationToken = default);
 }

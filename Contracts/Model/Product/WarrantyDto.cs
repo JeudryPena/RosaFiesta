@@ -7,5 +7,5 @@ public class WarrantyDto
 	public int Period { get; set; }
 	public string Description { get; set; }
 	public string Conditions { get; set; }
-	public ICollection<ProductsDto>? Products { get; set; }
+	public ICollection<ProductsDto>? WarrantyProducts { get; set; }
 }

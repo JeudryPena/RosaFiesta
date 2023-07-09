@@ -4,7 +4,7 @@ import { ProductsListResponse } from "./products-list-response";
 export interface WarrantyResponse extends ByBaseResponse {
 	id: string;
 	name: string;
-	type: string;
+	type: number;
 	status: string;
 	period: number;
 	description: string;

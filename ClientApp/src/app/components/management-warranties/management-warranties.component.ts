@@ -3,7 +3,7 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
+import { WarrantiesManagementResponse } from '../../interfaces/Product/Response/warranties-management-response';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { WarrantiesService } from '../../shared/services/warranties.service';
 import { ModalWarrantyComponent } from '../modal-warranty/modal-warranty.component';
@@ -14,7 +14,7 @@ import { ModalWarrantyComponent } from '../modal-warranty/modal-warranty.compone
   styleUrls: ['./management-warranties.component.scss']
 })
 export class ManagementWarrantiesComponent {
-  warranties$: Observable<WarrantyResponse[]> = new Observable<WarrantyResponse[]>();
+  warranties$: Observable<WarrantiesManagementResponse[]> = new Observable<WarrantiesManagementResponse[]>();
   total$: Observable<number> = new Observable<number>();
   collectionSize = 0;
   pageSize = 5;
@@ -24,7 +24,7 @@ export class ManagementWarrantiesComponent {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
-    public service:   WarrantiesService,
+    public service: WarrantiesService,
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
@@ -35,7 +35,7 @@ export class ManagementWarrantiesComponent {
 
   retrieveData() {
     this.service.RetrieveData();
-    this.warranties$ = this.service.warranties$; 
+    this.warranties$ = this.service.warranties$;
     this.total$ = this.service.total$;
   }
 

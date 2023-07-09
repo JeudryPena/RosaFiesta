@@ -34,7 +34,7 @@ public class WarrantiesController : ControllerBase
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> GetWarrantiesForManagement(CancellationToken cancellationToken)
 	{
-		IEnumerable<WarrantyResponse> warranties = await _serviceManager.WarrantyService.GetAllForManagementAsync(cancellationToken);
+		IEnumerable<WarrantiesManagementResponse> warranties = await _serviceManager.WarrantyService.GetAllForManagementAsync(cancellationToken);
 		return Ok(warranties);
 	}
 
@@ -60,8 +60,8 @@ public class WarrantiesController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		WarrantyResponse warrantyResponse = await _serviceManager.WarrantyService.CreateWarrantyAsync(userId, warranty, cancellationToken);
-		return Ok(warrantyResponse);
+		await _serviceManager.WarrantyService.CreateWarrantyAsync(userId, warranty, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("{warrantyId:guid}")]
@@ -71,8 +71,8 @@ public class WarrantiesController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		WarrantyResponse warrantyResponse = await _serviceManager.WarrantyService.UpdateWarrantyAsync(userId, warrantyId, warrantyDto, cancellationToken);
-		return Ok(warrantyResponse);
+		await _serviceManager.WarrantyService.UpdateWarrantyAsync(userId, warrantyId, warrantyDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("{warrantyId:guid}/status")]
@@ -82,8 +82,8 @@ public class WarrantiesController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		WarrantyResponse warrantyResponse = await _serviceManager.WarrantyService.UpdateWarrantyStatusAsync(userId, warrantyId, warrantyStatus, cancellationToken);
-		return Ok(warrantyResponse);
+		await _serviceManager.WarrantyService.UpdateWarrantyStatusAsync(userId, warrantyId, warrantyStatus, cancellationToken);
+		return Ok();
 	}
 
 	[HttpDelete("{warrantyId:guid}")]
