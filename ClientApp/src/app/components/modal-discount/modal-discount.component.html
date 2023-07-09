@@ -57,11 +57,11 @@
                 <div class="col">
                     <div class="input-container" [ngClass]="{'focus': typeFocused || typeInput.value.length > 0 }">
                         <select [disabled]="read" #typeInput class="input form-select form-select-sm" required
-                            aria-label=".form-select-sm example" type="text" formControlName="type"
+                            aria-label=".form-select-sm example" type="number" formControlName="type"
                             (focus)="typeFocused = true" (blur)="typeFocused = false">
                             <option hidden selected></option>
-                            <option value="1">Porcentaje</option>
-                            <option value="2">Monto</option>
+                            <option value=1>Porcentaje</option>
+                            <option value=2>Monto</option>
                         </select>
                         <label>Tipo</label>
                         <span>Tipo</span>

@@ -235,13 +235,13 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': genderForFocused || genderForInput.value.length > 0 }">
-                        <select #genderForInput class="input form-select form-select-sm" formControlName="genderFor"
+                        <select #genderForInput class="input form-select form-select-sm" formControlName="genderFor" type="number"
                             aria-label=".form-select-sm example" (focus)="genderForFocused = true"
                             (blur)="genderForFocused = false">
                             <option hidden selected></option>
-                            <option value="1">Varón</option>
-                            <option value="2">Hembra</option>
-                            <option value="3">Both</option>
+                            <option value=1>Varón</option>
+                            <option value=2>Hembra</option>
+                            <option value=3>Both</option>
                         </select>
                         <label>Genero</label>
                         <span>Genero</span>
@@ -252,17 +252,17 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': materialFocused || materialInput.value.length > 0 }">
-                        <select #materialInput class="input form-select form-select-sm" formControlName="material"
+                        <select #materialInput class="input form-select form-select-sm" formControlName="material" type="number"
                             aria-label=".form-select-sm example" (focus)="materialFocused = true"
                             (blur)="materialFocused = false">
                             <option hidden selected></option>
-                            <option value="1">Papel</option>
-                            <option value="2">Plástico</option>
-                            <option value="3">Vidrio</option>
-                            <option value="4">Metal</option>
-                            <option value="5">Madera</option>
-                            <option value="6">Algodón</option>
-                            <option value="7">Other</option>
+                            <option value=1>Papel</option>
+                            <option value=2>Plástico</option>
+                            <option value=3>Vidrio</option>
+                            <option value=4>Metal</option>
+                            <option value=5>Madera</option>
+                            <option value=6>Algodón</option>
+                            <option value=7>Other</option>
                         </select>
                         <label>Material</label>
                         <span>Material</span>
@@ -271,13 +271,13 @@
                 <div class="col">
                     <div class="input-container"
                         [ngClass]="{'focus': conditionFocused || conditionInput.value.length > 0 }">
-                        <select #conditionInput class="input form-select form-select-sm" formControlName="condition"
+                        <select #conditionInput class="input form-select form-select-sm" formControlName="condition" type="number"
                             aria-label=".form-select-sm example" (focus)="conditionFocused = true"
                             (blur)="conditionFocused = false">
                             <option hidden selected></option>
-                            <option value="1">Nuevo</option>
-                            <option value="2">Usado</option>
-                            <option value="3">Renovado</option>
+                            <option value=1>Nuevo</option>
+                            <option value=2>Usado</option>
+                            <option value=3>Renovado</option>
                         </select>
                         <label>Condición</label>
                         <span>Condición</span>
