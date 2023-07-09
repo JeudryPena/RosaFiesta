@@ -8,12 +8,12 @@ public class OptionResponse
 	public string? Color { get; set; }
 	public float? Size { get; set; }
 	public float Weight { get; set; }
-	public string? GenderFor { get; set; }
-	public string? Material { get; set; }
-	public string Condition { get; set; }
-	public string? Images { get; set; } = string.Empty;
+	public int? GenderFor { get; set; }
+	public int? Material { get; set; }
+	public int Condition { get; set; }
 	public string Stock => StockCalculate().ToString();
 	public int QuantityAvailable { get; set; }
+	public IEnumerable<MultipleImagesResponse> Images { get; set; }
 
 	private StockStatusType StockCalculate()
 	{

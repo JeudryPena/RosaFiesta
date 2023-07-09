@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Net.Http.Headers;
 
+using Contracts.Model.Product.UserInteract;
+
 using Microsoft.AspNetCore.Http;
 
 using Services.Abstractions;
@@ -20,7 +22,7 @@ public class FileService : IFileService
 	private const long ImageTotalSizesLimit = 1024 * 1024 * ImageTotalSizesMb;
 	private static readonly string[] ImageAllowedExtensions = { ".jpg", ".jpeg", ".png", ".bmp" };
 
-	public async Task<string> FileManage(IFormFile file, string folder)
+	public async Task<MultipleImageDto> FileManage(IFormFile file, string folder)
 	{
 		long FileSizeLimit;
 		string[] AllowedExtensions;
@@ -58,10 +60,13 @@ public class FileService : IFileService
 		var fullPath = Path.Combine(pathToSave, fileName);
 		using (var stream = new FileStream(fullPath, FileMode.Create))
 			await file.CopyToAsync(stream).ConfigureAwait(false);
-		return Path.Combine(folderName, fileName);
+		return new MultipleImageDto
+		{
+			Image = Path.Combine(folderName, fileName)
+		};
 	}
 
-	public async Task<IList<string>> MultipleFilesManage(IFormFileCollection files, string folder)
+	public async Task<IList<MultipleImageDto>> MultipleFilesManage(IFormFileCollection files, string folder)
 	{
 		long FileSizeLimit;
 		string[] AllowedExtensions;
@@ -105,14 +110,18 @@ public class FileService : IFileService
 		if (totalFilesLength == 0)
 			throw new Exception("No files were uploaded");
 
-		IList<string> fileList = new List<string>();
+		IList<MultipleImageDto> fileList = new List<MultipleImageDto>();
 		foreach (var file in files)
 		{
 			var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName?.Trim('"');
 			if (fileName == null)
 				throw new Exception("Filename not found");
 			var fullPath = Path.Combine(pathToSave, fileName);
-			fileList.Add(Path.Combine(folderName, fileName));
+			MultipleImageDto dbPath = new()
+			{
+				Image = Path.Combine(folderName, fileName)
+			};
+			fileList.Add(dbPath);
 
 			using (var stream = new FileStream(fullPath, FileMode.Create))
 				file.CopyTo(stream);

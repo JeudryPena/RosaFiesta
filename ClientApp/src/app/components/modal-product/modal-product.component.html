@@ -84,7 +84,7 @@
             </div>
             <div class="input-container" [ngClass]="{'focus': categoryIdFocused || categoryIdInput.value.length > 0 }">
                 <div class="input-group">
-                    <input #categoryIdInput type="search" formControlName="categoryId" class="input" [readOnly]="read"
+                    <input #categoryIdInput type="search" required formControlName="categoryId" class="input" [readOnly]="read"
                         (focus)="categoryIdFocused = true;" (blur)="categoryIdFocused = false" id="typeahead-focus"
                         [adaptivePosition]="true" [(ngModel)]="categorySelected" [typeaheadSingleWords]="true"
                         [typeaheadOptionsLimit]="7" [typeahead]="categories" typeaheadOptionField="name"
@@ -160,8 +160,7 @@
                 </h5>
             </div>
             <div class="input-container">
-                <app-upload-images [uploadFiles]="uploadFiles" [multiple]="true"
-                    (onImagesUploadFinished)="uploadImagesFinished($event)"></app-upload-images>
+                <app-upload-images [read]="read" [pictures]="pictures" [uploadFiles]="uploadFiles" [multiple]="true"></app-upload-images>
             </div>
             <div class="input-container"
                 [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">

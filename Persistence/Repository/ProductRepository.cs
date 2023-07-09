@@ -41,7 +41,7 @@ public class ProductRepository : IProductRepository
 
 	public async Task<ProductEntity> GetProductById(Guid productId, CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+		var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
@@ -61,7 +61,7 @@ public class ProductRepository : IProductRepository
 	public async Task<ProductEntity> GetByIdAsync(Guid productId,
 		CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Images).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
@@ -93,5 +93,23 @@ public class ProductRepository : IProductRepository
 	{
 		IEnumerable<OptionEntity> options = await _dbContext.Options.ToListAsync(cancellationToken);
 		return options;
+	}
+
+	public async Task<IEnumerable<OptionEntity>> GetOptionsByProductIdAsync(Guid productId, CancellationToken cancellationToken)
+	{
+		IEnumerable<OptionEntity> options = await _dbContext.Options.Where(x => x.ProductId == productId).ToListAsync(cancellationToken);
+		return options;
+	}
+
+	public async Task<List<string>> GetOptionImages(int optionId, CancellationToken cancellationToken)
+	{
+		List<string> images = await _dbContext.OptionImages.Where(x => x.OptionId == optionId).Select(x => x.Image).ToListAsync(cancellationToken);
+		return images;
+	}
+
+	public async Task<IEnumerable<ProductEntity>> GetProductsList(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<ProductEntity> products = await _dbContext.Products.ToListAsync(cancellationToken);
+		return products;
 	}
 }

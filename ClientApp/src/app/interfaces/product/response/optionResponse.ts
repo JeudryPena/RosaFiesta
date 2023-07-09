@@ -1,3 +1,5 @@
+import { MultipleImagesResponse } from "./multipleImagesResponse";
+
 export interface OptionResponse {
 	id: number;
 	title: string;
@@ -9,7 +11,7 @@ export interface OptionResponse {
 	genderFor: string | null;
 	material: string | null;
 	condition: string;
-	images: string | null;
+	images: MultipleImagesResponse[];
 	stock: string;
 	quantityAvailable: number;
 }

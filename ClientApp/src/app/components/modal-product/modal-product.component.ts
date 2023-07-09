@@ -1,7 +1,9 @@
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+import { lastValueFrom } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { CategoriesListResponse } from '../../interfaces/Product/Response/categories-list-response';
@@ -9,14 +11,13 @@ import { ProductResponse } from '../../interfaces/Product/Response/productRespon
 import { SubCategoriesListResponse } from '../../interfaces/Product/Response/sub-categories-list-response';
 import { SuppliersListResponse } from '../../interfaces/Product/Response/suppliers-list-response';
 import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
-import { MultipleImageDto } from '../../interfaces/Product/UserInteract/multipleImageDto';
 import { OptionDto } from '../../interfaces/Product/optionDto';
 import { ProductDto } from '../../interfaces/Product/productDto';
 import { CategoriesService } from '../../shared/services/categories.service';
+import { FilesService } from '../../shared/services/files.service';
 import { ProductsService } from '../../shared/services/products.service';
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { WarrantiesService } from '../../shared/services/warranties.service';
-import { FilesService } from '../../shared/services/files.service';
 
 @Component({
   selector: 'app-modal-product',
@@ -78,8 +79,8 @@ export class ModalProductComponent implements OnInit {
   subCategories: SubCategoriesListResponse[] = [];
   warranties: WarrantiesListResponse[] = [];
   suppliers: SuppliersListResponse[] = [];
-  responseImgs: MultipleImageDto[] = [];
-  uploadFiles: any[] = [];
+  uploadFiles: File[] = [];
+  pictures: any[] = [];
 
   constructor(
     private modalService: NgbModal,
@@ -88,9 +89,10 @@ export class ModalProductComponent implements OnInit {
     private categoriesService: CategoriesService,
     private warrantiesService: WarrantiesService,
     private suppliersService: SuppliersService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private http: HttpClient
   ) {
-    
+
   }
 
   onSelect(event: TypeaheadMatch, form: string): void {
@@ -109,6 +111,32 @@ export class ModalProductComponent implements OnInit {
     else if (form == 'supplier') {
       this.supplierForm = event.item;
     }
+  }
+
+  async ReadImages(images: any) {
+    for (const image of images) {
+      let i = image.image;
+      const file$ = this.filesService.getPhoto(i);
+      let response: any = await lastValueFrom(file$);
+      const fileName = i.split('\\').pop();
+      this.RetrieveFile(response, fileName);
+    }
+    this.preview();
+  }
+
+  RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
+    if (data.body) {
+
+      const downloadedFile = new Blob([data.body], { type: data.body.type });
+
+      const file = new File([downloadedFile], fileName, { type: `${data.body.type}` });
+
+      this.uploadFiles.push(file);
+    }
+  }
+
+  createImgPath = (serverPath: string) => {
+    return `https://localhost:7136/${serverPath}`;
   }
 
   ngOnInit(): void {
@@ -192,17 +220,11 @@ export class ModalProductComponent implements OnInit {
     });
   }
 
-  uploadImagesFinished = (event: any) => {
-    console.log(event);
-    this.responseImgs.push({
-      image: event
-    });
-    console.log(this.responseImgs);
-  }
-
   addNewOption(name: string) {
     this.optionTitle = 'Añadir Opción'
+
     this.optionForm = new FormGroup({
+      id: new FormControl(0),
       title: new FormControl(name),
       description: new FormControl(''),
       price: new FormControl(0),
@@ -224,6 +246,7 @@ export class ModalProductComponent implements OnInit {
     const option = { ...optionFormValue };
     option.images = this.uploadFiles;
     const optionDto: OptionDto = {
+      id: option.id,
       title: option.title,
       description: option.description,
       price: option.price,
@@ -238,6 +261,7 @@ export class ModalProductComponent implements OnInit {
     }
     this.options.push(optionDto);
     this.uploadFiles = [];
+    this.pictures = [];
     this.optionForm = null;
   }
 
@@ -245,6 +269,7 @@ export class ModalProductComponent implements OnInit {
     const option = { ...optionFormValue };
     option.images = this.uploadFiles;
     const optionDto: OptionDto = {
+      id: option.id,
       title: option.title,
       description: option.description,
       price: option.price,
@@ -258,6 +283,7 @@ export class ModalProductComponent implements OnInit {
       quantityAvailable: option.quantityAvailable
     }
     this.uploadFiles = [];
+    this.pictures = [];
     this.options[option.index] = optionDto;
     this.updateOption = false;
     this.optionForm = null;
@@ -267,6 +293,8 @@ export class ModalProductComponent implements OnInit {
     this.updateOption = true;
     this.optionTitle = 'Modificar Opción'
     this.optionForm = new FormGroup({
+      index: new FormControl(index),
+      id: new FormControl(this.options[index].id),
       title: new FormControl(this.options[index].title),
       description: new FormControl(this.options[index].description),
       price: new FormControl(this.options[index].price),
@@ -279,10 +307,31 @@ export class ModalProductComponent implements OnInit {
       images: new FormControl(this.options[index].images),
       quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
-    this.uploadFiles = this.options[index].images; 
+    if (this.update == true || this.read == true) {
+      this.ReadImages(this.options[index].images);
+      console.log(this.uploadFiles);
+
+    }
+    else {
+      this.uploadFiles = this.options[index].images;
+      console.log("tuhna")
+
+    }
     setTimeout(() => {
 
     }, 10);
+  }
+
+  preview() {
+    console.log(this.uploadFiles);
+    this.uploadFiles.forEach(f => {
+      console.log(f);
+      const reader = new FileReader();
+      reader.readAsDataURL(f);
+      reader.onload = () => {
+        this.pictures.push(reader.result);
+      };
+    });
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
@@ -297,6 +346,8 @@ export class ModalProductComponent implements OnInit {
 
   cancelOption() {
     this.updateOption = false;
+    this.uploadFiles = [];
+    this.pictures = [];
     this.optionForm = null;
   }
 
@@ -316,37 +367,56 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const product = { ...productFormValue };
-
-        const productDto: ProductDto = {
-          code: product.code,
-          name: product.name,
-          brand: product.brand,
-          categoryId: product.categoryId,
-          subCategoryId: product.subCategoryId,
-          warrantyId: product.warrantyId,
-          supplierId: product.supplierId,
-          options: this.options,
-        }
-        this.service.UpdateProduct(this.productId, productDto).subscribe({
-          next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Producto actualizado!';
-            modalRef.componentInstance.status = Status.Success;
-
-            modalRef.result.then(result => {
-              this.activeModal.close(true);
+        let uploadsCompleted = 0;
+        this.options.forEach(option => {
+          const files = option.images.filter((image: any) => image instanceof File);
+          console.log(files);
+          uploadsCompleted++;
+          if (files != null && files.length > 0) {
+            this.filesService.UpdateFiles(option.images, option.id).subscribe({
+              next: (response) => {
+                option.images = response;
+              }, error: (error) => {
+                console.log(error);
+              }
             });
-          }, error: (error) => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = error;
-            modalRef.componentInstance.status = Status.Failed;
           }
         });
+        if (uploadsCompleted === this.options.length) {
+          this.OnUpdateProduct(product);
+        }
       }
     });
   }
 
-  AddProduct = (productFormValue: any) => {
+  OnUpdateProduct(product: any) {
+    const productDto: ProductDto = {
+      code: product.code,
+      name: product.name,
+      brand: product.brand,
+      categoryId: product.categoryId,
+      subCategoryId: product.subCategoryId,
+      warrantyId: product.warrantyId,
+      supplierId: product.supplierId,
+      options: this.options
+    }
+    this.service.UpdateProduct(this.productId, productDto).subscribe({
+      next: () => {
+        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        modalRef.componentInstance.title = 'Producto actualizado!';
+        modalRef.componentInstance.status = Status.Success;
+        modalRef.result.then(result => {
+          this.activeModal.close(true);
+        });
+      }, error: (error) => {
+        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        modalRef.componentInstance.title = error;
+        modalRef.componentInstance.status = Status.Failed;
+      }
+    });
+  }
+
+  async AddProduct(productFormValue: any) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea guardar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
@@ -354,39 +424,56 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const product = { ...productFormValue };
-        this.options.forEach(option => {
-          const images = this.filesService.UploadFiles(option.images);
-          option.images.push({ ...option, images: images });
-          console.log(this.options);
-          console.log(images);
-        });
-        const productDto: ProductDto = {
-          code: product.code,
-          name: product.name,
-          brand: product.brand,
-          categoryId: this.categoryForm.id,
-          subCategoryId: this.subCategoryForm.id || null,
-          warrantyId: this.warrantyForm.id || null,
-          supplierId: this.supplierForm.id || null,
-          options: this.options,
-        }
-        console.log(productDto);
-        this.service.AddProduct(productDto).subscribe({
-          next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Producto guardado!';
-            modalRef.componentInstance.status = Status.Success;
-
-            modalRef.result.then(result => {
-              this.activeModal.close(true);
-            });
-          }, error: (error) => {
-            console.log(error);
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = error;
-            modalRef.componentInstance.status = Status.Failed;
+        let uploadsCompleted = 0;
+        if (this.options.length !== 0) {
+          this.options.forEach(async option =>  {
+            if (option.images != null && option.images.length > 0){
+              const response$ = this.filesService.UploadFiles(option.images);
+              let response: any = await lastValueFrom(response$);
+              console.log(response);
+              uploadsCompleted++;
+              option.images = response;
+            }
+            else
+              uploadsCompleted++;
+          });
+          console.log(uploadsCompleted)
+          if (uploadsCompleted === this.options.length) {
+            this.OnAddProduct(product);
           }
+        } else {
+          this.OnAddProduct(product);
+        }
+      }
+    });
+  }
+
+  OnAddProduct(product: any) {
+    const productDto: ProductDto = {
+      code: product.code,
+      name: product.name,
+      brand: product.brand,
+      categoryId: this.categoryForm.id,
+      subCategoryId: this.subCategoryForm.id || null,
+      warrantyId: this.warrantyForm.id || null,
+      supplierId: this.supplierForm.id || null,
+      options: this.options,
+    }
+    this.service.AddProduct(productDto).subscribe({
+      next: () => {
+        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        modalRef.componentInstance.title = 'Producto guardado!';
+        modalRef.componentInstance.status = Status.Success;
+
+        modalRef.result.then(result => {
+
+          this.activeModal.close(true);
         });
+      }, error: (error) => {
+        console.log(error);
+        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        modalRef.componentInstance.title = error;
+        modalRef.componentInstance.status = Status.Failed;
       }
     });
   }

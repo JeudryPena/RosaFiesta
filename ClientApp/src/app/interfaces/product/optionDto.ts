@@ -1,6 +1,7 @@
 import { MultipleImageDto } from "./UserInteract/multipleImageDto";
 
 export interface OptionDto {
+    id: number | null;
     title: string;
     description: string | null;
     price: number;
