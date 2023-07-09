@@ -1,7 +1,7 @@
 import { ProductsDiscountDto } from "./productsDiscountDto";
 
 export interface DiscountDto {
-    name: string;
+    name: string; 
     type: number;
     start: string;
     end: string;

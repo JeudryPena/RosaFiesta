@@ -7,4 +7,4 @@ export interface WarrantyDto {
     description: string;
     conditions: string;
     products: WarrantyProductsDto[];
-}
+} 
