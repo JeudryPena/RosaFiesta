@@ -6,5 +6,5 @@ export interface WarrantyDto {
     period: number;
     description: string;
     conditions: string;
-    products: ProductsDto[];
+    warrantyProducts: ProductsDto[];
 } 
