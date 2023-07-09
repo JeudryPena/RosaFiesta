@@ -359,7 +359,7 @@ export class ModalProductComponent implements OnInit {
     this.activeModal.close();
   }
 
-  updateProduct = (productFormValue: any) => {
+  async updateProduct(productFormValue: any) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea actualizar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
@@ -368,23 +368,28 @@ export class ModalProductComponent implements OnInit {
       if (result) {
         const product = { ...productFormValue };
         let uploadsCompleted = 0;
-        this.options.forEach(option => {
-          const files = option.images.filter((image: any) => image instanceof File);
-          console.log(files);
-          uploadsCompleted++;
-          if (files != null && files.length > 0) {
-            this.filesService.UpdateFiles(option.images, option.id).subscribe({
-              next: (response) => {
-                option.images = response;
-              }, error: (error) => {
-                console.log(error);
+        if (this.options.length !== 0) {
+          this.options.forEach(option => {
+            const files = option.images.filter((image: any) => image instanceof File);
+            uploadsCompleted++;
+            if (files != null && files.length > 0) {
+              const 
+              this.filesService.UpdateFiles(option.images, option.id).subscribe({
+                next: (response) => {
+                  option.images = response;
+                }, error: (error) => {
+                  console.log(error);
+                }
+              });
+            } else {
+              uploadsCompleted++;
+              if (uploadsCompleted === this.options.length) {
+                this.OnUpdateProduct(product);
               }
-            });
-          }
-        });
-        if (uploadsCompleted === this.options.length) {
+            }
+          });
+        } else 
           this.OnUpdateProduct(product);
-        }
       }
     });
   }
@@ -426,21 +431,25 @@ export class ModalProductComponent implements OnInit {
         const product = { ...productFormValue };
         let uploadsCompleted = 0;
         if (this.options.length !== 0) {
-          this.options.forEach(async option =>  {
-            if (option.images != null && option.images.length > 0){
+          this.options.forEach(async option => {
+            if (option.images != null && option.images.length > 0) {
               const response$ = this.filesService.UploadFiles(option.images);
               let response: any = await lastValueFrom(response$);
               console.log(response);
-              uploadsCompleted++;
               option.images = response;
-            }
-            else
               uploadsCompleted++;
+              if (uploadsCompleted === this.options.length) {
+                this.OnAddProduct(product);
+              }
+            }
+            else {
+              uploadsCompleted++;
+              if (uploadsCompleted === this.options.length) {
+                this.OnAddProduct(product);
+              }
+            }
           });
           console.log(uploadsCompleted)
-          if (uploadsCompleted === this.options.length) {
-            this.OnAddProduct(product);
-          }
         } else {
           this.OnAddProduct(product);
         }
