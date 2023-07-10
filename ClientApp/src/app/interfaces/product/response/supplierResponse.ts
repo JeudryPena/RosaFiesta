@@ -8,5 +8,5 @@ export interface SupplierResponse extends ByBaseResponse {
 	description: string | null;
 	phone: string | null;
 	address: string;
-	productsSupplied: ProductsListResponse[] | null;
+	products: ProductsListResponse[] | null;
 }

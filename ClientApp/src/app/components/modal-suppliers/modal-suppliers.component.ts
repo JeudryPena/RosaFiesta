@@ -5,23 +5,23 @@ import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { ProductsListResponse } from '../../interfaces/Product/Response/products-list-response';
-import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
-import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
+import { SupplierResponse } from '../../interfaces/Product/Response/supplierResponse';
+import { SupplierDto } from '../../interfaces/Product/supplierDto';
 import { ProductsService } from '../../shared/services/products.service';
-import { WarrantiesService } from '../../shared/services/warranties.service';
+import { SuppliersService } from '../../shared/services/suppliers.service';
 
 @Component({
-  selector: 'app-modal-warranty',
-  templateUrl: './modal-warranty.component.html',
-  styleUrls: ['./modal-warranty.component.scss']
+  selector: 'app-modal-suppliers',
+  templateUrl: './modal-suppliers.component.html',
+  styleUrls: ['./modal-suppliers.component.scss']
 })
-export class ModalWarrantyComponent implements OnInit {
+export class ModalSuppliersComponent implements OnInit {
   @Input() read: boolean = false;
   @Input() update: boolean = false;
   @Input() title: string = '';
   @Input() id: string = '';
 
-  warrantyForm: any;
+  supplierForm: any;
   products: any[] = [];
   selected?: string;
   updateProduct = false;
@@ -29,16 +29,16 @@ export class ModalWarrantyComponent implements OnInit {
   productsList: ProductsListResponse[] = [];
 
   nameFocused = false;
-  typeFocused = false;
-  periodFocused = false;
+  emailFocused = false;
+  phoneFocused = false;
   descriptionFocused = false;
-  conditionsFocused = false;
+  addressFocused = false;
   productsFocused = false;
 
   constructor(
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
-    private service: WarrantiesService,
+    private service: SuppliersService,
     public el: ElementRef,
     private productService: ProductsService
   ) {
@@ -53,33 +53,33 @@ export class ModalWarrantyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.warrantyForm = new FormGroup({
+    this.supplierForm = new FormGroup({
       name: new FormControl(''),
-      type: new FormControl(0),
-      period: new FormControl(0),
+      email: new FormControl(''),
+      phone: new FormControl(''),
       description: new FormControl(''),
-      conditions: new FormControl(''),
+      address: new FormControl(''),
       products: new FormControl(''),
     });
     if (this.update) {
-      this.service.GetManagementWarranty(this.id).subscribe((response: WarrantyResponse) => {
-        this.warrantyForm.patchValue({
+      this.service.GetManagement(this.id).subscribe((response: SupplierResponse) => {
+        this.supplierForm.patchValue({
           name: response.name,
-          type: response.type,
-          period: response.period,
+          email: response.email,
+          phone: response.phone,
           description: response.description,
-          conditions: response.conditions,
+          address: response.address
         });
 
         this.products = response.products || [];
       });
     } else if (this.read) {
-      this.warrantyForm = new FormGroup({
+      this.supplierForm = new FormGroup({
         name: new FormControl(''),
-        type: new FormControl(0),
-        period: new FormControl(0),
+        email: new FormControl(''),
+        phone: new FormControl(''),
         description: new FormControl(''),
-        conditions: new FormControl(''),
+        address: new FormControl(''),
         products: new FormControl(''),
         createdAt: new FormControl(''),
         createdBy: new FormControl(''),
@@ -87,17 +87,17 @@ export class ModalWarrantyComponent implements OnInit {
         updatedBy: new FormControl('')
       })
 
-      this.service.GetManagementWarranty(this.id).subscribe((response: WarrantyResponse) => {
+      this.service.GetManagement(this.id).subscribe((response: SupplierResponse) => {
 
-        this.warrantyForm.patchValue({
+        this.supplierForm.patchValue({
           name: response.name,
-          type: response.type,
-          period: response.period,
+          email: response.email,
+          phone: response.phone,
           description: response.description,
-          conditions: response.conditions,
+          address: response.address,
           createdAt: response.createdAt,
-          updatedAt: response.updatedAt,
           createdBy: response.createdBy,
+          updatedAt: response.updatedAt,
           updatedBy: response.updatedBy,
         });
 
@@ -115,7 +115,7 @@ export class ModalWarrantyComponent implements OnInit {
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
-    const control = this.warrantyForm.get(controlName);
+    const control = this.supplierForm.get(controlName);
     return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
@@ -127,26 +127,26 @@ export class ModalWarrantyComponent implements OnInit {
     this.products.splice(index, 1);
   }
 
-  updateWarranty = (warrantyFormValue: any) => {
+  updateWarranty = (supplierFormValue: any) => {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea actualizar la garantía?';
+    modalRef.componentInstance.title = '¿Desea actualizar el suplidor?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const warranty = { ...warrantyFormValue };
-        const warrantyDto: WarrantyDto = {
-          name: warranty.name,
-          type: warranty.type,
-          period: warranty.period,
-          description: warranty.description,
-          conditions: warranty.conditions,
-          warrantyProducts: this.products,
+        const supplier = { ...supplierFormValue };
+        const supplierDto: SupplierDto = {
+          name: supplier.name,
+          email: supplier.email,
+          phone: supplier.phone,
+          description: supplier.description,
+          address: supplier.address,
+          products: this.products,
         }
-        this.service.UpdateWarranty(this.id, warrantyDto).subscribe({
+        this.service.Update(this.id, supplierDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Garantía actualizada!';
+            modalRef.componentInstance.title = 'suplidor actualizada!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -162,29 +162,29 @@ export class ModalWarrantyComponent implements OnInit {
     });
   }
 
-  AddWarranty = (warrantyFormValue: any) => {
+  AddSupplier = (supplierFormValue: any) => {
 
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea guardar la garantía?';
+    modalRef.componentInstance.title = '¿Desea guardar el suplidor?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const warranty = { ...warrantyFormValue };
+        const supplier = { ...supplierFormValue };
 
-        const warrantyDto: WarrantyDto = {
-          name: warranty.name,
-          type: warranty.type,
-          period: warranty.period,
-          description: warranty.description,
-          conditions: warranty.conditions,
-          warrantyProducts: this.products,
+        const supplierDto: SupplierDto = {
+          name: supplier.name,
+          email: supplier.email,
+          phone: supplier.phone,
+          description: supplier.description,
+          address: supplier.address,
+          products: this.products,          
         }
 
-        this.service.AddWarranty(warrantyDto).subscribe({
+        this.service.Add(supplierDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Garantía guardada!';
+            modalRef.componentInstance.title = 'Suplidor guardado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(result => {
@@ -201,5 +201,3 @@ export class ModalWarrantyComponent implements OnInit {
     });
   }
 }
-
-
