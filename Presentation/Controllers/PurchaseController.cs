@@ -50,8 +50,8 @@ public class PurchaseController : ControllerBase
 		return Ok(bills);
 	}
 
-	[HttpGet("{orderId}")]
-	public async Task<IActionResult> GetOrderById(int orderId, CancellationToken cancellationToken)
+	[HttpGet("{orderId:guid}")]
+	public async Task<IActionResult> GetOrderById(Guid orderId, CancellationToken cancellationToken)
 	{
 		OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(orderId, cancellationToken);
 		return Ok(bill);
@@ -65,21 +65,11 @@ public class PurchaseController : ControllerBase
 		return Ok(purchaseDetails);
 	}
 
-	[HttpGet("{detailId}")]
-	public async Task<IActionResult> GetPurchaseDetailById(int detailId, CancellationToken cancellationToken)
+	[HttpGet("{detailId:guid}")]
+	public async Task<IActionResult> GetPurchaseDetailById(Guid detailId, CancellationToken cancellationToken)
 	{
 		PurchaseDetailResponse purchaseDetail = await _serviceManager.PurchaseDetailService.GetByIdAsync(detailId, cancellationToken);
 		return Ok(purchaseDetail);
-	}
-
-	[HttpPost("purchase/{purchaseNumber}")]
-	public async Task<IActionResult> RemoveDiscountAsync(int purchaseNumber, CancellationToken cancellationToken)
-	{
-		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		if (userId == null)
-			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.OrderService.RemoveDiscountAsync(userId, purchaseNumber, cancellationToken);
-		return Ok();
 	}
 
 	[HttpPost("payMethod/{payMethodId:guid}/Address/{addressId:guid}/Purchase")]
@@ -92,19 +82,9 @@ public class PurchaseController : ControllerBase
 		return Ok(cart);
 	}
 
-	[HttpPut("{purchaseNumber}/option{optionId}/discount/{discount:guid}/SelectDiscount")]
-	public async Task<IActionResult> SelectDiscountAsync(int purchaseNumber, int optionId, Guid? discountId, CancellationToken cancellationToken)
-	{
-		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		if (userId == null)
-			return StatusCode((int)HttpStatusCode.Unauthorized);
-		ValidDiscountResponse cart = await _serviceManager.OrderService.SelectDiscountAsync(userId, purchaseNumber, discountId, optionId, cancellationToken);
-		return Ok(cart);
-	}
-
-	[HttpPut("{detailId}")]
+	[HttpPut("{detailId:guid}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> UpdatePurchaseDetail(int detailId, [FromBody] PurchaseDetailDto purchaseDetail, CancellationToken cancellationToken)
+	public async Task<IActionResult> UpdatePurchaseDetail(Guid detailId, [FromBody] PurchaseDetailDto purchaseDetail, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -113,13 +93,13 @@ public class PurchaseController : ControllerBase
 		return Ok(purchaseDetailEntity);
 	}
 
-	[HttpPut("{orderId}/purchases/{purchaseNumber}/return")]
-	public async Task<IActionResult> ReturnOrder(int orderId, int purchaseNumber, CancellationToken cancellationToken)
+	[HttpPut("{orderId:guid}/purchases/{detailId:guid}/return")]
+	public async Task<IActionResult> ReturnOrder(Guid orderId, Guid detailId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, orderId, purchaseNumber, cancellationToken);
+		await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, orderId, detailId, cancellationToken);
 		return Ok();
 	}
 

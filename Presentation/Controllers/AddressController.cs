@@ -47,8 +47,8 @@ public class AddressController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		AddressResponse address = await _serviceManager.UserService.CreateAddressAsync(userId, addressDto, cancellationToken);
-		return Ok(address);
+		await _serviceManager.UserService.CreateAddressAsync(userId, addressDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("myAddresses/{addressId:guid}")]
@@ -57,8 +57,8 @@ public class AddressController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		AddressResponse address = await _serviceManager.UserService.UpdateAddressAsync(userId, addressId, addressDto, cancellationToken);
-		return Ok(address);
+		await _serviceManager.UserService.UpdateAddressAsync(userId, addressId, addressDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpDelete("{addressId:guid}")]

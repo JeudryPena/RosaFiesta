@@ -26,14 +26,14 @@ internal sealed class ReviewService : IReviewService
 		return reviewResponse;
 	}
 
-	public async Task<ReviewResponse> GetByIdAsync(Guid reviewId, CancellationToken cancellationToken = default)
+	public async Task<ReviewResponse> GetByIdAsync(int reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
 		var reviewResponse = review.Adapt<ReviewResponse>();
 		return reviewResponse;
 	}
 
-	public async Task<ReviewResponse> CreateAsync(string userId, int optionId, ReviewDto reviewDto,
+	public async Task<ReviewResponse> CreateAsync(string userId, Guid optionId, ReviewDto reviewDto,
 		CancellationToken cancellationToken = default)
 	{
 		var review = reviewDto.Adapt<ReviewEntity>();
@@ -45,7 +45,7 @@ internal sealed class ReviewService : IReviewService
 		return reviewResponse;
 	}
 
-	public async Task<ReviewResponse> UpdateAsync(Guid reviewId, ReviewDto reviewDto, CancellationToken cancellationToken = default)
+	public async Task<ReviewResponse> UpdateAsync(int reviewId, ReviewDto reviewDto, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
 		review = reviewDto.Adapt(review);
@@ -55,7 +55,7 @@ internal sealed class ReviewService : IReviewService
 		return reviewResponse;
 	}
 
-	public async Task DeleteAsync(Guid reviewId, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(int reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
 		_repositoryManager.ReviewRepository.Update(review);

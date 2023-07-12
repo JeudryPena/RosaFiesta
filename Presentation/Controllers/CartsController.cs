@@ -23,7 +23,7 @@ public class CartsController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet("options/{optionId:guid}/discountPreviews")]
+	[HttpGet("options/{optionId:guid}")]
 	public async Task<IActionResult> GetDiscountPreviews(CancellationToken cancellationToken, Guid optionId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -49,8 +49,8 @@ public class CartsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		CartResponse cart = await _serviceManager.CartService.AddProductToCartAsync(userId, cartItem, cancellationToken);
-		return Ok(cart);
+		await _serviceManager.CartService.AddProductToCartAsync(userId, cartItem, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("/option/{optionId:guid}/AddPackToCart")]
@@ -59,11 +59,11 @@ public class CartsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		CartResponse cart = await _serviceManager.CartService.AddPackToCartAsync(userId, optionId, cartItemsItems, cancellationToken);
-		return Ok(cart);
+		await _serviceManager.CartService.AddPackToCartAsync(userId, optionId, cartItemsItems, cancellationToken);
+		return Ok();
 	}
 
-	[HttpPut("detail/{detailId:guid}/option/{detailId:guid}/adjust")]
+	[HttpPut("detail/{detailId:guid}/option/{optionId:guid}/adjust")]
 	public async Task<IActionResult> AdjustCartItemQuantityAsync(int adjust, CancellationToken cancellationToken, Guid purchaseNumber, Guid optionId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -79,8 +79,8 @@ public class CartsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		CartResponse cart = await _serviceManager.CartService.RemoveCartItemAsync(userId, productId, optionId, cancellationToken);
-		return Ok(cart);
+		await _serviceManager.CartService.RemoveCartItemAsync(userId, productId, optionId, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("clear")]
@@ -89,7 +89,7 @@ public class CartsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		CartResponse cart = await _serviceManager.CartService.ClearCartAsync(userId, cancellationToken);
-		return Ok(cart);
+		await _serviceManager.CartService.ClearCartAsync(userId, cancellationToken);
+		return Ok();
 	}
 }

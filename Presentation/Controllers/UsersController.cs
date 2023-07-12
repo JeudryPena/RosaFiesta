@@ -23,21 +23,11 @@ public class UsersController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet("roles")]
-	public async Task<IActionResult> GetRoles(CancellationToken cancellationToken)
-	{
-		IEnumerable<RolesResponse> roles = await _serviceManager.UserService.GetAllRolesAsync(
-					cancellationToken
-							);
-		return Ok(roles);
-	}
-
 	[HttpGet("rolesList")]
 	public async Task<IActionResult> GetRolesList(CancellationToken cancellationToken)
 	{
 		IEnumerable<RolesListResponse> roles = await _serviceManager.UserService.GetRolesListAsync(
-							cancellationToken
-														);
+							cancellationToken);
 		return Ok(roles);
 	}
 
@@ -102,10 +92,12 @@ public class UsersController : ControllerBase
 	[HttpGet("{userId}/unlock")]
 	public async Task<IActionResult> UnlockUser(string userId, CancellationToken cancellationToken)
 	{
-		string? username = User.Identity?.Name;
+		string? unlockerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.UserService.UnlockUserAsync(
 			userId,
-			username,
+			unlockerId,
 			cancellationToken
 		);
 
@@ -115,10 +107,12 @@ public class UsersController : ControllerBase
 	[HttpGet("{userId}/lock")]
 	public async Task<IActionResult> LockUser(string userId, CancellationToken cancellationToken)
 	{
-		string? username = User.Identity?.Name;
+		string? unlockerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.UserService.LockUserAsync(
 			userId,
-			username,
+			unlockerId,
 			cancellationToken
 		);
 
@@ -132,9 +126,11 @@ public class UsersController : ControllerBase
 		CancellationToken cancellationToken
 	)
 	{
-		string? username = User.Identity?.Name;
+		string? updaterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.UserService.UpdateAsync(
-			username,
+			updaterId,
 			userId,
 			userForUpdateDto,
 			cancellationToken

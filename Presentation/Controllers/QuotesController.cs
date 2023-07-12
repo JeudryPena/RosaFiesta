@@ -57,9 +57,9 @@ public class QuotesController : ControllerBase
 		return Ok(quotes);
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("{id:guid}")]
 	[Authorize]
-	public async Task<IActionResult> GetQuote(int id, CancellationToken cancellationToken)
+	public async Task<IActionResult> GetQuote(Guid id, CancellationToken cancellationToken)
 	{
 		QuoteResponse quote = await _serviceManager.QuoteService.GetQuoteAsync(id, cancellationToken);
 		return Ok(quote);
@@ -83,9 +83,9 @@ public class QuotesController : ControllerBase
 		return Ok(quote);
 	}
 
-	[HttpPut("{id}")]
+	[HttpPut("{id:guid}")]
 	[Authorize]
-	public async Task<IActionResult> UpdateQuote(int id, [FromBody] QuoteUpdateDto quoteDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> UpdateQuote(Guid id, [FromBody] QuoteDto quoteDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -94,9 +94,9 @@ public class QuotesController : ControllerBase
 		return Ok(quote);
 	}
 
-	[HttpDelete("{id}")]
+	[HttpDelete("{id:guid}")]
 	[Authorize]
-	public async Task<IActionResult> DeleteQuote(int id, CancellationToken cancellationToken)
+	public async Task<IActionResult> DeleteQuote(Guid id, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

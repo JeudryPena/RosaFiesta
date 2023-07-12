@@ -15,11 +15,11 @@ public interface IProductService
 		ProductDto productForUpdateDto,
 		CancellationToken cancellationToken = default);
 	Task DeleteAsync(string userId, Guid productId, int? optionId, CancellationToken cancellationToken = default);
-	Task<ProductDetailResponse> GetProductDetail(Guid productCode, int optionId,
+	Task<ProductDetailResponse> GetProductDetail(Guid productCode, Guid optionId,
 		CancellationToken cancellationToken = default);
 	Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string userId, int optionId, Guid productId, int count, CancellationToken cancellationToken = default);
 	Task<ICollection<ManagementProductsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default);
 	Task<IEnumerable<OptionsListResponse>> GetOptionsAsync(CancellationToken cancellationToken = default);
-	Task<IList<string>> GetOptionImages(int optionId, CancellationToken cancellationToken);
+	Task<IList<string>> GetOptionImages(Guid optionId, CancellationToken cancellationToken);
 	Task<ICollection<ProductsListResponse>> GetProductsList(CancellationToken cancellationToken = default);
 }

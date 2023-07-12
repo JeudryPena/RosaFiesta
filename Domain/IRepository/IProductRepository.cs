@@ -11,15 +11,15 @@ public interface IProductRepository
 		CancellationToken cancellationToken = default);
 	Task<OptionEntity> GetOptionByIdAsync(Guid optionId, CancellationToken cancellationToken = default);
 	void Update(ProductEntity product);
-	Task<ProductEntity> GetProductDetail(Guid cartItemProductId, int optionId,
+	Task<ProductEntity> GetProductDetail(Guid cartItemProductId, Guid optionId,
 		CancellationToken cancellationToken = default);
-	Task<ProductEntity> GetProductAndOption(Guid productCode, int optionId, CancellationToken cancellationToken = default);
+	Task<ProductEntity> GetProductAndOption(Guid productCode, Guid optionId, CancellationToken cancellationToken = default);
 	Task<ProductEntity> GetProductById(Guid productId, CancellationToken cancellationToken = default);
 	void UpdateOption(OptionEntity option);
 	void DeleteOption(OptionEntity option);
 	void Delete(ProductEntity product);
 	Task<IEnumerable<OptionEntity>> GetOptionsAsync(CancellationToken cancellationToken);
-	Task<string> GetOptionTitle(int optionId, CancellationToken cancellationToken);
-	Task<List<string>> GetOptionImages(int optionId, CancellationToken cancellationToken);
+	Task<string> GetOptionTitle(Guid optionId, CancellationToken cancellationToken);
+	Task<List<string>> GetOptionImages(Guid optionId, CancellationToken cancellationToken);
 	Task<IEnumerable<ProductEntity>> GetProductsList(CancellationToken cancellationToken = default);
 }

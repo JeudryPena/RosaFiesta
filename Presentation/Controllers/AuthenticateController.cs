@@ -19,13 +19,6 @@ public class AuthenticateController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet("{userId}/GetUserName")]
-	public async Task<IActionResult> GetUserName(string userId)
-	{
-		string userName = await _serviceManager.AuthenticateService.GetUserNameAsync(userId);
-		return Ok(userName);
-	}
-
 	[HttpPost("register")]
 	public async Task RegisterResponse(
 		RegisterDto registerDto,
@@ -47,22 +40,29 @@ public class AuthenticateController : ControllerBase
 		return Ok(result);
 	}
 
-	[HttpGet("ResendEmail/{id:guid}")]
+	[HttpPost("confirm-email")]
+	public async Task ConfirmEmail([FromQuery] string token, [FromQuery] string id,
+		CancellationToken cancellationToken)
+	{
+		await _serviceManager.AuthenticateService.ConfirmEmailAsync(token, id, cancellationToken);
+	}
+
+	[HttpGet("resendEmail")]
 	public async Task<IActionResult> ResendEmail(string email)
 	{
 		ArgumentNullException.ThrowIfNull(email, nameof(email));
-		await _serviceManager.AuthenticateService.RegisterEmailAsync(email);
+		await _serviceManager.AuthenticateService.ResendEmail(email);
 		return Ok();
 	}
 
-	[HttpPost("ForgotPassword")]
+	[HttpPost("forgotPassword")]
 	public async Task<IActionResult> ForgotPassword(string email)
 	{
 		await _serviceManager.AuthenticateService.ForgotPasswordAsync(email);
 		return Ok();
 	}
 
-	[HttpPost("ResetPassword")]
+	[HttpPost("resetPassword")]
 	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id,
 		CancellationToken cancellationToken)
 	{
@@ -70,7 +70,7 @@ public class AuthenticateController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPost("ChangePassword")]
+	[HttpPost("changePassword")]
 	[Authorize]
 	public async Task<IActionResult> ChangePassword(changePasswordDto changePasswordDto,
 		CancellationToken cancellationToken)
@@ -79,8 +79,7 @@ public class AuthenticateController : ControllerBase
 		return Ok();
 	}
 
-	// Logout
-	[HttpPost("Logout")]
+	[HttpPost("logout")]
 	[Authorize]
 	public async Task<IActionResult> Logout()
 	{

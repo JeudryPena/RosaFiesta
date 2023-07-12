@@ -38,7 +38,7 @@ internal sealed class UserService : IUserService
 
 	public async Task<string?> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken = default)
 	{
-		string? userName = await _repositoryManager.UserRepository.GetUserNameByIdAsync(userId, cancellationToken);
+		string? userName = await _repositoryManager.UserRepository.GetUserFullName(userId, cancellationToken);
 		return userName;
 	}
 

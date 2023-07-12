@@ -8,8 +8,8 @@ namespace Services.Abstractions;
 public interface IPurchaseDetailService
 {
     Task<IEnumerable<PurchaseDetailResponse>> GetAllAsync(CancellationToken cancellationToken = default);
-    Task<PurchaseDetailResponse> GetByIdAsync(int detailId, CancellationToken cancellationToken = default);
-    Task<PurchaseDetailResponse> UpdateAsync(string userId, int detailId, PurchaseDetailDto purchaseDetailDto,
+    Task<PurchaseDetailResponse> GetByIdAsync(Guid detailId, CancellationToken cancellationToken = default);
+    Task<PurchaseDetailResponse> UpdateAsync(string userId, Guid detailId, PurchaseDetailDto purchaseDetailDto,
         CancellationToken cancellationToken = default);
     Task DeleteAsync(string userId, int detailId, CancellationToken cancellationToken = default);
 }

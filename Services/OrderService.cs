@@ -1,7 +1,6 @@
 ﻿using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract.Response;
 
-using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 
@@ -34,9 +33,9 @@ internal sealed class OrderService : IOrderService
 		return orderResponse;
 	}
 
-	public async Task<OrderResponse> GetByIdAsync(int billId, CancellationToken cancellationToken = default)
+	public async Task<OrderResponse> GetByIdAsync(Guid orderId, CancellationToken cancellationToken = default)
 	{
-		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(billId, cancellationToken);
+		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
 		OrderResponse orderResponse = order.Adapt<OrderResponse>();
 		return orderResponse;
 	}
@@ -61,11 +60,9 @@ internal sealed class OrderService : IOrderService
 				_repositoryManager.ProductRepository.UpdateOption(option);
 
 				var discount = await _repositoryManager.DiscountRepository.GetByAppliedId(optionPurchase.AppliedId, cancellationToken);
-				if (discount.AppliedDiscounts?.Count(x => x.UserId == userId) >= discount.MaxTimesApply)
+				if ()
 				{
-					double Value = discount.Type == DiscountType.Percentage
-						? optionPurchase.UnitPrice * discount.Value / 100
-						: discount.Value;
+					double Value = optionPurchase.UnitPrice * discount.Value / 100
 					optionPurchase.UnitPrice -= Value;
 				}
 			}
@@ -78,32 +75,12 @@ internal sealed class OrderService : IOrderService
 		return orderResponse;
 	}
 
-	public async Task RemoveDiscountAsync(string userId, int purchaseNumber,
-		CancellationToken cancellationToken = default)
-	{
-		AppliedDiscountEntity appliedDiscount = await _repositoryManager.DiscountRepository.GetAppliedDiscount(purchaseNumber, cancellationToken);
-		_repositoryManager.DiscountRepository.DeleteAppliedDiscount(appliedDiscount);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-	}
-
-	public async Task<ValidDiscountResponse> SelectDiscountAsync(string userId, int purchaseNumber, Guid? discountId, int optionId, CancellationToken cancellationToken = default)
-	{
-		PurchaseDetailOptions detail = await _repositoryManager.PurchaseDetailRepository.GetDetailOptionByIdAsync(optionId, purchaseNumber, cancellationToken);
-		if (detail.DiscountApplied == null)
-			detail.DiscountApplied = new AppliedDiscountEntity { UserId = userId };
-		detail.DiscountApplied.DiscountId = (Guid)discountId;
-		_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(detail);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		ValidDiscountResponse validDiscountResponse = detail.DiscountApplied.Adapt<ValidDiscountResponse>();
-		return validDiscountResponse;
-	}
-
-	public async Task ReturnOrderDetailAsync(string userId, int purchaseNumber, int orderId, CancellationToken cancellationToken)
+	public async Task ReturnOrderDetailAsync(string userId, Guid purchaseNumber, Guid orderId, CancellationToken cancellationToken)
 	{
 		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
 		if (order.UserId != userId)
 			throw new Exception("You can't return this order");
-		if (order.OrderDate.AddDays(31) < DateTimeOffset.UtcNow)
+		if (order.CreatedAt.AddDays(31) < DateTimeOffset.UtcNow)
 			throw new Exception("You can't return this order, the time limit has expired");
 		if (order.Details == null)
 			throw new Exception("You can't return this order, the detail doesn't exist");

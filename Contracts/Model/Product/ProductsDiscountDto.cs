@@ -2,5 +2,5 @@
 
 public class ProductsDiscountDto
 {
-	public int OptionId { get; set; }
+	public Guid OptionId { get; set; }
 }

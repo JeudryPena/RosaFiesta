@@ -9,8 +9,6 @@ namespace Domain.Entities.Security;
 
 public class UserEntity : IdentityUser, IAutoBy
 {
-	[ScaffoldColumn(false)]
-	public override string UserName { get; set; }
 	[StringLength(120, MinimumLength = 3)]
 	public string FullName { get; set; }
 	[Range(16, 150)]

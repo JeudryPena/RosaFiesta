@@ -74,14 +74,12 @@ public class DiscountsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpDelete("{discountId:guid}/options/{optionId?}")]
-	public async Task<IActionResult> DeleteDiscountProducts(Guid discountId, CancellationToken cancellationToken, int? optionId = 0)
+	[HttpDelete("{discountId:guid}/options/{optionId:Guid?}")]
+	public async Task<IActionResult> DeleteDiscountProducts(Guid discountId, CancellationToken cancellationToken, Guid? optionId = null)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		if (optionId == 0)
-			optionId = null;
 		await _serviceManager.DiscountService.DeleteDiscountProductsAsync(userId, discountId, optionId, cancellationToken);
 		return Ok();
 	}

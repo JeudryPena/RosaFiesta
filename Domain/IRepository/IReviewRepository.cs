@@ -5,8 +5,8 @@ namespace Domain.IRepository;
 public interface IReviewRepository
 {
 	Task<IEnumerable<ReviewEntity>> GetAllAsync(CancellationToken cancellationToken = default);
-	Task<ReviewEntity> GetByIdAsync(Guid reviewId, CancellationToken cancellationToken = default);
+	Task<ReviewEntity> GetByIdAsync(int reviewId, CancellationToken cancellationToken = default);
 	void Insert(ReviewEntity review);
 	void Update(ReviewEntity review);
-	Task AlredyExistAsync(int optionId, string userId, CancellationToken cancellationToken = default);
+	Task AlredyExistAsync(Guid optionId, string userId, CancellationToken cancellationToken = default);
 }

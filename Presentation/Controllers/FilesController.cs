@@ -136,8 +136,8 @@ public class FilesController : ControllerBase
 		return Ok(new { message });
 	}
 
-	[HttpPut("updateFiles/options/{optionId}")]
-	public async Task<IActionResult> UpdateFiles(int optionId, CancellationToken token)
+	[HttpPut("updateFiles/options/{optionId:guid}")]
+	public async Task<IActionResult> UpdateFiles(Guid optionId, CancellationToken token)
 	{
 		var formCollection = await Request.ReadFormAsync();
 		var files = formCollection.Files;
@@ -174,7 +174,7 @@ public class FilesController : ControllerBase
 		System.IO.File.Delete(filePath);
 	}
 
-	private async Task<IList<string>> GetExistingFilesForProduct(int optionId, CancellationToken cancellationToken)
+	private async Task<IList<string>> GetExistingFilesForProduct(Guid optionId, CancellationToken cancellationToken)
 	{
 		var response = await _serviceManager.ProductService.GetOptionImages(optionId, cancellationToken);
 		return response;

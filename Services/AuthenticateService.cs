@@ -13,6 +13,8 @@ using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
 
+using Mapster;
+
 using Messaging;
 
 using Microsoft.AspNetCore.Http;
@@ -47,12 +49,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		CancellationToken cancellationToken = default
 	)
 	{
-		UserEntity user = new UserEntity
-		{
-			UserName = registerDto.UserName,
-			Email = registerDto.Email,
-			BirthDate = registerDto.BirthDate,
-		};
+		UserEntity user = registerDto.Adapt<UserEntity>();
 		var result = await _userManager.AddToRoleAsync(user, "Client")
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
@@ -60,10 +57,10 @@ internal sealed class AuthenticateService : IAuthenticateService
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-		await RegisterEmailAsync(user.Email);
+		await ResendEmail(user.Email);
 	}
 
-	public async Task RegisterEmailAsync(string email)
+	public async Task ResendEmail(string email)
 	{
 		var user = await _userManager.FindByEmailAsync(email) ?? throw new InvalidOperationException("User not found");
 
@@ -83,7 +80,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 		await _emailSender.SendEmailAsync(message);
 	}
 
-	public async Task<FinishRegisterResponse> CreatePasswordAsync(FinishRegisterDto finishRegisterDto, string token, string id, CancellationToken cancellationToken = default)
+	public async Task ConfirmEmailAsync(string token, string id, CancellationToken cancellationToken = default)
 	{
 		var user = await _userManager.FindByIdAsync(id).ConfigureAwait(false) ?? throw new UserNotFoundException(id);
 
@@ -94,20 +91,9 @@ internal sealed class AuthenticateService : IAuthenticateService
 		if (!confirmResult.Succeeded)
 			IdentityResultMessage(confirmResult);
 
-		user.FullName = finishRegisterDto.Name + " " + finishRegisterDto.LastName;
 		user.Cart = new CartEntity();
 		await _userManager.UpdateAsync(user).ConfigureAwait(false);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-
-		return new FinishRegisterResponse
-		{
-			IsSuccess = true,
-			Message = "User created successfully",
-			Id = user.Id,
-			UserName = user.UserName ?? string.Empty,
-			Email = user.Email ?? string.Empty,
-			FullName = user.FullName,
-		};
 	}
 
 	public async Task ForgotPasswordAsync(string email)
@@ -125,7 +111,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			{"token", codeEncoded },
 			{"id", user.Id },
 		};
-		var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/reset-password", param);
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/reset-password", param);
 
 		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
 

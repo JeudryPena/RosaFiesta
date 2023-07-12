@@ -9,8 +9,8 @@ public interface IAuthenticateService
 		RegisterDto registerDto,
 		CancellationToken cancellationToken = default
 	);
-	Task RegisterEmailAsync(string email);
-	Task<FinishRegisterResponse> CreatePasswordAsync(FinishRegisterDto finishRegisterDto, string token, string id, CancellationToken cancellationToken = default);
+	Task ResendEmail(string email);
+	Task ConfirmEmailAsync(string token, string id, CancellationToken cancellationToken);
 	Task ForgotPasswordAsync(string email);
 	Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto, string passwordToken, string id, CancellationToken cancellationToken = default);
 	Task ChangePasswordAsync(changePasswordDto changePasswordDto, CancellationToken cancellationToken = default);
@@ -18,5 +18,4 @@ public interface IAuthenticateService
 	Task<LoginResponse> LoginAsync(LogingDto logingDto, CancellationToken cancellationToken = default);
 	LoginResponse RefreshToken(TokenApiDto tokenApiDto);
 	void RevokeToken(string username);
-	Task<string> GetUserNameAsync(string userId);
 }

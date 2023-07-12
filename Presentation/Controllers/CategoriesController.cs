@@ -29,13 +29,6 @@ public class CategoriesController : ControllerBase
 		return Ok(categories);
 	}
 
-	[HttpGet("{CategoryId}/subCategoriesList")]
-	public async Task<IActionResult> GetSubCategoriesList(int CategoryId, CancellationToken cancellationToken = default)
-	{
-		IEnumerable<SubCategoriesListResponse> categories = await _serviceManager.CategoryService.GetSubCategoriesListAsync(CategoryId, cancellationToken);
-		return Ok(categories);
-	}
-
 	[HttpGet("categoriesManagement")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> GetCategoriesManagement(CancellationToken cancellationToken)
@@ -103,19 +96,6 @@ public class CategoriesController : ControllerBase
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.CategoryService.DeleteAsync(userId, categoryId, cancellationToken);
-		return Ok();
-	}
-
-	[HttpDelete("{categoryId}/sub-category/{subcategoryid?}")]
-	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeleteSubCategories(int categoryId, CancellationToken cancellationToken, int? subcategoryid = 0)
-	{
-		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		if (userId == null)
-			return StatusCode((int)HttpStatusCode.Unauthorized);
-		if (subcategoryid == 0)
-			subcategoryid = null;
-		await _serviceManager.CategoryService.DeleteSubCategoryAsync(userId, categoryId, subcategoryid, cancellationToken);
 		return Ok();
 	}
 }

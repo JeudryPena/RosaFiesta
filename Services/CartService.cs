@@ -34,7 +34,7 @@ internal sealed class CartService : ICartService
 		return cartResponse;
 	}
 
-	public async Task<CartResponse> AddPackToCartAsync(string userId, Guid optionId, List<PurchaseDetailDto> cartItems,
+	public async Task AddPackToCartAsync(string userId, Guid optionId, List<PurchaseDetailDto> cartItems,
 		CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
@@ -73,8 +73,6 @@ internal sealed class CartService : ICartService
 		}
 		_repositoryManager.CartRepository.UpdateCart(cart);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		var cartResponse = cart.Adapt<CartResponse>();
-		return cartResponse;
 	}
 
 	public async Task AdjustCartItemQuantityAsync(string userId, Guid detailId, Guid optionId, int adjust, CancellationToken cancellationToken = default)
@@ -88,7 +86,7 @@ internal sealed class CartService : ICartService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<CartResponse> RemoveCartItemAsync(string userId, Guid productId, Guid? optionId,
+	public async Task RemoveCartItemAsync(string userId, Guid productId, Guid? optionId,
 		CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
@@ -100,22 +98,18 @@ internal sealed class CartService : ICartService
 			cart.Details.Remove(cartItem);
 		_repositoryManager.CartRepository.UpdateCart(cart);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		var cartResponse = cart.Adapt<CartResponse>();
-		return cartResponse;
 	}
 
-	public async Task<CartResponse> ClearCartAsync(string userId, CancellationToken cancellationToken = default)
+	public async Task ClearCartAsync(string userId, CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
 		if (cart.Details == null) throw new Exception("Cart is empty");
 		cart.Details.Clear();
 		_repositoryManager.CartRepository.UpdateCart(cart);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		var cartResponse = cart.Adapt<CartResponse>();
-		return cartResponse;
 	}
 
-	public async Task<CartResponse> AddProductToCartAsync(string userId, Guid? Code, PurchaseDetailDto cartItem,
+	public async Task AddProductToCartAsync(string userId, PurchaseDetailDto cartItem,
 		CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
@@ -132,12 +126,7 @@ internal sealed class CartService : ICartService
 			{
 				OptionId = cartItem.OptionId,
 				Quantity = cartItem.Quantity,
-				UnitPrice = cartItem.Quantity * option.Price,
-				DiscountApplied = Code != null ? new AppliedDiscountEntity
-				{
-					DiscountId = (Guid)Code,
-					UserId = userId
-				} : null,
+				UnitPrice = cartItem.Quantity,
 			});
 			cart.Details.Add(detail);
 		}
@@ -147,18 +136,8 @@ internal sealed class CartService : ICartService
 			optionDetail.Quantity += cartItem.Quantity;
 			if (optionDetail.Quantity < option.QuantityAvailable)
 				throw new Exception($"You are adding {optionDetail.Quantity - option.QuantityAvailable} more items than the quantity available");
-			if (Code != null && optionDetail.AppliedId == null)
-			{
-				optionDetail.DiscountApplied = new AppliedDiscountEntity
-				{
-					DiscountId = (Guid)Code,
-					UserId = userId
-				};
-			}
 		}
 		_repositoryManager.CartRepository.UpdateCartItem(detail);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		var cartResponse = cart.Adapt<CartResponse>();
-		return cartResponse;
 	}
 }
