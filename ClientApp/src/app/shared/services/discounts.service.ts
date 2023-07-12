@@ -24,7 +24,7 @@ function sort(discounts: ManagementDiscountsResponse[], column: SortColumn, dire
 
 function matches(discount: ManagementDiscountsResponse, term: string, pipe: PipeTransform) {
   return (
-    discount.name.toLowerCase().includes(term.toLowerCase()) ||
+    discount.value ||
     pipe.transform(discount.id).includes(term)
   );
 }
@@ -80,25 +80,25 @@ export class DiscountsService {
     return this.http.post(this.apiUrl, discount);
   }
 
-  UpdateDiscount(code: string, discount: DiscountDto) {
-    return this.http.put(`${this.apiUrl}${code}`, discount);
+  UpdateDiscount(id: string, discount: DiscountDto) {
+    return this.http.put(`${this.apiUrl}${id}`, discount);
   }
 
-  GetManagementDiscount(code: string): Observable<ManagementDiscountsResponse> {
-    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${code}/management`);
+  GetManagementDiscount(id: string): Observable<ManagementDiscountsResponse> {
+    return this.http.get<ManagementDiscountsResponse>(`${this.apiUrl}${id}/management`);
   }
 
   GetDiscountsManagement(): Observable<ManagementDiscountsResponse[]> {
     return this.http.get<ManagementDiscountsResponse[]>(`${this.apiUrl}management`);
   }
 
-  DeleteDiscount(code: string) {
-    return this.http.delete(`${this.apiUrl}${code}`);
+  DeleteDiscount(id: string) {
+    return this.http.delete(`${this.apiUrl}${id}`);
   }
 
-  DeleteDiscountProducts(id: string, optionId: number | null) {
+  DeleteDiscountProducts(id: string, optionId: string | null) {
     if (!optionId)
-      optionId = 0;
+      optionId = '';
     return this.http.delete(`${this.apiUrl}${id}/options/${optionId}`);
   }
 

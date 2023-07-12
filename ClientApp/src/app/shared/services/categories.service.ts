@@ -1,12 +1,11 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.dev";
-import { CategoriesListResponse } from '../../interfaces/Product/Response/categories-list-response';
+import { CategoriesListResponse } from '../../interfaces/Product/Response/categoriesListResponse';
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
-import { SubCategoriesListResponse } from '../../interfaces/Product/Response/sub-categories-list-response';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
@@ -63,14 +62,6 @@ export class CategoriesService {
   RetrieveData() {
     this.GetCategoriesManagement().subscribe((data) => {
       this.categoriesData = data;
-      this.categoriesData.forEach(i => {
-        this.service.UserName(i.createdBy).subscribe((data) => {
-          i.createdBy = data.userName;
-        });
-        this.service.UserName(i.updatedBy).subscribe((data) => {
-          i.updatedBy = data.userName;
-        });
-      });
       this._search$
         .pipe(
           tap(() => this._loading$.next(true)),
@@ -96,10 +87,6 @@ export class CategoriesService {
     return this.http.get<CategoriesListResponse[]>(this.apiUrl + 'categoriesList');
   }
 
-  GetSubCategoriesList(categoryId: number): Observable<SubCategoriesListResponse[]> {
-    return this.http.get<SubCategoriesListResponse[]>(`${this.apiUrl}${categoryId}/subCategoriesList`);
-  }
-
   GetCategoriesManagement(): Observable<CategoryManagementResponse[]> {
     return this.http.get<CategoryManagementResponse[]>(this.apiUrl + 'categoriesManagement');
   }
@@ -118,12 +105,6 @@ export class CategoriesService {
 
   DeleteCategory(categoryId: number) {
     return this.http.get(`${this.apiUrl}${categoryId}/delete`);
-  }
-
-  DeleteSubCategory(categoryId: number, subCategoryId: number | null) {
-    if (subCategoryId == null)
-      subCategoryId = 0;
-    return this.http.delete(`${this.apiUrl}${categoryId}/sub-category/${subCategoryId}`);
   }
 
   get categories$() {

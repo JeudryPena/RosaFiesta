@@ -12,8 +12,4 @@ export class UsersService {
   constructor(
     private http: HttpClient
   ) { }
-
-  UserName(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}${userId}/user-name`);
-  }
 }

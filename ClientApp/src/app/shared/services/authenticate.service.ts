@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { config } from '../../env/config.dev';
 import { LoginResponse } from '../../interfaces/Security/Response/loginResponse';
 import { LogingDto } from '../../interfaces/Security/logingDto';
-import { RegisterResponse } from '../../interfaces/Security/Response/registerResponse';
 import { RegisterDto } from '../../interfaces/Security/registerDto';
 
 @Injectable({

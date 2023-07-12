@@ -57,10 +57,8 @@ export class FilesService {
   UpdateFiles(files: any, optionId: number): Observable<MultipleImageDto[]> {
     if (files.length > 5)
       throw new Error('You cant upload more than 5 images');
-    let filesToUpload: File[] = files; 
+    let filesToUpload: File[] = files;
     const formData = new FormData();
-    console.log(filesToUpload)
-    console.log(files)
     Array.from(filesToUpload).map((file, index) => {
       return formData.append('file' + index, file, file.name);
     });

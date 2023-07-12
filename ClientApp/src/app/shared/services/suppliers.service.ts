@@ -8,7 +8,7 @@ import { SupplierDto } from '../../interfaces/Product/supplierDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
-import { SuppliersListResponse } from '../../interfaces/Product/Response/suppliers-list-response';
+import { SuppliersListResponse } from '../../interfaces/Product/Response/suppliersListResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 

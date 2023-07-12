@@ -5,13 +5,13 @@ import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../env/config.prod";
 import { ManagementProductsResponse } from '../../interfaces/Product/Response/ManagementProductsResponse';
-import { OptionsListResponse } from '../../interfaces/Product/Response/options-list-response';
+import { OptionsListResponse } from '../../interfaces/Product/Response/optionsListResponse';
 import { ProductResponse } from '../../interfaces/Product/Response/productResponse';
+import { ProductsListResponse } from '../../interfaces/Product/Response/productsListResponse';
 import { ProductDto } from '../../interfaces/Product/productDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
-import { ProductsListResponse } from '../../interfaces/Product/Response/products-list-response';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -28,7 +28,7 @@ function sort(products: ManagementProductsResponse[], column: SortColumn, direct
 
 function matches(product: ManagementProductsResponse, term: string, pipe: PipeTransform) {
   return (
-    product.name.toLowerCase().includes(term.toLowerCase()) ||
+    product.code?.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(product.code).includes(term)
   );
 }
@@ -104,9 +104,9 @@ export class ProductsService {
     return this.http.put(`${this.apiUrl}${id}`, product);
   }
 
-  DeleteProduct(id: string, optionId: number | null) {
+  DeleteProduct(id: string, optionId: string | null) {
     if (optionId === null)
-      optionId = 0;
+      optionId = '';
     return this.http.delete(`${this.apiUrl}${id}/option/${optionId}`);
   }
 

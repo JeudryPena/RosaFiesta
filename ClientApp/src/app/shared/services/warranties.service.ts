@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.prod";
-import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
-import { WarrantiesManagementResponse } from '../../interfaces/Product/Response/warranties-management-response';
+import { WarrantiesListResponse } from '../../interfaces/Product/Response/warrantiesListResponse';
+import { WarrantiesManagementResponse } from '../../interfaces/Product/Response/warrantiesManagementResponse';
 import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
 import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
@@ -26,7 +26,7 @@ function sort(warranties: WarrantiesManagementResponse[], column: SortColumn, di
 
 function matches(warranty: WarrantiesManagementResponse, term: string, pipe: PipeTransform) {
   return (
-    warranty.name.toLowerCase().includes(term.toLowerCase()) ||
+    warranty.name?.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(warranty.id).includes(term)
   );
 }
