@@ -2,7 +2,5 @@
 
 public class WishListDto
 {
-    public string Title { get; set; }
-    public string? Description { get; set; }
-    public ICollection<int> OptionsId { get; set; }
+	public ICollection<Guid> OptionsId { get; set; }
 }

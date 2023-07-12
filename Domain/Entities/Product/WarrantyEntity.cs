@@ -14,7 +14,5 @@ public class WarrantyEntity : ByBaseEntity, IAutoBy
 	public int Period { get; set; }
 	[StringLength(1000, MinimumLength = 5)]
 	public string Description { get; set; }
-	[StringLength(1000, MinimumLength = 10)]
-	public string Conditions { get; set; }
 	public ICollection<ProductEntity>? Products { get; set; }
 }

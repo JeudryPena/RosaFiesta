@@ -13,6 +13,5 @@ public class DiscountConfiguration : IEntityTypeConfiguration<DiscountEntity>
 		builder.HasKey(x => x.Id);
 		builder.HasQueryFilter(x => !x.IsDeleted);
 		builder.HasMany(x => x.ProductsDiscounts).WithOne().HasForeignKey(x => x.DiscountId);
-		builder.HasMany(x => x.AppliedDiscounts).WithOne().HasForeignKey(x => x.DiscountId);
 	}
 }

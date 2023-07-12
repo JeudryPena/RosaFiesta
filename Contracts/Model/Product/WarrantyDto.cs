@@ -6,6 +6,5 @@ public class WarrantyDto
 	public int Type { get; set; }
 	public int Period { get; set; }
 	public string Description { get; set; }
-	public string Conditions { get; set; }
 	public ICollection<ProductsDto>? WarrantyProducts { get; set; }
 }

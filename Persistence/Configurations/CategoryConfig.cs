@@ -14,6 +14,5 @@ public class CategoryConfig : IEntityTypeConfiguration<CategoryEntity>
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(x => !x.IsDeleted);
 		builder.HasIndex(x => x.Name).IsUnique();
-		builder.HasMany(x => x.SubCategories).WithOne().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Cascade);
 	}
 }

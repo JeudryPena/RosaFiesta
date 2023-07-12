@@ -39,9 +39,9 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			.WithOne()
 			.HasForeignKey(review => review.UserId)
 			.OnDelete(DeleteBehavior.Cascade);
-		builder.HasMany(owner => owner.WishLists)
+		builder.HasOne(x => x.WishList)
 			.WithOne()
-			.HasForeignKey(wishList => wishList.UserId)
+			.HasForeignKey<WishListEntity>(wishList => wishList.UserId)
 			.OnDelete(DeleteBehavior.Cascade);
 		builder.HasMany(user => user.Addresses)
 			.WithOne(address => address.User)
@@ -59,16 +59,10 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			.WithOne(x => x.User)
 			.HasForeignKey(payMethod => payMethod.UserId)
 			.OnDelete(DeleteBehavior.Cascade);
-		builder.HasMany(user => user.AppliedDiscounts)
-			.WithOne()
-			.HasForeignKey(appliedDiscount => appliedDiscount.UserId)
-			.OnDelete(DeleteBehavior.Cascade);
 
 		var admin = new UserEntity
 		{
 			Id = AdminId,
-			UserName = "Rosalba",
-			NormalizedUserName = "ROSALBA",
 			Email = "user@example.com",
 			NormalizedEmail = "USER@EXAMPLE.COM",
 			EmailConfirmed = true,
@@ -85,8 +79,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var user = new UserEntity
 		{
 			Id = UserId,
-			UserName = "Rosanny",
-			NormalizedUserName = "ROSANNY",
 			Email = "rosanny@gmail.com",
 			NormalizedEmail = "ROSANNY@GMAIL.COM",
 			EmailConfirmed = true,
@@ -103,8 +95,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var manager = new UserEntity
 		{
 			Id = productManagerId,
-			UserName = "Rosalba2",
-			NormalizedUserName = "ROSMERY2",
 			Email = "rosalbapp@gmail.com",
 			NormalizedEmail = "ROSALBAPP@GMAIL.COM",
 			EmailConfirmed = true,
@@ -121,8 +111,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var sales = new UserEntity
 		{
 			Id = salesManagerId,
-			UserName = "jendry",
-			NormalizedUserName = "JENDRY",
 			Email = "jendrypp@gmail.com",
 			NormalizedEmail = "JENDRYPP@GMAIL.COM",
 			EmailConfirmed = true,
@@ -139,8 +127,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var marketing = new UserEntity
 		{
 			Id = marketingManagerId,
-			UserName = "Rosmery",
-			NormalizedUserName = "ROSMERY",
 			Email = "rosmerypp@gmail.com",
 			NormalizedEmail = "ROSMERYPP@GMAIL.COM",
 			EmailConfirmed = true,

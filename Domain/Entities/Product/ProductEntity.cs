@@ -9,6 +9,7 @@ public class ProductEntity : ByBaseEntity, IAutoBy
 	public Guid Id { get; set; }
 	[StringLength(500, MinimumLength = 3)]
 	public string? Code { get; set; }
+	public bool IsService { get; set; } = false;
 	public int CategoryId { get; set; }
 	public CategoryEntity Category { get; set; }
 	public Guid? WarrantyId { get; set; }

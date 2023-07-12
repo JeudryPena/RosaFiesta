@@ -2,7 +2,6 @@
 
 public class WishListProductsResponse
 {
-    public int WishListId { get; set; }
-    public string Title { get; set; }
-    public List<ProductsWishListDto> ProductsWish { get; set; }
+	public int WishListId { get; set; }
+	public List<ProductsWishListDto> ProductsWish { get; set; }
 }

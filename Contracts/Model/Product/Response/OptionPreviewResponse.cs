@@ -2,11 +2,11 @@
 
 public class OptionPreviewResponse : BaseResponse
 {
-
+	public Guid Id { get; set; }
 	public double Price { get; set; }
-	public double? OfferPrice => Discount == null ? null : Discount.Type == 1 ? Price - Price * Discount.Value / 100 : Price - Discount.Value;
+	public double? OfferPrice => Discount == null ? null : Price - (Price * Discount.Value / 100);
 	public float? DiscountSave { get; set; }
-	public string? Images { get; set; }
+	public ICollection<MultipleImagesResponse>? Images { get; set; }
 	public string Stock => StockCalculate().ToString();
 	public int QuantityAvailable { get; set; }
 	public string Condition { get; set; }
@@ -25,5 +25,4 @@ public class OptionPreviewResponse : BaseResponse
 			return StockStatusType.InStock;
 		return StockStatusType.InStock;
 	}
-	public int Id { get; set; }
 }

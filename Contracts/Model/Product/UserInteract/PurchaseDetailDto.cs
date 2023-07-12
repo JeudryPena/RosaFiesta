@@ -2,7 +2,7 @@
 
 public class PurchaseDetailDto
 {
-    public Guid ProductId { get; set; }
-    public int Quantity { get; set; }
-    public int OptionId { get; set; }
+	public Guid ProductId { get; set; }
+	public int Quantity { get; set; }
+	public Guid OptionId { get; set; }
 }

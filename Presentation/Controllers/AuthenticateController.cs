@@ -26,7 +26,7 @@ public class AuthenticateController : ControllerBase
 		return Ok(userName);
 	}
 
-	[HttpPost("preRegister")]
+	[HttpPost("register")]
 	public async Task RegisterResponse(
 		RegisterDto registerDto,
 		CancellationToken cancellationToken
@@ -45,14 +45,6 @@ public class AuthenticateController : ControllerBase
 		if (!result.IsAuthSuccessful)
 			return Unauthorized(new { message = result.Message });
 		return Ok(result);
-	}
-
-	[HttpPost("FinishRegister")]
-	public async Task<FinishRegisterResponse> FinishRegister([FromBody] FinishRegisterDto finishRegisterDto, [FromQuery] string token, [FromQuery] string id,
-		CancellationToken cancellationToken)
-	{
-		FinishRegisterResponse result = await _serviceManager.AuthenticateService.CreatePasswordAsync(finishRegisterDto, token, id, cancellationToken);
-		return result;
 	}
 
 	[HttpGet("ResendEmail/{id:guid}")]

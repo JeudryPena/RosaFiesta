@@ -2,10 +2,10 @@
 
 public class PurchaseDetailResponse : BaseResponse
 {
-	public int PurchaseNumber { get; set; }
-	public string? ProductId { get; set; }
-	public double TotalOptionsPrice => PurchaseOptions.Sum(x => x.TotalPrice);
+	public Guid PurchaseNumber { get; set; }
+	public Guid ProductId { get; set; }
 	public ICollection<PurchaseDetailOptionResponse> PurchaseOptions { get; set; }
-	public int CartId { get; set; }
-	public int? OrderId { get; set; }
+	public Guid CartId { get; set; }
+	public Guid? OrderId { get; set; }
+	public Guid? QuoteId { get; set; }
 }

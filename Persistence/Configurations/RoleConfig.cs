@@ -26,7 +26,7 @@ internal sealed class RoleConfig : IEntityTypeConfiguration<RoleEntity>
 			{
 				Id = clientId,
 				Name = "Client",
-				NormalizedName = "CLIENTE"
+				NormalizedName = "CLIENT"
 			},
 			new RoleEntity
 			{
