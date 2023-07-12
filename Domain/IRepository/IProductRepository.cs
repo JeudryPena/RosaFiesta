@@ -9,7 +9,7 @@ public interface IProductRepository
 	Task<IEnumerable<ProductEntity>> ManagementGetAllAsync(CancellationToken cancellationToken = default);
 	Task<ProductEntity> GetByIdAsync(Guid productId,
 		CancellationToken cancellationToken = default);
-	Task<OptionEntity> GetOptionByIdAsync(int? optionId, CancellationToken cancellationToken = default);
+	Task<OptionEntity> GetOptionByIdAsync(Guid optionId, CancellationToken cancellationToken = default);
 	void Update(ProductEntity product);
 	Task<ProductEntity> GetProductDetail(Guid cartItemProductId, int optionId,
 		CancellationToken cancellationToken = default);

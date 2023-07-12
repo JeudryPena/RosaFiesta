@@ -20,7 +20,7 @@ internal sealed class CartService : ICartService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, Guid productId, int optionId, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, Guid optionId, CancellationToken cancellationToken = default)
 	{
 		ICollection<DiscountEntity> discounts = await _repositoryManager.DiscountRepository.GetValidDiscountsPreview(userId, optionId, cancellationToken);
 		IEnumerable<ProductsDiscountResponse> discountPreviews = discounts.Adapt<IEnumerable<ProductsDiscountResponse>>();
@@ -34,7 +34,7 @@ internal sealed class CartService : ICartService
 		return cartResponse;
 	}
 
-	public async Task<CartResponse> AddPackToCartAsync(string userId, Guid? discountId, int optionId, List<PurchaseDetailDto> cartItems,
+	public async Task<CartResponse> AddPackToCartAsync(string userId, Guid optionId, List<PurchaseDetailDto> cartItems,
 		CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
@@ -58,12 +58,7 @@ internal sealed class CartService : ICartService
 				{
 					OptionId = cartItem.OptionId,
 					Quantity = cartItem.Quantity,
-					UnitPrice = cartItem.Quantity * productOption.Price,
-					DiscountApplied = discountId != null ? new AppliedDiscountEntity
-					{
-						DiscountId = (Guid)discountId,
-						UserId = userId
-					} : null,
+					UnitPrice = productOption.Price
 				});
 
 				cart.Details.Add(cartItemEntity);
@@ -74,12 +69,6 @@ internal sealed class CartService : ICartService
 				if (purchaseOption == null)
 					throw new Exception("Option not found");
 				purchaseOption.Quantity += cartItem.Quantity;
-				if (discountId != null && purchaseOption.AppliedId == null)
-					purchaseOption.DiscountApplied = new AppliedDiscountEntity
-					{
-						DiscountId = (Guid)discountId,
-						UserId = userId,
-					};
 			}
 		}
 		_repositoryManager.CartRepository.UpdateCart(cart);
@@ -88,9 +77,9 @@ internal sealed class CartService : ICartService
 		return cartResponse;
 	}
 
-	public async Task AdjustCartItemQuantityAsync(string userId, int purchaseNumber, int optionId, int adjust, CancellationToken cancellationToken = default)
+	public async Task AdjustCartItemQuantityAsync(string userId, Guid detailId, Guid optionId, int adjust, CancellationToken cancellationToken = default)
 	{
-		PurchaseDetailOptions optionDetail = await _repositoryManager.PurchaseDetailRepository.GetOptionDetailAsync(optionId, purchaseNumber, cancellationToken);
+		PurchaseDetailOptions optionDetail = await _repositoryManager.PurchaseDetailRepository.GetOptionDetailAsync(optionId, detailId, cancellationToken);
 		OptionEntity option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionId, cancellationToken);
 		if (option.QuantityAvailable < optionDetail.Quantity + adjust)
 			throw new Exception("Not enough quantity available");
@@ -99,7 +88,7 @@ internal sealed class CartService : ICartService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<CartResponse> RemoveCartItemAsync(string userId, Guid productId, int? optionId,
+	public async Task<CartResponse> RemoveCartItemAsync(string userId, Guid productId, Guid? optionId,
 		CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);

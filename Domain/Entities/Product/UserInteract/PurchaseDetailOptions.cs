@@ -11,6 +11,6 @@ public class PurchaseDetailOptions : BaseEntity, IAutoUpdate
 	public double UnitPrice { get; set; }
 	public int? AppliedId { get; set; }
 	public AppliedDiscountEntity? DiscountApplied { get; set; }
-	public int OptionId { get; set; }
+	public Guid OptionId { get; set; }
 	public bool? IsReturned { get; set; }
 }

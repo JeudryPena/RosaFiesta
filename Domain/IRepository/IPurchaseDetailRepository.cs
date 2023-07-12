@@ -9,7 +9,7 @@ public interface IPurchaseDetailRepository
     void Update(PurchaseDetailEntity purchaseDetail);
     void Delete(PurchaseDetailEntity purchaseDetail);
     void UpdateRange(ICollection<PurchaseDetailEntity> cartDetails);
-    Task<PurchaseDetailOptions> GetOptionDetailAsync(int optionId, int purchaseNumber, CancellationToken cancellationToken);
+    Task<PurchaseDetailOptions> GetOptionDetailAsync(Guid optionId, Guid detailId, CancellationToken cancellationToken);
     Task<PurchaseDetailOptions> GetDetailOptionByIdAsync(int optionId, int purchaseNumber, CancellationToken cancellationToken);
     void UpdateOptionDetail(PurchaseDetailOptions detail);
 }
