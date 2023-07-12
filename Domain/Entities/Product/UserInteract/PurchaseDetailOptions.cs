@@ -2,7 +2,7 @@
 
 public class PurchaseDetailOptions : BaseEntity, IAutoUpdate
 {
-	public int PurchaseNumber { get; set; }
+	public Guid DetailId { get; set; }
 	public int Quantity { get; set; }
 	public double UnitPrice { get; set; }
 	public Guid? AppliedId { get; set; }

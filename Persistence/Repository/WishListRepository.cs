@@ -23,30 +23,23 @@ internal sealed class WishListRepository : IWishListRepository
 		return wishListEntities;
 	}
 
-	public async Task<WishListEntity> GetWishListByIdAsync(int wishListId, CancellationToken cancellationToken = default)
+	public async Task<WishListEntity> GetWishListByIdAsync(string userId, CancellationToken cancellationToken = default)
 	{
 		WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList
 			.Include(wl => wl.ProductsWish)
-			.FirstOrDefaultAsync(wl => wl.Id == wishListId, cancellationToken);
+			.FirstOrDefaultAsync(wl => wl.UserId == userId, cancellationToken);
 		if (wishListEntity == null)
 			throw new Exception("WishList not found");
 		return wishListEntity;
 	}
 
-	public async Task<WishListEntity> GetWishWithProducts(int wishListId, CancellationToken cancellationToken = default)
+	public async Task<WishListEntity> GetWishWithProducts(string userId, CancellationToken cancellationToken = default)
 	{
 		WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList.Include(wl => wl.ProductsWish).ThenInclude(pw => pw.Option)
-			.FirstOrDefaultAsync(wl => wl.Id == wishListId, cancellationToken);
+			.FirstOrDefaultAsync(wl => wl.UserId == userId, cancellationToken);
 		if (wishListEntity == null)
 			throw new Exception("WishList not found");
 		return wishListEntity;
-	}
-
-	public async Task ExistingName(string wishListTitle, string userId)
-	{
-		bool exist = await _rosaFiestaContext.WishesList.AnyAsync(wl => wl.Title == wishListTitle && wl.UserId == userId);
-		if (exist)
-			throw new Exception("WishList with this name already exists");
 	}
 
 	public void Update(WishListEntity wishListEntity)
@@ -58,10 +51,7 @@ internal sealed class WishListRepository : IWishListRepository
 	public void DeleteProduct(WishListProductsEntity wishListEntity)
 	=> _rosaFiestaContext.WishesListProducts.Remove(wishListEntity);
 
-	public void Delete(WishListEntity wishListEntity)
-	=> _rosaFiestaContext.WishesList.Remove(wishListEntity);
-
-	public async Task<WishListProductsEntity> GetWishListOption(int wishListId, int? optionId, CancellationToken cancellationToken)
+	public async Task<WishListProductsEntity> GetWishListOption(Guid wishListId, Guid? optionId, CancellationToken cancellationToken)
 	{
 		WishListProductsEntity? wishListProductsEntity = await _rosaFiestaContext.WishesListProducts
 			.FirstOrDefaultAsync(wl => wl.WishListId == wishListId && wl.OptionId == optionId, cancellationToken);
@@ -69,10 +59,4 @@ internal sealed class WishListRepository : IWishListRepository
 			throw new Exception("Option not found in this WishList");
 		return wishListProductsEntity;
 	}
-
-	public void UpdateWishLists(IEnumerable<WishListEntity> wishListEntities)
-	=> _rosaFiestaContext.WishesList.UpdateRange(wishListEntities);
-
-	public void DeleteWishLists(IEnumerable<WishListEntity> wishListEntities)
-	=> _rosaFiestaContext.WishesList.RemoveRange(wishListEntities);
 }

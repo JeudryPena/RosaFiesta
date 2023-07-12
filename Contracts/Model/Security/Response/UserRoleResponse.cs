@@ -1,5 +1,5 @@
 ﻿namespace Contracts.Model.Security.Response;
 public class UserRoleResponse
 {
-	public RolesResponse Role { get; set; }
+	public RolesListResponse Role { get; set; }
 }

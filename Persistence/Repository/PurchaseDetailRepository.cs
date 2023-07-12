@@ -16,7 +16,7 @@ internal sealed class PurchaseDetailRepository : IPurchaseDetailRepository
 
 	public async Task<IEnumerable<PurchaseDetailEntity>> GetAllAsync(CancellationToken cancellationToken) => await _rosaFiestaContext.PurchaseDetails.ToListAsync(cancellationToken);
 
-	public async Task<PurchaseDetailEntity> GetByIdAsync(int detailId, CancellationToken cancellationToken)
+	public async Task<PurchaseDetailEntity> GetByIdAsync(Guid detailId, CancellationToken cancellationToken)
 	{
 		PurchaseDetailEntity? purchaseDetail = await _rosaFiestaContext.PurchaseDetails.FirstOrDefaultAsync(x => x.DetailId == detailId, cancellationToken);
 		if (purchaseDetail == null)
@@ -26,21 +26,9 @@ internal sealed class PurchaseDetailRepository : IPurchaseDetailRepository
 
 	public void Update(PurchaseDetailEntity purchaseDetail) => _rosaFiestaContext.PurchaseDetails.Update(purchaseDetail);
 
-	public void Delete(PurchaseDetailEntity purchaseDetail) => _rosaFiestaContext.PurchaseDetails.Remove(purchaseDetail);
-	public void UpdateRange(ICollection<PurchaseDetailEntity> cartDetails) =>
-	_rosaFiestaContext.PurchaseDetails.UpdateRange(cartDetails);
-
-	public async Task<PurchaseDetailOptions> GetOptionDetailAsync(int optionId, int purchaseNumber, CancellationToken cancellationToken)
+	public async Task<PurchaseDetailOptions> GetOptionDetailAsync(Guid optionId, Guid detailId, CancellationToken cancellationToken)
 	{
-		PurchaseDetailOptions? purchaseDetailOptions = await _rosaFiestaContext.PurchaseDetailsOptions.FirstOrDefaultAsync(x => x.OptionId == optionId && x.PurchaseNumber == purchaseNumber, cancellationToken);
-		if (purchaseDetailOptions == null)
-			throw new NullReferenceException(nameof(PurchaseDetailOptions));
-		return purchaseDetailOptions;
-	}
-
-	public async Task<PurchaseDetailOptions> GetDetailOptionByIdAsync(int optionId, int purchaseNumber, CancellationToken cancellationToken)
-	{
-		PurchaseDetailOptions? purchaseDetailOptions = await _rosaFiestaContext.PurchaseDetailsOptions.FirstOrDefaultAsync(x => x.OptionId == optionId && x.PurchaseNumber == purchaseNumber, cancellationToken);
+		PurchaseDetailOptions? purchaseDetailOptions = await _rosaFiestaContext.PurchaseDetailsOptions.FirstOrDefaultAsync(x => x.OptionId == optionId && x.DetailId == detailId, cancellationToken);
 		if (purchaseDetailOptions == null)
 			throw new NullReferenceException(nameof(PurchaseDetailOptions));
 		return purchaseDetailOptions;

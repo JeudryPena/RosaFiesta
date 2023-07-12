@@ -40,13 +40,6 @@ internal sealed class ProductService : IProductService
 		return productPreviewResponse;
 	}
 
-	public async Task<IEnumerable<OptionsListResponse>> GetOptionsAsync(CancellationToken cancellationToken = default)
-	{
-		IEnumerable<OptionEntity> options = await _repositoryManager.ProductRepository.GetOptionsAsync(cancellationToken);
-		IEnumerable<OptionsListResponse> optionsListResponse = options.Adapt<IEnumerable<OptionsListResponse>>();
-		return optionsListResponse;
-	}
-
 	public async Task<ProductResponse> GetByIdAsync(Guid productId,
 		CancellationToken cancellationToken = default)
 	{
@@ -72,7 +65,7 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task DeleteAsync(string userId, Guid productId, int? optionId,
+	public async Task DeleteAsync(string userId, Guid productId, Guid? optionId,
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
@@ -89,28 +82,25 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<ProductDetailResponse> GetProductDetail(Guid productCode, int optionId,
+	public async Task<ProductDetailResponse> GetProductDetail(Guid productCode, Guid optionId,
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productCode, optionId, cancellationToken);
 		ProductDetailResponse productDetailResponse = product.Adapt<ProductDetailResponse>();
 		productDetailResponse.Option = product.Options[0].Adapt<OptionDetailResponse>();
-		productDetailResponse.WarrantyName = product.Warranty?.Name;
-		return productDetailResponse;
+		return productDetailResponse; 
 	}
 
-	public async Task<OptionAdjustResponse> AdjustOptionQuantityAsync(string userId, int optionId, Guid productId, int count, CancellationToken cancellationToken = default)
+	public async Task AdjustOptionQuantityAsync(string userId, Guid optionId, Guid productId, int count, CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productId, optionId, cancellationToken);
 		OptionEntity option = product.Options[0];
 		option.QuantityAvailable += count;
 		_repositoryManager.ProductRepository.Update(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		OptionAdjustResponse optionAdjustResponse = option.Adapt<OptionAdjustResponse>();
-		return optionAdjustResponse;
 	}
 
-	public async Task<IList<string>> GetOptionImages(int optionId, CancellationToken cancellationToken)
+	public async Task<IList<string>> GetOptionImages(Guid optionId, CancellationToken cancellationToken)
 	{
 		List<string> images = await _repositoryManager.ProductRepository.GetOptionImages(optionId, cancellationToken);
 		return images;

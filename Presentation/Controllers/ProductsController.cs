@@ -60,13 +60,6 @@ public class ProductsController : ControllerBase
 		return Ok(productAndOption);
 	}
 
-	[HttpGet("options-list")]
-	public async Task<IActionResult> GetOptions(CancellationToken cancellationToken)
-	{
-		IEnumerable<OptionsListResponse> options = await _serviceManager.ProductService.GetOptionsAsync(cancellationToken);
-		return Ok(options);
-	}
-
 	[HttpPost]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> CreateProduct([FromBody] ProductDto productForCreationDto, CancellationToken cancellationToken)
@@ -90,26 +83,24 @@ public class ProductsController : ControllerBase
 	}
 
 
-	[HttpPut("{productId:guid}/options/{optionId}")]
+	[HttpPut("{productId:guid}/options/{optionId:guid}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> AdjustOptionQuantity(Guid productId, int optionId, int count, CancellationToken cancellationToken)
+	public async Task<IActionResult> AdjustOptionQuantity(Guid productId, Guid optionId, int count, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		OptionAdjustResponse products = await _serviceManager.ProductService.AdjustOptionQuantityAsync(userId, optionId, productId, count, cancellationToken);
-		return Ok(products);
+		await _serviceManager.ProductService.AdjustOptionQuantityAsync(userId, optionId, productId, count, cancellationToken);
+		return Ok();
 	}
 
-	[HttpDelete("{productId:guid}/option/{optionId?}")]
+	[HttpDelete("{productId:guid}/option/{optionId:Guid?}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeleteProductOrOption(Guid productId, CancellationToken cancellationToken, int? optionId = 0)
+	public async Task<IActionResult> DeleteProductOrOption(Guid productId, CancellationToken cancellationToken, Guid? optionId = null)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		if (optionId == 0)
-			optionId = null;
 		await _serviceManager.ProductService.DeleteAsync(userId, productId, optionId, cancellationToken);
 		return Ok();
 	}

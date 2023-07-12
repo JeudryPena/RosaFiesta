@@ -16,7 +16,7 @@ internal sealed class OrderRepository : IOrderRepository
 
 	public async Task<IEnumerable<OrderEntity>> GetAllAsync(CancellationToken cancellationToken = default) => await _context.Orders.ToListAsync(cancellationToken);
 
-	public async Task<OrderEntity> GetByIdAsync(int billId, CancellationToken cancellationToken = default)
+	public async Task<OrderEntity> GetByIdAsync(Guid billId, CancellationToken cancellationToken = default)
 	{
 		OrderEntity? order = await _context.Orders.Include(x => x.Details).Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == billId, cancellationToken);
 		if (order == null)

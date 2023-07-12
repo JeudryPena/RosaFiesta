@@ -105,7 +105,7 @@ public class PurchaseController : ControllerBase
 
 	[HttpDelete("{detailId}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeletePurchaseDetail(int detailId, CancellationToken cancellationToken)
+	public async Task<IActionResult> DeletePurchaseDetail(Guid detailId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

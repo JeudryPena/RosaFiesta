@@ -14,10 +14,17 @@ internal sealed class ReviewRepository : IReviewRepository
 		_context = context;
 	}
 
+	public async Task AlredyExistAsync(Guid optionId, string userId, CancellationToken cancellationToken = default)
+	{
+		bool any = await _context.Reviews.AnyAsync(x => x.OptionId == optionId && x.UserId == userId, cancellationToken);
+		if (any)
+			throw new Exception("Review already exist");
+	}
+
 	public async Task<IEnumerable<ReviewEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
 		await _context.Reviews.ToListAsync(cancellationToken);
 
-	public async Task<ReviewEntity> GetByIdAsync(Guid reviewId, CancellationToken cancellationToken = default)
+	public async Task<ReviewEntity> GetByIdAsync(int reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity? review = await _context.Reviews.FirstOrDefaultAsync(x => x.Id == reviewId, cancellationToken);
 		if (review == null)
@@ -28,11 +35,4 @@ internal sealed class ReviewRepository : IReviewRepository
 	public void Insert(ReviewEntity review) => _context.Reviews.Add(review);
 
 	public void Update(ReviewEntity review) => _context.Reviews.Update(review);
-
-	public async Task AlredyExistAsync(int optionId, string userId, CancellationToken cancellationToken = default)
-	{
-		ReviewEntity? review = await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == userId && x.OptionId == optionId, cancellationToken);
-		if (review != null)
-			throw new ArgumentException("Review already exist");
-	}
 }

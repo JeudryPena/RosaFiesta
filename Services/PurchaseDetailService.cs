@@ -26,14 +26,14 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService
 		return purchaseDetailResponse;
 	}
 
-	public async Task<PurchaseDetailResponse> GetByIdAsync(int detailId, CancellationToken cancellationToken = default)
+	public async Task<PurchaseDetailResponse> GetByIdAsync(Guid detailId, CancellationToken cancellationToken = default)
 	{
 		PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
 		var purchaseDetailResponse = purchaseDetail.Adapt<PurchaseDetailResponse>();
 		return purchaseDetailResponse;
 	}
 
-	public async Task<PurchaseDetailResponse> UpdateAsync(string userId, int detailId,
+	public async Task<PurchaseDetailResponse> UpdateAsync(string userId, Guid detailId,
 		PurchaseDetailDto purchaseDetailDto,
 		CancellationToken cancellationToken = default)
 	{
@@ -45,7 +45,7 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService
 		return purchaseDetailResponse;
 	}
 
-	public async Task DeleteAsync(string userId, int detailId, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(string userId, Guid detailId, CancellationToken cancellationToken = default)
 	{
 		PurchaseDetailEntity purchaseDetail = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
 		_repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);

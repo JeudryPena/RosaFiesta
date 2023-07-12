@@ -6,7 +6,6 @@ namespace Services.Abstractions;
 public interface ICartService
 {
 	Task<CartResponse> GetByIdAsync(string id, CancellationToken cancellationToken = default);
-	Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, Guid optionId, CancellationToken cancellationToken = default);
 	Task AddPackToCartAsync(string userId, Guid optionId, List<PurchaseDetailDto> cartItems,
 		CancellationToken cancellationToken = default);
 	Task AdjustCartItemQuantityAsync(string userId, Guid purchaseNumber, Guid optionId, int adjust,

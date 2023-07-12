@@ -10,8 +10,8 @@ public class PurchaseDetailOptionsConfig : IEntityTypeConfiguration<PurchaseDeta
 
 	public void Configure(EntityTypeBuilder<PurchaseDetailOptions> builder)
 	{
-		builder.HasKey(x => new { x.PurchaseNumber, x.OptionId });
-		builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
+		builder.HasKey(x => new { x.DetailId, x.OptionId });
+		builder.Property(x => x.DetailId).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.HasOne(x => x.Discount).WithMany(x => x.AppliedOptions).HasForeignKey(x => x.AppliedId);
 	}

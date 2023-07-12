@@ -20,13 +20,6 @@ internal sealed class CartService : ICartService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<ProductsDiscountResponse>> GetDiscountsPreviewAsync(string userId, Guid optionId, CancellationToken cancellationToken = default)
-	{
-		ICollection<DiscountEntity> discounts = await _repositoryManager.DiscountRepository.GetValidDiscountsPreview(userId, optionId, cancellationToken);
-		IEnumerable<ProductsDiscountResponse> discountPreviews = discounts.Adapt<IEnumerable<ProductsDiscountResponse>>();
-		return discountPreviews;
-	}
-
 	public async Task<CartResponse> GetByIdAsync(string id, CancellationToken cancellationToken = default)
 	{
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(id, cancellationToken);

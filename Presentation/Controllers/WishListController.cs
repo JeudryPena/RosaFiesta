@@ -54,7 +54,7 @@ public class WishListController : ControllerBase
 	}
 
 	[HttpDelete("{wishListId:guid}/option/{optionId:guid}")]
-	public async Task<IActionResult> DeleteProductFromWishListAsync(Guid wishListId, CancellationToken cancellationToken, int optionId)
+	public async Task<IActionResult> DeleteProductFromWishListAsync(Guid wishListId, CancellationToken cancellationToken, Guid optionId)
 	{
 		await _serviceManager.WishListService.DeleteProductFromWishListAsync(wishListId, optionId, cancellationToken);
 		return Ok();

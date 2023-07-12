@@ -11,5 +11,5 @@ public interface IPurchaseDetailService
     Task<PurchaseDetailResponse> GetByIdAsync(Guid detailId, CancellationToken cancellationToken = default);
     Task<PurchaseDetailResponse> UpdateAsync(string userId, Guid detailId, PurchaseDetailDto purchaseDetailDto,
         CancellationToken cancellationToken = default);
-    Task DeleteAsync(string userId, int detailId, CancellationToken cancellationToken = default);
+    Task DeleteAsync(string userId, Guid detailId, CancellationToken cancellationToken = default);
 }

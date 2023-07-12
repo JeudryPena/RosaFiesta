@@ -63,7 +63,7 @@ internal sealed class CategoryService : ICategoryService
 	public async Task DeleteAsync(string userId, int categoryId,
 		CancellationToken cancellationToken = default)
 	{
-		CategoryEntity category = await _repositoryManager.CategoryRepository.GetCategoryAndSubCategoryAsync(categoryId, cancellationToken);
+		CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
 		_repositoryManager.CategoryRepository.Delete(category);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}

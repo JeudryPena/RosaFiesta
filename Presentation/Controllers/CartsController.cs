@@ -23,16 +23,6 @@ public class CartsController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet("options/{optionId:guid}")]
-	public async Task<IActionResult> GetDiscountPreviews(CancellationToken cancellationToken, Guid optionId)
-	{
-		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		if (userId == null)
-			return StatusCode((int)HttpStatusCode.Unauthorized);
-		IEnumerable<ProductsDiscountResponse> discountPreviews = await _serviceManager.CartService.GetDiscountsPreviewAsync(userId, optionId, cancellationToken);
-		return Ok(discountPreviews);
-	}
-
 	[HttpGet("myCart")]
 	public async Task<IActionResult> GetMyCart(CancellationToken cancellationToken)
 	{

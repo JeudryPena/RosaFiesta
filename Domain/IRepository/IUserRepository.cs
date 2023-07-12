@@ -15,7 +15,7 @@ public interface IUserRepository
 	Task<AddressEntity> GetAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken);
 	void CreateAddress(AddressEntity address);
 	void UpdateAddress(AddressEntity address);
-	Task<string> GetUserFullName(string userId, CancellationToken cancellationToken);
+	Task<string> GetUserName(string userId, CancellationToken cancellationToken);
 	void Delete(UserEntity user);
 	void DeleteAddress(AddressEntity address);
 	Task<IEnumerable<RoleEntity>> GetAllRolesAsync(CancellationToken cancellationToken = default);

@@ -12,7 +12,6 @@ public class OrderResponse : BaseResponse
 	public string VoucherType { get; set; }
 	public int VoucherNumber { get; set; }
 	public string VoucherSeries { get; set; }
-	public double AmmountPaid => Details.Sum(x => x.TotalOptionsPrice);
 	public double TaxesCost { get; set; }
 	public ICollection<PurchaseDetailResponse> Details { get; set; }
 	public Guid AddressId { get; set; }

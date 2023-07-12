@@ -25,23 +25,6 @@ internal sealed class UserService : IUserService
 		_roleManager = roleManager;
 	}
 
-	public async Task<IEnumerable<RolesResponse>> GetAllRolesAsync(CancellationToken cancellationToken = default)
-	{
-		IEnumerable<RoleEntity> roles = await _repositoryManager.UserRepository.GetAllRolesAsync(
-					cancellationToken
-							);
-		IEnumerable<RolesResponse> rolesResponse = roles.Adapt<IEnumerable<RolesResponse>>();
-		return rolesResponse;
-	}
-
-
-
-	public async Task<string?> GetUserNameByIdAsync(string userId, CancellationToken cancellationToken = default)
-	{
-		string? userName = await _repositoryManager.UserRepository.GetUserFullName(userId, cancellationToken);
-		return userName;
-	}
-
 	public async Task<IEnumerable<ManagementUsersResponse>> GetAllUserAsync(
 		CancellationToken cancellationToken = default
 	)
@@ -173,24 +156,20 @@ internal sealed class UserService : IUserService
 		return addressDto;
 	}
 
-	public async Task<AddressResponse> CreateAddressAsync(string userId, AddressDto addressDto, CancellationToken cancellationToken = default)
+	public async Task CreateAddressAsync(string userId, AddressDto addressDto, CancellationToken cancellationToken = default)
 	{
 		AddressEntity address = addressDto.Adapt<AddressEntity>();
 		address.UserId = userId;
 		_repositoryManager.UserRepository.CreateAddress(address);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-		AddressResponse addressResponse = address.Adapt<AddressResponse>();
-		return addressResponse;
 	}
 
-	public async Task<AddressResponse> UpdateAddressAsync(string userId, Guid addressId, AddressDto addressDto, CancellationToken cancellationToken)
+	public async Task UpdateAddressAsync(string userId, Guid addressId, AddressDto addressDto, CancellationToken cancellationToken)
 	{
 		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
 		address = addressDto.Adapt(address);
 		_repositoryManager.UserRepository.UpdateAddress(address);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-		AddressResponse addressResponse = address.Adapt<AddressResponse>();
-		return addressResponse;
 	}
 
 	public async Task DisableAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken)

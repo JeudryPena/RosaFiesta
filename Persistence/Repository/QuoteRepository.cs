@@ -23,7 +23,7 @@ internal sealed class QuoteRepository : IQuoteRepository
 		return quotes;
 	}
 
-	public async Task<QuoteEntity> GetQuoteAsync(int id, CancellationToken cancellationToken)
+	public async Task<QuoteEntity> GetQuoteAsync(Guid id, CancellationToken cancellationToken)
 	{
 		QuoteEntity? quote = await _context.Quotes.FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
 		if (quote == null)
@@ -37,7 +37,7 @@ internal sealed class QuoteRepository : IQuoteRepository
 	public void Update(QuoteEntity quote)
 	=> _context.Quotes.Update(quote);
 
-	public async Task<QuoteEntity> GetQuoteByUserIdAsync(int id, string userId, CancellationToken cancellationToken = default)
+	public async Task<QuoteEntity> GetQuoteByUserIdAsync(Guid id, string userId, CancellationToken cancellationToken = default)
 	{
 		QuoteEntity? quote = await _context.Quotes.FirstOrDefaultAsync(q => q.Id == id && q.UserId == userId, cancellationToken);
 		if (quote == null)
