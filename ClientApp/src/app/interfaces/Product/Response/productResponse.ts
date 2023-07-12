@@ -1,3 +1,6 @@
+import { ByBaseResponse } from "../../byBaseResponse";
+import { OptionsResponse } from "./optionsResponse";
+
 export interface ProductResponse extends ByBaseResponse {
     id: string;
     code: string;

@@ -1,3 +1,5 @@
+import { BaseResponse } from "../../../baseResponse";
+
 export interface PurchaseDetailOptionResponse extends BaseResponse {
     image: string;
     quantity: number;

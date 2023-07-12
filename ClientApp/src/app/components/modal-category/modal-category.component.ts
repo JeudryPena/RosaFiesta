@@ -5,7 +5,6 @@ import { SaveModalComponent } from '../../helpers/save-modal/save-modal.componen
 import { Status } from '../../helpers/save-modal/status';
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
-import { SubCategoryDto } from '../../interfaces/Product/subCategoryDto';
 import { CategoriesService } from '../../shared/services/categories.service';
 import { UsersService } from '../../shared/services/users.service';
 
@@ -15,9 +14,6 @@ import { UsersService } from '../../shared/services/users.service';
   styleUrls: ['./modal-category.component.scss']
 })
 export class ModalCategoryComponent implements OnInit {
-  updateSubCategory = false;
-  subCategoryTittle = '';
-
   @Input() read: boolean = false;
   @Input() update: boolean = false;
   @Input() title: string = '';
@@ -25,16 +21,9 @@ export class ModalCategoryComponent implements OnInit {
 
   titleFocused = false;
   iconFocused = false;
-  subCategoriesFocused = false;
   descriptionFocused = false;
 
-  subTitleFocused = false;
-  subIconFocused = false;
-  subDescriptionFocused = false;
-
   categoryForm: any;
-  subCategories: any[] = [];
-  subCategoryForm: any;
 
   constructor(
     private modalService: NgbModal,
@@ -42,19 +31,6 @@ export class ModalCategoryComponent implements OnInit {
     private service: CategoriesService,
     private userService: UsersService
   ) {
-  }
-
-  userName(id: string, id2: string) {
-    this.userService.UserName(id).subscribe((response) => {
-      this.categoryForm.patchValue({
-        createdBy: response.userName
-      });
-    });
-    this.userService.UserName(id2).subscribe((response) => {
-      this.categoryForm.patchValue({
-        updatedBy: response.userName
-      });
-    });
   }
 
   ngOnInit(): void {
@@ -71,7 +47,6 @@ export class ModalCategoryComponent implements OnInit {
           icon: response.icon,
           description: response.description
         });
-        this.subCategories = response.subCategories || [];
       });
     } else if (this.read) {
       this.categoryForm = new FormGroup({
@@ -92,85 +67,16 @@ export class ModalCategoryComponent implements OnInit {
           description: response.description,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
+          createdBy: response.createdBy,
+          updatedBy: response.updatedBy
         });
-
-        this.userName(response.createdBy, response.updatedBy);
-
-        this.subCategories = response.subCategories || [];
       });
     }
-  }
-
-  addNewSubcategory(name: string) {
-
-    this.subCategoryTittle = 'Añadir SubCategoría'
-    this.subCategoryForm = new FormGroup({
-      name: new FormControl(name),
-      icon: new FormControl(''),
-      description: new FormControl('')
-    })
-    setTimeout(() => {
-
-    }, 10);
-  }
-
-  saveSubcategory(subCategoryFormValue: any) {
-    const category = { ...subCategoryFormValue };
-    const subCategoryDto: SubCategoryDto = {
-      name: category.name,
-      icon: category.icon,
-      description: category.description
-    }
-
-    this.subCategories.push(subCategoryDto);
-    this.subCategoryForm = null;
-  }
-
-  updateSubCat(subCategoryFormValue: any) {
-    const category = { ...subCategoryFormValue };
-
-    const subCategoryDto: SubCategoryDto = {
-      name: category.name,
-      icon: category.icon,
-      description: category.description
-    }
-
-    this.subCategories[category.index] = subCategoryDto;
-    this.updateSubCategory = false;
-    this.subCategoryForm = null;
-  }
-
-  selectSubCategory(index: number) {
-    this.updateSubCategory = true;
-    this.subCategoryTittle = 'Modificar SubCategoría'
-    this.subCategoryForm = new FormGroup({
-      index: new FormControl(index),
-      name: new FormControl(this.subCategories[index].name),
-      icon: new FormControl(this.subCategories[index].icon),
-      description: new FormControl(this.subCategories[index].description),
-    })
-    setTimeout(() => {
-
-    }, 10);
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
     const control = this.categoryForm.get(controlName);
     return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
-  }
-
-  validateSub = (controlName: string, errorName: string, isFocused: boolean) => {
-    const control = this.subCategoryForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
-  }
-
-  cancelSubCategory() {
-    this.updateSubCategory = false;
-    this.subCategoryForm = null;
-  }
-
-  removeSubcategory(index: number) {
-    this.subCategories.splice(index, 1);
   }
 
   close() {
@@ -189,7 +95,6 @@ export class ModalCategoryComponent implements OnInit {
         const categoryDto: CategoryDto = {
           name: category.name,
           icon: category.icon,
-          subCategories: this.subCategories,
           description: category.description
         }
         this.service.UpdateCategory(this.categoryId, categoryDto).subscribe({
@@ -224,7 +129,6 @@ export class ModalCategoryComponent implements OnInit {
         const categoryDto: CategoryDto = {
           name: category.name,
           icon: category.icon,
-          subCategories: this.subCategories,
           description: category.description
         }
 

@@ -3,7 +3,7 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { WarrantiesManagementResponse } from '../../interfaces/Product/Response/warranties-management-response';
+import { WarrantiesManagementResponse } from '../../interfaces/Product/Response/warrantiesManagementResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { WarrantiesService } from '../../shared/services/warranties.service';
 import { ModalWarrantyComponent } from '../modal-warranty/modal-warranty.component';

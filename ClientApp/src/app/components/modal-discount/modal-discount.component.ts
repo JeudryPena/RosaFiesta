@@ -5,7 +5,7 @@ import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
-import { OptionsListResponse } from '../../interfaces/Product/Response/options-list-response';
+import { OptionsListResponse } from '../../interfaces/Product/Response/optionsListResponse';
 import { DiscountDto } from '../../interfaces/Product/discountDto';
 import { DiscountsService } from '../../shared/services/discounts.service';
 import { ProductsService } from '../../shared/services/products.service';
@@ -32,12 +32,7 @@ export class ModalDiscountComponent implements OnInit {
   updateProduct = false;
   productTitle = '';
 
-  codeFocused = false;
-  nameFocused = false;
-  typeFocused = false;
-  descriptionFocused = false;
   valueFocused = false;
-  maxTimesApplyFocused = false;
   startFocused = false;
   endFocused = false;
   productsDiscountsFocused = false;
@@ -67,18 +62,13 @@ export class ModalDiscountComponent implements OnInit {
     this.discountForm.patchValue({
       date: this.date
     });
-    console.log(this.discountForm.value.date);
   }
 
   ngOnInit(): void {
     this.minDate = new Date();
     this.maxDate = new Date();
     this.discountForm = new FormGroup({
-      name: new FormControl(''),
-      type: new FormControl(0),
-      description: new FormControl(''),
       value: new FormControl(0),
-      maxTimesApply: new FormControl(0),
       date: new FormControl(''),
       start: new FormControl(''),
       end: new FormControl(''),
@@ -98,11 +88,7 @@ export class ModalDiscountComponent implements OnInit {
         this.date = [start, end];
         this.minDate.setDate(this.date[0].getDate());
         this.discountForm.patchValue({
-          name: response.name,
-          type: response.type,
-          description: response.description,
           value: response.value,
-          maxTimesApply: response.maxTimesApply,
           start: response.start,
           end: response.end,
           date: this.date
@@ -117,11 +103,7 @@ export class ModalDiscountComponent implements OnInit {
       });
     } else if (this.read) {
       this.discountForm = new FormGroup({
-        name: new FormControl(''),
-        type: new FormControl(0),
-        description: new FormControl(''),
         value: new FormControl(0),
-        maxTimesApply: new FormControl(0),
         date: new FormControl(''),
         start: new FormControl(''),
         end: new FormControl(''),
@@ -139,11 +121,7 @@ export class ModalDiscountComponent implements OnInit {
         this.date = [start, end];
 
         this.discountForm.patchValue({
-          name: response.name,
-          type: response.type,
-          description: response.description,
           value: response.value,
-          maxTimesApply: response.maxTimesApply,
           start: response.start,
           end: response.end,
           date: this.date,
@@ -188,11 +166,7 @@ export class ModalDiscountComponent implements OnInit {
       if (result) {
         const discount = { ...discountFormValue };
         const discountDto: DiscountDto = {
-          name: discount.name,
-          type: discount.type,
-          description: discount.description,
           value: discount.value,
-          maxTimesApply: discount.maxTimesApply,
           start: this.date[0].toISOString(),
           end: this.date[1].toISOString(),
           productsDiscounts: this.products
@@ -227,11 +201,7 @@ export class ModalDiscountComponent implements OnInit {
         const discount = { ...discountFormValue };
 
         const discountDto: DiscountDto = {
-          name: discount.name,
-          type: discount.type,
-          description: discount.description,
           value: discount.value,
-          maxTimesApply: discount.maxTimesApply,
           start: this.date[0].toISOString(),
           end: this.date[1].toISOString(),
           productsDiscounts: this.products

@@ -82,7 +82,7 @@ export class ManagementDiscountsComponent {
     });
   }
 
-  DeleteProducts(id: string, optionId: number | null) {
+  DeleteProducts(id: string, optionId: string | null) {
     console.log(id, optionId)
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar el descuento del producto?';

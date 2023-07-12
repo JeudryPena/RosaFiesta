@@ -22,17 +22,11 @@
                         <thead class="tables">
                             <tr class="table-row">
                                 <th scope="col" class="table-cell">Código</th>
-                                <th scope="col" class="table-cell" sortable="name" (sort)="onSort($event)">Nombre</th>
-                                <th scope="col" class="table-cell">Marca</th>
-                                <th scope="col" class="table-cell">
-                                    Opciones
-                                </th>
+                                <th scope="col" class="table-cell">Es Servicio</th>
+                                <th scope="col" class="table-cell">Opciones</th>
                                 <th scope="col" class="table-cell">Categoría</th>
-                                <th scope="col" class="table-cell">SubCategoría</th>
-                                <th scope="col" class="table-cell">
-                                    Creación</th>
-                                <th scope="col" class="table-cell">
-                                    Modificación</th>
+                                <th scope="col" class="table-cell">Creación</th>
+                                <th scope="col" class="table-cell">Modificación</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -41,8 +35,7 @@
                             <tr class="scroll" *ngFor="let item of products$ | async">
                                 <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
-                                <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
-                                <td><ngb-highlight [result]="item.brand" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="'{{item.isService}}'" [term]="service.searchTerm"></ngb-highlight>
                                 <td>
                                     <div *ngFor="let option of item.options" class="d-flex justify-content-between">
                                         <div ngbDropdown container="body">
@@ -57,7 +50,6 @@
                                     </div>
                                 </td>
                                 <td><ngb-highlight [result]="item.category.name" [term]="service.searchTerm"></ngb-highlight>
-                                <td><ngb-highlight [result]="item.subCategory?.name" [term]="service.searchTerm"></ngb-highlight>
                                 <td><ngb-highlight class="badge text-bg-dark"
                                         [result]="item.createdAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
                                         ngbTooltip="Creado por: {{item.createdBy}}"

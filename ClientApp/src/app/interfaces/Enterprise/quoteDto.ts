@@ -1,3 +1,5 @@
+import { PurchaseDetailDto } from "../Product/UserInteract/purchaseDetailDto";
+
 export interface QuoteDto {
     customerName: string;
     contactNumber: string;

@@ -64,7 +64,7 @@ export class ManagementProductsComponent {
     return `https://localhost:5001/${serverPath}`;
   }
 
-  Delete(id: string, optionId: number | null) {
+  Delete(id: string, optionId: string | null) {
     console.log(id)
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea eliminar el producto?';

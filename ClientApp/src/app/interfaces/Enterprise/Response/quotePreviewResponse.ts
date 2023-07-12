@@ -1,3 +1,5 @@
+import { BaseResponse } from "../../baseResponse";
+
 export interface QuotePreviewResponse extends BaseResponse {
     id: string;
     customerName: string;

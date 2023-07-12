@@ -1,3 +1,5 @@
+import { MultipleImagesResponse } from "./multipleImagesResponse";
+
 export interface OptionsResponse {
     id: string;
     title: string;

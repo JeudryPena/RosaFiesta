@@ -1,3 +1,5 @@
+import { BaseResponse } from "../../baseResponse";
+
 export interface AddressResponse extends BaseResponse {
 	id: string;
 	extraDetails: string | null;

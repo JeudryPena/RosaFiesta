@@ -42,34 +42,6 @@
                                 <td><ngb-highlight [result]="item.description | truncate:30" [term]="service.searchTerm"
                                         placement="top" ngbTooltip="{{item.description}}"></ngb-highlight>
                                 </td>
-                                <td>
-                                    <div *ngFor="let subcategory of item.subCategories"
-                                        class="d-flex justify-content-between">
-                                        <div ngbDropdown container="body">
-                                            <span class="badge text-bg-primary"
-                                                ngbDropdownToggle>{{subcategory.name}}</span>
-                                            <div ngbDropdownMenu>
-                                                <div ngbDropdownItem>
-                                                    <strong>Nombre: </strong> {{subcategory.name}}
-                                                </div>
-                                                <div ngbDropdownItem>
-                                                    <strong>Descripción: </strong>
-                                                    {{subcategory.description}}
-
-                                                </div>
-                                                <div ngbDropdownItem>
-                                                    <strong>Icono: </strong>
-                                                    {{subcategory.icon}}
-                                                </div>
-                                                <div class="dropdown-divider"></div>
-                                                <button ngbDropdownItem (click)="DeleteSub(item.id, subcategory.id)"><i
-                                                        class="fa-solid fa-trash pe-2"></i>Eliminar</button>
-                                                <button ngbDropdownItem (click)="DeleteSub(item.id, null)"><i
-                                                        class="fa-solid fa-trash pe-2"></i>Eliminar Todos</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
                                 <td><ngb-highlight class="badge text-bg-dark"
                                         [result]="item.createdAt | date: 'dd/MM/yyyy hh:mm:ss'" placement="top"
                                         ngbTooltip="Creado por: {{item.createdBy}}"

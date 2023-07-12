@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Model.Product.Response;
 
-public class SupplierResponse : BaseResponse
+public class SupplierResponse : ByBaseResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

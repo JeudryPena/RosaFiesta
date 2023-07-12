@@ -1,3 +1,7 @@
+import { ReviewResponse } from "../UserInteract/Response/reviewResponse";
+import { DiscountPreviewResponse } from "./discountPreviewResponse";
+import { MultipleImagesResponse } from "./multipleImagesResponse";
+
 export interface OptionDetailResponse {
     id: string;
     description: string | null;

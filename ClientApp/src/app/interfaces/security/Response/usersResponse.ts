@@ -1,9 +1,12 @@
+import { BaseResponse } from "../../baseResponse";
+import { UserRoleResponse } from "./userRoleResponse";
+
 export interface UsersResponse extends BaseResponse {
 	id: string;
 	userName: string;
 	fullName: string;
 	email: string;
-	birthDate: DateOnly;
+	birthDate: Date;
 	phoneNumber: string;
 	emailConfirmed: boolean;
 	lockoutEnabled: boolean;

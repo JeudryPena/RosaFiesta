@@ -86,31 +86,6 @@ export class ManagementCategoriesComponent {
     });
   }
 
-  DeleteSub(id: number, subId: number | null) {
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar la subCategoría?';
-    modalRef.componentInstance.status = Status.Pending;
-    modalRef.result.then((result) => {
-      if (result) {
-        this.service.DeleteSubCategory(id, subId).subscribe({
-          next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'SubCategoría eliminada!';
-            modalRef.componentInstance.status = Status.Success;
-
-            modalRef.result.then(() => {
-              this.retrieveData()
-            });
-          }, error: (error) => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = error;
-            modalRef.componentInstance.status = Status.Failed;
-          }
-        });
-      }
-    });
-  }
-
   AddCategory() {
     const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'xl', scrollable: true });
     modalRef.componentInstance.title = 'Añadir Categoría';

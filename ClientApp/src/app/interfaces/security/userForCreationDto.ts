@@ -3,7 +3,7 @@ export interface UserForCreationDto {
 	email: string;
 	password: string;
 	confirmPassword: string;
-	birthDate: DateOnly;
+	birthDate: Date;
 	phoneNumber: string;
 	name: string;
 	lastName: string;

@@ -1,3 +1,7 @@
+import { AddressResponse } from "../../../Security/Response/addressResponse";
+import { BaseResponse } from "../../../baseResponse";
+import { PurchaseDetailResponse } from "./purchaseDetailResponse";
+
 export interface OrderResponse extends BaseResponse {
     id: string;
     payMethodId: string;

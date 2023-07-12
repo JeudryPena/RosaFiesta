@@ -50,7 +50,6 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
 import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
 import { ManagementProductsComponent } from './components/management-products/management-products.component';
-import { ManagementServicesComponent } from './components/management-services/management-services.component';
 import { ManagementSuppliersComponent } from './components/management-suppliers/management-suppliers.component';
 import { ManagementUsersComponent } from './components/management-users/management-users.component';
 import { ManagementWarrantiesComponent } from './components/management-warranties/management-warranties.component';
@@ -179,7 +178,6 @@ export function tokenGetter() {
     ManagementWarrantiesComponent,
     ManagementCategoriesComponent,
     ManagementDiscountsComponent,
-    ManagementServicesComponent,
     CartComponent,
     FinishRegisterComponent,
     ChangePasswordComponent,
