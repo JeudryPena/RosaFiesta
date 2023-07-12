@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Domain.Entities.Product.UserInteract;
+
 namespace Domain.Entities.Enterprise;
 
 public class QuoteEntity : BaseEntity, IAutoUpdate
 {
-	public int Id { get; set; }
+	public Guid Id { get; set; }
 	[StringLength(50, MinimumLength = 2)]
 	public string CustomerName { get; set; }
 	[StringLength(15, MinimumLength = 7)]
@@ -18,7 +20,7 @@ public class QuoteEntity : BaseEntity, IAutoUpdate
 	public DateTimeOffset EventDate { get; set; }
 	[StringLength(255, MinimumLength = 2)]
 	public string Location { get; set; }
-	public ICollection<QuoteItemEntity> QuoteItems { get; set; }
+	public ICollection<PurchaseDetailEntity> QuoteItems { get; set; }
 	[StringLength(36, MinimumLength = 32)]
 	public string? UserId { get; set; }
 }

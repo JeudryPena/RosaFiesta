@@ -1,10 +1,14 @@
-﻿namespace Domain.Entities.Product.UserInteract;
+﻿using Domain.Entities.Enterprise;
+
+namespace Domain.Entities.Product.UserInteract;
 
 public class PurchaseDetailEntity : BaseEntity, IAutoUpdate
 {
-	public int PurchaseNumber { get; set; }
+	public Guid DetailId { get; set; }
 	public Guid ProductId { get; set; }
-	public int? OrderId { get; set; }
+	public Guid? OrderId { get; set; }
 	public ICollection<PurchaseDetailOptions> PurchaseOptions { get; set; }
-	public int? CartId { get; set; }
+	public Guid? CartId { get; set; }
+	public QuoteEntity? Quote { get; set; }
+	public Guid? QuoteId { get; set; }
 }

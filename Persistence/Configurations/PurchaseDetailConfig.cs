@@ -9,8 +9,8 @@ public class PurchaseDetailConfig : IEntityTypeConfiguration<PurchaseDetailEntit
 {
 	public void Configure(EntityTypeBuilder<PurchaseDetailEntity> builder)
 	{
-		builder.HasKey(x => x.PurchaseNumber);
-		builder.Property(x => x.PurchaseNumber).ValueGeneratedOnAdd();
+		builder.HasKey(x => x.DetailId);
+		builder.Property(x => x.DetailId).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.HasMany(x => x.PurchaseOptions).WithOne().HasForeignKey(x => x.PurchaseNumber).OnDelete(DeleteBehavior.Restrict);
 	}

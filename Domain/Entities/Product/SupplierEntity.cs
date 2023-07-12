@@ -14,6 +14,6 @@ public class SupplierEntity : ByBaseEntity, IAutoBy
 	[StringLength(15, MinimumLength = 7)]
 	public string? Phone { get; set; }
 	[StringLength(200, MinimumLength = 5)]
-	public string Address { get; set; }
+	public string? Address { get; set; }
 	public ICollection<ProductEntity>? ProductsSupplied { get; set; }
 }

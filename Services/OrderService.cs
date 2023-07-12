@@ -107,7 +107,7 @@ internal sealed class OrderService : IOrderService
 			throw new Exception("You can't return this order, the time limit has expired");
 		if (order.Details == null)
 			throw new Exception("You can't return this order, the detail doesn't exist");
-		var detail = order.Details.FirstOrDefault(x => x.PurchaseNumber == purchaseNumber);
+		var detail = order.Details.FirstOrDefault(x => x.DetailId == purchaseNumber);
 		if (detail == null)
 			throw new Exception("You can't return this order, the detail doesn't exist");
 		foreach (var optionPurchase in detail.PurchaseOptions)
