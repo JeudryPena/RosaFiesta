@@ -63,10 +63,10 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpPost("reset-password")]
-	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id,
+	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string token, [FromQuery] string email,
 		CancellationToken cancellationToken)
 	{
-		await _serviceManager.AuthenticateService.ResetPasswordAsync(resetPasswordDto, passwordToken, id, cancellationToken);
+		await _serviceManager.AuthenticateService.ResetPasswordAsync(resetPasswordDto, token, email, cancellationToken);
 		return Ok();
 	}
 

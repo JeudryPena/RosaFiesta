@@ -110,19 +110,19 @@ internal sealed class AuthenticateService : IAuthenticateService
 		var param = new Dictionary<string, string?>
 		{
 			{"token", codeEncoded },
-			{"id", user.Id },
+			{"email", email },
 		};
 		var callback = QueryHelpers.AddQueryString("http://localhost:4200/reset-password", param);
 
 		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
 
-		var message = new EmailMessage(new[] { user.Email }, "Reset password token", $"Click the next button to reset your password: <br/> <br/> {htmlButton}", null);
+		var message = new EmailMessage(new[] { email }, "Reset password token", $"Click the next button to reset your password: <br/> <br/> {htmlButton}", null);
 		await _emailSender.SendEmailAsync(message).ConfigureAwait(false);
 	}
 
-	public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto, string passwordToken, string id, CancellationToken cancellationToken = default)
+	public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto, string passwordToken, string email, CancellationToken cancellationToken = default)
 	{
-		var user = await _userManager.FindByIdAsync(id).ConfigureAwait(false) ?? throw new UserNotFoundException(id);
+		var user = await _userManager.FindByEmailAsync(email).ConfigureAwait(false) ?? throw new UserNotFoundException(email);
 
 		string codeDecoded = HttpUtility.UrlDecode(passwordToken);
 
