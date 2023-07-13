@@ -115,6 +115,7 @@ import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { DownloadComponent } from './components/download/download.component';
 import { ModalWarrantyComponent } from './components/modal-warranty/modal-warranty.component';
 import { ModalSuppliersComponent } from './components/modal-suppliers/modal-suppliers.component';
+import { ModalUserComponent } from './components/modal-user/modal-user.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -213,6 +214,7 @@ export function tokenGetter() {
     DownloadComponent,
     ModalWarrantyComponent,
     ModalSuppliersComponent,
+    ModalUserComponent,
     
   ],
   imports: [
