@@ -6,11 +6,10 @@ import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { lastValueFrom } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { CategoriesListResponse } from '../../interfaces/Product/Response/categories-list-response';
+import { CategoriesListResponse } from '../../interfaces/Product/Response/categoriesListResponse';
 import { ProductResponse } from '../../interfaces/Product/Response/productResponse';
-import { SubCategoriesListResponse } from '../../interfaces/Product/Response/sub-categories-list-response';
-import { SuppliersListResponse } from '../../interfaces/Product/Response/suppliers-list-response';
-import { WarrantiesListResponse } from '../../interfaces/Product/Response/warranties-list-response';
+import { SuppliersListResponse } from '../../interfaces/Product/Response/suppliersListResponse';
+import { WarrantiesListResponse } from '../../interfaces/Product/Response/warrantiesListResponse';
 import { OptionDto } from '../../interfaces/Product/optionDto';
 import { ProductDto } from '../../interfaces/Product/productDto';
 import { CategoriesService } from '../../shared/services/categories.service';
@@ -34,12 +33,9 @@ export class ModalProductComponent implements OnInit {
   @Input() productId: string = '';
 
   codeFocused = false;
-  nameFocused = false;
-  brandFocused = false;
-  typeFocused = false;
+  isServiceFocused = false;
   optionsFocused = false;
   categoryIdFocused = false;
-  subCategoryIdFocused = false;
   warrantyIdFocused = false;
   supplierIdFocused = false;
 
@@ -48,10 +44,7 @@ export class ModalProductComponent implements OnInit {
   priceFocused = false;
   quantityAvailableFocused = false;
   colorFocused = false;
-  sizeFocused = false;
-  weightFocused = false;
-  genderForFocused = false;
-  materialFocused = false;
+  isMaleFocused = false;
   conditionFocused = false;
   imagesFocused = false;
 
@@ -59,24 +52,12 @@ export class ModalProductComponent implements OnInit {
   options: any[] = [];
   optionForm: any;
   categoryForm!: CategoriesListResponse;
-  subCategoryForm: SubCategoriesListResponse = {
-    id: 0,
-    name: ''
-  }
-  warrantyForm: WarrantiesListResponse = {
-    id: '',
-    name: ''
-  }
-  supplierForm: SuppliersListResponse = {
-    id: '',
-    name: ''
-  }
+  warrantyForm!: WarrantiesListResponse | null;
+  supplierForm!: SuppliersListResponse | null;
   categorySelected?: string;
-  subCategorySelected!: string;
   warrantySelected!: string;
   supplierSelected!: string;
   categories: CategoriesListResponse[] = [];
-  subCategories: SubCategoriesListResponse[] = [];
   warranties: WarrantiesListResponse[] = [];
   suppliers: SuppliersListResponse[] = [];
   uploadFiles: File[] = [];
@@ -98,12 +79,6 @@ export class ModalProductComponent implements OnInit {
   onSelect(event: TypeaheadMatch, form: string): void {
     if (form == 'category') {
       this.categoryForm = event.item;
-      this.categoriesService.GetSubCategoriesList(this.categoryForm.id).subscribe((response: SubCategoriesListResponse[]) => {
-        this.subCategories = response;
-      });
-    }
-    else if (form == 'subCategory') {
-      this.subCategoryForm = event.item;
     }
     else if (form == 'warranty') {
       this.warrantyForm = event.item;
@@ -142,35 +117,32 @@ export class ModalProductComponent implements OnInit {
   ngOnInit(): void {
     this.productForm = new FormGroup({
       code: new FormControl(''),
-      name: new FormControl(''),
-      brand: new FormControl(''),
       options: new FormControl(''),
+      isService: new FormControl(false),
       categoryId: new FormControl(null),
-      subCategoryId: new FormControl(null),
       warrantyId: new FormControl(''),
       supplierId: new FormControl(''),
     })
-    if (this.update) {
+    if (this.update != true && this.read != true)
+      this.RetrieveRelations();
+    else if (this.update) {
       this.service.GetProduct(this.productId).subscribe((response: ProductResponse) => {
         this.productForm.patchValue({
           code: response.code,
-          name: response.name,
-          brand: response.brand,
-          categoryId: response.categoryId,
-          subCategoryId: response.subCategoryId,
-          warrantyId: response.warrantyId,
-          supplierId: response.supplierId,
+          isService: response.isService,
         });
+        this.categoryForm = response.category;
+        this.warrantyForm = response.warranty;
+        this.supplierForm = response.supplier;
         this.options = response.options || [];
       });
+      this.RetrieveRelations();
     } else if (this.read) {
       this.productForm = new FormGroup({
         code: new FormControl(''),
-        name: new FormControl(''),
-        brand: new FormControl(''),
         options: new FormControl(''),
+        isService: new FormControl(false),
         categoryId: new FormControl(null),
-        subCategoryId: new FormControl(null),
         warrantyId: new FormControl(''),
         supplierId: new FormControl(''),
         createdAt: new FormControl(''),
@@ -182,20 +154,22 @@ export class ModalProductComponent implements OnInit {
       this.service.GetProduct(this.productId).subscribe((response: ProductResponse) => {
         this.productForm.patchValue({
           code: response.code,
-          name: response.name,
-          brand: response.brand,
-          categoryId: response.categoryId,
-          subCategoryId: response.subCategoryId,
-          warrantyId: response.warrantyId,
-          supplierId: response.supplierId,
+          isService: response.isService,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
           createdBy: response.createdBy,
           updatedBy: response.updatedBy,
         });
+        this.categoryForm = response.category;
+        this.warrantyForm = response.warranty;
+        this.supplierForm = response.supplier;
         this.options = response.options || [];
       });
     }
+    
+  }
+
+  RetrieveRelations() {
     this.categoriesService.GetCategoriesList().subscribe({
       next: (response) => {
         this.categories = response;
@@ -224,15 +198,12 @@ export class ModalProductComponent implements OnInit {
     this.optionTitle = 'Añadir Opción'
 
     this.optionForm = new FormGroup({
-      id: new FormControl(0),
+      id: new FormControl(''),
       title: new FormControl(name),
       description: new FormControl(''),
       price: new FormControl(0),
       color: new FormControl(''),
-      size: new FormControl(0),
-      weight: new FormControl(0),
-      genderFor: new FormControl(0),
-      material: new FormControl(0),
+      isMale: new FormControl(false),
       condition: new FormControl(0),
       images: new FormControl(''),
       quantityAvailable: new FormControl(0),
@@ -251,10 +222,7 @@ export class ModalProductComponent implements OnInit {
       description: option.description,
       price: option.price,
       color: option.color,
-      size: option.size,
-      weight: option.weight,
-      genderFor: option.genderFor,
-      material: option.material,
+      isMale: option.isMale,
       condition: option.condition,
       images: option.images,
       quantityAvailable: option.quantityAvailable
@@ -274,10 +242,7 @@ export class ModalProductComponent implements OnInit {
       description: option.description,
       price: option.price,
       color: option.color,
-      size: option.size,
-      weight: option.weight,
-      genderFor: option.genderFor,
-      material: option.material,
+      isMale: option.isMale,
       condition: option.condition,
       images: option.images,
       quantityAvailable: option.quantityAvailable
@@ -299,23 +264,16 @@ export class ModalProductComponent implements OnInit {
       description: new FormControl(this.options[index].description),
       price: new FormControl(this.options[index].price),
       color: new FormControl(this.options[index].color),
-      size: new FormControl(this.options[index].size),
-      weight: new FormControl(this.options[index].weight),
-      genderFor: new FormControl(this.options[index].genderFor),
-      material: new FormControl(this.options[index].material),
+      isMale: new FormControl(this.options[index].isMale),
       condition: new FormControl(this.options[index].condition),
       images: new FormControl(this.options[index].images),
       quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
     if (this.update == true || this.read == true) {
       this.ReadImages(this.options[index].images);
-      console.log(this.uploadFiles);
-
     }
     else {
       this.uploadFiles = this.options[index].images;
-      console.log("tuhna")
-
     }
     setTimeout(() => {
 
@@ -396,12 +354,10 @@ export class ModalProductComponent implements OnInit {
   OnUpdateProduct(product: any) {
     const productDto: ProductDto = {
       code: product.code,
-      name: product.name,
-      brand: product.brand,
-      categoryId: product.categoryId,
-      subCategoryId: product.subCategoryId,
-      warrantyId: product.warrantyId,
-      supplierId: product.supplierId,
+      isService: product.isService,
+      categoryId: product.category.id,
+      warrantyId: product.warranty.id,
+      supplierId: product.supplier.id,
       options: this.options
     }
     this.service.UpdateProduct(this.productId, productDto).subscribe({
@@ -460,12 +416,10 @@ export class ModalProductComponent implements OnInit {
   OnAddProduct(product: any) {
     const productDto: ProductDto = {
       code: product.code,
-      name: product.name,
-      brand: product.brand,
+      isService: product.isService,
       categoryId: this.categoryForm.id,
-      subCategoryId: this.subCategoryForm.id || null,
-      warrantyId: this.warrantyForm.id || null,
-      supplierId: this.supplierForm.id || null,
+      warrantyId: this.warrantyForm?.id || null,
+      supplierId: this.supplierForm?.id || null,
       options: this.options,
     }
     this.service.AddProduct(productDto).subscribe({

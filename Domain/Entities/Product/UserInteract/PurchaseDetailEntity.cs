@@ -9,6 +9,5 @@ public class PurchaseDetailEntity : BaseEntity, IAutoUpdate
 	public Guid? OrderId { get; set; }
 	public ICollection<PurchaseDetailOptions> PurchaseOptions { get; set; }
 	public Guid? CartId { get; set; }
-	public QuoteEntity? Quote { get; set; }
 	public Guid? QuoteId { get; set; }
 }

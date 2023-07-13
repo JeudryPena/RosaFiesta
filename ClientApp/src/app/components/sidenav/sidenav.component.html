@@ -16,19 +16,12 @@
         <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="data.subCategories && data.subCategories.length > 0">
           <i class="sidenav-link-icon" [class]="data.icon"></i>
           <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{data.name}}</span>
-          <i *ngIf="data.subCategories && collapsed" class="menu-collapse-icon"
-            [ngClass]="!data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"></i>
         </a>
 
         <a class="sidenav-nav-link" *ngIf="!data.subCategories || (data.subCategories && data.subCategories.length === 0)" (click)="Navigate(data.id)">
           <i class="sidenav-link-icon" [class]="data.icon"></i>
           <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{data.name}}</span>
-
         </a>
-        <div *ngIf="collapsed && data.subCategories && data.subCategories.length > 0">
-          <app-sublevel-menu [data]="data" [collapsed]="collapsed" [multiple]="multiple"
-            [expanded]="data.expanded"></app-sublevel-menu>
-        </div>
       </li>
     </ul>
   </div>

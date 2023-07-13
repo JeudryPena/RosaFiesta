@@ -9,8 +9,6 @@ import { dashboardData } from './dashboard-data';
 import { inventoryData } from './inventory-data';
 import { Layout } from './layout';
 
-
-
 interface SidenavToggle {
   screenWidth: number;
   collapsed: boolean;
@@ -63,12 +61,10 @@ export class SidenavComponent implements OnDestroy {
     private sidenavService: SidenavService,
     private router: Router
   ) {
-
     this.subscription = this.sidenavService.toggleSidenav$.subscribe(() => {
       this.toggleCollapsed();
     });
   }
-
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
@@ -129,6 +125,5 @@ export class SidenavComponent implements OnDestroy {
         }
       }
     }
-    item.expanded = !item.expanded;
   }
 }

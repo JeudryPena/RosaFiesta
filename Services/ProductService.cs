@@ -88,7 +88,7 @@ internal sealed class ProductService : IProductService
 		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productCode, optionId, cancellationToken);
 		ProductDetailResponse productDetailResponse = product.Adapt<ProductDetailResponse>();
 		productDetailResponse.Option = product.Options[0].Adapt<OptionDetailResponse>();
-		return productDetailResponse; 
+		return productDetailResponse;
 	}
 
 	public async Task AdjustOptionQuantityAsync(string userId, Guid optionId, Guid productId, int count, CancellationToken cancellationToken = default)

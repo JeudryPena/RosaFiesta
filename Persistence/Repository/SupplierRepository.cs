@@ -16,11 +16,11 @@ internal sealed class SupplierRepository : ISupplierRepository
 	=> _dbContext.Suppliers.Remove(supplier);
 
 	public async Task<IEnumerable<SupplierEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-	=> await _dbContext.Suppliers.Include(x => x.ProductsSupplied).ToListAsync(cancellationToken);
+	=> await _dbContext.Suppliers.Include(x => x.Products).ToListAsync(cancellationToken);
 
 	public async Task<SupplierEntity> GetByIdAsync(Guid supplierId, CancellationToken cancellationToken = default)
 	{
-		SupplierEntity? supplier = await _dbContext.Suppliers.Include(x => x.ProductsSupplied)
+		SupplierEntity? supplier = await _dbContext.Suppliers.Include(x => x.Products)
 			.FirstOrDefaultAsync(x => x.Id == supplierId, cancellationToken);
 		if (supplier == null)
 			throw new ArgumentNullException(nameof(supplier));

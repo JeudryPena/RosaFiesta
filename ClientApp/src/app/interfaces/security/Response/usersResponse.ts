@@ -7,7 +7,6 @@ export interface UsersResponse extends BaseResponse {
 	fullName: string;
 	email: string;
 	birthDate: Date;
-	phoneNumber: string;
 	emailConfirmed: boolean;
 	lockoutEnabled: boolean;
 	accessFailedCount: number;

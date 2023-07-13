@@ -15,6 +15,7 @@ internal sealed class RoleConfig : IEntityTypeConfiguration<RoleEntity>
 
 	public void Configure(EntityTypeBuilder<RoleEntity> builder)
 	{
+		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.HasData(
 			new RoleEntity
 			{

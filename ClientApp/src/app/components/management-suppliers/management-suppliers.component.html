@@ -55,7 +55,7 @@
                                 <td><ngb-highlight [result]="supplier.address" [term]="service.searchTerm"></ngb-highlight></td>
 
                                 <td>
-                                    <div *ngFor="let product of supplier.productsSupplied"
+                                    <div *ngFor="let product of supplier.products"
                                         class="d-flex justify-content-between">
                                         <div ngbDropdown container="body">
                                             <span class="badge text-bg-primary" ngbDropdownToggle>

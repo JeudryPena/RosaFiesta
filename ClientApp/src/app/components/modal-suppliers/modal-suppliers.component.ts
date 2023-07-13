@@ -4,7 +4,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { ProductsListResponse } from '../../interfaces/Product/Response/products-list-response';
+import { ProductsListResponse } from '../../interfaces/Product/Response/productsListResponse';
 import { SupplierResponse } from '../../interfaces/Product/Response/supplierResponse';
 import { SupplierDto } from '../../interfaces/Product/supplierDto';
 import { ProductsService } from '../../shared/services/products.service';

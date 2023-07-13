@@ -4,7 +4,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { ProductsListResponse } from '../../interfaces/Product/Response/products-list-response';
+import { ProductsListResponse } from '../../interfaces/Product/Response/productsListResponse';
 import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
 import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
 import { ProductsService } from '../../shared/services/products.service';
@@ -32,7 +32,6 @@ export class ModalWarrantyComponent implements OnInit {
   typeFocused = false;
   periodFocused = false;
   descriptionFocused = false;
-  conditionsFocused = false;
   productsFocused = false;
 
   constructor(
@@ -58,7 +57,6 @@ export class ModalWarrantyComponent implements OnInit {
       type: new FormControl(0),
       period: new FormControl(0),
       description: new FormControl(''),
-      conditions: new FormControl(''),
       products: new FormControl(''),
     });
     if (this.update) {
@@ -68,7 +66,6 @@ export class ModalWarrantyComponent implements OnInit {
           type: response.type,
           period: response.period,
           description: response.description,
-          conditions: response.conditions,
         });
 
         this.products = response.products || [];
@@ -79,7 +76,6 @@ export class ModalWarrantyComponent implements OnInit {
         type: new FormControl(0),
         period: new FormControl(0),
         description: new FormControl(''),
-        conditions: new FormControl(''),
         products: new FormControl(''),
         createdAt: new FormControl(''),
         createdBy: new FormControl(''),
@@ -94,7 +90,6 @@ export class ModalWarrantyComponent implements OnInit {
           type: response.type,
           period: response.period,
           description: response.description,
-          conditions: response.conditions,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
           createdBy: response.createdBy,
@@ -140,7 +135,6 @@ export class ModalWarrantyComponent implements OnInit {
           type: warranty.type,
           period: warranty.period,
           description: warranty.description,
-          conditions: warranty.conditions,
           warrantyProducts: this.products,
         }
         this.service.UpdateWarranty(this.id, warrantyDto).subscribe({
@@ -177,7 +171,6 @@ export class ModalWarrantyComponent implements OnInit {
           type: warranty.type,
           period: warranty.period,
           description: warranty.description,
-          conditions: warranty.conditions,
           warrantyProducts: this.products,
         }
 

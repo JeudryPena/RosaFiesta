@@ -1,6 +1,7 @@
 ﻿using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract.Response;
 
+using Domain.Entities.Product;
 using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 
@@ -59,10 +60,10 @@ internal sealed class OrderService : IOrderService
 				option.QuantityAvailable -= optionPurchase.Quantity;
 				_repositoryManager.ProductRepository.UpdateOption(option);
 
-				var discount = await _repositoryManager.DiscountRepository.GetByAppliedId(optionPurchase.AppliedId, cancellationToken);
-				if ()
+				DiscountEntity? discount = await _repositoryManager.DiscountRepository.GetOptionDiscountAsync(option.Id, cancellationToken);
+				if (discount != null)
 				{
-					double Value = optionPurchase.UnitPrice * discount.Value / 100
+					double Value = optionPurchase.UnitPrice * discount.Value / 100;
 					optionPurchase.UnitPrice -= Value;
 				}
 			}

@@ -8,7 +8,6 @@ export interface ManagementUsersResponse extends ByBaseResponse {
     email: string;
     age: number;
     birthDate: Date;
-    phoneNumber: string;
     emailConfirmed: boolean;
     lockoutEnabled: boolean;
     lockoutEnd: string | null;

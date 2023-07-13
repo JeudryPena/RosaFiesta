@@ -61,7 +61,7 @@ public class ProductRepository : IProductRepository
 	public async Task<ProductEntity> GetByIdAsync(Guid productId,
 		CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Images).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Images).Include(x => x.Category).Include(x => x.Warranty).Include(x => x.Supplier).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
@@ -103,7 +103,7 @@ public class ProductRepository : IProductRepository
 
 	public async Task<OptionEntity> GetOptionByIdAsync(Guid optionId, CancellationToken cancellationToken = default)
 	{
-		OptionEntity? option = await _dbContext.Options.FirstOrDefaultAsync(x => x.Id == optionId, cancellationToken);
+		var option = await _dbContext.Options.FirstOrDefaultAsync(x => x.Id == optionId, cancellationToken);
 		if (option == null)
 			throw new ArgumentNullException(nameof(option));
 		return option;

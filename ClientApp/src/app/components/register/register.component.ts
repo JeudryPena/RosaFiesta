@@ -30,11 +30,14 @@ export class RegisterComponent {
     private parserFormatter: NgbDateParserFormatter
   ) {
     this.registerForm = new FormGroup({
-      email: new FormControl('', [Validators.required]),
-      userName: new FormControl('', [Validators.required]),
-      password: new FormControl('', Validators.required),
-      confirmPassword: new FormControl('', Validators.required),
-      birthDate: new FormControl('', Validators.required)
+      email: new FormControl(''),
+      userName: new FormControl(''),
+      password: new FormControl(''),
+      confirmPassword: new FormControl(''),
+      birthDate: new FormControl(''),
+      name: new FormControl(''),
+      lastName: new FormControl(''),
+      promotionalMails: new FormControl('')
     })
   }
 
@@ -51,6 +54,9 @@ export class RegisterComponent {
 
     const userForRegister: RegisterDto = {
       userName: register.userName,
+      name: register.name,
+      lastName: register.lastName,
+      promotionalMails: register.promotionalMails,
       password: register.password,
       email: register.email,
       confirmPassword: register.confirmPassword,

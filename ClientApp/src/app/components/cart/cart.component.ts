@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { ManagementProductsResponse } from '../../interfaces/Product/Response/ManagementProductsResponse';
+import { ManagementProductsResponse } from '../../interfaces/Product/Response/managementProductsResponse';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { ProductsService } from '../../shared/services/products.service';
 
@@ -24,7 +24,6 @@ export class CartComponent {
     config: NgbModalConfig,
     private authService: AuthenticateService
   ) {
-
 
     this.authService.authChanged
       .subscribe(res => {

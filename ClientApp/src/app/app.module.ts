@@ -71,7 +71,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { UploadImagesComponent } from './components/upload-images/upload-images.component';
 import { WishListsComponent } from './components/wish-lists/wish-lists.component';
@@ -166,7 +165,6 @@ export function tokenGetter() {
     PaginationComponent,
     ModalProductComponent,
     RegisterComponent,
-    SublevelMenuComponent,
     HomeComponent,
     ModalQuoteComponent,
     ProductCardComponent,

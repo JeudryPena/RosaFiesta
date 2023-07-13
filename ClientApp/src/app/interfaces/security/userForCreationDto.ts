@@ -4,7 +4,6 @@ export interface UserForCreationDto {
 	password: string;
 	confirmPassword: string;
 	birthDate: Date;
-	phoneNumber: string;
 	name: string;
 	lastName: string;
 	roleId: string[];

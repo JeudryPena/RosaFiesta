@@ -75,17 +75,6 @@
                 <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
                         corta</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': conditionsFocused || conditionsInput.value.length > 0 }">
-                <textarea [readOnly]="read" #conditionsInput type="text" formControlName="conditions" class="input"
-                    required minlength="3" maxlength="500" (focus)="conditionsFocused = true"
-                    (blur)="conditionsFocused = false" rows="3"></textarea>
-                <label>Condiciones</label>
-                <span>Condiciones</span>
-                <h5 *ngIf="validate('conditions', 'required', conditionsFocused)">Las condiciones son<strong>
-                        requeridas</strong></h5>
-                <h5 *ngIf="validate('conditions', 'minlength', conditionsFocused)">Las condiciones son <strong> muy
-                        cortas</strong></h5>
-            </div>
             <div *ngIf="read">
                 <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
                     <input readOnly #createdAtInput type="text" formControlName="createdAt"

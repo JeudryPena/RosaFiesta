@@ -4,7 +4,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../env/config.prod";
-import { ManagementProductsResponse } from '../../interfaces/Product/Response/ManagementProductsResponse';
+import { ManagementProductsResponse } from '../../interfaces/Product/Response/managementProductsResponse';
 import { OptionsListResponse } from '../../interfaces/Product/Response/optionsListResponse';
 import { ProductResponse } from '../../interfaces/Product/Response/productResponse';
 import { ProductsListResponse } from '../../interfaces/Product/Response/productsListResponse';

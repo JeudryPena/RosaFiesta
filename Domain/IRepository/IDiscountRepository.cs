@@ -10,4 +10,5 @@ public interface IDiscountRepository
 	void Update(DiscountEntity discount);
 	Task<DiscountEntity> GetDiscountAsync(Guid discountId, CancellationToken cancellationToken = default);
 	void Delete(DiscountEntity discount);
+	Task<DiscountEntity?> GetOptionDiscountAsync(Guid id, CancellationToken cancellationToken);
 }
