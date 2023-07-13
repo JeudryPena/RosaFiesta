@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,6 +14,7 @@ export class ForgotPasswordComponent  implements OnInit {
 
   constructor(
     private service: AuthenticateService,
+    private toastService: ToastService,
   ) { 
     this.forgotForm = new FormGroup({
       email: new FormControl('')
@@ -30,10 +32,9 @@ export class ForgotPasswordComponent  implements OnInit {
 
   forgotPassword(forgotFormValue: any) {
     const forgot = { ...forgotFormValue };
-    
     this.service.forgotPassword(forgot.email).subscribe({
       next: (res: any) => {
-        console.log(res);
+        this.toastService.show(null, 'Se ha enviado un correo electrónico para restablecer la contraseña!', { classname: 'bg-success text-light', delay: 10000 });
       },
       error: (error: any) => {
         console.log(error);

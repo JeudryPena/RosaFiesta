@@ -7,6 +7,7 @@ import { LoginResponse } from '../../interfaces/Security/Response/loginResponse'
 import { LogingDto } from '../../interfaces/Security/logingDto';
 import { RegisterDto } from '../../interfaces/Security/registerDto';
 import { CustomEncoder } from '../custom-encoder';
+import { ResetPasswordDto } from '../../interfaces/Security/resetPasswordDto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,13 @@ export class AuthenticateService {
     params = params.append('token', token);
     params = params.append('email', email);
     return this.http.get(`${this.apiUrl}confirm-email`, { params });
+  }
+
+  resetPassword(reset: ResetPasswordDto, token: string, email: string) {
+    let params = new HttpParams({ encoder: new CustomEncoder() })
+    params = params.append('token', token);
+    params = params.append('email', email);
+    return this.http.post(`${this.apiUrl}reset-password`, reset, { params });
   }
 
   forgotPassword(email: string) {

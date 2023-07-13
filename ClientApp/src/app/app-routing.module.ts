@@ -34,6 +34,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
@@ -77,6 +78,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'authenticate', component: AuthenticateComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent},
   { path: 'navbar', component: NavbarComponent },
   { path: 'coupens', component: CoupensComponent },
 ];
