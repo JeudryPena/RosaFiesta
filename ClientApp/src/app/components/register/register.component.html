@@ -1,64 +1,110 @@
 <div class="bg-image">
     <div class="container w-75 bg-primary mt-5 rounded shadow">
         <div class="row align-items-stretch">
-            <div class="col bg-white p-5 rounded-start">
+            <div class="col bg-white p-4 rounded-start">
                 <h2 class="fw-bold text-center py-3">Registrarse</h2>
                 <form action="#" [formGroup]="registerForm">
                     <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': userFocused}">
-                        <input #userInput type="username" class="form-control contact-input" id="userName"
-                            formControlName="userName" placeholder="Usuario" (focus)="userFocused = true"
-                            (blur)="userFocused = false" />
+                        <input #userInput type="username" class="form-control contact-input" id="userName" required
+                            minlength="5" maxlength="256" formControlName="userName" placeholder="Usuario"
+                            (focus)="userFocused = true" (blur)="userFocused = false" />
                         <label for="floatingInput">Usuario</label>
                         <i class="icon fa-regular fa-id-card"></i>
+                        <h5 *ngIf="validate('userName', 'required', userFocused)">El Usuario es<strong>
+                                Requerido</strong></h5>
+                        <h5 *ngIf="validate('userName', 'minlength', userFocused)">El Usuario es<strong> muy
+                                corto</strong></h5>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': nameFocused}">
+                                <input type="text" class="form-control contact-input" id="name" required minlength="2"
+                                    maxlength="50" formControlName="name" placeholder="Nombre" (focus)="nameFocused = true"
+                                    (blur)="nameFocused = false" />
+                                <label for="floatingInput">Nombre</label>
+                                <i class="icon fa-regular fa-id-card"></i>
+                                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong>
+                                        Requerido</strong></h5>
+                                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy
+                                        corto</strong></h5>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': lastNameFocused}">
+                                <input type="text" class="form-control contact-input" id="lastName" required minlength="2"
+                                    maxlength="50" formControlName="lastName" placeholder="Apellido" (focus)="lastNameFocused = true"
+                                    (blur)="lastNameFocused = false" />
+                                <label for="floatingInput">Apellido</label>
+                                <i class="icon fa-regular fa-id-card"></i>
+                                <h5 *ngIf="validate('lastName', 'required', lastNameFocused)">El Apellido es<strong>
+                                        Requerido</strong></h5>
+                                <h5 *ngIf="validate('lastName', 'minlength', lastNameFocused)">El Apellido es<strong> muy
+                                        corto</strong></h5>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': emailFocused}">
-                        <input #emailInput type="email" class="form-control contact-input" id="email"
+                        <input type="email" class="form-control contact-input" id="email" required minlength="5" maxlength="253"
                             placeholder="Correo" formControlName="email" (focus)="emailFocused = true"
                             (blur)="emailFocused = false" />
                         <label for="floatingInput">Correo</label>
                         <i class="icon fa-solid fa-envelope"></i>
+                        <h5 *ngIf="validate('email', 'required', emailFocused)">El Email es<strong> Requerido</strong></h5>
+                        <h5 *ngIf="validate('email', 'minlength', emailFocused)">El Email es<strong> muy corto</strong></h5>
                     </div>
                     <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': passwordFocused}">
-                        <input #passwordInput type="password" class="form-control contact-input" id="password"
+                        <input #passwordInput type="password" class="form-control contact-input" id="password" required minlength="8" maxlength="256"
                             formControlName="password" placeholder="Contraseña" (focus)="passwordFocused = true"
                             (blur)="passwordFocused = false" />
                         <label for="floatingInput">Contraseña</label>
                         <i class="icon fa-solid fa-lock"></i>
+                        <h5 *ngIf="validate('password', 'required', passwordFocused)">La Contraseña es<strong> Requerida</strong></h5>
+                        <h5 *ngIf="validate('password', 'minlength', passwordFocused)">La Contraseña es<strong> muy corta</strong></h5>
                     </div>
                     <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': confirmPasswordFocused}">
-                        <input #confirmPasswordInput type="password" class="form-control contact-input"
+                        <input #confirmPasswordInput type="password" class="form-control contact-input" required minlength="8" maxlength="256"
                             formControlName="confirmPassword" id="confirmPassword" placeholder="Confirmar Contraseña"
                             (focus)="confirmPasswordFocused = true" (blur)="confirmPasswordFocused = false" />
                         <label for="floatingInput">Confirmar Contraseña</label>
                         <i class="icon fa-solid fa-lock"></i>
+                        <h5 *ngIf="validate('confirmPassword', 'required', confirmPasswordFocused)">La Contraseña es<strong> Requerida</strong></h5>
+                        <h5 *ngIf="validate('confirmPassword', 'minlength', confirmPasswordFocused)">La Contraseña es<strong> muy corta</strong></h5>
                     </div>
-                    <div class="mb-4 input-wrap form-floating"
-                        [ngClass]="{'focus': birthDateFocused }">
-                        <input #birthDateInput class="form-control contact-input" formControlName="birthDate"
-                            id="birthDate" placeholder="Fecha de Cumpleaños" (focus)="birthDateFocused = true" 
-                            (blur)="birthDateFocused = false;" [(ngModel)]="model" ngbDatepicker #end="ngbDatepicker" (click)="end.toggle()"/>
+                    <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': birthDateFocused }">
+                        <input #birthDateInput class="form-control contact-input" formControlName="birthDate" required
+                            id="birthDate" placeholder="Fecha de Nacimiento" (focus)="birthDateFocused = true"
+                            (blur)="birthDateFocused = false;" [(ngModel)]="model" ngbDatepicker #end="ngbDatepicker"
+                            (click)="end.toggle()" />
                         <i class="icon fa-solid fa-cake-candles"></i>
-                        <label for="floatingInput">Fecha de Cumpleaños</label>
+                        <label for="floatingInput">Fecha de Nacimiento</label>
+                        <h5 *ngIf="validate('birthDate', 'required', confirmPasswordFocused)">La Fecha es<strong> Requerida</strong>
+                        </h5>
                     </div>
                     <div class="mb"></div>
+                    <p class="text-center">Al hacer click en registrarse, aceptas los <a href="terms&conditions">términos y condiciones</a> de nuestro servicio.</p>
                     <div class="row">
                         <div class="col">
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary" routerLink="/authenticate">
-                                    Iniciar Sesión
-                                </button>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" formControlName="promotionalMails">
+                                <label class="form-check-label" for="flexSwitchCheckDefault"> Deseo recibir ofertas y promociones a mi mail</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="d-grid">
-                                <button type="submit" (click)="registerUser(registerForm.value)"
+                                <button type="submit" [disabled]="!registerForm.valid" (click)="registerUser(registerForm.value)"
                                     class="btn btn-success">Registrarse</button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-7 rounded-end"></div>
+            <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded-end">
+                <div class="d-flex justify-content-center align-items-center">
+                    <button type="submit" class="btn btn-primary" routerLink="/authenticate">
+                        Iniciar Sesión
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

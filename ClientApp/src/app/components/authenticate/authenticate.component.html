@@ -1,8 +1,8 @@
 <div class="bg-image">
   <div class="container w-75 bg-primary mt-5 rounded shadow">
     <div class="row align-items-stretch">
-      <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-7 rounded"></div>
-      <div class="col bg-white p-5 rounded-end">
+      <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"></div>
+      <div class="col bg-white p-4 rounded-end">
         <h2 class="fw-bold text-center py-3">Ingresa con un click!</h2>
         <form action="#" [formGroup]="loginForm">
           <div class="container w-100 my-3">
@@ -42,31 +42,38 @@
           <br />
           <div class="row text-center">
             <div class="col-12 my-2">
-              <h5>o con tu usuario</h5>
+              <h4>o con tu usuario</h4>
             </div>
           </div>
           <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': userFocused}">
             <input #userInput type="email" class="form-control contact-input" id="username" placeholder="Usuario"
-              formControlName="username" (focus)="userFocused = true" (blur)="userFocused = false" />
+              required minlength="5" maxlength="50" formControlName="username" (focus)="userFocused = true"
+              (blur)="userFocused = false" />
             <label for="floatingInput">Usuario</label>
             <i class="icon fa-regular fa-id-card"></i>
+            <h5 *ngIf="validate('username', 'required', userFocused)">El Usuario es<strong> Requerido</strong></h5>
+            <h5 *ngIf="validate('username', 'minlength', userFocused)">El Usuario es<strong> muy corto</strong></h5>
           </div>
           <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': passwordFocused}">
-            <input #passwordInput type="password" class="form-control contact-input" id="password"
-              placeholder="Contraseña" (focus)="passwordFocused = true" (blur)="passwordFocused = false"
-              formControlName="password" />
+            <input #passwordInput type="password" class="form-control contact-input" id="password" required
+              minlength="8" maxlength="256" placeholder="Contraseña" (focus)="passwordFocused = true"
+              (blur)="passwordFocused = false" formControlName="password" />
             <label for="floatingInput">Contraseña</label>
             <i class="icon fa-solid fa-lock"></i>
+            <h5 *ngIf="validate('password', 'required', passwordFocused)">La Contraseña es<strong> Requerida</strong>
+            </h5>
+            <h5 *ngIf="validate('password', 'minlength', passwordFocused)">La Contraseña es<strong> muy corta</strong>
+            </h5>
           </div>
           <div class="mb"></div>
           <div class="row mb-4">
             <div class="col">
-              <input type="checkbox" name="connected" class="form-check-input" id="connected" value="remember-me" formControlName="rememberMe"/>
-              <label for="connected" class="form-check-label"
-                >&nbsp;&nbsp;Recordarme</label>
+              <input type="checkbox" name="connected" class="form-check-input" id="connected" value="remember-me"
+                formControlName="rememberMe" />
+              <label for="connected" class="form-check-label">&nbsp;&nbsp;Recordarme</label>
             </div>
             <div class="col-7 text-end">
-              <a href="#">Olvidaste la contraseña?</a>
+              <a href="forgot-password">Olvidaste la contraseña?</a>
             </div>
           </div>
 
@@ -78,7 +85,8 @@
             </div>
             <div class="col">
               <div class="d-grid">
-                <button type="submit" (click)="loginUser(loginForm.value)" class="btn btn-primary">
+                <button type="submit" [disabled]="!loginForm.valid" (click)="loginUser(loginForm.value)"
+                  class="btn btn-primary">
                   Iniciar Sesión
                 </button>
               </div>
@@ -89,4 +97,3 @@
     </div>
   </div>
 </div>
-

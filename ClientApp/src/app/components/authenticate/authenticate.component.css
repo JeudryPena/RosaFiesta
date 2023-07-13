@@ -6,6 +6,13 @@
     overflow: auto;
 }
 
+h5 {
+    font-size: small;
+    font-weight: 400;
+    color: #f46a6a;
+    position: absolute;
+}
+
 .bg {
     background-image: url(./../../../assets/backgrounds/loginBG.jpg);
     background-position: center center;

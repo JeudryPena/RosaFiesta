@@ -212,7 +212,8 @@ export function tokenGetter() {
     UploadImagesComponent,
     DownloadComponent,
     ModalWarrantyComponent,
-    ModalSuppliersComponent
+    ModalSuppliersComponent,
+    
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence;
@@ -11,9 +12,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    partial class RosaFiestaContextModelSnapshot : ModelSnapshot
+    [Migration("20230713015239_userIdFix")]
+    partial class userIdFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1007,110 +1010,100 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 1),
-                            ConcurrencyStamp = "ed849eb2-ff03-4cd5-951a-65420cd6186f",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 23, 2, 29, 105, DateTimeKind.Unspecified).AddTicks(764), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "ce4d07ff-37bd-46ef-ab87-9def40cacf76",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 21, 52, 38, 573, DateTimeKind.Unspecified).AddTicks(7829), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
-                            NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAELypTCZC5+crxdzjMrI7X7DJNOaGMht9P0EMjngwI4/iCjodSDbD593q9nt5JCIfyw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED3Rwkvq2VEwYaMplEWrztfTSTbBPV2bU89HXEU4msentksvAgMhpMm/2xZz5JCisw==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "ae5c879b-5851-45c3-8856-d300517b8436",
-                            TwoFactorEnabled = false,
-                            UserName = "Rosalba"
+                            SecurityStamp = "67bf55c2-cdc5-4004-aa40-35d51b14894a",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 2),
-                            ConcurrencyStamp = "4dd675f7-8245-4ae2-8356-e25f54988295",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 23, 2, 29, 105, DateTimeKind.Unspecified).AddTicks(1047), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "614d9af6-b17e-4a86-97c8-71588ad0bf0b",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 21, 52, 38, 573, DateTimeKind.Unspecified).AddTicks(8474), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosanny Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
-                            NormalizedUserName = "ROSANNY",
-                            PasswordHash = "AQAAAAIAAYagAAAAELRddWTUDEVUnGx2YBSgMTGLzgjmMcH1cp1mZ5lWd0Jf0CkGYbLbJVgDNny6CWsgSA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELUzinPxdPbY/YOHfZa9GRNVBax8dtgFU3fwOMpZ0CX/eMA66OsZM9r77K85dto2mQ==",
                             PhoneNumber = "18497505945",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "341fb5d1-1569-4ae6-9736-4aaeaab12d0f",
-                            TwoFactorEnabled = false,
-                            UserName = "Rosanny"
+                            SecurityStamp = "a14776b4-8917-459e-a2e3-40544bfefe07",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 3),
-                            ConcurrencyStamp = "3db45765-809a-460e-bcc4-c33756e99cfc",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 23, 2, 29, 105, DateTimeKind.Unspecified).AddTicks(1073), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "92d3c31a-3aac-4406-ba33-3220a7bdfd65",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 21, 52, 38, 573, DateTimeKind.Unspecified).AddTicks(8523), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
-                            NormalizedUserName = "ROSALBA2",
-                            PasswordHash = "AQAAAAIAAYagAAAAENb7wB8zqm6W1DOHHu8X8EXOEUQOt3+WT7jhuzpniH03Ou2BmGstLwQo5dlpoARa2A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMChcNb0X/R/V4ZbzeSeT2TDqP3dGA+tRKyDjeM+ru5nah+3lxcR02EvL3/bvXD6vQ==",
                             PhoneNumber = "18497505946",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "6b9b048a-49e4-4a67-a6df-8287aebc852f",
-                            TwoFactorEnabled = false,
-                            UserName = "Rosalba2"
+                            SecurityStamp = "72a5b5a7-d314-4bea-9275-95471b2c47f1",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 4),
-                            ConcurrencyStamp = "ab8e80bf-bea4-4de9-8d04-670130215e5c",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 23, 2, 29, 105, DateTimeKind.Unspecified).AddTicks(1092), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "29bfdf2e-055e-44de-b975-51de06058e37",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 21, 52, 38, 573, DateTimeKind.Unspecified).AddTicks(8541), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Jendry Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
-                            NormalizedUserName = "JENDRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN4+OujqGqlG0jXyZrFCRdBXdxdhqYOr+hAKiFwmf5Es0L71OKUEcPzWgsWXa1x5HA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL60PTsPkuBQeBgvibVpeO0UoJwqtp8MHfb61+PEA6QtmA7lONkTABYR2SMkEIBaew==",
                             PhoneNumber = "18497505947",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "861a643d-0673-4d7d-8016-dd7c0ce647ce",
-                            TwoFactorEnabled = false,
-                            UserName = "Jendry"
+                            SecurityStamp = "082bead4-8b20-4ccd-9890-3cdacf1973fc",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 5),
-                            ConcurrencyStamp = "48638b46-0659-4483-9fde-63534eef20cd",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 23, 2, 29, 105, DateTimeKind.Unspecified).AddTicks(1109), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "aa3b55af-6636-4615-8335-e87c1e24011c",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 21, 52, 38, 573, DateTimeKind.Unspecified).AddTicks(8557), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosmery Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
-                            NormalizedUserName = "ROSMERY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMViY28kNrGsvMSyqbFss+pjuLbqVYm0Kai3eKfqR5jfvzae7mszIUMNdxbhEAgOQA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDpe2SgG1qLRjzTbDSEsyPaFwyGtm/nVOYQU03ySZUABsuadRJdcvXibaqO3uV8pfQ==",
                             PhoneNumber = "18497505948",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "8010705b-d8f4-4869-9d9f-f861cde79a2c",
-                            TwoFactorEnabled = false,
-                            UserName = "Rosmery"
+                            SecurityStamp = "51c35d66-33b1-42b0-9a9f-e731bbccea65",
+                            TwoFactorEnabled = false
                         });
                 });
 

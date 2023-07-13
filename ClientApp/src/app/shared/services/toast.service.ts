@@ -7,8 +7,8 @@ export class ToastService {
 
   toasts: any[] = [];
 
-  show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
-    this.toasts.push({ textOrTpl, ...options });
+  show(header: string | null, textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ header, textOrTpl, ...options });
   }
 
   remove(toast: any) {

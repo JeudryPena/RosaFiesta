@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-import { LogingDto } from '../../interfaces/Security/logingDto';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AuthenticateService } from '../../shared/services/authenticate.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginResponse } from '../../interfaces/Security/Response/loginResponse';
+import { LogingDto } from '../../interfaces/Security/logingDto';
+import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-authenticate',
   templateUrl: './authenticate.component.html',
   styleUrls: ['./authenticate.component.css']
 })
-export class AuthenticateComponent {
+export class AuthenticateComponent implements OnInit {
   userFocused = false;
   passwordFocused = false;
 
@@ -22,25 +22,35 @@ export class AuthenticateComponent {
     private authService: AuthenticateService,
     private toastService: ToastService,
     private router: Router,
-  ) { 
+    private route: ActivatedRoute
+  ) {
     this.loginForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', Validators.required),
+      username: new FormControl(''),
+      password: new FormControl(''),
       rememberMe: new FormControl(false)
     })
   }
 
+  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+    const control = this.loginForm.get(controlName);
+    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+  }
+
   ngOnInit() {
-    
+    const token = this.route.snapshot.queryParams['token'];
+    if (token) {
+      const email = this.route.snapshot.queryParams['email'];
+      this.authService.confirmEmail(token, email).subscribe({
+        next: (res: any) => {
+          this.toastService.show('Email confirmado!', 'Ya puedes proceder a identificarte', { classname: 'bg-success text-light', delay: 6000 });
+        }, error: (error: HttpErrorResponse) => {
+          this.toastService.show('Error!', `${error.error}`, { classname: 'bg-danger text-light', delay: 3000 });
+        }
+      })
+    }
   }
 
   loginUser = (loginFormValue: any) => {
-
-    if (this.loginForm.invalid) {
-      this.toastService.show('Por favor, ingrese usuario y contraseña', { classname: 'bg-danger text-light', delay: 3000 });
-      return;
-    }
-
     const login = { ...loginFormValue };
 
     const userForAuth: LogingDto = {
@@ -53,7 +63,7 @@ export class AuthenticateComponent {
       .subscribe({
         next: (res: LoginResponse) => {
           if (res.token && res.refreshToken && res.expiration) {
-            this.toastService.show('Ingreso exitoso!', { classname: 'bg-success text-light', delay: 2000 });
+            this.toastService.show(null, 'Ingreso exitoso!', { classname: 'bg-success text-light', delay: 2000 });
             localStorage.setItem("token", res.token);
             const refreshToken = res.refreshToken;
             localStorage.setItem("refreshToken", refreshToken);
@@ -64,7 +74,7 @@ export class AuthenticateComponent {
         },
         error: (error) => {
           console.log(error);
-          this.toastService.show(`${error}`, { classname: 'bg-danger text-light', delay: 3000 });
+          this.toastService.show('Error', `${error}`, { classname: 'bg-danger text-light', delay: 5000 });
         }
       })
   }

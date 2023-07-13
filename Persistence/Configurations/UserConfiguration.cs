@@ -63,6 +63,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var admin = new UserEntity
 		{
 			Id = AdminId,
+			UserName = "Rosalba",
+			NormalizedUserName = "ROSALBA",
 			Email = "user@example.com",
 			NormalizedEmail = "USER@EXAMPLE.COM",
 			EmailConfirmed = true,
@@ -79,6 +81,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var user = new UserEntity
 		{
 			Id = UserId,
+			UserName = "Rosanny",
+			NormalizedUserName = "ROSANNY",
 			Email = "rosanny@gmail.com",
 			NormalizedEmail = "ROSANNY@GMAIL.COM",
 			EmailConfirmed = true,
@@ -95,6 +99,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var manager = new UserEntity
 		{
 			Id = productManagerId,
+			UserName = "Rosalba2",
+			NormalizedUserName = "ROSALBA2",
 			Email = "rosalbapp@gmail.com",
 			NormalizedEmail = "ROSALBAPP@GMAIL.COM",
 			EmailConfirmed = true,
@@ -111,6 +117,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var sales = new UserEntity
 		{
 			Id = salesManagerId,
+			UserName = "Jendry",
+			NormalizedUserName = "JENDRY",
 			Email = "jendrypp@gmail.com",
 			NormalizedEmail = "JENDRYPP@GMAIL.COM",
 			EmailConfirmed = true,
@@ -127,6 +135,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		var marketing = new UserEntity
 		{
 			Id = marketingManagerId,
+			UserName = "Rosmery",
+			NormalizedUserName = "ROSMERY",
 			Email = "rosmerypp@gmail.com",
 			NormalizedEmail = "ROSMERYPP@GMAIL.COM",
 			EmailConfirmed = true,

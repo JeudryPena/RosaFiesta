@@ -10,7 +10,7 @@ public interface IAuthenticateService
 		CancellationToken cancellationToken = default
 	);
 	Task ResendEmail(string email);
-	Task ConfirmEmailAsync(string token, string id, CancellationToken cancellationToken);
+	Task ConfirmEmailAsync(string token, string email, CancellationToken cancellationToken);
 	Task ForgotPasswordAsync(string email);
 	Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto, string passwordToken, string id, CancellationToken cancellationToken = default);
 	Task ChangePasswordAsync(changePasswordDto changePasswordDto, CancellationToken cancellationToken = default);

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from 'rxjs';
@@ -6,6 +6,7 @@ import { config } from '../../env/config.dev';
 import { LoginResponse } from '../../interfaces/Security/Response/loginResponse';
 import { LogingDto } from '../../interfaces/Security/logingDto';
 import { RegisterDto } from '../../interfaces/Security/registerDto';
+import { CustomEncoder } from '../custom-encoder';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,22 @@ export class AuthenticateService {
     private jwtHelper: JwtHelperService
   ) { }
 
-  public register = (body: RegisterDto) => {
-    return this.http.post(`${this.apiUrl}preRegister`, body);
+  register = (body: RegisterDto) => {
+    return this.http.post(`${this.apiUrl}register`, body);
   }
 
-  public login = (body: LogingDto) => {
+  confirmEmail(token: string, email: string) {
+    let params = new HttpParams({ encoder: new CustomEncoder() })
+    params = params.append('token', token);
+    params = params.append('email', email);
+    return this.http.get(`${this.apiUrl}confirm-email`, { params });
+  }
+
+  forgotPassword(email: string) {
+    return this.http.get(`${this.apiUrl}forgot-password/${email}`);
+  }
+
+  login = (body: LogingDto) => {
     return this.http.post<LoginResponse>(`${this.apiUrl}login`, body);
   }
 

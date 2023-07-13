@@ -34,7 +34,6 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
 import { AuthGuard } from './shared/guards/auth.guard';
-
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
@@ -65,17 +64,16 @@ const routes: Routes = [
   {
     path: 'inventory', component: InventoryLayoutComponent, children: [
       { path: '', component: InventoryComponent },
-      { path: 'management-warranties', component: ManagementWarrantiesComponent},
+      { path: 'management-warranties', component: ManagementWarrantiesComponent },
       { path: 'management-categories', component: ManagementCategoriesComponent },
       { path: 'management-products', component: ManagementProductsComponent },
       { path: 'management-discounts', component: ManagementDiscountsComponent },
       { path: 'management-user', component: ManagementUsersComponent },
       { path: 'modal-product', component: ModalProductComponent },
       { path: 'modal-quote', component: ModalQuoteComponent },
-      { path: 'modal-categories', component: ManagementCategoriesComponent}
+      { path: 'modal-categories', component: ManagementCategoriesComponent }
     ]
   },
-  
   { path: 'register', component: RegisterComponent },
   { path: 'authenticate', component: AuthenticateComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },

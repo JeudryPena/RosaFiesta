@@ -47,7 +47,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 		modelBuilder.Entity<UserLogin>().ToTable("UserLogins");
 		modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims");
 		modelBuilder.Entity<UserToken>().ToTable("UserTokens");
-		modelBuilder.Entity<UserEntity>();
 
 		modelBuilder.Entity<UserEntity>()
 		.HasMany(u => u.UserRoles)

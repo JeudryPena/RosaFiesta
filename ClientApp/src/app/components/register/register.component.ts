@@ -1,13 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginResponse } from '../../interfaces/Security/Response/loginResponse';
-import { LogingDto } from '../../interfaces/Security/logingDto';
+import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { RegisterDto } from '../../interfaces/Security/registerDto';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { RegisterDto } from '../../interfaces/Security/registerDto';
-import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +17,8 @@ export class RegisterComponent {
   passwordFocused = false;
   confirmPasswordFocused = false;
   birthDateFocused = false;
+  nameFocused = false;
+  lastNameFocused = false;
   model!: NgbDateStruct;
   registerForm: any;
 
@@ -41,15 +40,12 @@ export class RegisterComponent {
     })
   }
 
-
+  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+    const control = this.registerForm.get(controlName);
+    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+  }
 
   registerUser = (registerFormValue: any) => {
-
-    if (this.registerForm.invalid) {
-      this.toastService.show('Por favor, ingrese usuario y contraseña', { classname: 'bg-danger text-light', delay: 3000 });
-      return;
-    }
-
     const register = { ...registerFormValue };
 
     const userForRegister: RegisterDto = {
@@ -66,11 +62,11 @@ export class RegisterComponent {
     this.authService.register(userForRegister)
       .subscribe({
         next: () => {
-          this.toastService.show('Registro exitoso!', { classname: 'bg-success text-light', delay: 2000 });
-          this.router.navigate(['']);
+          this.toastService.show('Registro exitoso!', 'Revisa tu email para confirmarlo', { classname: 'bg - success text - light', delay: 10000 });
+          this.router.navigate(['authenticate']);
         },
         error: (error) => {
-          this.toastService.show(`${error}`, { classname: 'bg-danger text-light', delay: 3000 });
+          this.toastService.show('Error!', `${error}`, { classname: 'bg-danger text-light', delay: 5000 });
         }
       })
   }

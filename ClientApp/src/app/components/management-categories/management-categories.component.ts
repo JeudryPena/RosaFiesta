@@ -44,14 +44,14 @@ export class ManagementCategoriesComponent {
   }
 
   Retrieve(id: number) {
-    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Consultar Categoría';
     modalRef.componentInstance.categoryId = id;
     modalRef.componentInstance.read = true;
   }
 
   Modify(id: number) {
-    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Modificar Categoría';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.categoryId = id;
@@ -87,7 +87,7 @@ export class ManagementCategoriesComponent {
   }
 
   AddCategory() {
-    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(ModalCategoryComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Añadir Categoría';
     modalRef.result.then(result => {
       if (result)

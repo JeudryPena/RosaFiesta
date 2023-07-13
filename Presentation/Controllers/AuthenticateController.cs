@@ -40,11 +40,11 @@ public class AuthenticateController : ControllerBase
 		return Ok(result);
 	}
 
-	[HttpPost("confirm-email")]
-	public async Task ConfirmEmail([FromQuery] string token, [FromQuery] string id,
+	[HttpGet("confirm-email")]
+	public async Task ConfirmEmail([FromQuery] string token, [FromQuery] string email,
 		CancellationToken cancellationToken)
 	{
-		await _serviceManager.AuthenticateService.ConfirmEmailAsync(token, id, cancellationToken);
+		await _serviceManager.AuthenticateService.ConfirmEmailAsync(token, email, cancellationToken);
 	}
 
 	[HttpGet("resendEmail")]
@@ -55,14 +55,14 @@ public class AuthenticateController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPost("forgotPassword")]
+	[HttpGet("forgot-password/{email}")]
 	public async Task<IActionResult> ForgotPassword(string email)
 	{
 		await _serviceManager.AuthenticateService.ForgotPasswordAsync(email);
 		return Ok();
 	}
 
-	[HttpPost("resetPassword")]
+	[HttpPost("reset-password")]
 	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string passwordToken, [FromQuery] string id,
 		CancellationToken cancellationToken)
 	{
@@ -70,7 +70,7 @@ public class AuthenticateController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPost("changePassword")]
+	[HttpPost("change-password")]
 	[Authorize]
 	public async Task<IActionResult> ChangePassword(changePasswordDto changePasswordDto,
 		CancellationToken cancellationToken)

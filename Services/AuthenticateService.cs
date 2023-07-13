@@ -50,10 +50,12 @@ internal sealed class AuthenticateService : IAuthenticateService
 	)
 	{
 		UserEntity user = registerDto.Adapt<UserEntity>();
-		var result = await _userManager.AddToRoleAsync(user, "Client")
+		user.FullName = registerDto.Name + " " + registerDto.LastName;
+		user.Id = Guid.NewGuid().ToString();
+		var result = await _userManager.CreateAsync(user, registerDto.Password)
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
-		result = await _userManager.CreateAsync(user, registerDto.Password)
+		result = await _userManager.AddToRoleAsync(user, "Client")
 			.ConfigureAwait(false);
 		IdentityResultMessage(result);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
@@ -63,26 +65,25 @@ internal sealed class AuthenticateService : IAuthenticateService
 	public async Task ResendEmail(string email)
 	{
 		var user = await _userManager.FindByEmailAsync(email) ?? throw new InvalidOperationException("User not found");
-
 		var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 		string codeEncoded = HttpUtility.UrlEncode(token);
 		var param = new Dictionary<string, string?>
 		{
 			{"token", codeEncoded },
-			{"id", user.Id},
+			{"email", email},
 		};
 
-		var callback = QueryHelpers.AddQueryString("http://localhost:4200/confirm-email", param);
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate", param);
 
 		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Confirm User</a>";
 
-		var message = new EmailMessage(new[] { user.Email }, "Email Confirmation token", $"Click the next button to confirm your user registration: <br/> <br/> {htmlButton}", null);
+		var message = new EmailMessage(new[] { email }, "Email Confirmation token", $"Click the next button to confirm your user registration: <br/> <br/> {htmlButton}", null);
 		await _emailSender.SendEmailAsync(message);
 	}
 
-	public async Task ConfirmEmailAsync(string token, string id, CancellationToken cancellationToken = default)
+	public async Task ConfirmEmailAsync(string token, string email, CancellationToken cancellationToken = default)
 	{
-		var user = await _userManager.FindByIdAsync(id).ConfigureAwait(false) ?? throw new UserNotFoundException(id);
+		var user = await _userManager.FindByEmailAsync(email) ?? throw new InvalidOperationException("User not found");
 
 		string codeDecoded = HttpUtility.UrlDecode(token);
 
