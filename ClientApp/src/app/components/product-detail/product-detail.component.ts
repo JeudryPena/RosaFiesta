@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-
+  colorCode = "#ff0000";
+  tuhna = '0 0 0 2px #fff, 0 0 0 4px #ff0000';
+  isActive = true;
   rating: number = 3.5;
 
   images = [

@@ -1,3 +1,38 @@
+.button {
+    display: inline-block;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.button .button-layer {
+    position: absolute;
+    height: 100%;
+    width: 300%;
+    left: -100%;
+    background-image: linear-gradient(135deg, #9708CC, #43CBFF, #9708CC, #43CBFF);
+    transition: all 0.4s ease;
+    border-radius: 25PX;
+}
+
+.button:hover .button-layer {
+    left: 0;
+}
+
+.button button {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: none;
+    outline: none;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+
 .gradients {
     position: absolute;
     width: 100%;
@@ -34,122 +69,56 @@
     z-index: -1;
 }
 
-.gradient[color="blue"] {
-    background-image: linear-gradient(45deg, #0136af, #22abfa);
-}
-
-.gradient[color="red"] {
-    background-image: linear-gradient(45deg, #d62926, #ee625f);
-}
-
-.gradient[color="green"] {
-    background-image: linear-gradient(45deg, #11998e, #1ce669);
-}
-
-.gradient[color="orange"] {
-    background-image: linear-gradient(45deg, #fc4a1a, #f7b733);
-}
-
-.gradient[color="black"] {
-    background-image: linear-gradient(45deg, #111, #666);
-}
-
-.color.active {
-    border-color: #fff;
-    box-shadow: 0 0 10px .5px rgba(0, 0, 0, 0.2);
-    transform: scale(1.1);
-}
-
-.color-container {
-    padding: 10px 0; 
-    
-}
-
-.color-container.inline {
+.color-price .color-option {
     display: flex;
     align-items: center;
 }
 
-.colors {
-    padding: 8px 1.5rem;
+.color-price {
     display: flex;
     align-items: center;
-    flex: 1;
+    justify-content: start;
 }
 
-.color {
-    width: 25px;
-    height: 25px;
+.color-price .color-option .color {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-right: 8px;
+}
+
+.color-option .circles {
+    display: flex;
+}
+
+.color-option .circles .circle {
+    height: 18px;
+    width: 18px;
+    background: #0071C7;
     border-radius: 50%;
-    margin: 0 10px;
-    border: 5px solid;
+    margin: 0 4px;
     cursor: pointer;
-    transition: .5s;
+    transition: all 0.4s ease;
 }
 
-.color[color="blue"] {
-    background-color: #2175f5;
-    border-color: #2175f5;
-}
-
-.color[color="red"] {
-    background-color: #f84848;
-    border-color: #f84848;
-}
-
-.color[color="green"] {
-    background-color: #29b864;
-    border-color: #29b864;
-}
-
-.color[color="orange"] {
-    background-color: #ff5521;
-    border-color: #ff5521;
-}
-
-.color[color="black"] {
-    background-color: #444;
-    border-color: #444;
-}
-
-.color.active {
-    border-color: #fff;
-    box-shadow: 0 0 10px .5px rgba(0, 0, 0, 0.2);
-    transform: scale(1.1);
-}
-
-.size-container {
-    padding:0 0;
-    margin-bottom: 10px;
+.color-price .price {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
-.sizes {
-    padding: 0 2.5rem;
-    display: flex;
-    align-items: center;
-    flex: 1;
+.color-price .price .price_num {
+    font-size: 25px;
+    font-weight: 600;
+    color: #707070;
 }
 
-.size {
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-    background-color: #eee;
-    margin: 0 10px;
-    text-align: center;
-    line-height: 40px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: .3s;
-}
-
-.size.active {
-    background-color: #2175f5;
-    color: #fff;
-    transition: .5s;
+.color-price .price .price_letter {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: -4px;
+    color: #707070;
 }
 
 .price-rating {
@@ -159,10 +128,15 @@
 .price-rating,
 .product-description,
 .product-detail,
-.color-container,
-.size-container
+.color-price
 {
+    padding-top: 1.2rem;
+    padding-bottom: 0.5rem;
     border-bottom: 1px solid #dadada;
+}
+
+p {
+    margin-bottom: 0;
 }
 
 img {
@@ -190,7 +164,7 @@ img {
 }
 
 .product-div {
-    margin: 1rem 0;
+    margin: 0rem 0;
     padding: 0.5rem 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -259,17 +233,14 @@ img {
     opacity: 0.9;
 }
 
-.product-price {
-    font-weight: 700;
-    font-size: 24px;
-    opacity: 0.9;
-    font-weight: 500;
-    margin: 0 !important;
-}
-
 .product-rating {
     display: flex;
     align-items: center;
+
+    span {
+        display: inline-block;
+        margin-top: -5px;
+    }
 }
 
 .product-rating span {
@@ -277,40 +248,34 @@ img {
 }
 
 .product-description {
-    font-weight: 18px;
     line-height: 1.6;
     font-weight: 300;
     opacity: 0.9;
-    margin-top: 15px;
     padding-bottom: 15px;
 }
 
 .btn-groups {
-    margin-top: 22px;
+    padding-top: 6px;
+    margin-top: 26px;
     align-content: center;
 }
 
 .btn-groups input {
-    margin-bottom: 1rem;
     border: 1.5px solid #ddd;
     border-radius: 25px;
     text-align: center;
-    padding: 0.45rem 0.8rem;
     outline: 0;
     margin-right: 0.2rem;
-    width: 100px;
+    width: 75px;
 }
 
 .btn-groups button {
-    display: inline-block;
-    font-size: 16px;
     font-family: inherit;
     text-transform: uppercase;
-    padding: 15px 16px;
+    padding: 0 16px;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
-
 }
 
 .btn-groups button .fas {
@@ -321,6 +286,7 @@ img {
     background-color: #FF9F00;
     border: 2px solid #FF9F00;
     margin-right: 8px;
+    border-radius: 25px;
 }
 
 .add-cart-btn:hover {
@@ -331,6 +297,7 @@ img {
 .buy-now-btn {
     background-color: #000;
     border: 2px solid #000;
+    border-radius: 25px;
 }
 
 .buy-now-btn:hover {
@@ -371,10 +338,10 @@ img {
         margin-left: auto;
     }
 
-    .colors {
+    .color-price {
+        max-width: 400px;
         margin-right: auto;
         margin-left: auto;
-        justify-content: center;
     }
 
     .price-rating {
@@ -388,9 +355,13 @@ img {
         max-width: 400px;
         margin-right: auto;
         margin-left: auto;
-        
     }
-    
+
+    .btn-groups {
+        max-width: 525px;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }
 
 @media screen and (max-width: 400px) {
@@ -409,12 +380,13 @@ img {
     margin-bottom: 0.5rem;
     background: #2175f5;
     color: #fff;
-    padding: 0 0.3rem;
+    padding: 0 0.2rem;
     transition: all 0.5s ease;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: 700;
     letter-spacing: 1px;
-    border-radius: 6    px;
+    border-radius: 3px;
+    margin-right: 2px;
 }
 
 .product-link:hover {
@@ -424,7 +396,6 @@ img {
 .product-detail h2 {
     text-transform: capitalize;
     color: #12263a;
-    padding-bottom: 0.6rem;
 }
 
 .product-detail p {
@@ -438,12 +409,11 @@ img {
 }
 
 .product-detail ul {
-    margin: 1rem 0;
+    margin: 0 0;
     font-size: 0.9rem;
 }
 
 .product-detail ul li {
-    margin: 0;
     list-style: none;
     background: url(../../../assets/shoes_images/checked.png) left center no-repeat;
     background-size: 18px;
@@ -460,7 +430,6 @@ img {
 .product-price {
     margin: 0rem 0 !important;
     padding-bottom: 8px !important;
-    font-size: 1rem;
 }
 
 .product-price span {
@@ -471,14 +440,17 @@ img {
 
 .last-price {
     color: #f64749;
-    padding-right: 6px;
     text-decoration: line-through;
-    font-size: small;
+    font-size: 16px;
+    font-style: italic;
+    margin-right: 1px;
 }
 
 .new-price {
     color: #256eff;
-    font-size: large;  
+    font-size: large;
+    font-weight: 500 !important;
+    display: inline-block;
 }
 
 .social-links {
@@ -524,7 +496,7 @@ img {
     text-align: center;
     font-size: 1.3rem;
     text-decoration: none;
-    margin: 6px 6px;
+    margin: 10px 10px;
     transition: .5s;
 }
 
@@ -535,32 +507,3 @@ img {
 .share i {
     line-height: 50px;
 }
-
-.size {
-    display: flex;
-    margin: 20px 0;
-    justify-content: center !important;
-}
-
-.size p {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 0px !important;
-}
-
-.psize {
-    width: 60px;
-    height: 30px;
-    border: 1px solid #ff5e00;
-    color: #000;
-    text-align: center;
-    margin: 0 10px;
-    cursor: pointer;
-}
-
-.psize.active {
-    border-width: 1.5px;
-    color: #ff5e00;
-    font-weight: 500;
-}
-

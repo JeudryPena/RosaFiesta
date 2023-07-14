@@ -8,6 +8,7 @@ import { SidenavService } from '../../shared/services/side-nav.service';
 import { dashboardData } from './dashboard-data';
 import { inventoryData } from './inventory-data';
 import { Layout } from './layout';
+import { encrypt } from '../../shared/util/util-encrypt';
 
 interface SidenavToggle {
   screenWidth: number;
@@ -90,7 +91,8 @@ export class SidenavComponent implements OnDestroy {
 
   Navigate(id: any): void {
     if (this.layout === Layout.Normal) {
-
+      const categoryId = encrypt(id.toString());
+      this.router.navigate([`/products/`], { queryParams: { categoryId } });
     } else if (this.layout === Layout.Dashboard) {
       this.router.navigate([`dashboard/${id}`]);
     } else if (this.layout === Layout.Inventory) {

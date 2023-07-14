@@ -2,6 +2,9 @@
     color: red;
 }
 
+.card {
+    margin: 0;
+}
 
 .dropdown {
     position: relative;
@@ -39,7 +42,7 @@
 }
 
 .table .table-row .table-cell:nth-child(2) {
-    width: 250px;
+    width: 50px;
 }
 
 .table .table-row .table-cell:nth-child(3) {
@@ -51,11 +54,11 @@
 }
 
 .table .table-row .table-cell:nth-child(5) {
-    width: 130.59px;
+    width: 30.59px;
 }
 
 .table .table-row .table-cell:nth-child(6) {
-    width: 70.28px;
+    width: 30.28px;
 }
 
 .btn-dropdown {
