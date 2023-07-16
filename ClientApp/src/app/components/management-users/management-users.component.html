@@ -1,11 +1,11 @@
-<!-- <div class="row">
-    <div class="col">
+<div class="row">
+    <div class="col"> 
         <div class="card text-start">
             <div class="card-body p-3">
                 <div class="row">
-                    <caption class="col">Descuentos&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
-                            ngbAutofocus (click)="AddDiscount()">
-                            Añadir Descuento
+                    <caption class="col">Usuario&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-add"
+                            ngbAutofocus (click)="Add()">
+                            Añadir Usuario
                         </button></caption>
                     <span class="col col-sm-auto col-form-label" *ngIf="service.loading$ | async">
                         <i class="fas fa-spinner fa-spin"
@@ -21,22 +21,13 @@
                     <table class="table table-striped table-hover align-middle ">
                         <thead class="tables">
                             <tr class="table-row">
-                                <th scope="col" class="table-cell" sortable="name" (sort)="onSort($event)">Nombre</th>
-                                <th scope="col" class="table-cell">Descripción</th>
-                                <th scope="col" class="table-cell">Valor</th>
-                                <th scope="col" class="table-cell">Máx.</th>
-                                <th scope="col" class="table-cell">
-                                    <div class="input-group">
-                                        <span class="badge text-bg-success">
-                                            Inicio
-                                        </span>
-                                        <span class="badge text-bg-danger">
-                                            Fin
-                                        </span>
-                                    </div>
-                                </th>
-                                <th scope="col" class="table-cell">
-                                    Productos</th>
+                                <th scope="col" class="table-cell">Usuario</th>
+                                <th scope="col" class="table-cell">Nombre</th>
+                                <th scope="col" class="table-cell">Email</th>
+                                <th scope="col" class="table-cell">Nacimiento</th>
+                                <th scope="col" class="table-cell">Confirmado</th>
+                                <th scope="col" class="table-cell">Bloqueo</th>
+                                <th scope="col" class="table-cell">Roles</th>
                                 <th scope="col" class="table-cell">
                                     Creación</th>
                                 <th scope="col" class="table-cell">
@@ -46,41 +37,36 @@
                         </thead>
 
                         <tbody class="rows">
-                            <tr class="scroll" *ngFor="let item of discounts$ | async ">
-                                <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
+                            <tr class="scroll" *ngFor="let item of users$ | async ">
+                                <td><ngb-highlight [result]="item.userName" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
-                                <td><ngb-highlight [result]="item.description" placement="top"
-                                        ngbTooltip="{{item.description}}" [term]="service.searchTerm"></ngb-highlight>
+                                <td><ngb-highlight [result]="item.fullName" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
-                                    <ngb-highlight [result]="item.value | number"
+                                    <ngb-highlight [result]="item.email"
                                         [term]="service.searchTerm"></ngb-highlight>
-                                    <span *ngIf="item.type == 1">%</span>
                                 </td>
-                                <td><ngb-highlight [result]="item.maxTimesApply | number"
+                                <td><ngb-highlight [result]="item.birthDate | date:'dd/MM/yyyy'"
                                         [term]="service.searchTerm"></ngb-highlight></td>
-                                <td><ngb-highlight class="badge text-bg-success"
-                                        [result]="item.start | date: 'dd/MM/yyyy hh:mm:ss' "
-                                        [term]="service.searchTerm"></ngb-highlight>
-                                    <br>
-                                    <ngb-highlight class="badge text-bg-danger"
-                                        [result]="item.end | date: 'dd/MM/yyyy hh:mm:ss'"
-                                        [term]="service.searchTerm"></ngb-highlight>
-                                </td>
-                                <td>
-                                    <div *ngFor="let productDiscount of item.productsDiscounts"
+                                        <td>
+                                            <ngb-highlight [result]="'{{item.emailConfirmed}}'"
+                                                [term]="service.searchTerm"></ngb-highlight>
+                                        </td>
+                                        <td>
+                                            <ngb-highlight [result]="item.lockoutEnd"
+                                                [term]="service.searchTerm"></ngb-highlight>
+                                        </td>
+                                        <td>
+                                    <div *ngFor="let userRoles of item.userRoles"
                                         class="d-flex justify-content-between">
                                         <div ngbDropdown container="body">
                                             <span class="badge text-bg-primary" ngbDropdownToggle>
-                                                {{productDiscount.title}}
+                                                {{userRoles.role.name}}
                                             </span>
                                             <div ngbDropdownMenu>
                                                 <button ngbDropdownItem
-                                                    (click)="DeleteProducts(productDiscount.discountId, productDiscount.optionId)"><i
+                                                    (click)="DeleteRoles(item.id, userRoles.role.id)"><i
                                                         class="fa-solid fa-trash pe-2"></i>Eliminar</button>
-                                                <button ngbDropdownItem
-                                                    (click)="DeleteProducts(productDiscount.discountId, null)"><i
-                                                        class="fa-solid fa-trash pe-2"></i>Eliminar todos</button>
                                             </div>
                                         </div>
                                     </div>
@@ -133,4 +119,4 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>

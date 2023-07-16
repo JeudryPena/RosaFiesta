@@ -3,10 +3,11 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
-import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
+import { ManagementUsersResponse } from '../../interfaces/Security/Response/managementUsersResponse';
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
-import { DiscountsService } from '../../shared/services/discounts.service';
+import { UsersService } from '../../shared/services/users.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
+import { ModalUserComponent } from '../modal-user/modal-user.component';
 
 @Component({
   selector: 'app-management-users',
@@ -14,17 +15,17 @@ import { ModalDiscountComponent } from '../modal-discount/modal-discount.compone
   styleUrls: ['./management-users.component.scss']
 })
 export class ManagementUsersComponent {
-  discounts$: Observable<ManagementDiscountsResponse[]> = new Observable<ManagementDiscountsResponse[]>();
+  users$: Observable<ManagementUsersResponse[]> = new Observable<ManagementUsersResponse[]>();
   total$: Observable<number> = new Observable<number>();
   collectionSize = 0;
-  pageSize = 5;
+  pageSize = 5; 
   page = 1;
   maxSize = 10;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
-    public service: DiscountsService,
+    public service: UsersService,
     public modalService: NgbModal,
     config: NgbModalConfig
   ) {
@@ -35,20 +36,20 @@ export class ManagementUsersComponent {
 
   retrieveData() {
     this.service.RetrieveData();
-    this.discounts$ = this.service.discounts$;
+    this.users$ = this.service.users$;
     this.total$ = this.service.total$;
   }
 
   Retrieve(id: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Consultar Descuento';
+    const modalRef = this.modalService.open(ModalUserComponent, { size: 'lg', scrollable: true });
+    modalRef.componentInstance.title = 'Consultar usuario';
     modalRef.componentInstance.code = id;
     modalRef.componentInstance.read = true;
   }
 
   Modify(id: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Modificar Descuento';
+    const modalRef = this.modalService.open(ModalUserComponent, { size: 'lg', scrollable: true });
+    modalRef.componentInstance.title = 'Modificar usuario';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.code = id;
     modalRef.result.then((result) => {
@@ -59,14 +60,14 @@ export class ManagementUsersComponent {
 
   Delete(id: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el descuento?';
+    modalRef.componentInstance.title = '¿Desea eliminar el usuario?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscount(id).subscribe({
+        this.service.Delete(id).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento eliminado!';
+            modalRef.componentInstance.title = 'Usuario eliminado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -82,17 +83,17 @@ export class ManagementUsersComponent {
     });
   }
 
-  DeleteProducts(id: string, optionId: string | null) {
-    console.log(id, optionId)
+  DeleteRoles(id: string, roleId: string) {
+    console.log(id, roleId)
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el descuento del producto?';
+    modalRef.componentInstance.title = '¿Desea eliminar el rol del usuario?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {
-        this.service.DeleteDiscountProducts(id, optionId).subscribe({
+        this.service.DeleteRoles(id, roleId).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Descuento de producto eliminado!';
+            modalRef.componentInstance.title = 'Rol del usuario eliminado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -108,9 +109,9 @@ export class ManagementUsersComponent {
     });
   }
 
-  AddDiscount() {
+  Add() {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Añadir descuento';
+    modalRef.componentInstance.title = 'Añadir usuario';
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();

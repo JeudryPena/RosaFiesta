@@ -6,10 +6,8 @@ export interface ManagementUsersResponse extends ByBaseResponse {
     userName: string;
     fullName: string;
     email: string;
-    age: number;
     birthDate: Date;
     emailConfirmed: boolean;
-    lockoutEnabled: boolean;
     lockoutEnd: string | null;
     userRoles: UserRoleResponse[];
 }

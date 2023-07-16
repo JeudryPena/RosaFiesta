@@ -13,7 +13,7 @@ import { ModalDiscountComponent } from '../modal-discount/modal-discount.compone
   templateUrl: './management-suppliers.component.html',
   styleUrls: ['./management-suppliers.component.scss']
 })
-export class ManagementSuppliersComponent {
+export class ManagementSuppliersComponent { 
   suppliers$: Observable<SupplierResponse[]> = new Observable<SupplierResponse[]>();
   total$: Observable<number> = new Observable<number>();
   collectionSize = 0;
@@ -41,14 +41,14 @@ export class ManagementSuppliersComponent {
 
   Retrieve(code: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Consultar Descuento';
+    modalRef.componentInstance.title = 'Consultar descuento';
     modalRef.componentInstance.code = code;
     modalRef.componentInstance.read = true;
   }
 
   Modify(code: string) {
     const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Modificar Suplidor';
+    modalRef.componentInstance.title = 'Modificar suplidor';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.code = code;
     modalRef.result.then((result) => {
@@ -59,7 +59,7 @@ export class ManagementSuppliersComponent {
 
   Delete(id: string) {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea eliminar el Suplidor?';
+    modalRef.componentInstance.title = '¿Desea eliminar el suplidor?';
     modalRef.componentInstance.status = Status.Pending;
     modalRef.result.then((result) => {
       if (result) {

@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.prod";
 import { ManagementUsersResponse } from '../../interfaces/Security/Response/managementUsersResponse';
 import { UsersListResponse } from '../../interfaces/Security/Response/usersListResponse';
@@ -105,7 +105,7 @@ export class UsersService {
     return this.http.delete(`${this.apiUrl}${id}/roles/${roleId}`);
   }
 
-  get suppliers$() {
+  get users$() {
     return this._users$.asObservable();
   }
 
