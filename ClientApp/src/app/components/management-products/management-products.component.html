@@ -19,7 +19,7 @@
                 <thead class="tables">
                     <tr class="table-row">
                         <th scope="col" class="table-cell">Código</th>
-                        <th scope="col" class="table-cell">Es Servicio</th>
+                        <th scope="col" class="table-cell">Servicio</th>
                         <th scope="col" class="table-cell">Opciones</th>
                         <th scope="col" class="table-cell">Categoría</th>
                         <th scope="col" class="table-cell">Creación</th>
@@ -32,7 +32,14 @@
                     <tr class="scroll" *ngFor="let item of products$ | async">
                         <td><ngb-highlight [result]="item.code" [term]="service.searchTerm"></ngb-highlight>
                         </td>
-                        <td><ngb-highlight [result]="'{{item.isService}}'" [term]="service.searchTerm"></ngb-highlight>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <ng-container *ngIf="item.isService; else noService"><span
+                                        class="badge bg-success">{{'Si'}}</span></ng-container>
+                                <ng-template #noService><span
+                                        class="badge bg-light text-dark">{{'No'}}</span></ng-template>
+                            </div>
+                        </td>
                         <td>
                             <div *ngFor="let option of item.options" class="d-flex justify-content-between">
                                 <div ngbDropdown container="body">

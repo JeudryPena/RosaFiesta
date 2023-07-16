@@ -33,7 +33,7 @@
                     <input #productsInput type="search" formControlName="products" class="input"
                         (focus)="productsFocused = true;" (blur)="productsFocused = false" id="typeahead-focus"
                         [adaptivePosition]="true" [(ngModel)]="selected" [typeaheadSingleWords]="true"
-                        [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="codef"
+                        [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="option.name"
                         (typeaheadOnSelect)="onSelect($event)" [typeaheadMinLength]="0" [typeaheadWaitMs]="100"
                         [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
                 </div>
@@ -45,7 +45,7 @@
                     <li>
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrapper">{{i+1}}.
-                                {{product.name}}</button>
+                                {{product.option.name}}</button>
                             <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
                                 (click)="removeProduct(i)">
                                 <i class="fas fa-trash"></i>

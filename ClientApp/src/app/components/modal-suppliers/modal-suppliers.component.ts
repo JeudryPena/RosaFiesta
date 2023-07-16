@@ -47,7 +47,7 @@ export class ModalSuppliersComponent implements OnInit {
   onSelect(event: TypeaheadMatch): void {
     this.products.push({
       id: event.item.id,
-      name: event.item.name
+      name: event.item.option.title,
     });
     this.selected = '';
   }

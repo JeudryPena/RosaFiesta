@@ -165,11 +165,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.MultipleOptionImagesEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -210,9 +208,8 @@ namespace Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ImageId")
-                        .IsRequired()
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1020,8 +1017,8 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 1),
-                            ConcurrencyStamp = "3d3a3f29-0400-413e-939a-2777fcf8d7de",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 10, 38, 41, 720, DateTimeKind.Unspecified).AddTicks(1527), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "444bbd2b-362b-4245-b892-63478826ec94",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6422), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
@@ -1029,11 +1026,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJrxFwt47Iq0OlzveMt4iEbu5SZCL4N64sY5G8/3Zg1WdAieHmMXdvPYjHvgoFQhUg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMIHgCq7Kc2qr4mtYdFXmXsORv/D4PlBcXM3XIW64jGhqe75UME6Fv/qnV4S053p4Q==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "0618dc22-9d58-4b7f-9ca8-fe4d7955f540",
+                            SecurityStamp = "9c8c1798-86eb-4078-b28e-80c224906b12",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         },
@@ -1042,8 +1039,8 @@ namespace Persistence.Migrations
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 2),
-                            ConcurrencyStamp = "612c0251-c14f-4525-a85b-7f58dece4056",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 10, 38, 41, 720, DateTimeKind.Unspecified).AddTicks(1735), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "70d64b2a-9294-40a9-a7d3-a4b11a8b5612",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6654), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosanny Pena",
@@ -1051,11 +1048,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
                             NormalizedUserName = "ROSANNY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIsJy0NlwqIpzqkI6u5/7Yrr0aivS8LvRK+RLtSouryOio+twxjIWYdpExUJRkFNdg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAtL5bPRZmGG4T7cmevL+ehDLxLUXd/sYpb04KbzUvJmTU1zy2BU94dwg5UmYOLaRA==",
                             PhoneNumber = "18497505945",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "d30daacc-aa5f-4539-815c-c2c263d36389",
+                            SecurityStamp = "5d28d05b-1c0f-4881-9904-6415d7bd0c00",
                             TwoFactorEnabled = false,
                             UserName = "Rosanny"
                         },
@@ -1064,8 +1061,8 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 3),
-                            ConcurrencyStamp = "c8a28f2a-f51c-441f-b9af-83991a532b60",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 10, 38, 41, 720, DateTimeKind.Unspecified).AddTicks(1760), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "b0fe1397-457f-49f2-bbc5-b00269230b87",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6682), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
@@ -1073,11 +1070,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
                             NormalizedUserName = "ROSALBA2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO2aUv74qEYkZRh0ztizEbYLBxvZNH4y1yF6cjqG7/EMTmA2M+W7wIyWJrHHay7ZtA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEALP5Ucedhcxc/B1hNGZepAg1/TRrKTcww5mqG4R9DW5z8dst60Q8GejIhdxwB6+Og==",
                             PhoneNumber = "18497505946",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "11a07127-fbd4-4e3a-a2d3-fa2d33d415ea",
+                            SecurityStamp = "cb457535-0314-46ae-ba34-8bc92f75dd70",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba2"
                         },
@@ -1086,8 +1083,8 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 4),
-                            ConcurrencyStamp = "2e9b0c95-98f9-4c57-9326-de2d0ff8cf63",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 10, 38, 41, 720, DateTimeKind.Unspecified).AddTicks(1770), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "c51b83cd-6b8c-46cf-8b27-15570a11f848",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6708), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Jendry Pena",
@@ -1095,11 +1092,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
                             NormalizedUserName = "JENDRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJHH7gDyUrfzeq3JFYwSboT79IzhykvGhQGfg/YNBOuMb/TcRCHUV9nxQuBMv6bQmg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA3fdeSQbHUQ9MLTff6Vb7rGpsfGjj4ZDvVt6FaxS+Ua0OkXz99EC7izo7INdV7/CQ==",
                             PhoneNumber = "18497505947",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "6f36f502-d237-4f37-846b-5ba6e045547e",
+                            SecurityStamp = "e40ae66e-cf6a-4fac-8098-d4d438ccb5d8",
                             TwoFactorEnabled = false,
                             UserName = "Jendry"
                         },
@@ -1108,8 +1105,8 @@ namespace Persistence.Migrations
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 5),
-                            ConcurrencyStamp = "593ccabd-ab2f-4ab5-95f4-ba7db1ffe773",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 10, 38, 41, 720, DateTimeKind.Unspecified).AddTicks(1779), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "e99a8e53-dce0-442d-b92d-104f01ecf49e",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6722), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosmery Pena",
@@ -1117,11 +1114,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY",
-                            PasswordHash = "AQAAAAIAAYagAAAAENdZGZBMFmdzXIc5xjhTRlCBj/wvNo2FWDoCl10tQJUDqPzNOHxbDf3RyPJFpu2XNA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK59szONoFVXgyV6+zFuPGfmaKjzWchNLiS/wS1e+7ymdZWtz7Po0jJCCU1dgKAwKQ==",
                             PhoneNumber = "18497505948",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "acd668b6-9119-4747-98dc-f1ce74f0be0f",
+                            SecurityStamp = "6e5eb7e9-da5c-47db-a917-468accfe6ef4",
                             TwoFactorEnabled = false,
                             UserName = "Rosmery"
                         });
@@ -1238,9 +1235,7 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Product.MultipleOptionImagesEntity", "Image")
                         .WithOne()
-                        .HasForeignKey("Domain.Entities.Product.OptionEntity", "ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Domain.Entities.Product.OptionEntity", "ImageId");
 
                     b.HasOne("Domain.Entities.Product.ProductEntity", null)
                         .WithMany("Options")

@@ -11,6 +11,7 @@ export class UploadImagesComponent implements OnInit {
   @Input() public uploadFiles: File[] = [];
   @Input() public multiple: boolean = false;
   @Input() public read: boolean = false;
+  @Input() imageFirst!: number | null;
 
   constructor(
 
@@ -24,8 +25,11 @@ export class UploadImagesComponent implements OnInit {
     }
   }
 
+  makeDefault(index: number) {
+    this.imageFirst = index;
+  }
+
   preview(f: File) {
-    console.log(f);
     const reader = new FileReader();
     reader.readAsDataURL(f);
     reader.onload = () => {
@@ -43,6 +47,8 @@ export class UploadImagesComponent implements OnInit {
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file((file: File) => {
+          if (this.uploadFiles.length == 0)
+            this.imageFirst = 0;
           this.uploadFiles.push(file);
           this.preview(file);
         });

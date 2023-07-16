@@ -62,7 +62,7 @@
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrapper2"
                                 (click)="selectOption(i)">{{i+1}}. {{option.title}}</button>
-                            <button [ngClass]="{'focus': option == options.indexOf(i)}" [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap first"
+                            <button [ngClass]="{'focus': optionFirst === i}" [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap first"
                                 (click)="SelectFirst(i)">
                                 <i class="fa-solid fa-1"></i>
                             </button>
@@ -139,7 +139,7 @@
                 </h5>
             </div>
             <div class="input-container">
-                <app-upload-images [read]="read" [pictures]="pictures" [uploadFiles]="uploadFiles"
+                <app-upload-images [read]="read" [pictures]="pictures" [uploadFiles]="uploadFiles" [imageFirst]="imageFirst"
                     [multiple]="true"></app-upload-images>
             </div>
             <div class="input-container"

@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    [Migration("20230713001804_initial")]
+    [Migration("20230716210152_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -166,13 +166,11 @@ namespace Persistence.Migrations
                     b.ToTable("Discounts", "RosaFiesta");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Product.MultipleOptionImages", b =>
+            modelBuilder.Entity("Domain.Entities.Product.MultipleOptionImagesEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -209,11 +207,14 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset?>("EndedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsMale")
+                    b.Property<int>("GenderFor")
                         .HasMaxLength(20)
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<double>("Price")
@@ -232,6 +233,9 @@ namespace Persistence.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId")
+                        .IsUnique();
 
                     b.HasIndex("ProductId");
 
@@ -264,6 +268,9 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsService")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("OptionId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("SupplierId")
                         .HasColumnType("uuid");
 
@@ -281,6 +288,9 @@ namespace Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("OptionId")
                         .IsUnique();
 
                     b.HasIndex("SupplierId");
@@ -1010,100 +1020,110 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 1),
-                            ConcurrencyStamp = "7c27e0c1-6a88-44ac-aa27-e6bbae6e7dc0",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 20, 18, 4, 168, DateTimeKind.Unspecified).AddTicks(5554), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "444bbd2b-362b-4245-b892-63478826ec94",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6422), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ/6usYs+/ijoH/IWU2r93P7cnu+6eFHM/zLLwkDYZC8yhw7ooYFDpmuoR4sdTBQqw==",
+                            NormalizedUserName = "ROSALBA",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMIHgCq7Kc2qr4mtYdFXmXsORv/D4PlBcXM3XIW64jGhqe75UME6Fv/qnV4S053p4Q==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "b326ee9b-3546-4f38-9213-ca55a6262a67",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "9c8c1798-86eb-4078-b28e-80c224906b12",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosalba"
                         },
                         new
                         {
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 2),
-                            ConcurrencyStamp = "5fd9a6b0-c50c-4d42-a12d-4408706f491e",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 20, 18, 4, 168, DateTimeKind.Unspecified).AddTicks(5943), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "70d64b2a-9294-40a9-a7d3-a4b11a8b5612",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6654), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosanny Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN7MtChicLFkzBtdFzeEWgLzvxgER9yXrf0dLhF3eaW5EoDjK0RmnCv/IVuJ0azBXQ==",
+                            NormalizedUserName = "ROSANNY",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAtL5bPRZmGG4T7cmevL+ehDLxLUXd/sYpb04KbzUvJmTU1zy2BU94dwg5UmYOLaRA==",
                             PhoneNumber = "18497505945",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "bfecf4b9-d73b-4587-8bd6-ca124a2294f6",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "5d28d05b-1c0f-4881-9904-6415d7bd0c00",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosanny"
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 3),
-                            ConcurrencyStamp = "f790da78-860e-4431-b59e-e05a2507c963",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 20, 18, 4, 168, DateTimeKind.Unspecified).AddTicks(5968), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "b0fe1397-457f-49f2-bbc5-b00269230b87",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6682), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGs+LthkLw70S5hNxckq+RSa1bZQBiKs3ByuMVcCK6yuksh2T4CGnItVMHiUUzjrWw==",
+                            NormalizedUserName = "ROSALBA2",
+                            PasswordHash = "AQAAAAIAAYagAAAAEALP5Ucedhcxc/B1hNGZepAg1/TRrKTcww5mqG4R9DW5z8dst60Q8GejIhdxwB6+Og==",
                             PhoneNumber = "18497505946",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "65757c69-26b0-4836-a358-53e395c5d08d",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "cb457535-0314-46ae-ba34-8bc92f75dd70",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosalba2"
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 4),
-                            ConcurrencyStamp = "282a6def-9a20-46e9-b9b3-9f2276806f92",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 20, 18, 4, 168, DateTimeKind.Unspecified).AddTicks(6879), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "c51b83cd-6b8c-46cf-8b27-15570a11f848",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6708), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Jendry Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPymBJ1HPBgMqtvOH5UGTNyJ0UiztxZBNtf6JeBdGdXM0Z0LG3jLJ5FUXJVX5Lk/IA==",
+                            NormalizedUserName = "JENDRY",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA3fdeSQbHUQ9MLTff6Vb7rGpsfGjj4ZDvVt6FaxS+Ua0OkXz99EC7izo7INdV7/CQ==",
                             PhoneNumber = "18497505947",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "f4a44f38-3348-4275-bf0a-5f016bdb322d",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "e40ae66e-cf6a-4fac-8098-d4d438ccb5d8",
+                            TwoFactorEnabled = false,
+                            UserName = "Jendry"
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 5),
-                            ConcurrencyStamp = "8cb988e7-ef5c-4388-a089-36510b35e225",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 12, 20, 18, 4, 168, DateTimeKind.Unspecified).AddTicks(6902), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "e99a8e53-dce0-442d-b92d-104f01ecf49e",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6722), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosmery Pena",
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBoEwaCmUWlHtE4XZVzP1jmCE/0kwMzxNlyndNk23/FEpQxveO+BLI9+aCCj1Voa/Q==",
+                            NormalizedUserName = "ROSMERY",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK59szONoFVXgyV6+zFuPGfmaKjzWchNLiS/wS1e+7ymdZWtz7Po0jJCCU1dgKAwKQ==",
                             PhoneNumber = "18497505948",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "661e24a0-33e8-4c1b-bfc4-40ab6f0b2569",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "6e5eb7e9-da5c-47db-a917-468accfe6ef4",
+                            TwoFactorEnabled = false,
+                            UserName = "Rosmery"
                         });
                 });
 
@@ -1205,7 +1225,7 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Product.MultipleOptionImages", b =>
+            modelBuilder.Entity("Domain.Entities.Product.MultipleOptionImagesEntity", b =>
                 {
                     b.HasOne("Domain.Entities.Product.OptionEntity", null)
                         .WithMany("Images")
@@ -1216,11 +1236,17 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product.OptionEntity", b =>
                 {
+                    b.HasOne("Domain.Entities.Product.MultipleOptionImagesEntity", "Image")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Product.OptionEntity", "ImageId");
+
                     b.HasOne("Domain.Entities.Product.ProductEntity", null)
                         .WithMany("Options")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.ProductEntity", b =>
@@ -1231,6 +1257,10 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Product.OptionEntity", "Option")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Product.ProductEntity", "OptionId");
+
                     b.HasOne("Domain.Entities.Product.SupplierEntity", "Supplier")
                         .WithMany("Products")
                         .HasForeignKey("SupplierId");
@@ -1240,6 +1270,8 @@ namespace Persistence.Migrations
                         .HasForeignKey("WarrantyId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Option");
 
                     b.Navigation("Supplier");
 

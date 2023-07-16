@@ -2,7 +2,7 @@
 
 public class MultipleOptionImagesEntity
 {
-	public int Id { get; set; }
+	public Guid Id { get; set; } = Guid.NewGuid();
 	public string Image { get; set; }
 	public Guid OptionId { get; set; }
 }

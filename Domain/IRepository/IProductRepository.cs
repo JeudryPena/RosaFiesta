@@ -21,4 +21,7 @@ public interface IProductRepository
 	Task<string> GetOptionTitle(Guid optionId, CancellationToken cancellationToken);
 	Task<List<string>> GetOptionImages(Guid optionId, CancellationToken cancellationToken);
 	Task<IEnumerable<ProductEntity>> GetProductsList(CancellationToken cancellationToken = default);
+	void InsertOptions(ICollection<OptionEntity> options);
+	void InsertOptionImages(IList<MultipleOptionImagesEntity> images);
+	Task<ProductEntity> GetProductWithOption(Guid id, CancellationToken cancellationToken);
 }

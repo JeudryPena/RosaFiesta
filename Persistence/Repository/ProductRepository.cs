@@ -97,7 +97,7 @@ public class ProductRepository : IProductRepository
 
 	public async Task<IEnumerable<ProductEntity>> GetProductsList(CancellationToken cancellationToken = default)
 	{
-		IEnumerable<ProductEntity> products = await _dbContext.Products.ToListAsync(cancellationToken);
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Option).ToListAsync(cancellationToken);
 		return products;
 	}
 
@@ -107,5 +107,23 @@ public class ProductRepository : IProductRepository
 		if (option == null)
 			throw new ArgumentNullException(nameof(option));
 		return option;
+	}
+
+	public void InsertOptions(ICollection<OptionEntity> options)
+	{
+		_dbContext.Options.AddRange(options);
+	}
+
+	public void InsertOptionImages(IList<MultipleOptionImagesEntity> images)
+	{
+		_dbContext.OptionImages.AddRange(images);
+	}
+
+	public async Task<ProductEntity> GetProductWithOption(Guid id, CancellationToken cancellationToken)
+	{
+		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+		if (product == null)
+			throw new ArgumentNullException(nameof(product));
+		return product;
 	}
 }

@@ -50,7 +50,9 @@ export class ModalProductComponent implements OnInit {
   productForm: any;
   options: any[] = [];
   optionForm: any;
-  optionFirst: number = 0;
+  optionFirst!: number;
+  imageFirst!: number | null;
+
   categoryForm!: CategoriesListResponse;
   warrantyForm!: WarrantiesListResponse | null;
   supplierForm!: SuppliersListResponse | null;
@@ -88,6 +90,8 @@ export class ModalProductComponent implements OnInit {
   }
 
   SelectFirst(index: number) {
+    console.log(this.optionFirst)
+    console.log(index)
     this.optionFirst = index;
   }
 
@@ -211,7 +215,6 @@ export class ModalProductComponent implements OnInit {
       price: new FormControl(0),
       color: new FormControl(''),
       genderFor: new FormControl(0),
-      imageId: new FormControl(''),
       condition: new FormControl(0),
       images: new FormControl(''),
       quantityAvailable: new FormControl(0),
@@ -233,9 +236,10 @@ export class ModalProductComponent implements OnInit {
       genderFor: option.genderFor,
       condition: option.condition,
       images: option.images,
-      imageId: option.imageId,
+      imageIndex: this.imageFirst,
       quantityAvailable: option.quantityAvailable
     }
+    this.imageFirst = null;
     if (this.options.length == 0){
       this.optionFirst = 0;
     } 
@@ -257,11 +261,12 @@ export class ModalProductComponent implements OnInit {
       genderFor: option.genderFor,
       condition: option.condition,
       images: option.images,
-      imageId: option.imageId,
+      imageIndex: this.imageFirst,
       quantityAvailable: option.quantityAvailable
     }
     this.uploadFiles = [];
     this.pictures = [];
+    this.imageFirst = null;
     this.options[option.index] = optionDto;
     this.updateOption = false;
     this.optionForm = null;
@@ -283,6 +288,7 @@ export class ModalProductComponent implements OnInit {
       imageId: new FormControl(this.options[index].imageId),
       quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
+    this.imageFirst = this.options[index].imageIndex; 
     if (this.update == true || this.read == true) {
       this.ReadImages(this.options[index].images);
     }
@@ -321,6 +327,7 @@ export class ModalProductComponent implements OnInit {
     this.uploadFiles = [];
     this.pictures = [];
     this.optionForm = null;
+    this.imageFirst = null;
   }
 
   removeOption(index: number) {
@@ -339,7 +346,7 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const product = { ...productFormValue };
-        let uploadsCompleted = 0;
+        let uploadsCompleted = 0; 
         if (this.options.length !== 0) {
           this.options.forEach(option => {
             const files = option.images.filter((image: any) => image instanceof File);
@@ -370,9 +377,9 @@ export class ModalProductComponent implements OnInit {
       code: product.code,
       isService: product.isService,
       optionIndex: this.optionFirst,
-      categoryId: product.category.id,
-      warrantyId: product.warranty.id,
-      supplierId: product.supplier.id,
+      categoryId: this.categoryForm.id,
+      warrantyId: this.warrantyForm?.id || null,
+      supplierId: this.supplierForm?.id || null,
       options: this.options
     }
     this.service.UpdateProduct(this.productId, productDto).subscribe({
@@ -400,7 +407,6 @@ export class ModalProductComponent implements OnInit {
       if (result) {
         const product = { ...productFormValue };
         let uploadsCompleted = 0;
-        console.log(this.options)
         if (this.options.length !== 0) {
           this.options.forEach(async option => {
             const files = option.images.filter((image: any) => image instanceof File);
@@ -428,7 +434,6 @@ export class ModalProductComponent implements OnInit {
   }
 
   OnAddProduct(product: any) {
-    console.log(this.options); 
     const productDto: ProductDto = {
       code: product.code,
       isService: product.isService,
@@ -438,7 +443,6 @@ export class ModalProductComponent implements OnInit {
       supplierId: this.supplierForm?.id || null,
       options: this.options,
     }
-    console.log(productDto);
     this.service.AddProduct(productDto).subscribe({
       next: () => {
         const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });

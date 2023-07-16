@@ -18,8 +18,8 @@ public class OptionEntity : ISoftDelete
 	public double Price { get; set; }
 	public DateTimeOffset? EndedAt { get; set; }
 	public ICollection<MultipleOptionImagesEntity>? Images { get; set; }
-	public MultipleOptionImagesEntity Image { get; set; }
-	public int? ImageId { get; set; }
+	public MultipleOptionImagesEntity? Image { get; set; }
+	public Guid? ImageId { get; set; }
 	[Range(0, 1000)]
 	public int QuantityAvailable { get; set; }
 	[StringLength(100, MinimumLength = 3)]

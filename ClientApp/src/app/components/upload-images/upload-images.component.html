@@ -8,9 +8,12 @@
 <div *ngIf="pictures">
     <div class="row pe-2">
         <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let pic of pictures; let i = index">
-            <div class="image-container" >
-                <img [src]="pic" [ngbTooltip]="uploadFiles[i].name"/>
-                <button *ngIf="!read" class="btn btn-outline-danger btn-sm"  (click)="removePicture(i)">
+            <div class="image-container">
+                <img  [src]="pic" [ngbTooltip]="uploadFiles[i].name"/>
+                <button [ngClass]="{'focus': imageFirst == i}" (click)="makeDefault(i)" *ngIf="!read" class="btn btn-light btn-sm default">
+                    <i class="fa-solid fa-1"></i>
+                </button>
+                <button *ngIf="!read" class="btn btn-outline-danger btn-sm remove"  (click)="removePicture(i)">
                     <i class="fas fa-trash" ></i>
                 </button>
             </div>

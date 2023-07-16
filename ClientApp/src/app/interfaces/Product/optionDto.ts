@@ -10,5 +10,5 @@ export interface OptionDto {
 	genderFor: number;
 	condition: number;
 	images: MultipleImageDto[] | null;
-	imageId: number | null;
+	imageIndex: number | null;
 }

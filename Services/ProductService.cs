@@ -54,18 +54,36 @@ internal sealed class ProductService : IProductService
 		ProductEntity product = productDto.Adapt<ProductEntity>();
 		_repositoryManager.ProductRepository.Insert(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
-		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductById(product.Id, cancellationToken);
-		newProduct.OptionId = product.Options[productDto.OptionIndex].Id;
+		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductWithOption(product.Id, cancellationToken);
+		newProduct.OptionId = newProduct.Options[productDto.OptionIndex].Id;
+		int index = 0;
+		foreach (var option in newProduct.Options)
+		{
+			if (option.Images != null)
+				option.ImageId = option.Images.ElementAt(productDto.Options.ElementAt(index).ImageIndex).Id;
+			index++;
+		}
 		_repositoryManager.ProductRepository.Update(newProduct);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
 	public async Task UpdateAsync(string userId, Guid productId,
-		ProductDto productForUpdateDto, CancellationToken cancellationToken = default)
+		ProductDto productDto, CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-		product = productForUpdateDto.Adapt(product);
+		product = productDto.Adapt(product);
 		_repositoryManager.ProductRepository.Update(product);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductWithOption(product.Id, cancellationToken);
+		newProduct.OptionId = newProduct.Options[productDto.OptionIndex].Id;
+		int index = 0;
+		foreach (var option in newProduct.Options)
+		{
+			if (option.Images != null)
+				option.ImageId = option.Images.ElementAt(productDto.Options.ElementAt(index).ImageIndex).Id;
+			index++;
+		}
+		_repositoryManager.ProductRepository.Update(newProduct);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 

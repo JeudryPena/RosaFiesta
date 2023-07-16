@@ -20,7 +20,7 @@ internal sealed class SupplierRepository : ISupplierRepository
 
 	public async Task<SupplierEntity> GetByIdAsync(Guid supplierId, CancellationToken cancellationToken = default)
 	{
-		SupplierEntity? supplier = await _dbContext.Suppliers.Include(x => x.Products)
+		SupplierEntity? supplier = await _dbContext.Suppliers.Include(x => x.Products).ThenInclude(x => x.Option)
 			.FirstOrDefaultAsync(x => x.Id == supplierId, cancellationToken);
 		if (supplier == null)
 			throw new ArgumentNullException(nameof(supplier));

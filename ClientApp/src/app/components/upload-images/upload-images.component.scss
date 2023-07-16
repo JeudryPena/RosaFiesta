@@ -3,7 +3,22 @@
     display: inline-block;
 }
 
-.image-container button {
+.default {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 36px 10px 12px 12px;
+    padding: 2px 5px;
+    font-size: 10px;
+}
+
+.default.focus {
+    outline: 1px #000;
+    color: #fff;
+    background-color: #000;
+}
+
+.remove {
     position: absolute;
     top: 0;
     right: 0;

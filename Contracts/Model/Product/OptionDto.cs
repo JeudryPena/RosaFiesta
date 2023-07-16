@@ -11,6 +11,6 @@ public class OptionDto
 	public string? Color { get; set; }
 	public int GenderFor { get; set; }
 	public int Condition { get; set; }
-	public int ImageId { get; set; }
+	public int ImageIndex { get; set; }
 	public ICollection<MultipleImageDto>? Images { get; set; }
 }

@@ -1,4 +1,6 @@
+import { OptionsListPreviewResponse } from "./options-list-preview-response";
+
 export interface ProductsListResponse {
     id: string;
-    code: string | null;
+    option: OptionsListPreviewResponse;
 }
