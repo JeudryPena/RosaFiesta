@@ -4,6 +4,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.prod";
 import { ManagementUsersResponse } from '../../interfaces/Security/Response/managementUsersResponse';
+import { RolesListResponse } from '../../interfaces/Security/Response/rolesListResponse';
 import { UsersListResponse } from '../../interfaces/Security/Response/usersListResponse';
 import { UserForCreationDto } from '../../interfaces/Security/userForCreationDto';
 import { UserForUpdateDto } from '../../interfaces/Security/userForUpdateDto';
@@ -95,6 +96,10 @@ export class UsersService {
 
   GetList(): Observable<UsersListResponse[]> {
     return this.http.get<UsersListResponse[]>(`${this.apiUrl}usersList`);
+  }
+
+  GetRolesList(): Observable<RolesListResponse[]> {
+    return this.http.get<RolesListResponse[]>(`${this.apiUrl}rolesList`);
   }
 
   Delete(id: string) {

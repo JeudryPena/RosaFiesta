@@ -146,7 +146,7 @@ export class ModalSuppliersComponent implements OnInit {
         this.service.Update(this.id, supplierDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'suplidor actualizada!';
+            modalRef.componentInstance.title = 'Suplidor actualizados!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {

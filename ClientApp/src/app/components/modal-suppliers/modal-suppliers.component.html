@@ -64,7 +64,7 @@
                 <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
                         corta</strong></h5></div>
             <div class="input-container" [ngClass]="{'focus': addressFocused || nameInput.value.length > 0 }">
-                <input [readOnly]="read" #addressInput type="string" formControlName="address" class="input" 
+                <input [readOnly]="read" #addressInput type="text" formControlName="address" class="input" 
                     minlength="3" maxlength="250" (focus)="addressFocused = true" (blur)="addressFocused = false" />
                 <label>Dirección</label>
                 <span>Dirección</span>
