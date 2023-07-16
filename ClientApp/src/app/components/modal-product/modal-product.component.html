@@ -11,12 +11,14 @@
                 <span>Código</span>
                 <h5 *ngIf="validate('code', 'minlength', codeFocused)">El Código es<strong> muy Corto</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': isServiceFocused || isServiceInput.value.length > 0 }">
-                <input [readOnly]="read" #isServiceInput type="text" formControlName="isService" class="input"/>
-                <label>Es Servicio</label>
-                <span>Es Servicio</span>
-                <h5 *ngIf="validate('isService', 'minlength', isServiceFocused)">Si es Servicio es<strong> requerido</strong></h5>
-            </div>
+            
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                        formControlName="isService">
+                    <label class="form-check-label text-white" for="flexSwitchCheckDefault">Es Servicio</label>
+                </div>
+            
+            
             <div *ngIf="read">
                 <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
                     <input readOnly #createdAtInput type="text" formControlName="createdAt"

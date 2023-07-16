@@ -1,38 +1,36 @@
-<body>
-    <div class="main-wrapper">
-        <div class="container">
-            <div class="product-div">
-                <div class="product-div-left">
-                    <div class="img-container">
-                        <a href="#" class="share"><i class="fas fa-share-alt"></i></a>
-                        <img src="assets/shoes_images/shoe_1.jpg" alt="watch">
-                    </div>
-                    <div class="img-select">
-                        <div class="img-item">
-                            <a href="#" data-id="1">
-                                <img src="assets/shoes_images/shoe_1.jpg" alt="shoe image">
-                            </a>
-                        </div>
-                        <div class="img-item">
-                            <a href="#" data-id="2">
-                                <img src="assets/shoes_images/shoe_2.jpg" alt="shoe image">
-                            </a>
-                        </div>
-                        <div class="img-item">
-                            <a href="#" data-id="3">
-                                <img src="assets/shoes_images/shoe_3.jpg" alt="shoe image">
-                            </a>
-                        </div>
-                        <div class="img-item">
-                            <a href="#" data-id="4">
-                                <img src="assets/shoes_images/shoe_4.jpg" alt="shoe image">
-                            </a>
-                        </div>
-                    </div>
+<div class="container ">
+    <div class="product-div">
+        <div class="product-div-left">
+            <div class="img-container">
+                <a class="share"><i class="fas fa-share-alt"></i></a>
+                <img src="assets/shoes_images/shoe_1.jpg" alt="watch">
+            </div>
+            <div class="img-select">
+                <div class="img-item">
+                    <a href="#" data-id="1">
+                        <img src="assets/shoes_images/shoe_1.jpg" alt="shoe image">
+                    </a>
                 </div>
-                <div class="product-div-right">
+                <div class="img-item">
+                    <a href="#" data-id="2">
+                        <img src="assets/shoes_images/shoe_2.jpg" alt="shoe image">
+                    </a>
+                </div>
+                <div class="img-item">
+                    <a href="#" data-id="3">
+                        <img src="assets/shoes_images/shoe_3.jpg" alt="shoe image">
+                    </a>
+                </div>
+                <div class="img-item">
+                    <a href="#" data-id="4">
+                        <img src="assets/shoes_images/shoe_4.jpg" alt="shoe image">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="product-div-right">
 
-                    <!-- <div class="social-links">
+            <!-- <div class="social-links">
                         <p>Share At: </p>
                         <a href="#">
                             <i class="fab fa-facebook-f"></i>
@@ -50,56 +48,48 @@
                             <i class="fab fa-pinterest"></i>
                         </a>
                     </div> -->
-                    <span class="product-name"><a href="#" class="product-link">new</a> Analog Watch - For Men</span>
-                    <div class="row price-rating">
-                        <div class="col product-price">
-                            <span class="last-price">$257.00 </span>
-                            <span class="new-price">$249.00 (5%)</span>
-                        </div>
-                        <div class="col product-rating">
-                            <app-rating [rating]="rating"></app-rating>
-                            <span>(350)</span>
-                        </div>
-                    </div>
+            <span class="product-name"><a href="#" class="product-link">Nuevo</a> Analog Watch - For Men</span>
+            <div class="row price-rating">
+                <div class="col product-price">
+                    <span class="last-price">$257.00 </span>
+                    <span class="new-price">$249.00 (5%)</span>
+                </div>
+                <div class="col product-rating">
+                    <app-rating [rating]="rating"></app-rating>
+                    <span>(350)</span>
+                </div>
+            </div>
 
-                    <p class="product-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae animi
-                        ad minima veritatis dolore. Architecto facere dignissimos voluptate fugit ratione molestias quis
-                        quidem exercitationem voluptas.</p>
-                    <div class="product-detail">
-                        <ul>
-                            <li>Available: <span>Disponible</span></li>
-                            <li>Shipping Area: <span>Republica Dominicana</span></li>
-                            <li>Shipping Fee: <span>Gratis</span></li>
-                        </ul>
-                    </div>
-                    <div class="color-container inline">
-                        <h3 class="title">Color</h3>
-                        <div class="  colors">
-                            <span class="color active" primary="#2175f5" color="blue"></span>
-                            <span class="color" primary="#f84848" color="red"></span>
-                            <span class="color" primary="#29b864" color="green"></span>
-                            <span class="color" primary="#ff5521" color="orange"></span>
-                            <span class="color" primary="#444" color="black"></span>
-                        </div>
-                    </div>
-                    <div class="size-container inline">
-                        <h3 class="title">Size</h3>
-                        <div class="sizes">
-                            <span class="size">7</span>
-                            <span class="size">8</span>
-                            <span class="size active">9</span>
-                            <span class="size">10</span>
-                            <span class="size">11</span>
-                        </div>
-                    </div>
-                    <div class="btn-groups">
-                        <input type="number" min="0" value="1" step="1" enabled>
-                        <button type="button" class="add-cart-btn"><i class="fas fa-shopping-cart"></i>Añadir al
-                            carrito</button>
-                        <button type="button" class="buy-now-btn"><i class="fas fa-wallet"></i>COMPRAR AHORA</button>
+            <p class="product-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae animi
+                ad minima veritatis dolore. Architecto facere dignissimos voluptate fugit ratione molestias quis
+                quidem exercitationem voluptas.</p>
+            <div class="product-detail">
+                <ul>
+                    <li>Available: <span>Disponible</span></li>
+                    <li>Shipping Area: <span>Republica Dominicana</span></li>
+                    <li>Shipping Fee: <span>Gratis</span></li>
+                </ul>
+            </div>
+            <div class="color-price">
+                <div class="color-option">
+                    <span class="color">Color:</span>
+                    <div class="circles">
+                        <span [ngClass]="{'focus': isActive}"
+                            [ngStyle]="{'background': colorCode, 'box-shadow': isActive ? '0 0 0 2px #fff, 0 0 0 4px ' + colorCode : 'none'}"
+                            class="circle"></span>
                     </div>
                 </div>
             </div>
+            <div class="btn-groups d-flex">
+                <input type="number" min="0" value="1" step="1" enabled>
+                <div class="button ms-1 p-0">
+                    <div class="button-layer"></div>
+                    <button><i class="fa-solid fa-cart-shopping me-1"></i>Añadir al carrito</button>
+                    <!-- <button type="button" class="add-cart-btn"><i class="fas fa-shopping-cart"></i>Añadir al
+                            carrito</button> -->
+                </div>
+                <button type="button" class="buy-now-btn ms-2"><i class="fas fa-wallet"></i>COMPRAR</button>
+            </div>
         </div>
     </div>
-</body>
+</div>

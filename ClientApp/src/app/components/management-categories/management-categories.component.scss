@@ -2,6 +2,10 @@
     color: red;
 }
 
+.card {
+    margin: 0;
+}
+
 .dropdown {
     position: relative;
 }
@@ -34,31 +38,27 @@
 }
 
 .table .table-row .table-cell:nth-child(1) {
-    width: 90px;
-} 
+    width: 30px;
+}
 
 .table .table-row .table-cell:nth-child(2) {
-    width: 30px;
+    width: 50px;
 }
 
 .table .table-row .table-cell:nth-child(3) {
-    width: 250px;
-}
-
-.table .table-row .table-cell:nth-child(4) {
     width: 30px;
 }
 
-.table .table-row .table-cell:nth-child(5) {
+.table .table-row .table-cell:nth-child(4) {
     width: 30.65px;
 }
 
-.table .table-row .table-cell:nth-child(6) {
-    width: 80.59px;
+.table .table-row .table-cell:nth-child(5) {
+    width: 30.59px;
 }
 
-.table .table-row .table-cell:nth-child(7) {
-    width: 70.28px;
+.table .table-row .table-cell:nth-child(6) {
+    width: 30.28px;
 }
 
 .btn-dropdown {
@@ -106,6 +106,7 @@
     overflow-y: auto;
 }
 
+/* Style the scrollbar track */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -113,12 +114,14 @@
     border-radius: 4px;
 }
 
+/* Style the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
     background-color: #999;
     border-radius: 4px;
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Style the scrollbar thumb on hover */
 ::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
@@ -153,7 +156,6 @@
 
 .input-group-sm .input-search {
     padding-right: 40px;
-    /* ajusta el valor según sea necesario para que el botón encaje correctamente */
 }
 
 .input-group-sm .input-search-expanded+.input-group-text {

@@ -27,7 +27,7 @@ export class ResetPasswordComponent {
       confirmPassword: new FormControl(''),
     })
   }
-
+ 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
     const control = this.resetForm.get(controlName);
     return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
