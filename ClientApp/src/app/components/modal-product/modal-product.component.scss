@@ -43,7 +43,7 @@ option {
     background-color: #2dd8b6;
     border-radius: 10px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
-    z-index: 1000; 
+    z-index: 1000;
     overflow: hidden;
     display: grid;
     overflow-y: auto;
@@ -127,10 +127,24 @@ form {
 
 .input-group .wrapper {
     width: calc(100% - 50px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .input-group .wrap {
     width: 50px;
+}
+
+.first.focus {
+    background-color: #ffffff;
+}
+
+.input-group .wrapper2 {
+    width: calc(100% - 100px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .bi {

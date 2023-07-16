@@ -21,5 +21,8 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
 		builder.HasMany(option => option.Images)
 			.WithOne()
 			.HasForeignKey(image => image.OptionId);
+		builder.HasOne(x => x.Image)
+			.WithOne()
+			.HasForeignKey<OptionEntity>(x => x.ImageId);
 	}
 }

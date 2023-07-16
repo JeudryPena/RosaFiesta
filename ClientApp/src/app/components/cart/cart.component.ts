@@ -25,10 +25,10 @@ export class CartComponent {
     private authService: AuthenticateService
   ) {
 
-    this.authService.authChanged
-      .subscribe(res => {
-        this.isUserAuthenticated = res;
-      })
+    // this.authService.authChanged
+    //   .subscribe(res => {
+    //     this.isUserAuthenticated = res;
+    //   })
   }
 
 

@@ -8,7 +8,7 @@ public class OptionDetailResponse
 	public ICollection<MultipleImagesResponse>? Images { get; set; }
 	public double Price { get; set; }
 	public string? Color { get; set; }
-	public bool? IsMale { get; set; }
+	public string GenderFor { get; set; }
 	public string Type { get; set; }
 	public string Stock => StockCalculate().ToString();
 	public int QuantityAvailable { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Product;
 
-public class MultipleOptionImages
+public class MultipleOptionImagesEntity
 {
 	public int Id { get; set; }
 	public string Image { get; set; }

@@ -6,9 +6,10 @@ export interface OptionsResponse {
     description: string | null;
     price: number;
     color: string | null;
-    isMale: boolean | null;
+    genderFor: number;
     condition: number;
     stock: string;
     quantityAvailable: number;
     images: MultipleImagesResponse[];
+    imageId: number | null;
 }

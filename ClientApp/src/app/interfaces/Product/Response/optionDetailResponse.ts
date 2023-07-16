@@ -8,7 +8,7 @@ export interface OptionDetailResponse {
     images: MultipleImagesResponse[] | null;
     price: number;
     color: string | null;
-    isMale: boolean | null;
+    genderFor: string;
     type: string;
     stock: string;
     quantityAvailable: number;

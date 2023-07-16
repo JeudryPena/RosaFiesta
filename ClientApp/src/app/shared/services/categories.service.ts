@@ -11,6 +11,7 @@ import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
 import { UsersService } from './users.service';
+import { CategoryResponse } from '../../interfaces/Product/Response/categoryResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -95,8 +96,12 @@ export class CategoriesService {
     return this.http.get<CategoryPreviewResponse[]>(this.apiUrl + 'categoriesPreview')
   }
 
-  GetCategory(categoryId: number): Observable<CategoryManagementResponse> {
+  GetCategoryManagement(categoryId: number): Observable<CategoryManagementResponse> {
     return this.http.get<CategoryManagementResponse>(`${this.apiUrl}${categoryId}/category-management`);
+  }
+
+  GetCategory(categoryId: number): Observable<CategoryResponse> {
+    return this.http.get<CategoryResponse>(`${this.apiUrl}${categoryId}`);
   }
 
   UpdateCategory(categoryId: number, category: CategoryDto) {

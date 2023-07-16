@@ -4,5 +4,5 @@ public class ProductPreviewResponse
 {
 	public Guid Id { get; set; }
 	public bool IsService { get; set; }
-	public OptionPreviewResponse Options { get; set; }
+	public OptionPreviewResponse Option { get; set; }
 }

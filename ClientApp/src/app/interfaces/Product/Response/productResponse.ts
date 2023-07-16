@@ -8,6 +8,7 @@ export interface ProductResponse extends ByBaseResponse {
     id: string;
     code: string;
     isService: boolean;
+    option: OptionsResponse;
     category: CategoriesListResponse;
     warranty: WarrantiesListResponse | null;
     supplier: SuppliersListResponse | null;

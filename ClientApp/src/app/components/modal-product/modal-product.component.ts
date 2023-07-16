@@ -33,7 +33,6 @@ export class ModalProductComponent implements OnInit {
   @Input() productId: string = '';
 
   codeFocused = false;
-  isServiceFocused = false;
   optionsFocused = false;
   categoryIdFocused = false;
   warrantyIdFocused = false;
@@ -44,13 +43,14 @@ export class ModalProductComponent implements OnInit {
   priceFocused = false;
   quantityAvailableFocused = false;
   colorFocused = false;
-  isMaleFocused = false;
+  genderForFocused = false;
   conditionFocused = false;
   imagesFocused = false;
 
   productForm: any;
   options: any[] = [];
   optionForm: any;
+  optionFirst: number = 0;
   categoryForm!: CategoriesListResponse;
   warrantyForm!: WarrantiesListResponse | null;
   supplierForm!: SuppliersListResponse | null;
@@ -70,8 +70,7 @@ export class ModalProductComponent implements OnInit {
     private categoriesService: CategoriesService,
     private warrantiesService: WarrantiesService,
     private suppliersService: SuppliersService,
-    private filesService: FilesService,
-    private http: HttpClient
+    private filesService: FilesService
   ) {
 
   }
@@ -86,6 +85,10 @@ export class ModalProductComponent implements OnInit {
     else if (form == 'supplier') {
       this.supplierForm = event.item;
     }
+  }
+
+  SelectFirst(index: number) {
+    this.optionFirst = index;
   }
 
   async ReadImages(images: any) {
@@ -131,6 +134,7 @@ export class ModalProductComponent implements OnInit {
           code: response.code,
           isService: response.isService,
         });
+        this.optionFirst = response.options.indexOf(response.option)
         this.categoryForm = response.category;
         this.warrantyForm = response.warranty;
         this.supplierForm = response.supplier;
@@ -142,6 +146,7 @@ export class ModalProductComponent implements OnInit {
         code: new FormControl(''),
         options: new FormControl(''),
         isService: new FormControl(false),
+        option: new FormControl(''),
         categoryId: new FormControl(null),
         warrantyId: new FormControl(''),
         supplierId: new FormControl(''),
@@ -155,11 +160,13 @@ export class ModalProductComponent implements OnInit {
         this.productForm.patchValue({
           code: response.code,
           isService: response.isService,
+          option: response.option,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
           createdBy: response.createdBy,
           updatedBy: response.updatedBy,
         });
+        this.optionFirst = this.optionFirst = response.options.indexOf(response.option)
         this.categoryForm = response.category;
         this.warrantyForm = response.warranty;
         this.supplierForm = response.supplier;
@@ -203,7 +210,8 @@ export class ModalProductComponent implements OnInit {
       description: new FormControl(''),
       price: new FormControl(0),
       color: new FormControl(''),
-      isMale: new FormControl(false),
+      genderFor: new FormControl(0),
+      imageId: new FormControl(''),
       condition: new FormControl(0),
       images: new FormControl(''),
       quantityAvailable: new FormControl(0),
@@ -222,11 +230,15 @@ export class ModalProductComponent implements OnInit {
       description: option.description,
       price: option.price,
       color: option.color,
-      isMale: option.isMale,
+      genderFor: option.genderFor,
       condition: option.condition,
       images: option.images,
+      imageId: option.imageId,
       quantityAvailable: option.quantityAvailable
     }
+    if (this.options.length == 0){
+      this.optionFirst = 0;
+    } 
     this.options.push(optionDto);
     this.uploadFiles = [];
     this.pictures = [];
@@ -242,9 +254,10 @@ export class ModalProductComponent implements OnInit {
       description: option.description,
       price: option.price,
       color: option.color,
-      isMale: option.isMale,
+      genderFor: option.genderFor,
       condition: option.condition,
       images: option.images,
+      imageId: option.imageId,
       quantityAvailable: option.quantityAvailable
     }
     this.uploadFiles = [];
@@ -264,9 +277,10 @@ export class ModalProductComponent implements OnInit {
       description: new FormControl(this.options[index].description),
       price: new FormControl(this.options[index].price),
       color: new FormControl(this.options[index].color),
-      isMale: new FormControl(this.options[index].isMale),
+      genderFor: new FormControl(this.options[index].genderFor),
       condition: new FormControl(this.options[index].condition),
       images: new FormControl(this.options[index].images),
+      imageId: new FormControl(this.options[index].imageId),
       quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
     if (this.update == true || this.read == true) {
@@ -355,6 +369,7 @@ export class ModalProductComponent implements OnInit {
     const productDto: ProductDto = {
       code: product.code,
       isService: product.isService,
+      optionIndex: this.optionFirst,
       categoryId: product.category.id,
       warrantyId: product.warranty.id,
       supplierId: product.supplier.id,
@@ -385,13 +400,13 @@ export class ModalProductComponent implements OnInit {
       if (result) {
         const product = { ...productFormValue };
         let uploadsCompleted = 0;
+        console.log(this.options)
         if (this.options.length !== 0) {
           this.options.forEach(async option => {
             const files = option.images.filter((image: any) => image instanceof File);
             if (files != null && files.length > 0) {
               const response$ = this.filesService.UploadFiles(option.images);
               let response: any = await lastValueFrom(response$);
-              console.log(response);
               option.images = response;
               uploadsCompleted++;
               if (uploadsCompleted === this.options.length) {
@@ -405,7 +420,6 @@ export class ModalProductComponent implements OnInit {
               }
             }
           });
-          console.log(uploadsCompleted)
         } else {
           this.OnAddProduct(product);
         }
@@ -414,14 +428,17 @@ export class ModalProductComponent implements OnInit {
   }
 
   OnAddProduct(product: any) {
+    console.log(this.options); 
     const productDto: ProductDto = {
       code: product.code,
       isService: product.isService,
+      optionIndex: this.optionFirst,
       categoryId: this.categoryForm.id,
       warrantyId: this.warrantyForm?.id || null,
       supplierId: this.supplierForm?.id || null,
       options: this.options,
     }
+    console.log(productDto);
     this.service.AddProduct(productDto).subscribe({
       next: () => {
         const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });

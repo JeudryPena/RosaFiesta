@@ -7,4 +7,5 @@ export interface ProductDto {
 	categoryId: number;
 	warrantyId: string | null;
 	supplierId: string | null;
+	optionIndex: number;
 }

@@ -1,4 +1,5 @@
 import { BaseResponse } from "../../baseResponse";
+import { ProductPreviewResponse } from "./productPreviewResponse";
 import { ProductResponse } from "./productResponse";
 
 export interface CategoryResponse extends BaseResponse {
@@ -6,5 +7,5 @@ export interface CategoryResponse extends BaseResponse {
     name: string;
     description: string;
     icon: string;
-    products: ProductResponse[] | null;
+    products: ProductPreviewResponse[] | null;
 }

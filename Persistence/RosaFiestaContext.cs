@@ -17,7 +17,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 	{
 		Addresses = Set<AddressEntity>();
 		Products = Set<ProductEntity>();
-		OptionImages = Set<MultipleOptionImages>();
+		OptionImages = Set<MultipleOptionImagesEntity>();
 		Options = Set<OptionEntity>();
 		Carts = Set<CartEntity>();
 		Discounts = Set<DiscountEntity>();
@@ -58,7 +58,7 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 	public DbSet<AddressEntity> Addresses { get; set; }
 	public DbSet<ProductEntity> Products { get; }
 	public DbSet<OptionEntity> Options { get; set; }
-	public DbSet<MultipleOptionImages> OptionImages { get; set; }
+	public DbSet<MultipleOptionImagesEntity> OptionImages { get; set; }
 	public DbSet<CartEntity> Carts { get; set; }
 	public DbSet<DiscountEntity> Discounts { get; set; }
 	public DbSet<ProductsDiscountsEntity> ProductsDiscounts { get; set; }

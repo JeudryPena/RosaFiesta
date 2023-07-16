@@ -17,7 +17,9 @@ public class OptionEntity : ISoftDelete
 	[Range(0.01, 999999.99)]
 	public double Price { get; set; }
 	public DateTimeOffset? EndedAt { get; set; }
-	public ICollection<MultipleOptionImages>? Images { get; set; }
+	public ICollection<MultipleOptionImagesEntity>? Images { get; set; }
+	public MultipleOptionImagesEntity Image { get; set; }
+	public int? ImageId { get; set; }
 	[Range(0, 1000)]
 	public int QuantityAvailable { get; set; }
 	[StringLength(100, MinimumLength = 3)]
@@ -25,7 +27,7 @@ public class OptionEntity : ISoftDelete
 	[StringLength(20, MinimumLength = 3)]
 	public ConditionType Condition { get; set; }
 	[StringLength(20, MinimumLength = 3)]
-	public bool? IsMale { get; set; }
+	public GenderType GenderFor { get; set; }
 	public bool IsDeleted { get; set; }
 	public ICollection<ReviewEntity>? Reviews { get; set; }
 	public ICollection<ProductsDiscountsEntity>? ProductsDiscounts { get; set; }

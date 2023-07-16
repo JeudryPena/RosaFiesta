@@ -48,11 +48,15 @@ internal sealed class ProductService : IProductService
 		return productResponse;
 	}
 
-	public async Task CreateAsync(string userId, ProductDto productForCreationDto,
+	public async Task CreateAsync(string userId, ProductDto productDto,
 		CancellationToken cancellationToken = default)
 	{
-		ProductEntity product = productForCreationDto.Adapt<ProductEntity>();
+		ProductEntity product = productDto.Adapt<ProductEntity>();
 		_repositoryManager.ProductRepository.Insert(product);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductById(product.Id, cancellationToken);
+		newProduct.OptionId = product.Options[productDto.OptionIndex].Id;
+		_repositoryManager.ProductRepository.Update(newProduct);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 

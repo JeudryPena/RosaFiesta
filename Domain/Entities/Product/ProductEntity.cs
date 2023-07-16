@@ -19,4 +19,6 @@ public class ProductEntity : ByBaseEntity, IAutoBy
 	public Guid? SupplierId { get; set; }
 	public SupplierEntity? Supplier { get; set; }
 	public IList<OptionEntity> Options { get; set; }
+	public OptionEntity? Option { get; set; }
+	public Guid? OptionId { get; set; }
 }

@@ -7,7 +7,8 @@ export interface OptionDto {
 	price: number;
 	quantityAvailable: number;
 	color: string | null;
-	isMale: boolean | null;
+	genderFor: number;
 	condition: number;
 	images: MultipleImageDto[] | null;
+	imageId: number | null;
 }

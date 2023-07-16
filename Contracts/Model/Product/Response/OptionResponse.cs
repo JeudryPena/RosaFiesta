@@ -8,6 +8,7 @@ public class OptionResponse
 	public string? Image { get; set; }
 	public string Stock => StockCalculate().ToString();
 	public int QuantityAvailable { get; set; }
+	public string GenderFor { get; set; }
 	public IEnumerable<MultipleImagesResponse> Images { get; set; }
 	public string Condition { get; set; }
 	private StockStatusType StockCalculate()

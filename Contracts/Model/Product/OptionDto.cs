@@ -9,7 +9,8 @@ public class OptionDto
 	public double Price { get; set; }
 	public int QuantityAvailable { get; set; }
 	public string? Color { get; set; }
-	public bool? IsMale { get; set; }
+	public int GenderFor { get; set; }
 	public int Condition { get; set; }
+	public int ImageId { get; set; }
 	public ICollection<MultipleImageDto>? Images { get; set; }
 }

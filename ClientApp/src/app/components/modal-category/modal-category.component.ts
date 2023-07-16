@@ -41,7 +41,7 @@ export class ModalCategoryComponent implements OnInit {
       description: new FormControl('')
     })
     if (this.update) {
-      this.service.GetCategory(this.categoryId).subscribe((response: CategoryManagementResponse) => {
+      this.service.GetCategoryManagement(this.categoryId).subscribe((response: CategoryManagementResponse) => {
         this.categoryForm.patchValue({
           name: response.name,
           icon: response.icon,
@@ -60,7 +60,7 @@ export class ModalCategoryComponent implements OnInit {
         updatedBy: new FormControl('')
       })
 
-      this.service.GetCategory(this.categoryId).subscribe((response: CategoryManagementResponse) => {
+      this.service.GetCategoryManagement(this.categoryId).subscribe((response: CategoryManagementResponse) => {
         this.categoryForm.patchValue({
           name: response.name,
           icon: response.icon,
