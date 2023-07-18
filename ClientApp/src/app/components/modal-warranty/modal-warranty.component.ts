@@ -46,9 +46,12 @@ export class ModalWarrantyComponent implements OnInit {
   onSelect(event: TypeaheadMatch): void {
     this.products.push({
       id: event.item.id,
-      name: event.item.name
+      option: {
+        title: event.item.option.title,  
+      }
     });
     this.selected = '';
+    console.log(event.item)
   }
 
   ngOnInit(): void {

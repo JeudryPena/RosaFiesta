@@ -50,7 +50,7 @@
                 <div class="col">
                     <div class="input-container" [ngClass]="{'focus': startFocused || startInput.value.length > 0 }">
                         <div class="input-group" [autoClose]="false" triggers="manual" [ngbPopover]="iconTemplate" required #p="ngbPopover">
-                            <input [readOnly]="true" #startInput type="text" class="input wrapper" placement="top" required
+                            <input [readOnly]="true" #startInput type="text" class="input wrapper" placement="bottom" required
                                 [disabled]="read" [bsValue]="date" bsDaterangepicker #dp="bsDaterangepicker" (bsValueChange)="p.toggle()"
                                 formControlName="date"
                                 [bsConfig]="{ isAnimated:true, dateInputFormat:'MMMM Do  YYYY, h:mm:ss a', containerClass: 'theme-dark-blue', showTodayButton:true,  showClearButton:true, todayPosition:'left', clearPosition:'right'}"
@@ -69,8 +69,8 @@
                             <button (click)="dp.toggle()" class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 wrap"
                                 type="button"></button>
                         </div>
-                        <label>Periodo</label>
-                        <span>Periodo</span>
+                        <label>Periodo *</label>
+                        <span>Periodo *</span>
                         <h5 *ngIf="validate('date', 'bsDate', startFocused)">El Inicio es<strong> Requerido</strong>
                         </h5>
                     </div>

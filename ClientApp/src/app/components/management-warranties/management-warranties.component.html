@@ -27,7 +27,6 @@
                                 <th scope="col" class="table-cell">Estado</th>
                                 <th scope="col" class="table-cell">Periodo</th>
                                 <th scope="col"class="table-cell">Descripción</th>
-                                <th scope="col" class="table-cell">Condiciones</th>
                                 <th scope="col" class="table-cell">
                                     Productos</th>
                                 <th scope="col" class="table-cell">
@@ -56,10 +55,6 @@
 
                                 <td><ngb-highlight [result]="warranty.description | truncate:25" placement="top"
                                         ngbTooltip="{{warranty.description}}" [term]="service.searchTerm"></ngb-highlight>
-                                </td>
-
-                                <td><ngb-highlight [result]="warranty.conditions | truncate:25" placement="top"
-                                        ngbTooltip="{{warranty.conditions}}" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
                                     <div *ngFor="let product of warranty.products"

@@ -47,7 +47,9 @@ export class ModalSuppliersComponent implements OnInit {
   onSelect(event: TypeaheadMatch): void {
     this.products.push({
       id: event.item.id,
-      name: event.item.option.title,
+      option: {
+        title: event.item.option.title
+      }
     });
     this.selected = '';
   }
@@ -74,6 +76,7 @@ export class ModalSuppliersComponent implements OnInit {
         this.products = response.products || [];
       });
     } else if (this.read) {
+      console.log(this.id);
       this.supplierForm = new FormGroup({
         name: new FormControl(''),
         email: new FormControl(''),
@@ -127,7 +130,7 @@ export class ModalSuppliersComponent implements OnInit {
     this.products.splice(index, 1);
   }
 
-  updateWarranty = (supplierFormValue: any) => {
+  updateSupplier = (supplierFormValue: any) => {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
     modalRef.componentInstance.title = '¿Desea actualizar el suplidor?';
     modalRef.componentInstance.status = Status.Pending;
@@ -141,12 +144,12 @@ export class ModalSuppliersComponent implements OnInit {
           phone: supplier.phone,
           description: supplier.description,
           address: supplier.address,
-          products: this.products,
+          supplierProducts: this.products,
         }
         this.service.Update(this.id, supplierDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-            modalRef.componentInstance.title = 'Suplidor actualizados!';
+            modalRef.componentInstance.title = 'Suplidor actualizado!';
             modalRef.componentInstance.status = Status.Success;
 
             modalRef.result.then(() => {
@@ -178,7 +181,7 @@ export class ModalSuppliersComponent implements OnInit {
           phone: supplier.phone,
           description: supplier.description,
           address: supplier.address,
-          products: this.products,          
+          supplierProducts: this.products,
         }
 
         this.service.Add(supplierDto).subscribe({

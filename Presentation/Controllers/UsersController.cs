@@ -55,7 +55,7 @@ public class UsersController : ControllerBase
 	[HttpGet("{userId}")]
 	public async Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken)
 	{
-		UsersResponse usersResponse = await _serviceManager.UserService.GetUserByIdAsync(
+		UserResponse usersResponse = await _serviceManager.UserService.GetUserByIdAsync(
 			userId,
 			cancellationToken
 		);
@@ -114,7 +114,7 @@ public class UsersController : ControllerBase
 	[HttpPut("{userId}")]
 	public async Task<IActionResult> UpdateUser(
 		string userId,
-		[FromBody] UserForUpdateDto userForUpdateDto,
+		[FromBody] UserForCreationDto userForUpdateDto,
 		CancellationToken cancellationToken
 	)
 	{

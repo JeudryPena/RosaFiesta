@@ -19,8 +19,6 @@ import { ManagementProductsComponent } from './components/management-products/ma
 import { ManagementUsersComponent } from './components/management-users/management-users.component';
 import { ManagementWarrantiesComponent } from './components/management-warranties/management-warranties.component';
 import { MediaComponent } from './components/media/media.component';
-import { ModalProductComponent } from './components/modal-product/modal-product.component';
-import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PagesComponent } from './components/pages/pages.component';
@@ -29,12 +27,14 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 import { ProductsComponent } from './components/products/products.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
+
 import { AuthGuard } from './shared/guards/auth.guard';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ManagementSuppliersComponent } from './components/management-suppliers/management-suppliers.component';
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
@@ -69,16 +69,14 @@ const routes: Routes = [
       { path: 'management-categories', component: ManagementCategoriesComponent },
       { path: 'management-products', component: ManagementProductsComponent },
       { path: 'management-discounts', component: ManagementDiscountsComponent },
-      { path: 'management-user', component: ManagementUsersComponent },
-      { path: 'modal-product', component: ModalProductComponent },
-      { path: 'modal-quote', component: ModalQuoteComponent },
-      { path: 'modal-categories', component: ManagementCategoriesComponent }
+      { path: 'management-users', component: ManagementUsersComponent },
+      { path: 'management-suppliers', component: ManagementSuppliersComponent }
     ]
   },
   { path: 'register', component: RegisterComponent },
   { path: 'authenticate', component: AuthenticateComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'navbar', component: NavbarComponent },
   { path: 'coupens', component: CoupensComponent },
 ];

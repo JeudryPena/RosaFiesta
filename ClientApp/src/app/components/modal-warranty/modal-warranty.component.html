@@ -7,8 +7,8 @@
             <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
                 <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required
                     minlength="3" maxlength="50" (focus)="nameFocused = true" (blur)="nameFocused = false" />
-                <label>Nombre</label>
-                <span>Nombre</span>
+                <label>Nombre *</label>
+                <span>Nombre *</span>
                 <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong> requerido</strong></h5>
                 <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy corto</strong></h5>
             </div>
@@ -19,7 +19,7 @@
                     <input #productsInput type="search" formControlName="products" class="input"
                         (focus)="productsFocused = true;" (blur)="productsFocused = false" id="typeahead-focus"
                         [adaptivePosition]="true" [(ngModel)]="selected" [typeaheadSingleWords]="true"
-                        [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="name"
+                        [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="option.title"
                         (typeaheadOnSelect)="onSelect($event)" [typeaheadMinLength]="0" [typeaheadWaitMs]="100"
                         [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
                 </div>
@@ -32,7 +32,7 @@
                     <li>
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrapper">{{i+1}}.
-                                {{product.name}}</button>
+                                {{product.option.title}}</button>
                             <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
                                 (click)="removeProduct(i)">
                                 <i class="fas fa-trash"></i>
@@ -51,15 +51,15 @@
                     <option value=3>Cambiar</option>
                     <option value=4>Implícito</option>
                 </select>
-                <label>Tipo</label>
-                <span>Tipo</span>
+                <label>Tipo *</label>
+                <span>Tipo *</span>
                 <h5 *ngIf="validate('type', 'required', typeFocused)">El tipo es<strong> requerido</strong></h5>
             </div>
             <div class="input-container" [ngClass]="{'focus': periodFocused || periodInput.value.length > 0 }">
                 <input [readOnly]="read" #periodInput type="number" formControlName="period" class="input" required
                     (focus)="periodFocused = true" (blur)="periodFocused = false" />
-                <label>Periodo</label>
-                <span>Periodo</span>
+                <label>Periodo *</label>
+                <span>Periodo *</span>
                 <h5 *ngIf="validate('period', 'required', periodFocused)">El periodo es<strong> requerido</strong></h5>
                 <h5 *ngIf="validate('period', 'minlength', periodFocused)">El periodo es<strong> muy corto</strong></h5>
             </div>
@@ -68,8 +68,8 @@
                 <textarea [readOnly]="read" #descriptionInput type="text" formControlName="description" class="input"
                     required minlength="3" maxlength="500" (focus)="descriptionFocused = true"
                     (blur)="descriptionFocused = false" rows="3"></textarea>
-                <label>Descripción</label>
-                <span>Descripción</span>
+                <label>Descripción *</label>
+                <span>Descripción *</span>
                 <h5 *ngIf="validate('description', 'required', descriptionFocused)">La Descripción es<strong>
                         requerida</strong></h5>
                 <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy

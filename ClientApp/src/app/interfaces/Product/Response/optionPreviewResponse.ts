@@ -6,13 +6,13 @@ import { ReviewPreviewResponse } from "./reviewPreviewResponse";
 
 export interface OptionPreviewResponse extends BaseResponse {
     id: string;
+    title: string;
     price: number;
     image: MultipleImagesResponse[] | null;
     quantityAvailable: number;
     condition: string;
     genderFor: string;
     averageRating: number | null;
-    totalReviews: number | null;
     reviews: ReviewPreviewResponse[] | null;
-    productsDiscount: ProductsDiscountPreviewResponse | null;
+    discount: DiscountPreviewResponse | null;
 }

@@ -50,8 +50,8 @@ public class SuppliersController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		SupplierResponse supplierResponse = await _serviceManager.SupplierService.CreateAsync(userId, supplierDto, cancellationToken);
-		return Ok(supplierResponse);
+		await _serviceManager.SupplierService.CreateAsync(userId, supplierDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("{supplierId:guid}")]
@@ -60,8 +60,8 @@ public class SuppliersController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		SupplierResponse supplierResponse = await _serviceManager.SupplierService.UpdateAsync(userId, supplierId, supplierDto, cancellationToken);
-		return Ok(supplierResponse);
+		await _serviceManager.SupplierService.UpdateAsync(userId, supplierId, supplierDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpDelete("{supplierId:guid}")]
@@ -71,6 +71,16 @@ public class SuppliersController : ControllerBase
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.SupplierService.DeleteAsync(userId, supplierId, cancellationToken);
+		return Ok();
+	}
+
+	[HttpDelete("{supplierId:guid}/products/{productId:guid}")]
+	public async Task<IActionResult> DeleteProductFromSupplier(Guid supplierId, Guid productId, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		await _serviceManager.SupplierService.DeleteProductFromSupplierAsync(userId, supplierId, productId, cancellationToken);
 		return Ok();
 	}
 }

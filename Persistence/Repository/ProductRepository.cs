@@ -126,4 +126,6 @@ public class ProductRepository : IProductRepository
 			throw new ArgumentNullException(nameof(product));
 		return product;
 	}
+
+	public async Task<IEnumerable<OptionEntity>> GetOptionsList(CancellationToken cancellationToken = default) => await _dbContext.Options.ToListAsync(cancellationToken);
 }

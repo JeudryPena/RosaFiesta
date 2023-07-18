@@ -6,7 +6,7 @@ namespace Services.Abstractions;
 public interface IDiscountService
 {
 	Task<IEnumerable<ManagementDiscountsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default);
-	Task<DiscountResponse> GetDiscountAsync(Guid discountId, CancellationToken cancellationToken = default);
+	Task<DiscountResponse?> GetOptionDiscount(Guid optionId, CancellationToken cancellationToken = default);
 	Task CreateDiscountAsync(string userId, DiscountDto discount, CancellationToken cancellationToken = default);
 	Task UpdateDiscountAsync(string userId, Guid discountId, DiscountDto discountDto,
 		CancellationToken cancellationToken = default);

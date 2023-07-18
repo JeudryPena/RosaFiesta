@@ -7,11 +7,11 @@ namespace Persistence.Configurations;
 
 internal sealed class RoleConfig : IEntityTypeConfiguration<RoleEntity>
 {
-	private const string adminId = "2301D884-221A-4E7D-B509-0113DCC043E1";
-	private const string clientId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3";
-	private const string productsManagerId = "2301D884-221A-4E7D-B509-0113DCC043E2";
-	private const string salesManagerId = "2301D884-221A-4E7D-B509-0113DCC043E3";
-	private const string marketingManagerId = "2301D884-221A-4E7D-B509-0113DCC043E4";
+	private const string adminRoleId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
+	private const string clientRoleId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3";
+	private const string productsRoleId = "2301d884-221a-4e7d-b509-0113dcc043e1";
+	private const string salesRoleId = "2301d884-221a-4e7d-b509-0113dcc043e2";
+	private const string marketingRoleId = "2301d884-221a-4e7d-b509-0113dcc043e3";
 
 	public void Configure(EntityTypeBuilder<RoleEntity> builder)
 	{
@@ -19,31 +19,31 @@ internal sealed class RoleConfig : IEntityTypeConfiguration<RoleEntity>
 		builder.HasData(
 			new RoleEntity
 			{
-				Id = adminId,
+				Id = adminRoleId,
 				Name = "Admin",
 				NormalizedName = "ADMIN"
 			},
 			new RoleEntity
 			{
-				Id = clientId,
+				Id = clientRoleId,
 				Name = "Client",
 				NormalizedName = "CLIENT"
 			},
 			new RoleEntity
 			{
-				Id = productsManagerId,
+				Id = productsRoleId,
 				Name = "ProductsManager",
 				NormalizedName = "PRODUCTSMANAGER"
 			},
 			new RoleEntity
 			{
-				Id = salesManagerId,
+				Id = salesRoleId,
 				Name = "SalesManager",
 				NormalizedName = "SALESMANAGER"
 			},
 			new RoleEntity
 			{
-				Id = marketingManagerId,
+				Id = marketingRoleId,
 				Name = "MarketingManager",
 				NormalizedName = "MARKETINGMANAGER"
 			}

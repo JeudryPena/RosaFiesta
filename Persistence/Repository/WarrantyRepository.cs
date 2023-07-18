@@ -17,21 +17,21 @@ internal sealed class WarrantyRepository : IWarrantyRepository
 	public async Task<IEnumerable<WarrantyEntity>> GetWarrantiesList(CancellationToken cancellationToken = default) => await _dbContext.Warranties.ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<WarrantyEntity>> GetAllManagementAsync(CancellationToken cancellationToken = default) =>
-		await _dbContext.Warranties.Include(x => x.Products).ToListAsync(cancellationToken);
+		await _dbContext.Warranties.Include(x => x.Products).ThenInclude(x => x.Option).ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<WarrantyEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-	=> await _dbContext.Warranties.ToListAsync(cancellationToken);
+	=> await _dbContext.Warranties.Include(x => x.Products).ThenInclude(x => x.Option).ToListAsync(cancellationToken);
 
 	public async Task<WarrantyEntity> GetByIdAsync(Guid warrantyId, CancellationToken cancellationToken = default)
 	{
-		WarrantyEntity? warranty = await _dbContext.Warranties.Include(x => x.Products).FirstOrDefaultAsync(x => x.Id == warrantyId, cancellationToken);
+		WarrantyEntity? warranty = await _dbContext.Warranties.Include(x => x.Products).ThenInclude(x => x.Option).FirstOrDefaultAsync(x => x.Id == warrantyId, cancellationToken);
 		if (warranty == null)
 			throw new NullReferenceException($"Warranty with id {warrantyId} not found");
 		return warranty;
 	}
+
 	public void Insert(WarrantyEntity warrantyEntity) => _dbContext.Warranties.Add(warrantyEntity);
 	public void Update(WarrantyEntity warranty) => _dbContext.Warranties.Update(warranty);
-
 	public void Delete(WarrantyEntity warranty)
 	=> _dbContext.Warranties.Remove(warranty);
 }

@@ -22,15 +22,22 @@ internal sealed class WarrantyService : IWarrantyService
 
 	public async Task<IEnumerable<WarrantiesListResponse>> GetAllForAdminAsync(CancellationToken cancellationToken = default)
 	{
-		IEnumerable<WarrantyEntity> warranty = await _repositoryManager.WarrantyRepository.GetWarrantiesList(cancellationToken);
-		var warrantyResponse = warranty.Adapt<IEnumerable<WarrantiesListResponse>>();
+		IEnumerable<WarrantyEntity> warranties = await _repositoryManager.WarrantyRepository.GetWarrantiesList(cancellationToken);
+
+		var warrantyResponse = warranties.Adapt<IEnumerable<WarrantiesListResponse>>();
 		return warrantyResponse;
 	}
 
 	public async Task<IEnumerable<WarrantiesManagementResponse>> GetAllForManagementAsync(CancellationToken cancellationToken = default)
 	{
-		IEnumerable<WarrantyEntity> warranty = await _repositoryManager.WarrantyRepository.GetAllManagementAsync(cancellationToken);
-		var warrantyResponse = warranty.Adapt<IEnumerable<WarrantiesManagementResponse>>();
+		IEnumerable<WarrantyEntity> warranties = await _repositoryManager.WarrantyRepository.GetAllManagementAsync(cancellationToken);
+		foreach (var warranty in warranties)
+		{
+			warranty.CreatedBy = await _repositoryManager.UserRepository.GetUserName(warranty.CreatedBy, cancellationToken);
+			if (warranty.UpdatedBy != null)
+				warranty.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(warranty.UpdatedBy, cancellationToken);
+		}
+		var warrantyResponse = warranties.Adapt<IEnumerable<WarrantiesManagementResponse>>();
 		return warrantyResponse;
 	}
 
@@ -50,6 +57,9 @@ internal sealed class WarrantyService : IWarrantyService
 	{
 		WarrantyEntity warranty = await _repositoryManager.WarrantyRepository.GetByIdAsync(warrantyId, cancellationToken);
 		var warrantyResponse = warranty.Adapt<WarrantyResponse>();
+		warrantyResponse.CreatedBy = await _repositoryManager.UserRepository.GetUserName(warranty.CreatedBy, cancellationToken);
+		if (warranty.UpdatedBy != null)
+			warrantyResponse.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(warranty.UpdatedBy, cancellationToken);
 		return warrantyResponse;
 	}
 

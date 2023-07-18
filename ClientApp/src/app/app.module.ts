@@ -116,6 +116,7 @@ import { DownloadComponent } from './components/download/download.component';
 import { ModalWarrantyComponent } from './components/modal-warranty/modal-warranty.component';
 import { ModalSuppliersComponent } from './components/modal-suppliers/modal-suppliers.component';
 import { ModalUserComponent } from './components/modal-user/modal-user.component';
+import { ImgPathPipe } from './shared/pipes/img-path.pipe';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -215,6 +216,7 @@ export function tokenGetter() {
     ModalWarrantyComponent,
     ModalSuppliersComponent,
     ModalUserComponent,
+    ImgPathPipe,
     
   ],
   imports: [
@@ -252,7 +254,7 @@ export function tokenGetter() {
     NgxFileDropModule,
     TooltipModule
   ],
-  providers: [NgbRatingConfig, DecimalPipe
+  providers: [NgbRatingConfig, DecimalPipe, ImgPathPipe
   ],
   bootstrap: [AppComponent],
 })

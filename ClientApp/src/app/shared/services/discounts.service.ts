@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
 import { config } from "../../env/config.prod";
+import { DiscountResponse } from '../../interfaces/Product/Response/discountResponse';
 import { ManagementDiscountsResponse } from '../../interfaces/Product/Response/managementDiscountsResponse';
 import { DiscountDto } from '../../interfaces/Product/discountDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
@@ -90,6 +91,10 @@ export class DiscountsService {
 
   GetDiscountsManagement(): Observable<ManagementDiscountsResponse[]> {
     return this.http.get<ManagementDiscountsResponse[]>(`${this.apiUrl}management`);
+  }
+
+  GetOptionDiscount(id: string): Observable<DiscountResponse> {
+    return this.http.get<DiscountResponse>(`${this.apiUrl}options/${id}`);
   }
 
   DeleteDiscount(id: string) {

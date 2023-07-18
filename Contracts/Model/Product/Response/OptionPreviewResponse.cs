@@ -3,6 +3,7 @@
 public class OptionPreviewResponse : BaseResponse
 {
 	public Guid Id { get; set; }
+	public string Title { get; set; }
 	public double Price { get; set; }
 	public MultipleImagesResponse Image { get; set; }
 	public string Condition { get; set; }

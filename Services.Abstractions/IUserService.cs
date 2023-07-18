@@ -6,8 +6,8 @@ namespace Services.Abstractions;
 public interface IUserService
 {
 	Task<IEnumerable<ManagementUsersResponse>> GetAllUserAsync(CancellationToken cancellationToken = default);
-	Task<UsersResponse> GetUserByIdAsync(string userId, CancellationToken cancellationToken = default);
-	Task UpdateAsync(string? updaterId, string userId, UserForUpdateDto userForUpdateDto,
+	Task<UserResponse> GetUserByIdAsync(string userId, CancellationToken cancellationToken = default);
+	Task UpdateAsync(string? updaterId, string userId, UserForCreationDto userForUpdateDto,
 		CancellationToken cancellationToken = default);
 	Task DeleteAsync(string userId, CancellationToken cancellationToken = default);
 	Task UnlockUserAsync(string userId, string? unlockerId, CancellationToken cancellationToken);

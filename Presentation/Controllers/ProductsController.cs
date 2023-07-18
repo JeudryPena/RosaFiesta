@@ -22,6 +22,13 @@ public class ProductsController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet("options-list")]
+	public async Task<IActionResult> GetOptionsList(CancellationToken cancellationToken)
+	{
+		ICollection<OptionsListResponse> options = await _serviceManager.ProductService.GetOptionsList(cancellationToken);
+		return Ok(options);
+	}
+
 	[HttpGet("productsList")]
 	public async Task<IActionResult> GetProducts(CancellationToken cancellationToken)
 	{

@@ -7,5 +7,5 @@ public class SupplierDto
 	public string? Phone { get; set; }
 	public string? Description { get; set; }
 	public string? Address { get; set; }
-	public ICollection<ProductsDto>? Products { get; set; }
+	public ICollection<ProductsDto>? SupplierProducts { get; set; }
 }

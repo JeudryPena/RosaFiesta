@@ -5,5 +5,4 @@ export interface WarrantyPreviewResponse {
     status: string;
     period: number;
     description: string;
-    conditions: string;
 }

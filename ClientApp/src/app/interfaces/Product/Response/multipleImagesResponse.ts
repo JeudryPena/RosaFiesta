@@ -1,5 +1,5 @@
 export interface MultipleImagesResponse {
-	id: number;
+	id: string;
 	image: string;
 	optionId: string;
 }

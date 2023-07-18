@@ -7,6 +7,7 @@ import { SupplierResponse } from '../../interfaces/Product/Response/supplierResp
 import { NgbdSortableHeader, SortEvent } from '../../shared/directives/sortable.directive';
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { ModalDiscountComponent } from '../modal-discount/modal-discount.component';
+import { ModalSuppliersComponent } from '../modal-suppliers/modal-suppliers.component';
 
 @Component({
   selector: 'app-management-suppliers',
@@ -39,18 +40,18 @@ export class ManagementSuppliersComponent {
     this.total$ = this.service.total$;
   }
 
-  Retrieve(code: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
-    modalRef.componentInstance.title = 'Consultar descuento';
-    modalRef.componentInstance.code = code;
+  Retrieve(id: string) {
+    const modalRef = this.modalService.open(ModalSuppliersComponent, { size: 'lg', scrollable: true });
+    modalRef.componentInstance.title = 'Consultar suplidor';
+    modalRef.componentInstance.id = id;
     modalRef.componentInstance.read = true;
   }
 
-  Modify(code: string) {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+  Modify(id: string) {
+    const modalRef = this.modalService.open(ModalSuppliersComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Modificar suplidor';
     modalRef.componentInstance.update = true;
-    modalRef.componentInstance.code = code;
+    modalRef.componentInstance.id = id;
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
@@ -108,7 +109,7 @@ export class ManagementSuppliersComponent {
   }
 
   AddSupplier() {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalSuppliersComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Añadir suplidor';
     modalRef.result.then((result) => {
       if (result)

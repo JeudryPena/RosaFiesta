@@ -21,7 +21,7 @@
             </div>
 
             <div class="input-container" [ngClass]="{'focus': phoneFocused || phoneInput.value.length > 0 }">
-                <input [readOnly]="read" #phoneInput type="string" formControlName="string" class="input" 
+                <input [readOnly]="read" #phoneInput type="text" formControlName="phone" class="input" 
                     minlength="3" maxlength="50" (focus)="phoneFocused = true" (blur)="phoneFocused = false" />
                 <label>Teléfono</label>
                 <span>Teléfono</span>
@@ -33,7 +33,7 @@
                     <input #productsInput type="search" formControlName="products" class="input"
                         (focus)="productsFocused = true;" (blur)="productsFocused = false" id="typeahead-focus"
                         [adaptivePosition]="true" [(ngModel)]="selected" [typeaheadSingleWords]="true"
-                        [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="option.name"
+                        [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="option.title"
                         (typeaheadOnSelect)="onSelect($event)" [typeaheadMinLength]="0" [typeaheadWaitMs]="100"
                         [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
                 </div>
@@ -45,7 +45,7 @@
                     <li>
                         <div class="input-group">
                             <button type="text" class="btn text-md-start list btn-outline-light wrapper">{{i+1}}.
-                                {{product.option.name}}</button>
+                                {{product.option.title}}</button>
                             <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
                                 (click)="removeProduct(i)">
                                 <i class="fas fa-trash"></i>
@@ -64,8 +64,8 @@
                 <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
                         corta</strong></h5></div>
             <div class="input-container" [ngClass]="{'focus': addressFocused || nameInput.value.length > 0 }">
-                <input [readOnly]="read" #addressInput type="text" formControlName="address" class="input" 
-                    minlength="3" maxlength="250" (focus)="addressFocused = true" (blur)="addressFocused = false" />
+                <textarea [readOnly]="read" #addressInput type="text" formControlName="address" class="input" 
+                    minlength="3" maxlength="250" (focus)="addressFocused = true" (blur)="addressFocused = false"></textarea>
                 <label>Dirección</label>
                 <span>Dirección</span>
                 <h5 *ngIf="validate('address', 'minlength', addressFocused)">La dirección es<strong> muy corta</strong></h5>
@@ -103,7 +103,7 @@
                 <div class="d-flex justify-content-between">
                     <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
                     <input type="submit" value="Actualizar" [disabled]="!supplierForm.valid" class="btn submit"
-                        (click)="updateWarranty(supplierForm.value)" />
+                        (click)="updateSupplier(supplierForm.value)" />
                 </div>
             </ng-template>
         </form>

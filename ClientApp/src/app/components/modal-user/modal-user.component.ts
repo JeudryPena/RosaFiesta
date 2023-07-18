@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -5,6 +6,7 @@ import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { RolesListResponse } from '../../interfaces/Security/Response/rolesListResponse';
+import { UserResponse } from '../../interfaces/Security/Response/userResponse';
 import { UserForCreationDto } from '../../interfaces/Security/userForCreationDto';
 import { UsersService } from '../../shared/services/users.service';
 
@@ -20,6 +22,10 @@ export class ModalUserComponent {
   @Input() title: string = '';
   @Input() id: string = '';
 
+  minDate!: Date;
+  maxDate!: Date;
+  date!: Date;
+
   userForm: any;
   roles: any[] = [];
   selected?: string;
@@ -34,7 +40,7 @@ export class ModalUserComponent {
   birthDateFocused = false;
   nameFocused = false;
   lastNameFocused = false;
-  roleIdFocused = false;
+  userRolesFocused = false;
   promotionalMailsFocused = false;
 
   constructor(
@@ -45,68 +51,103 @@ export class ModalUserComponent {
   ) {
   }
 
+  changeTime(event: any) {
+    const datePipe = new DatePipe('en-US');
+    this.userForm.patchValue({
+      birthDate: datePipe.transform(event, 'yyyy-MM-dd')
+    })
+  }
+
   onSelect(event: TypeaheadMatch): void {
     this.roles.push({
-      id: event.item.id,
+      roleId: event.item.id,
       name: event.item.name
     });
     this.selected = '';
   }
 
   ngOnInit(): void {
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.minDate.setDate(this.minDate.getDate() - 47450)
+
     this.userForm = new FormGroup({
       userName: new FormControl(''),
       email: new FormControl(''),
       password: new FormControl(''),
       confirmPassword: new FormControl(''),
       birthDate: new FormControl(''),
+      date: new FormControl(''),
       name: new FormControl(''),
       lastName: new FormControl(''),
-      roleId: new FormControl(''),
+      userRoles: new FormControl(''),
       promotionalMails: new FormControl(false),
     });
-    if (this.update) {
-      // this.service.GetManagement(this.id).subscribe((response: ManagementUsersResponse) => {
-      //   this.usersForm.patchValue({
-      //     userName: response.userName,
-      //     email: response.email,
-          
-      //   });
-
-      //   this.products = response.products || [];
-      // });
-    } else if (this.read) {
-      // this.supplierForm = new FormGroup({
-      //   name: new FormControl(''),
-      //   email: new FormControl(''),
-      //   phone: new FormControl(''),
-      //   description: new FormControl(''),
-      //   address: new FormControl(''),
-      //   products: new FormControl(''),
-      //   createdAt: new FormControl(''),
-      //   createdBy: new FormControl(''),
-      //   updatedAt: new FormControl(''),
-      //   updatedBy: new FormControl('')
-      // })
-
-      // this.service.GetManagement(this.id).subscribe((response: SupplierResponse) => {
-
-      //   this.supplierForm.patchValue({
-      //     name: response.name,
-      //     email: response.email,
-      //     phone: response.phone,
-      //     description: response.description,
-      //     address: response.address,
-      //     createdAt: response.createdAt,
-      //     createdBy: response.createdBy,
-      //     updatedAt: response.updatedAt,
-      //     updatedBy: response.updatedBy,
-      //   });
-
-      //   this.products = response.products || [];
-      // });
+    if (!this.update && !this.read) {
+      this.RetrieveNavigation();
     }
+    else if (this.update) {
+      this.service.GetManagement(this.id).subscribe((response: UserResponse) => {
+        this.userForm.patchValue({
+          userName: response.userName,
+          email: response.email,
+          birthDate: response.birthDate,
+          promotionalMails: response.promotionalMails,
 
+        });
+
+        let splitName = response.fullName.split(' ');
+
+        let firstName = splitName.slice(0, (splitName.length / 2)).join(' ');
+        let lastName = splitName.slice((splitName.length / 2)).join(' ');
+        this.userForm.patchValue({
+          name: firstName,
+          lastName: lastName
+        });
+
+
+        this.roles = response.userRoles.map(userRole => userRole.role) || [];
+      });
+      this.RetrieveNavigation();
+    } else if (this.read) {
+      this.userForm = new FormGroup({
+        userName: new FormControl(''),
+        email: new FormControl(''),
+        password: new FormControl(''),
+        confirmPassword: new FormControl(''),
+        birthDate: new FormControl(''),
+        date: new FormControl(''),
+        name: new FormControl(''),
+        lastName: new FormControl(''),
+        userRoles: new FormControl(''),
+        promotionalMails: new FormControl(false),
+        createdAt: new FormControl(''),
+        createdBy: new FormControl(''),
+        updatedAt: new FormControl(''),
+        updatedBy: new FormControl(''),
+      })
+
+      this.service.GetManagement(this.id).subscribe((response: UserResponse) => {
+
+        this.userForm.patchValue({
+          userName: response.userName,
+          email: response.email,
+          birthDate: response.birthDate,
+          promotionalMails: response.promotionalMails,
+          createdAt: response.createdAt,
+          createdBy: response.createdBy,
+          updatedAt: response.updatedAt,
+          updatedBy: response.updatedBy,
+        });
+
+        console.log(response)
+
+        this.roles = response.userRoles.map(userRole => userRole.role) || [];
+      });
+    }
+  }
+
+  RetrieveNavigation() {
     this.service.GetRolesList().subscribe({
       next: (response: RolesListResponse[]) => {
         this.rolesList = response;
@@ -131,24 +172,24 @@ export class ModalUserComponent {
 
   updateUser = (userFormValue: any) => {
     const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
-    modalRef.componentInstance.title = '¿Desea actualizar el usuario?';
+    modalRef.componentInstance.title = '¿Desea actualizar el Usuario?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
         const user = { ...userFormValue };
-        const UserForCreationDto: UserForCreationDto = {
+        const UserForUpdateDto: UserForCreationDto = {
           userName: user.userName,
           email: user.email,
           password: user.password,
           confirmPassword: user.confirmPassword,
-          birthDate: user.birthDate,
+          birthDate: this.date.toISOString(),
           name: user.name,
           lastName: user.lastName,
-          roleId: user.roleId,
-          promotionalMails: user.promotionalMails,                    
+          rolesId: this.roles,
+          promotionalMails: user.promotionalMails,
         }
-        this.service.Update(this.id, UserForCreationDto).subscribe({
+        this.service.Update(this.id, UserForUpdateDto).subscribe({
           next: () => {
             const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
             modalRef.componentInstance.title = 'Usuario actualizado!';
@@ -176,16 +217,15 @@ export class ModalUserComponent {
     modalRef.result.then(result => {
       if (result) {
         const user = { ...userFormValue };
-
         const UserForCreationDto: UserForCreationDto = {
-          userName: user.name,
+          userName: user.userName,
           email: user.email,
           password: user.password,
           confirmPassword: user.confirmPassword,
           birthDate: user.birthDate,
           name: user.name,
           lastName: user.lastName,
-          roleId: user.roleId,
+          rolesId: this.roles,
           promotionalMails: user.promotionalMails,
         }
 

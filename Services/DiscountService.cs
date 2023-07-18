@@ -42,11 +42,12 @@ internal sealed class DiscountService : IDiscountService
 		return discountResponse;
 	}
 
-	public async Task<DiscountResponse> GetDiscountAsync(Guid discountId,
+	public async Task<DiscountResponse?> GetOptionDiscount(Guid optionId,
 		CancellationToken cancellationToken = default)
 	{
-		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetByIdAsync(discountId, cancellationToken);
-
+		DiscountEntity? discount = await _repositoryManager.DiscountRepository.GetOptionDiscountAsync(optionId, cancellationToken);
+		if (discount == null)
+			return null;
 		var discountResponse = discount.Adapt<DiscountResponse>();
 		return discountResponse;
 	}

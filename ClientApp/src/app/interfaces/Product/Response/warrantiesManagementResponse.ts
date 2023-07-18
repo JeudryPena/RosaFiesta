@@ -8,6 +8,5 @@ export interface WarrantiesManagementResponse extends ByBaseResponse {
     status: string;
     period: number;
     description: string;
-    conditions: string;
     products: ProductsListResponse[];
 }

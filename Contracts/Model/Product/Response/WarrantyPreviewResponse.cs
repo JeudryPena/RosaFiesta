@@ -8,5 +8,4 @@ public class WarrantyPreviewResponse
 	public string Status { get; set; }
 	public int Period { get; set; }
 	public string Description { get; set; }
-	public string Conditions { get; set; }
 }

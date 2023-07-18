@@ -8,44 +8,45 @@ namespace Persistence.Configurations;
 public class UserRolesConfig : IEntityTypeConfiguration<UserRole>
 {
 	private const string adminUserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
-	private const string adminRoleId = "2301D884-221A-4E7D-B509-0113DCC043E1";
-	private const string clientUserId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3";
-	private const string productUserId = "2301D884-221A-4E7D-B509-0113DCC043E1";
-	private const string salesUserId = "2301D884-221A-4E7D-B509-0113DCC043E2";
-	private const string marketingUserId = "2301D884-221A-4E7D-B509-0113DCC043E3";
-	private const string clientRoleId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3";
-	private const string productsRoleId = "2301D884-221A-4E7D-B509-0113DCC043E2";
-	private const string salesRoleId = "2301D884-221A-4E7D-B509-0113DCC043E3";
-	private const string marketingRoleId = "2301D884-221A-4E7D-B509-0113DCC043E4";
+	private const string userId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3";
+	private const string productManagerId = "2301d884-221a-4e7d-b509-0113dcc043e1";
+	private const string salesManagerId = "2301d884-221a-4e7d-b509-0113dcc043e2";
+	private const string marketingManagerId = "2301d884-221a-4e7d-b509-0113dcc043e3";
+
+	private const string adminRoleId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7";
+	private const string clientRoleId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3";
+	private const string productsRoleId = "2301d884-221a-4e7d-b509-0113dcc043e1";
+	private const string salesRoleId = "2301d884-221a-4e7d-b509-0113dcc043e2";
+	private const string marketingRoleId = "2301d884-221a-4e7d-b509-0113dcc043e3";
 
 	public void Configure(EntityTypeBuilder<UserRole> builder)
 	{
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		UserRole iur = new UserRole
 		{
-			
+
 			RoleId = adminRoleId,
 			UserId = adminUserId
 		};
 		UserRole iur2 = new UserRole
 		{
 			RoleId = clientRoleId,
-			UserId = clientUserId
+			UserId = userId,
 		};
 		UserRole iur3 = new UserRole
 		{
 			RoleId = productsRoleId,
-			UserId = productUserId
+			UserId = productManagerId
 		};
 		UserRole iur4 = new UserRole
 		{
 			RoleId = salesRoleId,
-			UserId = salesUserId
+			UserId = salesManagerId
 		};
 		UserRole iur5 = new UserRole
 		{
 			RoleId = marketingRoleId,
-			UserId = marketingUserId
+			UserId = marketingManagerId
 		};
 
 		builder.HasData(iur);

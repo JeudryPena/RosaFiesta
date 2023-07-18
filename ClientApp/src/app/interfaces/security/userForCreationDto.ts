@@ -1,11 +1,13 @@
+import { UserRolesDto } from "./user-roles-dto";
+
 export interface UserForCreationDto {
 	userName: string;
 	email: string;
 	password: string;
 	confirmPassword: string;
-	birthDate: Date;
+	birthDate: string;
 	name: string;
 	lastName: string;
-	roleId: string[];
+	rolesId: UserRolesDto[];
 	promotionalMails: boolean;
 }

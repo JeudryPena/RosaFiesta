@@ -127,4 +127,11 @@ internal sealed class ProductService : IProductService
 		List<string> images = await _repositoryManager.ProductRepository.GetOptionImages(optionId, cancellationToken);
 		return images;
 	}
+
+	public async Task<ICollection<OptionsListResponse>> GetOptionsList(CancellationToken cancellationToken = default)
+	{
+		IEnumerable<OptionEntity> options = await _repositoryManager.ProductRepository.GetOptionsList(cancellationToken);
+		ICollection<OptionsListResponse> optionsListResponse = options.Adapt<ICollection<OptionsListResponse>>();
+		return optionsListResponse;
+	}
 }

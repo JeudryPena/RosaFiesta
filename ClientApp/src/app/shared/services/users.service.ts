@@ -7,10 +7,10 @@ import { ManagementUsersResponse } from '../../interfaces/Security/Response/mana
 import { RolesListResponse } from '../../interfaces/Security/Response/rolesListResponse';
 import { UsersListResponse } from '../../interfaces/Security/Response/usersListResponse';
 import { UserForCreationDto } from '../../interfaces/Security/userForCreationDto';
-import { UserForUpdateDto } from '../../interfaces/Security/userForUpdateDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
+import { UserResponse } from '../../interfaces/Security/Response/userResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -82,12 +82,12 @@ export class UsersService {
     return this.http.post(this.apiUrl, user);
   }
 
-  Update(id: string, user: UserForUpdateDto) {
+  Update(id: string, user: UserForCreationDto) {
     return this.http.put(`${this.apiUrl}${id}`, user);
   }
 
-  GetManagement(id: string): Observable<ManagementUsersResponse> {
-    return this.http.get<ManagementUsersResponse>(`${this.apiUrl}${id}`);
+  GetManagement(id: string): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.apiUrl}${id}`);
   }
 
   Get(): Observable<ManagementUsersResponse[]> {

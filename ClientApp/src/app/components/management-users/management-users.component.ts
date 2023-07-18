@@ -43,7 +43,7 @@ export class ManagementUsersComponent {
   Retrieve(id: string) {
     const modalRef = this.modalService.open(ModalUserComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Consultar usuario';
-    modalRef.componentInstance.code = id;
+    modalRef.componentInstance.id = id;
     modalRef.componentInstance.read = true;
   }
 
@@ -51,7 +51,7 @@ export class ManagementUsersComponent {
     const modalRef = this.modalService.open(ModalUserComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Modificar usuario';
     modalRef.componentInstance.update = true;
-    modalRef.componentInstance.code = id;
+    modalRef.componentInstance.id = id;
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
@@ -110,7 +110,7 @@ export class ManagementUsersComponent {
   }
 
   Add() {
-    const modalRef = this.modalService.open(ModalDiscountComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalUserComponent, { size: 'lg', scrollable: true });
     modalRef.componentInstance.title = 'Añadir usuario';
     modalRef.result.then((result) => {
       if (result)

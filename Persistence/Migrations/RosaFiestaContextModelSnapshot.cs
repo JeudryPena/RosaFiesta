@@ -400,33 +400,33 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            CartId = new Guid("2301d884-221a-4e7d-b509-0113dcc043e3"),
+                            CartId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f7"),
                             IsDeleted = false,
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
-                            CartId = new Guid("2301d884-221a-4e7d-b509-0113dcc043e2"),
+                            CartId = new Guid("7d9b7113-a8f8-4035-99a7-a20dd400f6a3"),
                             IsDeleted = false,
-                            UserId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3"
+                            UserId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3"
                         },
                         new
                         {
                             CartId = new Guid("2301d884-221a-4e7d-b509-0113dcc043e1"),
                             IsDeleted = false,
-                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E1"
+                            UserId = "2301d884-221a-4e7d-b509-0113dcc043e1"
                         },
                         new
                         {
-                            CartId = new Guid("7d9b7113-a8f8-4035-99a7-a20dd400f6a3"),
+                            CartId = new Guid("2301d884-221a-4e7d-b509-0113dcc043e2"),
                             IsDeleted = false,
-                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E2"
+                            UserId = "2301d884-221a-4e7d-b509-0113dcc043e2"
                         },
                         new
                         {
-                            CartId = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f7"),
+                            CartId = new Guid("2301d884-221a-4e7d-b509-0113dcc043e3"),
                             IsDeleted = false,
-                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E3"
+                            UserId = "2301d884-221a-4e7d-b509-0113dcc043e3"
                         });
                 });
 
@@ -842,35 +842,35 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
+                            Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             IsDeleted = false,
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
+                            Id = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3",
                             IsDeleted = false,
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            Id = "2301d884-221a-4e7d-b509-0113dcc043e1",
                             IsDeleted = false,
                             Name = "ProductsManager",
                             NormalizedName = "PRODUCTSMANAGER"
                         },
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            Id = "2301d884-221a-4e7d-b509-0113dcc043e2",
                             IsDeleted = false,
                             Name = "SalesManager",
                             NormalizedName = "SALESMANAGER"
                         },
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E4",
+                            Id = "2301d884-221a-4e7d-b509-0113dcc043e3",
                             IsDeleted = false,
                             Name = "MarketingManager",
                             NormalizedName = "MARKETINGMANAGER"
@@ -1017,8 +1017,8 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 1),
-                            ConcurrencyStamp = "444bbd2b-362b-4245-b892-63478826ec94",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6422), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "27a50021-3d13-4576-994f-6baa8193beba",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(878), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
@@ -1026,21 +1026,21 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMIHgCq7Kc2qr4mtYdFXmXsORv/D4PlBcXM3XIW64jGhqe75UME6Fv/qnV4S053p4Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI1NfjihrFYSvMRxphlS0jTwJUlgWPtWXrOmLW3b1cKDwfwe78IdkGNvLfGz0N1hYQ==",
                             PhoneNumber = "18497505944",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "9c8c1798-86eb-4078-b28e-80c224906b12",
+                            SecurityStamp = "742aad4a-0bbe-41b2-a395-fa1db3b98583",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         },
                         new
                         {
-                            Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
+                            Id = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 2),
-                            ConcurrencyStamp = "70d64b2a-9294-40a9-a7d3-a4b11a8b5612",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6654), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "c345d409-a072-4a3a-a1c8-017ef45c1b9d",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1069), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosanny Pena",
@@ -1048,21 +1048,21 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
                             NormalizedUserName = "ROSANNY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAtL5bPRZmGG4T7cmevL+ehDLxLUXd/sYpb04KbzUvJmTU1zy2BU94dwg5UmYOLaRA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFolABg9UVxdDOaMpQhCQWUs2+2WPNZ/Fq+tQfypxcy8aPnwm3E/I5FrY1CRhFTicA==",
                             PhoneNumber = "18497505945",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "5d28d05b-1c0f-4881-9904-6415d7bd0c00",
+                            SecurityStamp = "8134588c-c2b3-45ec-9a10-1ab064c619e4",
                             TwoFactorEnabled = false,
                             UserName = "Rosanny"
                         },
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
+                            Id = "2301d884-221a-4e7d-b509-0113dcc043e1",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 3),
-                            ConcurrencyStamp = "b0fe1397-457f-49f2-bbc5-b00269230b87",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6682), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "393a3056-9676-47ce-a44a-41611d0a3ed0",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1106), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosalba Pena",
@@ -1070,21 +1070,21 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
                             NormalizedUserName = "ROSALBA2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEALP5Ucedhcxc/B1hNGZepAg1/TRrKTcww5mqG4R9DW5z8dst60Q8GejIhdxwB6+Og==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDw8IN4anoo+RbmhQdqdagHtmGw/bCxXysFceKaqihnB9FlDHa29nsa7sr7CvymQgw==",
                             PhoneNumber = "18497505946",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "cb457535-0314-46ae-ba34-8bc92f75dd70",
+                            SecurityStamp = "003f602d-8977-4d6d-b133-afa50cb6a929",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba2"
                         },
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            Id = "2301d884-221a-4e7d-b509-0113dcc043e2",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 4),
-                            ConcurrencyStamp = "c51b83cd-6b8c-46cf-8b27-15570a11f848",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6708), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "edc30f8b-2a19-4545-a14e-eb8d0c3fbb55",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Jendry Pena",
@@ -1092,21 +1092,21 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
                             NormalizedUserName = "JENDRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA3fdeSQbHUQ9MLTff6Vb7rGpsfGjj4ZDvVt6FaxS+Ua0OkXz99EC7izo7INdV7/CQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOhHmvqg9aBkSqQku034CT5n91pxh27rynK6ffbWjT2G/ciEkByk2PtkMEuVVK688g==",
                             PhoneNumber = "18497505947",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "e40ae66e-cf6a-4fac-8098-d4d438ccb5d8",
+                            SecurityStamp = "4f9d5c28-101c-449c-ada3-febbe28e03b2",
                             TwoFactorEnabled = false,
                             UserName = "Jendry"
                         },
                         new
                         {
-                            Id = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            Id = "2301d884-221a-4e7d-b509-0113dcc043e3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 5),
-                            ConcurrencyStamp = "e99a8e53-dce0-442d-b92d-104f01ecf49e",
-                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6722), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "edf47029-1ffd-4138-99ce-c0aa426daa3a",
+                            CreatedAt = new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1137), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Rosmery Pena",
@@ -1114,11 +1114,11 @@ namespace Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK59szONoFVXgyV6+zFuPGfmaKjzWchNLiS/wS1e+7ymdZWtz7Po0jJCCU1dgKAwKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELCJuSWaA4coSyDqqFG/hBCgTuRFijlkGy8hVENGzoCuykz2SIeSpqv94AsHqVGqGg==",
                             PhoneNumber = "18497505948",
                             PhoneNumberConfirmed = true,
                             PromotionalMails = false,
-                            SecurityStamp = "6e5eb7e9-da5c-47db-a917-468accfe6ef4",
+                            SecurityStamp = "89516410-f20f-4e2c-8f56-72db2040609d",
                             TwoFactorEnabled = false,
                             UserName = "Rosmery"
                         });
@@ -1167,31 +1167,31 @@ namespace Persistence.Migrations
                         new
                         {
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
-                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E1",
+                            RoleId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             IsDeleted = false
                         },
                         new
                         {
-                            UserId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
-                            RoleId = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
+                            UserId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3",
+                            RoleId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3",
                             IsDeleted = false
                         },
                         new
                         {
-                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E1",
-                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E2",
+                            UserId = "2301d884-221a-4e7d-b509-0113dcc043e1",
+                            RoleId = "2301d884-221a-4e7d-b509-0113dcc043e1",
                             IsDeleted = false
                         },
                         new
                         {
-                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E2",
-                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E3",
+                            UserId = "2301d884-221a-4e7d-b509-0113dcc043e2",
+                            RoleId = "2301d884-221a-4e7d-b509-0113dcc043e2",
                             IsDeleted = false
                         },
                         new
                         {
-                            UserId = "2301D884-221A-4E7D-B509-0113DCC043E3",
-                            RoleId = "2301D884-221A-4E7D-B509-0113DCC043E4",
+                            UserId = "2301d884-221a-4e7d-b509-0113dcc043e3",
+                            RoleId = "2301d884-221a-4e7d-b509-0113dcc043e3",
                             IsDeleted = false
                         });
                 });

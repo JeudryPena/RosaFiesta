@@ -704,11 +704,11 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "IsDeleted", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", null, false, "Admin", "ADMIN" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", null, false, "ProductsManager", "PRODUCTSMANAGER" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", null, false, "SalesManager", "SALESMANAGER" },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E4", null, false, "MarketingManager", "MARKETINGMANAGER" },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", null, false, "Client", "CLIENT" }
+                    { "2301d884-221a-4e7d-b509-0113dcc043e1", null, false, "ProductsManager", "PRODUCTSMANAGER" },
+                    { "2301d884-221a-4e7d-b509-0113dcc043e2", null, false, "SalesManager", "SALESMANAGER" },
+                    { "2301d884-221a-4e7d-b509-0113dcc043e3", null, false, "MarketingManager", "MARKETINGMANAGER" },
+                    { "7d9b7113-a8f8-4035-99a7-a20dd400f6a3", null, false, "Client", "CLIENT" },
+                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", null, false, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -717,11 +717,11 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "CreatedAt", "CreatedBy", "DefaultAddressId", "DefaultPayMethodId", "Email", "EmailConfirmed", "FullName", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PromotionalMails", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UpdatedBy", "UserName", "WishListId" },
                 values: new object[,]
                 {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", 0, new DateOnly(1999, 1, 3), "b0fe1397-457f-49f2-bbc5-b00269230b87", new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6682), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSALBA2", "AQAAAAIAAYagAAAAEALP5Ucedhcxc/B1hNGZepAg1/TRrKTcww5mqG4R9DW5z8dst60Q8GejIhdxwB6+Og==", "18497505946", true, false, null, null, "cb457535-0314-46ae-ba34-8bc92f75dd70", false, null, null, "Rosalba2", null },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", 0, new DateOnly(1999, 1, 4), "c51b83cd-6b8c-46cf-8b27-15570a11f848", new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6708), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEA3fdeSQbHUQ9MLTff6Vb7rGpsfGjj4ZDvVt6FaxS+Ua0OkXz99EC7izo7INdV7/CQ==", "18497505947", true, false, null, null, "e40ae66e-cf6a-4fac-8098-d4d438ccb5d8", false, null, null, "Jendry", null },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", 0, new DateOnly(1999, 1, 5), "e99a8e53-dce0-442d-b92d-104f01ecf49e", new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6722), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAEK59szONoFVXgyV6+zFuPGfmaKjzWchNLiS/wS1e+7ymdZWtz7Po0jJCCU1dgKAwKQ==", "18497505948", true, false, null, null, "6e5eb7e9-da5c-47db-a917-468accfe6ef4", false, null, null, "Rosmery", null },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", 0, new DateOnly(1999, 1, 2), "70d64b2a-9294-40a9-a7d3-a4b11a8b5612", new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6654), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAEAtL5bPRZmGG4T7cmevL+ehDLxLUXd/sYpb04KbzUvJmTU1zy2BU94dwg5UmYOLaRA==", "18497505945", true, false, null, null, "5d28d05b-1c0f-4881-9904-6415d7bd0c00", false, null, null, "Rosanny", null },
-                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, new DateOnly(1999, 1, 1), "444bbd2b-362b-4245-b892-63478826ec94", new DateTimeOffset(new DateTime(2023, 7, 16, 17, 1, 52, 122, DateTimeKind.Unspecified).AddTicks(6422), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEMIHgCq7Kc2qr4mtYdFXmXsORv/D4PlBcXM3XIW64jGhqe75UME6Fv/qnV4S053p4Q==", "18497505944", true, false, null, null, "9c8c1798-86eb-4078-b28e-80c224906b12", false, null, null, "Rosalba", null }
+                    { "2301d884-221a-4e7d-b509-0113dcc043e1", 0, new DateOnly(1999, 1, 3), "393a3056-9676-47ce-a44a-41611d0a3ed0", new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1106), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "rosalbapp@gmail.com", true, "Rosalba Pena", false, false, null, "ROSALBAPP@GMAIL.COM", "ROSALBA2", "AQAAAAIAAYagAAAAEDw8IN4anoo+RbmhQdqdagHtmGw/bCxXysFceKaqihnB9FlDHa29nsa7sr7CvymQgw==", "18497505946", true, false, null, null, "003f602d-8977-4d6d-b133-afa50cb6a929", false, null, null, "Rosalba2", null },
+                    { "2301d884-221a-4e7d-b509-0113dcc043e2", 0, new DateOnly(1999, 1, 4), "edc30f8b-2a19-4545-a14e-eb8d0c3fbb55", new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "jendrypp@gmail.com", true, "Jendry Pena", false, false, null, "JENDRYPP@GMAIL.COM", "JENDRY", "AQAAAAIAAYagAAAAEOhHmvqg9aBkSqQku034CT5n91pxh27rynK6ffbWjT2G/ciEkByk2PtkMEuVVK688g==", "18497505947", true, false, null, null, "4f9d5c28-101c-449c-ada3-febbe28e03b2", false, null, null, "Jendry", null },
+                    { "2301d884-221a-4e7d-b509-0113dcc043e3", 0, new DateOnly(1999, 1, 5), "edf47029-1ffd-4138-99ce-c0aa426daa3a", new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1137), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "rosmerypp@gmail.com", true, "Rosmery Pena", false, false, null, "ROSMERYPP@GMAIL.COM", "ROSMERY", "AQAAAAIAAYagAAAAELCJuSWaA4coSyDqqFG/hBCgTuRFijlkGy8hVENGzoCuykz2SIeSpqv94AsHqVGqGg==", "18497505948", true, false, null, null, "89516410-f20f-4e2c-8f56-72db2040609d", false, null, null, "Rosmery", null },
+                    { "7d9b7113-a8f8-4035-99a7-a20dd400f6a3", 0, new DateOnly(1999, 1, 2), "c345d409-a072-4a3a-a1c8-017ef45c1b9d", new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(1069), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "rosanny@gmail.com", true, "Rosanny Pena", false, false, null, "ROSANNY@GMAIL.COM", "ROSANNY", "AQAAAAIAAYagAAAAEFolABg9UVxdDOaMpQhCQWUs2+2WPNZ/Fq+tQfypxcy8aPnwm3E/I5FrY1CRhFTicA==", "18497505945", true, false, null, null, "8134588c-c2b3-45ec-9a10-1ab064c619e4", false, null, null, "Rosanny", null },
+                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", 0, new DateOnly(1999, 1, 1), "27a50021-3d13-4576-994f-6baa8193beba", new DateTimeOffset(new DateTime(2023, 7, 17, 12, 51, 44, 144, DateTimeKind.Unspecified).AddTicks(878), new TimeSpan(0, -4, 0, 0, 0)), null, null, null, "user@example.com", true, "Rosalba Pena", false, false, null, "USER@EXAMPLE.COM", "ROSALBA", "AQAAAAIAAYagAAAAEI1NfjihrFYSvMRxphlS0jTwJUlgWPtWXrOmLW3b1cKDwfwe78IdkGNvLfGz0N1hYQ==", "18497505944", true, false, null, null, "742aad4a-0bbe-41b2-a395-fa1db3b98583", false, null, null, "Rosalba", null }
                 });
 
             migrationBuilder.InsertData(
@@ -730,11 +730,11 @@ namespace Persistence.Migrations
                 columns: new[] { "CartId", "IsDeleted", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("2301d884-221a-4e7d-b509-0113dcc043e1"), false, "2301D884-221A-4E7D-B509-0113DCC043E1" },
-                    { new Guid("2301d884-221a-4e7d-b509-0113dcc043e2"), false, "7D9B7113-A8F8-4035-99A7-A20DD400F6A3" },
-                    { new Guid("2301d884-221a-4e7d-b509-0113dcc043e3"), false, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" },
-                    { new Guid("7d9b7113-a8f8-4035-99a7-a20dd400f6a3"), false, "2301D884-221A-4E7D-B509-0113DCC043E2" },
-                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f7"), false, "2301D884-221A-4E7D-B509-0113DCC043E3" }
+                    { new Guid("2301d884-221a-4e7d-b509-0113dcc043e1"), false, "2301d884-221a-4e7d-b509-0113dcc043e1" },
+                    { new Guid("2301d884-221a-4e7d-b509-0113dcc043e2"), false, "2301d884-221a-4e7d-b509-0113dcc043e2" },
+                    { new Guid("2301d884-221a-4e7d-b509-0113dcc043e3"), false, "2301d884-221a-4e7d-b509-0113dcc043e3" },
+                    { new Guid("7d9b7113-a8f8-4035-99a7-a20dd400f6a3"), false, "7d9b7113-a8f8-4035-99a7-a20dd400f6a3" },
+                    { new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f7"), false, "b22698b8-42a2-4115-9631-1c2d1e2ac5f7" }
                 });
 
             migrationBuilder.InsertData(
@@ -743,11 +743,11 @@ namespace Persistence.Migrations
                 columns: new[] { "RoleId", "UserId", "IsDeleted" },
                 values: new object[,]
                 {
-                    { "2301D884-221A-4E7D-B509-0113DCC043E2", "2301D884-221A-4E7D-B509-0113DCC043E1", false },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E3", "2301D884-221A-4E7D-B509-0113DCC043E2", false },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E4", "2301D884-221A-4E7D-B509-0113DCC043E3", false },
-                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", false },
-                    { "2301D884-221A-4E7D-B509-0113DCC043E1", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", false }
+                    { "2301d884-221a-4e7d-b509-0113dcc043e1", "2301d884-221a-4e7d-b509-0113dcc043e1", false },
+                    { "2301d884-221a-4e7d-b509-0113dcc043e2", "2301d884-221a-4e7d-b509-0113dcc043e2", false },
+                    { "2301d884-221a-4e7d-b509-0113dcc043e3", "2301d884-221a-4e7d-b509-0113dcc043e3", false },
+                    { "7d9b7113-a8f8-4035-99a7-a20dd400f6a3", "7d9b7113-a8f8-4035-99a7-a20dd400f6a3", false },
+                    { "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", "b22698b8-42a2-4115-9631-1c2d1e2ac5f7", false }
                 });
 
             migrationBuilder.CreateIndex(

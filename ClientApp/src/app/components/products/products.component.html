@@ -1,45 +1,65 @@
 <section class="bg-color">
   <div class="containers">
-    <div class="title">
-      <h2><span>Best</span> Seller</h2>
-    </div>
-    <div class="row">
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-main">
-            <div class="discount"><p class="me-1">Servicio</p></div>
-            <div class="d-flex justify-content-end">
-              <a href="#" class="product-link">Nuevo</a>
+    <ng-container *ngIf="category$ | async as category; else loadOrError">
+      <div class="title">
+        <h2>{{category.name}}</h2>
+      </div>
+      <div class="row" *ngFor="let product of category.products">
+        <div class="col-md-3" >
+          <div class="card">
+            <div class="card-main">
+              <div class="service">
+                <p class="me-1" *ngIf="product.isService; else notService">
+                  Servicio
+                </p>
+                <ng-template #notService>
+                  Venta
+                </ng-template>
+              </div>
+              <div class="d-flex justify-content-end">
+                <a href="#" class="product-link">{{product.option.condition}}</a>
+              </div>
+              <div class="image">
+                <img src="{{product.option.image | imgPath}}" alt="Product">
+              </div>
+              <div class="cart-item">
+                <ul>
+                  <li><a href=""><i class="fa-solid fa-cart-shopping"></i></a></li>
+                  <li><a href=""><i class="fa fa-heart"></i></a></li>
+                  <li><a href=""><i class="fa fa-search"></i></a></li>
+                </ul>
+              </div>
             </div>
-            <div class="image">
-              <img src="{{url}}" alt="Product">
-            </div>
-            <div class="cart-item">
-              <ul>
-                <li><a href=""><i class="fa-solid fa-cart-shopping"></i></a></li>
-                <li><a href=""><i class="fa fa-heart"></i></a></li>
-                <li><a href=""><i class="fa fa-search"></i></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="content">
-            <span class="product-name">Analog Watch - For Men</span>
-            <div class="rating">
-              <app-rating [rating]="3.5"></app-rating>
-              <span>(350)</span>
-            </div>
-            <div class="product-price">
-              <span class="last-price">$257.00 </span>
-              <span class="new-price">$249.00 (5%)</span>
-            </div>
+            <div class="content">
+              <span class="product-name">{{product.option.title}}</span>
+              <div class="rating">
+                <app-rating [rating]="3.5"></app-rating>
+                <span class="review-quantity">{{(product.option.reviews)?.length}}</span>
+              </div>
+              <div class="product-price">
+                <span class="last-price">$257.00 </span>
+                <span class="new-price">${{product.option.price}} (5%)</span>
+              </div>
 
-            <div class="button mt-1 mb-3">
-              <div class="button-layer"></div>
-              <button><i class="fa-solid fa-cart-shopping me-1"></i>Añadir al carrito</button>
+              <div class="button mt-1 mb-3">
+                <div class="button-layer"></div>
+                <button><i class="fa-solid fa-cart-shopping me-1"></i>Añadir al carrito</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template #loadOrError>
+      <section *ngIf="hasError; else loading">
+        Ha ocurrido un error, por favor intente más tarde
+      </section>
+      <ng-template #loading>
+        <div class="loading-container">
+
+          <h3>Cargando...</h3>
+        </div>
+      </ng-template>
+    </ng-template>
   </div>
 </section>

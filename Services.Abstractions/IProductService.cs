@@ -20,4 +20,5 @@ public interface IProductService
 	Task<ICollection<ManagementProductsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default);
 	Task<IList<string>> GetOptionImages(Guid optionId, CancellationToken cancellationToken);
 	Task<ICollection<ProductsListResponse>> GetProductsList(CancellationToken cancellationToken = default);
+	Task<ICollection<OptionsListResponse>> GetOptionsList(CancellationToken cancellationToken = default);
 }

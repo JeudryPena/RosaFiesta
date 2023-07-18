@@ -28,6 +28,12 @@ internal sealed class CategoryService : ICategoryService
 	public async Task<IEnumerable<CategoryManagementResponse>> GetAllCategoriesManagementAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);
+		foreach (var category in categories)
+		{
+			category.CreatedBy = await _repositoryManager.UserRepository.GetUserName(category.CreatedBy, cancellationToken);
+			if (category.UpdatedBy != null)
+				category.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(category.UpdatedBy, cancellationToken);
+		}
 		var categoryResponse = categories.Adapt<IEnumerable<CategoryManagementResponse>>();
 		return categoryResponse;
 	}
@@ -57,6 +63,9 @@ internal sealed class CategoryService : ICategoryService
 	{
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetManagementById(categoryId, cancellationToken);
 		var categoryResponse = category.Adapt<CategoryManagementResponse>();
+		categoryResponse.CreatedBy = await _repositoryManager.UserRepository.GetUserName(category.CreatedBy, cancellationToken);
+		if (category.UpdatedBy != null)
+			categoryResponse.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(category.UpdatedBy, cancellationToken);
 		return categoryResponse;
 	}
 

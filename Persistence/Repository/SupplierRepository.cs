@@ -16,7 +16,7 @@ internal sealed class SupplierRepository : ISupplierRepository
 	=> _dbContext.Suppliers.Remove(supplier);
 
 	public async Task<IEnumerable<SupplierEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-	=> await _dbContext.Suppliers.Include(x => x.Products).ToListAsync(cancellationToken);
+	=> await _dbContext.Suppliers.Include(x => x.Products).ThenInclude(x => x.Option).ToListAsync(cancellationToken);
 
 	public async Task<SupplierEntity> GetByIdAsync(Guid supplierId, CancellationToken cancellationToken = default)
 	{

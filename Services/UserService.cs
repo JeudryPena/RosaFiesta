@@ -32,11 +32,17 @@ internal sealed class UserService : IUserService
 		IEnumerable<UserEntity> users = await _repositoryManager.UserRepository.GetAllAsync(
 			cancellationToken
 		);
+		foreach (UserEntity user in users)
+		{
+			user.CreatedBy = await _repositoryManager.UserRepository.GetUserName(user.CreatedBy, cancellationToken);
+			if (user.UpdatedBy != null)
+				user.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(user.UpdatedBy, cancellationToken);
+		}
 		IEnumerable<ManagementUsersResponse>? usersDto = users.Adapt<IEnumerable<ManagementUsersResponse>>();
 		return usersDto;
 	}
 
-	public async Task<UsersResponse> GetUserByIdAsync(
+	public async Task<UserResponse> GetUserByIdAsync(
 		string userId,
 		CancellationToken cancellationToken = default
 	)
@@ -45,11 +51,14 @@ internal sealed class UserService : IUserService
 			userId,
 			cancellationToken
 		) ?? throw new UserNotFoundException(userId.ToString());
-		UsersResponse usersResponse = user.Adapt<UsersResponse>();
+		UserResponse usersResponse = user.Adapt<UserResponse>();
+		usersResponse.CreatedBy = await _repositoryManager.UserRepository.GetUserName(user.CreatedBy, cancellationToken);
+		if (user.UpdatedBy != null)
+			usersResponse.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(user.UpdatedBy, cancellationToken);
 		return usersResponse;
 	}
 
-	public async Task UpdateAsync(string? username, string userId, UserForUpdateDto userForUpdateDto,
+	public async Task UpdateAsync(string? username, string userId, UserForCreationDto userForUpdateDto,
 		CancellationToken cancellationToken = default)
 	{
 		UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
@@ -58,12 +67,13 @@ internal sealed class UserService : IUserService
 		) ?? throw new UserNotFoundException(userId);
 		user = userForUpdateDto.Adapt(user);
 		user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
+		_repositoryManager.UserRepository.Update(user);
 		IEnumerable<string> newRoles = new List<string>();
-		foreach (var rol in userForUpdateDto.RoleId)
+		foreach (var rol in userForUpdateDto.RolesId)
 		{
-			var role = await _roleManager.FindByIdAsync(rol);
+			var role = await _roleManager.FindByIdAsync(rol.RoleId);
 			if (role == null)
-				throw new NullReferenceException(rol);
+				throw new NullReferenceException(rol.RoleId);
 			newRoles.Append(role.Name);
 		}
 		var currentRoles = await _userManager.GetRolesAsync(user);
@@ -73,7 +83,6 @@ internal sealed class UserService : IUserService
 		var rolesToAdd = newRoles.Except(currentRoles).ToList();
 		foreach (var role in rolesToAdd)
 			await _userManager.AddToRoleAsync(user, role);
-		_repositoryManager.UserRepository.Update(user);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
@@ -110,15 +119,28 @@ internal sealed class UserService : IUserService
 		user.AccessFailedCount = 0;
 		user.SecurityStamp = Guid.NewGuid().ToString();
 		user.Cart = new();
-		foreach (var rol in userForCreationDto.RoleId)
+		var result = await _userManager.CreateAsync(user, userForCreationDto.Password);
+		if (!result.Succeeded)
+			IdentityResultMessage(result);
+		foreach (var rol in userForCreationDto.RolesId)
 		{
-			var role = await _roleManager.FindByIdAsync(rol);
+			var role = await _roleManager.FindByIdAsync(rol.RoleId);
 			if (role == null)
-				throw new NullReferenceException(rol);
-			await _userManager.AddToRoleAsync(user, role.Name);
+				throw new NullReferenceException(rol.RoleId);
+			result = await _userManager.AddToRoleAsync(user, role.Name);
+			if (!result.Succeeded)
+				IdentityResultMessage(result);
 		}
-		await _userManager.CreateAsync(user, userForCreationDto.Password);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+	}
+
+	private void IdentityResultMessage(IdentityResult result)
+	{
+		if (!result.Succeeded)
+		{
+			var errors = result.Errors.Select(e => e.Description);
+			throw new InvalidOperationException(string.Join(", ", errors));
+		}
 	}
 
 	public async Task LockUserAsync(string userId, string? username, CancellationToken cancellationToken = default)

@@ -81,6 +81,7 @@ export class ModalDiscountComponent implements OnInit {
         start: this.minDate,
         end: this.maxDate
       });
+      this.navegationProperties();
     } else if (this.update) {
       this.service.GetManagementDiscount(this.code).subscribe((response: ManagementDiscountsResponse) => {
         let start = new Date(response.start);
@@ -100,6 +101,7 @@ export class ModalDiscountComponent implements OnInit {
           end: this.maxDate
         });
         this.products = response.productsDiscounts || [];
+        this.navegationProperties();
       });
     } else if (this.read) {
       this.discountForm = new FormGroup({
@@ -135,6 +137,10 @@ export class ModalDiscountComponent implements OnInit {
       });
     }
 
+
+  }
+
+  navegationProperties() {
     this.productService.GetOptions().subscribe({
       next: (response: OptionsListResponse[]) => {
         this.optionsList = response;
