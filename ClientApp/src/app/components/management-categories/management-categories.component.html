@@ -35,7 +35,7 @@
                             <tr class="scroll" *ngFor="let item of categories$ | async ">
                                 <td><ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
                                 <td>
-                                    <img [src]="'' + item.icon" class="me-2" style="width: 20px" />
+                                    <i class="{{item.icon}}"></i>
                                 </td>
                                 <td><ngb-highlight [result]="item.description | truncate:30" [term]="service.searchTerm"
                                         placement="top" ngbTooltip="{{item.description}}"></ngb-highlight>

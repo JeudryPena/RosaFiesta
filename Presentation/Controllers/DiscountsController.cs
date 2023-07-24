@@ -24,28 +24,28 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpGet("management")]
-	public async Task<IActionResult> GetManagementDiscounts(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveManagementAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<ManagementDiscountsResponse> discounts = await _serviceManager.DiscountService.ManagementGetAllAsync(cancellationToken);
 		return Ok(discounts);
 	}
 
 	[HttpGet("{discountId:guid}/management")]
-	public async Task<IActionResult> GetManagementDiscount(Guid discountId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveManagementByIdAsync(Guid discountId, CancellationToken cancellationToken)
 	{
 		ManagementDiscountsResponse discount = await _serviceManager.DiscountService.GetManagementDiscountAsync(discountId, cancellationToken);
 		return Ok(discount);
 	}
 
-	[HttpGet("/options/{optionId:guid}")]
-	public async Task<IActionResult> GetOptionDiscount(Guid optionId, CancellationToken cancellationToken)
+	[HttpGet("options/{optionId:guid}")]
+	public async Task<IActionResult> RetrieveOptionDiscountAsync(Guid optionId, CancellationToken cancellationToken)
 	{
 		DiscountResponse? discount = await _serviceManager.DiscountService.GetOptionDiscount(optionId, cancellationToken);
 		return Ok(discount);
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateDiscount([FromBody] DiscountDto discount, CancellationToken cancellationToken)
+	public async Task<IActionResult> PersistAsync([FromBody] DiscountDto discount, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -55,7 +55,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpPut("{discountId:guid}")]
-	public async Task<IActionResult> UpdateDiscount(Guid discountId, [FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> UpdateAsync(Guid discountId, [FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -65,7 +65,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpDelete("{discountId:guid}")]
-	public async Task<IActionResult> DeleteDiscount(Guid discountId, CancellationToken cancellationToken)
+	public async Task<IActionResult> DeleteAsync(Guid discountId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -75,7 +75,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpDelete("{discountId:guid}/options/{optionId:Guid?}")]
-	public async Task<IActionResult> DeleteDiscountProducts(Guid discountId, CancellationToken cancellationToken, Guid? optionId = null)
+	public async Task<IActionResult> DeleteDiscountProductsAsync(Guid discountId, CancellationToken cancellationToken, Guid? optionId = null)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

@@ -24,7 +24,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpGet("rolesList")]
-	public async Task<IActionResult> GetRolesList(CancellationToken cancellationToken)
+	public async Task<IActionResult> RolesList(CancellationToken cancellationToken)
 	{
 		IEnumerable<RolesListResponse> roles = await _serviceManager.UserService.GetRolesListAsync(
 							cancellationToken);
@@ -32,7 +32,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpGet("listaUsuarios")]
-	public async Task<IActionResult> GetListaUsuarios(CancellationToken cancellationToken)
+	public async Task<IActionResult> ListaUsuarios(CancellationToken cancellationToken)
 	{
 		IEnumerable<UsersListResponse> users = await _serviceManager.UserService.GetUsersListAsync(
 					cancellationToken
@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
 
 
 	[HttpGet("{userId}")]
-	public async Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveById(string userId, CancellationToken cancellationToken)
 	{
 		UserResponse usersResponse = await _serviceManager.UserService.GetUserByIdAsync(
 			userId,
@@ -64,7 +64,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateUser(
+	public async Task<IActionResult> Persist(
 		[FromBody] UserForCreationDto userForCreationDto,
 		CancellationToken cancellationToken
 	)

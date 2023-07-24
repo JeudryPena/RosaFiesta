@@ -2,12 +2,12 @@
 
 public enum OrderStatusType
 {
-    Pending = 1,
-    Processing = 2,
-    Paid = 3,
-    Cancelled = 4,
-    Shipped = 5,
-    Delivered = 6,
-    Returned = 7,
-    Refunded = 8,
+	Pendiente = 1,
+	Procesando = 2,
+	Pagado = 3,
+	Cancelado = 4,
+	Enviado = 5,
+	Entregado = 6,
+	Devuelto = 7,
+	Reembolsado = 8,
 }

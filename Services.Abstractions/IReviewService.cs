@@ -5,7 +5,7 @@ namespace Services.Abstractions;
 
 public interface IReviewService
 {
-	Task<IEnumerable<ReviewResponse>> GetAllAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<ReviewResponse>> GetAllAsync(Guid optionId, CancellationToken cancellationToken = default);
 	Task<ReviewResponse> GetByIdAsync(int reviewId, CancellationToken cancellationToken = default);
 	Task<ReviewResponse> CreateAsync(string userId, Guid optionId, ReviewDto reviewDto,
 		CancellationToken cancellationToken = default);

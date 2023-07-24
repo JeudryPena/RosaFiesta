@@ -2,7 +2,7 @@
 
 public enum WarrantyStatusType
 {
-    Active = 1,
-    Inactive = 2,
-    Expired = 3
+	Activo = 1,
+	Inactivo = 2,
+	Expirado = 3
 }

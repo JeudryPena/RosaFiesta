@@ -22,7 +22,7 @@ public class AddressController : ControllerBase
 	}
 
 	[HttpGet("myAddresses")]
-	public async Task<IActionResult> GetMyAddresses(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveAllAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -32,7 +32,7 @@ public class AddressController : ControllerBase
 	}
 
 	[HttpGet("myAddresses/{addressId:guid}")]
-	public async Task<IActionResult> GetMyAddressById(Guid addressId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveByIdAsync(Guid addressId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -42,7 +42,7 @@ public class AddressController : ControllerBase
 	}
 
 	[HttpPost("myAddresses")]
-	public async Task<IActionResult> CreateMyAddress(AddressDto addressDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> PersistAsync(AddressDto addressDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -52,7 +52,7 @@ public class AddressController : ControllerBase
 	}
 
 	[HttpPut("myAddresses/{addressId:guid}")]
-	public async Task<IActionResult> UpdateMyAddress(Guid addressId, AddressDto addressDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> UpdateAsync(Guid addressId, AddressDto addressDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -62,7 +62,7 @@ public class AddressController : ControllerBase
 	}
 
 	[HttpDelete("{addressId:guid}")]
-	public async Task<IActionResult> DeleteAddress(Guid addressId, CancellationToken cancellationToken)
+	public async Task<IActionResult> DeleteAsync(Guid addressId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

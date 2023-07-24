@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -56,9 +56,9 @@ export class ModalProductComponent implements OnInit {
   categoryForm!: CategoriesListResponse;
   warrantyForm!: WarrantiesListResponse | null;
   supplierForm!: SuppliersListResponse | null;
-  categorySelected?: string;
-  warrantySelected!: string;
-  supplierSelected!: string;
+  categorySelected: string | undefined = undefined;
+  warrantySelected: string | null = null;
+  supplierSelected: string | null = null;
   categories: CategoriesListResponse[] = [];
   warranties: WarrantiesListResponse[] = [];
   suppliers: SuppliersListResponse[] = [];
@@ -90,8 +90,6 @@ export class ModalProductComponent implements OnInit {
   }
 
   SelectFirst(index: number) {
-    console.log(this.optionFirst)
-    console.log(index)
     this.optionFirst = index;
   }
 
@@ -143,6 +141,7 @@ export class ModalProductComponent implements OnInit {
         this.warrantyForm = response.warranty;
         this.supplierForm = response.supplier;
         this.options = response.options || [];
+        this.ReSelect()
       });
       this.RetrieveRelations();
     } else if (this.read) {
@@ -175,9 +174,15 @@ export class ModalProductComponent implements OnInit {
         this.warrantyForm = response.warranty;
         this.supplierForm = response.supplier;
         this.options = response.options || [];
+        this.ReSelect()
       });
     }
-    
+  }
+
+  ReSelect() {
+    this.categorySelected = this.categoryForm?.name;
+    this.warrantySelected = this.warrantyForm?.name ? this.warrantyForm.name : null;
+    this.supplierSelected = this.supplierForm?.name ? this.supplierForm.name : null;
   }
 
   RetrieveRelations() {
@@ -240,9 +245,9 @@ export class ModalProductComponent implements OnInit {
       quantityAvailable: option.quantityAvailable
     }
     this.imageFirst = null;
-    if (this.options.length == 0){
+    if (this.options.length == 0) {
       this.optionFirst = 0;
-    } 
+    }
     this.options.push(optionDto);
     this.uploadFiles = [];
     this.pictures = [];
@@ -288,7 +293,7 @@ export class ModalProductComponent implements OnInit {
       imageId: new FormControl(this.options[index].imageId),
       quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
-    this.imageFirst = this.options[index].imageIndex; 
+    this.imageFirst = this.options[index].imageIndex;
     if (this.update == true || this.read == true) {
       this.ReadImages(this.options[index].images);
     }
@@ -346,7 +351,7 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const product = { ...productFormValue };
-        let uploadsCompleted = 0; 
+        let uploadsCompleted = 0;
         if (this.options.length !== 0) {
           this.options.forEach(option => {
             const files = option.images.filter((image: any) => image instanceof File);
@@ -435,7 +440,7 @@ export class ModalProductComponent implements OnInit {
 
   OnAddProduct(product: any) {
     const productDto: ProductDto = {
-      code: product.code,
+      code: product.code ? product.code : null,
       isService: product.isService,
       optionIndex: this.optionFirst,
       categoryId: this.categoryForm.id,

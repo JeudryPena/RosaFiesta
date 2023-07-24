@@ -21,8 +21,11 @@ internal sealed class ReviewRepository : IReviewRepository
 			throw new Exception("Review already exist");
 	}
 
-	public async Task<IEnumerable<ReviewEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-		await _context.Reviews.ToListAsync(cancellationToken);
+	public async Task<IEnumerable<ReviewEntity>> GetAllAsync(Guid optionId, CancellationToken cancellationToken = default)
+	{
+		IEnumerable<ReviewEntity> reviews = await _context.Reviews.Where(x => x.OptionId == optionId).ToListAsync(cancellationToken);
+		return reviews;
+	}
 
 	public async Task<ReviewEntity> GetByIdAsync(int reviewId, CancellationToken cancellationToken = default)
 	{

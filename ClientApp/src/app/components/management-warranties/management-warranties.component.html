@@ -49,8 +49,8 @@
                                 <td><ngb-highlight [result]="warranty.status" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
 
-                                <td><ngb-highlight [result]="warranty.period|number"  [term]="service.searchTerm">
-                                    </ngb-highlight>
+                                <td> <div> <ngb-highlight [result]="warranty.period|number"  [term]="service.searchTerm">
+                                    </ngb-highlight> días</div>
                                 </td>
 
                                 <td><ngb-highlight [result]="warranty.description | truncate:25" placement="top"

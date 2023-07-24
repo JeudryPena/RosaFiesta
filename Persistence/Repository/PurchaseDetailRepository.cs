@@ -18,7 +18,7 @@ internal sealed class PurchaseDetailRepository : IPurchaseDetailRepository
 
 	public async Task<PurchaseDetailEntity> GetByIdAsync(Guid detailId, CancellationToken cancellationToken)
 	{
-		PurchaseDetailEntity? purchaseDetail = await _rosaFiestaContext.PurchaseDetails.FirstOrDefaultAsync(x => x.DetailId == detailId, cancellationToken);
+		PurchaseDetailEntity? purchaseDetail = await _rosaFiestaContext.PurchaseDetails.FirstOrDefaultAsync(x => x.Id == detailId, cancellationToken);
 		if (purchaseDetail == null)
 			throw new NullReferenceException(nameof(PurchaseDetailEntity));
 		return purchaseDetail;

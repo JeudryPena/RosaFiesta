@@ -45,8 +45,10 @@
                         <tbody class="rows">
                             <tr class="scroll" *ngFor="let item of discounts$ | async ">
                                 <td>
+                                    <div class="div">
                                     <ngb-highlight [result]="item.value | number"
-                                        [term]="service.searchTerm"></ngb-highlight>
+                                        [term]="service.searchTerm"></ngb-highlight> %
+                                        </div>
                                 </td>
                                 <td><ngb-highlight class="badge text-bg-success"
                                         [result]="item.start | date: 'dd/MM/yyyy hh:mm:ss' "

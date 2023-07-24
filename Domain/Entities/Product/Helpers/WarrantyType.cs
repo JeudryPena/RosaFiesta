@@ -2,8 +2,8 @@
 
 public enum WarrantyType
 {
-	Refund = 1,
-	Repair = 2,
-	Exchange = 3,
-	Implicit = 4
+	Devolución = 1,
+	Reparo = 2,
+	Cambio = 3,
+	Implicito = 4
 }

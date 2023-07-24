@@ -13,19 +13,19 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReviewController : ControllerBase
+public class ReviewsController : ControllerBase
 {
 	private readonly IServiceManager _serviceManager;
 
-	public ReviewController(IServiceManager serviceManager)
+	public ReviewsController(IServiceManager serviceManager)
 	{
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet]
-	public async Task<IActionResult> GetReviews(CancellationToken cancellationToken)
+	[HttpGet("options/{optionId:guid}")]
+	public async Task<IActionResult> GetReviews(Guid optionId, CancellationToken cancellationToken)
 	{
-		IEnumerable<ReviewResponse> reviews = await _serviceManager.ReviewService.GetAllAsync(cancellationToken);
+		IEnumerable<ReviewResponse> reviews = await _serviceManager.ReviewService.GetAllAsync(optionId, cancellationToken);
 		return Ok(reviews);
 	}
 
@@ -36,9 +36,9 @@ public class ReviewController : ControllerBase
 		return Ok(supplier);
 	}
 
-	[HttpPost("option/{optionId:guid}")]
+	[HttpPost("options/{optionId:guid}")]
 	[Authorize]
-	public async Task<IActionResult> CreateReview([FromBody] ReviewDto reviewDto, CancellationToken cancellationToken, Guid optionId)
+	public async Task<IActionResult> CreateReview([FromBody] ReviewDto reviewDto, Guid optionId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -51,6 +51,7 @@ public class ReviewController : ControllerBase
 	[Authorize]
 	public async Task<IActionResult> UpdateReview(int reviewId, [FromBody] ReviewDto reviewDto, CancellationToken cancellationToken)
 	{
+
 		ReviewResponse reviewResponse = await _serviceManager.ReviewService.UpdateAsync(reviewId, reviewDto, cancellationToken);
 		return Ok(reviewResponse);
 	}

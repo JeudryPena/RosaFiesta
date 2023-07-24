@@ -2,9 +2,9 @@
 
 public enum VoucherType
 {
-    Bills = 1,
-    Receipts = 2,
-    CreditNotes = 3,
-    DebitNotes = 4,
-    RetentionReceipt = 5,
+	Facturas = 1,
+	Recibos = 2,
+	NotasCredito = 3,
+	NotasDebito = 4,
+	RecipienteRetención = 5,
 }

@@ -50,7 +50,9 @@ export class ModalDiscountComponent implements OnInit {
   onSelect(event: TypeaheadMatch): void {
     this.products.push({
       optionId: event.item.id,
-      title: event.item.title
+      option: {
+        title: event.item.title,
+      }
     });
     this.selected = '';
   }

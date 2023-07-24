@@ -23,14 +23,14 @@ public class ProductsController : ControllerBase
 	}
 
 	[HttpGet("options-list")]
-	public async Task<IActionResult> GetOptionsList(CancellationToken cancellationToken)
+	public async Task<IActionResult> OptionsList(CancellationToken cancellationToken)
 	{
 		ICollection<OptionsListResponse> options = await _serviceManager.ProductService.GetOptionsList(cancellationToken);
 		return Ok(options);
 	}
 
 	[HttpGet("productsList")]
-	public async Task<IActionResult> GetProducts(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveProducts(CancellationToken cancellationToken)
 	{
 		ICollection<ProductsListResponse> products = await _serviceManager.ProductService.GetProductsList(cancellationToken);
 		return Ok(products);
@@ -38,14 +38,14 @@ public class ProductsController : ControllerBase
 
 	[HttpGet]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetManagementProducts(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveManagementAsync(CancellationToken cancellationToken)
 	{
 		ICollection<ManagementProductsResponse> products = await _serviceManager.ProductService.ManagementGetAllAsync(cancellationToken);
 		return Ok(products);
 	}
 
 	[HttpGet("options")]
-	public async Task<IActionResult> GetProductsPreview(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrievePreviewAsync(CancellationToken cancellationToken)
 	{
 		ICollection<ProductPreviewResponse> options = await _serviceManager.ProductService.GetAllAsyncPreview(cancellationToken);
 		return Ok(options);
@@ -53,7 +53,7 @@ public class ProductsController : ControllerBase
 
 	[HttpGet("{productId:guid}/option/{optionId:guid}/productDetail")]
 	[Authorize]
-	public async Task<IActionResult> GetProductDetail(Guid productId, Guid optionId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveProductDetailAsync(Guid productId, Guid optionId, CancellationToken cancellationToken)
 	{
 		ProductDetailResponse productAndOption = await _serviceManager.ProductService.GetProductDetail(productId, optionId, cancellationToken);
 		return Ok(productAndOption);
@@ -61,7 +61,7 @@ public class ProductsController : ControllerBase
 
 	[HttpGet("{productId:guid}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetProductById(Guid productId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveByIdAsync(Guid productId, CancellationToken cancellationToken)
 	{
 		ProductResponse productAndOption = await _serviceManager.ProductService.GetByIdAsync(productId, cancellationToken);
 		return Ok(productAndOption);
@@ -69,7 +69,7 @@ public class ProductsController : ControllerBase
 
 	[HttpPost]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> CreateProduct([FromBody] ProductDto productForCreationDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> PersistAsync([FromBody] ProductDto productForCreationDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -80,7 +80,7 @@ public class ProductsController : ControllerBase
 
 	[HttpPut("{productId:guid}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] ProductDto productForUpdateDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> UpdateAsync(Guid productId, [FromBody] ProductDto productForUpdateDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -92,7 +92,7 @@ public class ProductsController : ControllerBase
 
 	[HttpPut("{productId:guid}/options/{optionId:guid}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> AdjustOptionQuantity(Guid productId, Guid optionId, int count, CancellationToken cancellationToken)
+	public async Task<IActionResult> AdjustOptionQuantityAsync(Guid productId, Guid optionId, int count, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -103,7 +103,7 @@ public class ProductsController : ControllerBase
 
 	[HttpDelete("{productId:guid}/option/{optionId:Guid?}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeleteProductOrOption(Guid productId, CancellationToken cancellationToken, Guid? optionId = null)
+	public async Task<IActionResult> DeleteProductOrOptionAsync(Guid productId, CancellationToken cancellationToken, Guid? optionId = null)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

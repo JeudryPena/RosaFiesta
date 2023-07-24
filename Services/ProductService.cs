@@ -52,6 +52,7 @@ internal sealed class ProductService : IProductService
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = productDto.Adapt<ProductEntity>();
+
 		_repositoryManager.ProductRepository.Insert(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductWithOption(product.Id, cancellationToken);

@@ -51,7 +51,8 @@
 
                                 <td><ngb-highlight [result]="supplier.phone" [term]="service.searchTerm"></ngb-highlight></td>
 
-                                <td><ngb-highlight [result]="supplier.address" [term]="service.searchTerm"></ngb-highlight></td>
+                                <td><ngb-highlight [result]="supplier.address | truncate:25" placement="top" ngbTooltip="{{supplier.address}}"
+                                        [term]="service.searchTerm"></ngb-highlight></td>
 
                                 <td>
                                     <div *ngFor="let product of supplier.products"

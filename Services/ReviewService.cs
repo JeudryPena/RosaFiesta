@@ -19,9 +19,9 @@ internal sealed class ReviewService : IReviewService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<ReviewResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<ReviewResponse>> GetAllAsync(Guid optionId, CancellationToken cancellationToken = default)
 	{
-		IEnumerable<ReviewEntity> reviews = await _repositoryManager.ReviewRepository.GetAllAsync(cancellationToken);
+		IEnumerable<ReviewEntity> reviews = await _repositoryManager.ReviewRepository.GetAllAsync(optionId, cancellationToken);
 		var reviewResponse = reviews.Adapt<IEnumerable<ReviewResponse>>();
 		return reviewResponse;
 	}

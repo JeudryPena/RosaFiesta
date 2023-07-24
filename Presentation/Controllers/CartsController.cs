@@ -24,7 +24,7 @@ public class CartsController : ControllerBase
 	}
 
 	[HttpGet("myCart")]
-	public async Task<IActionResult> GetMyCart(CancellationToken cancellationToken)
+	public async Task<IActionResult> GetMyCartAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

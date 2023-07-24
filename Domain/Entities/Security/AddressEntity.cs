@@ -15,7 +15,6 @@ public class AddressEntity : BaseEntity, IAutoUpdate
 	public string ZipCode { get; set; }
 	[StringLength(60, MinimumLength = 2)]
 	public string Street { get; set; }
-	[StringLength(36, MinimumLength = 32)]
 	public string UserId { get; set; }
 	public UserEntity User { get; set; }
 }

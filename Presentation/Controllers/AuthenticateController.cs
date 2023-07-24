@@ -20,7 +20,7 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpPost("register")]
-	public async Task RegisterResponse(
+	public async Task RegisterAsync(
 		RegisterDto registerDto,
 		CancellationToken cancellationToken
 	)
@@ -32,7 +32,7 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpPost("login")]
-	public async Task<IActionResult> Login(LogingDto logingDto, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> LoginAsync(LogingDto logingDto, CancellationToken cancellationToken = default)
 	{
 		LoginResponse result = await _serviceManager.AuthenticateService.LoginAsync(logingDto, cancellationToken);
 		if (!result.IsAuthSuccessful)
@@ -41,14 +41,14 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpGet("confirm-email")]
-	public async Task ConfirmEmail([FromQuery] string token, [FromQuery] string email,
+	public async Task ConfirmEmailAsync([FromQuery] string token, [FromQuery] string email,
 		CancellationToken cancellationToken)
 	{
 		await _serviceManager.AuthenticateService.ConfirmEmailAsync(token, email, cancellationToken);
 	}
 
 	[HttpGet("resendEmail")]
-	public async Task<IActionResult> ResendEmail(string email)
+	public async Task<IActionResult> ResendEmailAsync(string email)
 	{
 		ArgumentNullException.ThrowIfNull(email, nameof(email));
 		await _serviceManager.AuthenticateService.ResendEmail(email);
@@ -56,14 +56,14 @@ public class AuthenticateController : ControllerBase
 	}
 
 	[HttpGet("forgot-password/{email}")]
-	public async Task<IActionResult> ForgotPassword(string email)
+	public async Task<IActionResult> ForgotPasswordAsync(string email)
 	{
 		await _serviceManager.AuthenticateService.ForgotPasswordAsync(email);
 		return Ok();
 	}
 
 	[HttpPost("reset-password")]
-	public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string token, [FromQuery] string email,
+	public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordDto resetPasswordDto, [FromQuery] string token, [FromQuery] string email,
 		CancellationToken cancellationToken)
 	{
 		await _serviceManager.AuthenticateService.ResetPasswordAsync(resetPasswordDto, token, email, cancellationToken);
@@ -72,7 +72,7 @@ public class AuthenticateController : ControllerBase
 
 	[HttpPost("change-password")]
 	[Authorize]
-	public async Task<IActionResult> ChangePassword(changePasswordDto changePasswordDto,
+	public async Task<IActionResult> ChangePasswordAsync(changePasswordDto changePasswordDto,
 		CancellationToken cancellationToken)
 	{
 		await _serviceManager.AuthenticateService.ChangePasswordAsync(changePasswordDto, cancellationToken);
@@ -81,7 +81,7 @@ public class AuthenticateController : ControllerBase
 
 	[HttpPost("logout")]
 	[Authorize]
-	public async Task<IActionResult> Logout()
+	public async Task<IActionResult> LogoutAsync()
 	{
 		await _serviceManager.AuthenticateService.LogoutAsync();
 		return Ok();

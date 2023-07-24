@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Domain.Entities.Enterprise;
 using Domain.Entities.Product.UserInteract;
@@ -9,6 +10,12 @@ namespace Domain.Entities.Security;
 
 public class UserEntity : IdentityUser, IAutoBy
 {
+	[NotMapped]
+	public override string PhoneNumber { get; set; }
+
+	[NotMapped]
+	public override bool PhoneNumberConfirmed { get; set; }
+
 	[StringLength(120, MinimumLength = 3)]
 	public string FullName { get; set; }
 	[Range(16, 150)]

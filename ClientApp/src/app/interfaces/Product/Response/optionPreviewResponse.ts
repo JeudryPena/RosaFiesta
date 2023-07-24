@@ -1,7 +1,6 @@
 import { BaseResponse } from "../../baseResponse";
 import { DiscountPreviewResponse } from "./discountPreviewResponse";
 import { MultipleImagesResponse } from "./multipleImagesResponse";
-import { ProductsDiscountPreviewResponse } from "./products-discount-preview-response";
 import { ReviewPreviewResponse } from "./reviewPreviewResponse";
 
 export interface OptionPreviewResponse extends BaseResponse {
@@ -12,7 +11,8 @@ export interface OptionPreviewResponse extends BaseResponse {
     quantityAvailable: number;
     condition: string;
     genderFor: string;
-    averageRating: number | null;
+    averageRating: number;
     reviews: ReviewPreviewResponse[] | null;
     discount: DiscountPreviewResponse | null;
+    offerPrice: number;
 }

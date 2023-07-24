@@ -43,14 +43,14 @@ export class ManagementProductsComponent {
   }
 
   Retrieve(id: string) {
-    const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalProductComponent, { size: 'xl', scrollable: true });
     modalRef.componentInstance.title = 'Consultar Producto';
     modalRef.componentInstance.productId = id;
     modalRef.componentInstance.read = true;
   }
 
   Modify(id: string) {
-    const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalProductComponent, { size: 'xl', scrollable: true });
     modalRef.componentInstance.title = 'Modificar Producto';
     modalRef.componentInstance.update = true;
     modalRef.componentInstance.productId = id;
@@ -91,7 +91,7 @@ export class ManagementProductsComponent {
   }
 
   AddProduct() {
-    const modalRef = this.modalService.open(ModalProductComponent, { size: 'lg', scrollable: true });
+    const modalRef = this.modalService.open(ModalProductComponent, { size: 'xl', scrollable: true });
     modalRef.componentInstance.title = 'Añadir Producto';
     modalRef.result.then((result) => {
       if (result)

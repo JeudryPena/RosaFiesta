@@ -10,12 +10,7 @@ export const inventoryData: IData[] = [
     id: 'products',
     icon: 'fa-solid fa-box-open',
     name: 'Productos',
-  },
-  {
-    id: 'services',
-    icon: 'fa-solid fa-handshake',
-    name: 'Servicios',
-  },
+  }, 
   {
     id: 'categories',
     icon: 'fa-solid fa-tags',

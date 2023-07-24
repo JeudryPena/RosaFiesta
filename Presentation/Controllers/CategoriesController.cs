@@ -23,7 +23,7 @@ public class CategoriesController : ControllerBase
 	}
 
 	[HttpGet("categoriesList")]
-	public async Task<IActionResult> GetCategoriesList(CancellationToken cancellationToken)
+	public async Task<IActionResult> CategoriesListAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<CategoriesListResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesListAsync(cancellationToken);
 		return Ok(categories);
@@ -31,28 +31,28 @@ public class CategoriesController : ControllerBase
 
 	[HttpGet("categoriesManagement")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetCategoriesManagement(CancellationToken cancellationToken)
+	public async Task<IActionResult> GetCategoriesManagementAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<CategoryManagementResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesManagementAsync(cancellationToken);
 		return Ok(categories);
 	}
 
 	[HttpGet("categoriesPreview")]
-	public async Task<IActionResult> GetCategoriesPreview(CancellationToken cancellationToken)
+	public async Task<IActionResult> GetCategoriesPreviewAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<CategoryPreviewResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesPreviewAsync(cancellationToken);
 		return Ok(categories);
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
+	public async Task<IActionResult> GetCategoriesAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<CategoryResponse> products = await _serviceManager.CategoryService.GetAllAsync(cancellationToken);
 		return Ok(products);
 	}
 
 	[HttpGet("{categoryId}")]
-	public async Task<IActionResult> GetCategoryById(int categoryId, CancellationToken cancellationToken)
+	public async Task<IActionResult> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken)
 	{
 		CategoryResponse products = await _serviceManager.CategoryService.GetByIdAsync(categoryId, cancellationToken);
 		return Ok(products);
@@ -60,7 +60,7 @@ public class CategoriesController : ControllerBase
 
 	[HttpGet("{categoryId}/category-management")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetCategoryManagementById(int categoryId, CancellationToken cancellationToken)
+	public async Task<IActionResult> GetCategoryManagementByIdAsync(int categoryId, CancellationToken cancellationToken)
 	{
 		CategoryManagementResponse products = await _serviceManager.CategoryService.GetManagementByIdAsync(categoryId, cancellationToken);
 		return Ok(products);
@@ -68,7 +68,7 @@ public class CategoriesController : ControllerBase
 
 	[HttpPost]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> CreateCategory([FromBody] CategoryDto categoryDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> PersistAsync([FromBody] CategoryDto categoryDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -79,7 +79,7 @@ public class CategoriesController : ControllerBase
 
 	[HttpPut("{categoryId}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> UpdateCategory(int categoryId, [FromBody] CategoryDto categoryUpdateDto, CancellationToken cancellationToken)
+	public async Task<IActionResult> UpdateAsync(int categoryId, [FromBody] CategoryDto categoryUpdateDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -90,7 +90,7 @@ public class CategoriesController : ControllerBase
 
 	[HttpDelete("{categoryId}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> DeleteCategory(int categoryId, CancellationToken cancellationToken)
+	public async Task<IActionResult> DeleteAsync(int categoryId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

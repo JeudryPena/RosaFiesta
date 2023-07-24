@@ -22,8 +22,8 @@ public class PaymentController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet("MyPayments")]
-	public async Task<IActionResult> GetMyPayments(CancellationToken cancellationToken)
+	[HttpGet()]
+	public async Task<IActionResult> RetrieveAllAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -32,8 +32,8 @@ public class PaymentController : ControllerBase
 		return Ok(payments);
 	}
 
-	[HttpGet("MyPayments/{paymentId:guid}")]
-	public async Task<IActionResult> GetMyPaymentById(Guid paymentId, CancellationToken cancellationToken)
+	[HttpGet("{paymentId:guid}")]
+	public async Task<IActionResult> RetrieveByIdAsync(Guid paymentId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -44,8 +44,8 @@ public class PaymentController : ControllerBase
 		return Ok(payment);
 	}
 
-	[HttpPut("MyPayments/{paymentId:guid}")]
-	public async Task<IActionResult> MakePaymentDefault(Guid paymentId, CancellationToken cancellationToken)
+	[HttpPut("{paymentId:guid}")]
+	public async Task<IActionResult> MakeDefaultAsync(Guid paymentId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -54,8 +54,8 @@ public class PaymentController : ControllerBase
 		return Ok();
 	}
 
-	[HttpDelete("MyPayments/{paymentId:guid}")]
-	public async Task<IActionResult> DeleteMyPaymentById(Guid paymentId, CancellationToken cancellationToken)
+	[HttpDelete("{paymentId:guid}")]
+	public async Task<IActionResult> DeleteAsync(Guid paymentId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)

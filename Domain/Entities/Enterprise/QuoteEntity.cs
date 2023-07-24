@@ -11,9 +11,9 @@ public class QuoteEntity : BaseEntity, IAutoUpdate
 	public string CustomerName { get; set; }
 	[StringLength(15, MinimumLength = 7)]
 	public string ContactNumber { get; set; }
-	[StringLength(4, MinimumLength = 5000)]
+	[StringLength(5000, MinimumLength = 4)]
 	public string? ExtraInfo { get; set; }
-	[StringLength(7, MinimumLength = 320)]
+	[StringLength(320, MinimumLength = 7)]
 	public string? Email { get; set; }
 	[StringLength(50, MinimumLength = 2)]
 	public string EventName { get; set; }
@@ -21,6 +21,5 @@ public class QuoteEntity : BaseEntity, IAutoUpdate
 	[StringLength(255, MinimumLength = 2)]
 	public string Location { get; set; }
 	public ICollection<PurchaseDetailEntity> QuoteItems { get; set; }
-	[StringLength(36, MinimumLength = 32)]
 	public string? UserId { get; set; }
 }

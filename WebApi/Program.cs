@@ -250,21 +250,21 @@ public static class Program
 		};
 
 
-		/*void ContextBuilder(DbContextOptionsBuilder b) =>
-            b.UseSqlServer(
-                connectionString,
-                sql =>
-                {
-                    sql.MigrationsAssembly(migrationsAssembly);
-                    sql.MigrationsHistoryTable(
-                        "_EFNegotiationMigrationHistory",
-                        RosaFiestaContext.DefaultSchema
-                    );
-                    sql.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                }
-            );
+		//void ContextBuilder(DbContextOptionsBuilder b) =>
+		//	b.UseSqlServer(
+		//		connectionString,
+		//		sql =>
+		//		{
+		//			sql.MigrationsAssembly(migrationsAssembly);
+		//			sql.MigrationsHistoryTable(
+		//				"_EFRosaFiestaMigrationHistory",
+		//				RosaFiestaContext.DefaultSchema
+		//			);
+		//			sql.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+		//		}
+		//	);
 
-        services.AddDbContext<RosaFiestaContext>(ContextBuilder);*/
+		// services.AddDbContext<RosaFiestaContext>(ContextBuilder);
 		services.AddDbContext<RosaFiestaContext>(PgContextBuilder);
 		services.AddScoped<DbContext, RosaFiestaContext>();
 	}

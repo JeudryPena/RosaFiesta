@@ -8,7 +8,7 @@ public class OptionsResponse
 	public string? Color { get; set; }
 	public int GenderFor { get; set; }
 	public int Condition { get; set; }
-	public int ImageId { get; set; }
+	public Guid ImageId { get; set; }
 	public string Stock => StockCalculate().ToString();
 	public int QuantityAvailable { get; set; }
 	public IEnumerable<MultipleImagesResponse> Images { get; set; }

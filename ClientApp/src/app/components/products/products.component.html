@@ -1,13 +1,15 @@
 <section class="bg-color">
   <div class="containers">
     <ng-container *ngIf="category$ | async as category; else loadOrError">
-      <div class="title">
-        <h2>{{category.name}}</h2>
+      <div class="title mb-4">
+        <div class="d-inline">
+          <h2><i class="{{category.icon}} pe-2"></i>{{category.name}}</h2>
+        </div>
       </div>
-      <div class="row" *ngFor="let product of category.products">
-        <div class="col-md-3" >
-          <div class="card">
-            <div class="card-main">
+      <div class="row">
+        <div class="col-md-4" *ngFor="let product of category.products">
+          <div class="card rounded-3 mt-0 mb-0">
+            <div class="card-main" (click)="ProductDetail(product.id)">
               <div class="service">
                 <p class="me-1" *ngIf="product.isService; else notService">
                   Servicio
@@ -20,25 +22,26 @@
                 <a href="#" class="product-link">{{product.option.condition}}</a>
               </div>
               <div class="image">
-                <img src="{{product.option.image | imgPath}}" alt="Product">
+                <img class="rounded-3" src="{{product.option.image | imgPath}}" alt="Product">
               </div>
               <div class="cart-item">
                 <ul>
-                  <li><a href=""><i class="fa-solid fa-cart-shopping"></i></a></li>
-                  <li><a href=""><i class="fa fa-heart"></i></a></li>
-                  <li><a href=""><i class="fa fa-search"></i></a></li>
+                  <li><i class="fas fa-share-alt"></i></li>
+                  <li><i class="fa fa-heart"></i></li>
+                  <li><i class="fa fa-search" (click)="ProductDetail(product.id)"></i></li>
                 </ul>
               </div>
             </div>
             <div class="content">
               <span class="product-name">{{product.option.title}}</span>
               <div class="rating">
-                <app-rating [rating]="3.5"></app-rating>
+                <app-rating [rating]="product.option.averageRating"></app-rating>
                 <span class="review-quantity">{{(product.option.reviews)?.length}}</span>
               </div>
               <div class="product-price">
-                <span class="last-price">$257.00 </span>
-                <span class="new-price">${{product.option.price}} (5%)</span>
+                <span *ngIf="product.option.discount" class="last-price me-1">${{product.option.offerPrice | currency }}</span>
+                <span class="new-price">{{product.option.price | currency}}<span class="ms-1"
+                    *ngIf="product.option.discount">({{product.option.discount.value}}%)</span></span>
               </div>
 
               <div class="button mt-1 mb-3">

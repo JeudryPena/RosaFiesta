@@ -2,7 +2,7 @@
 
 public enum ConditionType
 {
-    New = 1,
-    Used = 2,
-    Refurbished = 3
+	Nuevo = 1,
+	Usado = 2,
+	Restaurado = 3
 }

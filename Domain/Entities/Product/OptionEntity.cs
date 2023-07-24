@@ -16,7 +16,6 @@ public class OptionEntity : ISoftDelete
 	public string? Description { get; set; }
 	[Range(0.01, 999999.99)]
 	public double Price { get; set; }
-	public DateTimeOffset? EndedAt { get; set; }
 	public ICollection<MultipleOptionImagesEntity>? Images { get; set; }
 	public MultipleOptionImagesEntity? Image { get; set; }
 	public Guid? ImageId { get; set; }
@@ -24,6 +23,7 @@ public class OptionEntity : ISoftDelete
 	public int QuantityAvailable { get; set; }
 	[StringLength(100, MinimumLength = 3)]
 	public string? Color { get; set; }
+	public int? Quantity { get; set; }
 	[StringLength(20, MinimumLength = 3)]
 	public ConditionType Condition { get; set; }
 	[StringLength(20, MinimumLength = 3)]

@@ -26,7 +26,7 @@ public class PurchaseController : ControllerBase
 
 	[HttpGet("orders")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveAll(CancellationToken cancellationToken)
 	{
 		IEnumerable<OrderPreviewResponse> orders = await _serviceManager.OrderService.GetAllAsync(cancellationToken);
 		return Ok(orders);
@@ -34,14 +34,14 @@ public class PurchaseController : ControllerBase
 
 	[HttpGet("orders/{userId}")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetOrdersByUserId(string userId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveUserOrders(string userId, CancellationToken cancellationToken)
 	{
 		IEnumerable<OrderPreviewResponse> orders = await _serviceManager.OrderService.GetByUserIdAsync(userId, cancellationToken);
 		return Ok(orders);
 	}
 
 	[HttpGet("myOrders")]
-	public async Task<IActionResult> GetMyOrders(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveMyOrders(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
@@ -51,7 +51,7 @@ public class PurchaseController : ControllerBase
 	}
 
 	[HttpGet("{orderId:guid}")]
-	public async Task<IActionResult> GetOrderById(Guid orderId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveById(Guid orderId, CancellationToken cancellationToken)
 	{
 		OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(orderId, cancellationToken);
 		return Ok(bill);
@@ -59,21 +59,21 @@ public class PurchaseController : ControllerBase
 
 	[HttpGet]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> GetPurchaseDetails(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveDetails(CancellationToken cancellationToken)
 	{
 		IEnumerable<PurchaseDetailResponse> purchaseDetails = await _serviceManager.PurchaseDetailService.GetAllAsync(cancellationToken);
 		return Ok(purchaseDetails);
 	}
 
 	[HttpGet("{detailId:guid}")]
-	public async Task<IActionResult> GetPurchaseDetailById(Guid detailId, CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveDetailById(Guid detailId, CancellationToken cancellationToken)
 	{
 		PurchaseDetailResponse purchaseDetail = await _serviceManager.PurchaseDetailService.GetByIdAsync(detailId, cancellationToken);
 		return Ok(purchaseDetail);
 	}
 
 	[HttpPost("payMethod/{payMethodId:guid}/Address/{addressId:guid}/Purchase")]
-	public async Task<IActionResult> OrderPurchaseAsync(Guid payMethodId, [FromBody] CancellationToken cancellationToken, Guid addressId)
+	public async Task<IActionResult> Purchase(Guid payMethodId, [FromBody] CancellationToken cancellationToken, Guid addressId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
