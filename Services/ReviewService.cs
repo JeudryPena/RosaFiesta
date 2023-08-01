@@ -1,4 +1,5 @@
-﻿using Contracts.Model.Product.UserInteract;
+﻿using Contracts.Model.Product.Response;
+using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
 
 using Domain.Entities.Product.UserInteract;
@@ -19,7 +20,14 @@ internal sealed class ReviewService : IReviewService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<ReviewResponse>> GetAllAsync(Guid optionId, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<ReviewPreviewResponse>> GetAllAsync(Guid optionId, CancellationToken cancellationToken = default)
+	{
+		IEnumerable<ReviewEntity> reviews = await _repositoryManager.ReviewRepository.GetAllAsync(optionId, cancellationToken);
+		var reviewResponse = reviews.Adapt<IEnumerable<ReviewPreviewResponse>>();
+		return reviewResponse;
+	}
+
+	public async Task<IEnumerable<ReviewResponse>> GetOptionReviews(Guid optionId, CancellationToken cancellationToken = default)
 	{
 		IEnumerable<ReviewEntity> reviews = await _repositoryManager.ReviewRepository.GetAllAsync(optionId, cancellationToken);
 		var reviewResponse = reviews.Adapt<IEnumerable<ReviewResponse>>();

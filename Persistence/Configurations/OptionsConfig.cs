@@ -16,7 +16,7 @@ public class OptionsConfig : IEntityTypeConfiguration<OptionEntity>
 			.WithOne()
 			.HasForeignKey(review => review.OptionId);
 		builder.HasMany(option => option.PurchaseOptions)
-			.WithOne()
+			.WithOne(x => x.Option)
 			.HasForeignKey(purchaseOption => purchaseOption.OptionId);
 		builder.HasMany(option => option.Images)
 			.WithOne()

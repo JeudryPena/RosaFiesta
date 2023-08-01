@@ -12,6 +12,7 @@ import { ProductDto } from '../../interfaces/Product/productDto';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { SearchResult } from './search-result';
 import { State } from './state';
+import { ProductDetailResponse } from '../../interfaces/Product/Response/productDetailResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -93,6 +94,10 @@ export class ProductsService {
 
   GetProduct(id: string): Observable<ProductResponse> {
     return this.http.get<ProductResponse>(`${this.apiUrl}${id}`);
+  }
+
+  GetProductDetail(productId: string): Observable<ProductDetailResponse> {
+    return this.http.get<ProductDetailResponse>(`${this.apiUrl}${productId}/detail`);
   }
 
   AddProduct(product: ProductDto) {

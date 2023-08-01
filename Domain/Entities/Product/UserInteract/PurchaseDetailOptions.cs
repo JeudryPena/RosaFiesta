@@ -8,5 +8,6 @@ public class PurchaseDetailOptions : BaseEntity, IAutoUpdate
 	public Guid? AppliedId { get; set; }
 	public DiscountEntity? Discount { get; set; }
 	public Guid OptionId { get; set; }
+	public OptionEntity Option { get; set; }
 	public bool? IsReturned { get; set; }
 }

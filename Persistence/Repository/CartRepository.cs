@@ -17,7 +17,7 @@ internal sealed class CartRepository : ICartRepository
 	public async Task<CartEntity> GetByIdAsync(string id, CancellationToken cancellationToken = default)
 	{
 		CartEntity? cart = await _context.Carts
-			.Include(c => c.Details).ThenInclude(cd => cd.PurchaseOptions)
+			.Include(c => c.Details).ThenInclude(cd => cd.PurchaseOptions).ThenInclude(po => po.Option).ThenInclude(o => o.Image)
 			.FirstOrDefaultAsync(c => c.UserId == id, cancellationToken);
 		if (cart == null)
 			throw new Exception("Cart not found");
@@ -43,4 +43,12 @@ internal sealed class CartRepository : ICartRepository
 
 	public void UpdateDetailOption(PurchaseDetailOptions optionDetail) =>
 	_context.PurchaseDetailsOptions.Update(optionDetail);
+
+	public async Task<int> GetCartDetailsCountAsync(string userId, CancellationToken cancellationToken = default)
+	{
+		int count = await _context.PurchaseDetails
+			.Where(cd => cd.Cart.UserId == userId)
+			.SumAsync(cd => cd.PurchaseOptions.Sum(po => po.Quantity), cancellationToken);
+			return count;
+	}
 }

@@ -21,7 +21,7 @@ public class CartConfiguration : IEntityTypeConfiguration<CartEntity>
 	{
 		builder.HasKey(x => x.Id);
 		builder.Property(x => x.Id).ValueGeneratedOnAdd();
-		builder.HasMany(x => x.Details).WithOne().HasForeignKey(x => x.CartId);
+		builder.HasMany(x => x.Details).WithOne(x => x.Cart).HasForeignKey(x => x.CartId);
 		builder.HasData(new CartEntity
 		{
 			Id = Guid.Parse(CartId),

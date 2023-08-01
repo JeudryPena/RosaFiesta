@@ -72,8 +72,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
 
   viewCart: boolean = false;
-  cartItems: CartResponse[] = [];
-  total: Observable<number> = new Observable<number>();
+  total: number | null = null;
   isSearchInputFocused = false;
   isAuthenticated = false;
   lastScrollTop = 0;
@@ -94,8 +93,8 @@ export class NavbarComponent implements OnInit {
   }
 
   getCartItems() {
-    this.service.getMyCart().subscribe((res: CartResponse[]) => {
-      this.cartItems = res;
+    this.service.getCartCount().subscribe((res: number) => {
+      this.total = res;
     });
   }
 

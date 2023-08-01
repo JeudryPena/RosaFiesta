@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable, catchError, map } from 'rxjs';
 import { ProductDetailResponse } from '../../interfaces/Product/Response/productDetailResponse';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CategoriesService } from '../../shared/services/categories.service';
+import { PurchaseDetailDto } from '../../interfaces/Product/UserInteract/purchaseDetailDto';
+import { CartsService } from '../../shared/services/carts.service';
 import { DiscountsService } from '../../shared/services/discounts.service';
+import { ProductsService } from '../../shared/services/products.service';
 import { ReviewsService } from '../../shared/services/reviews.service';
+import { decrypt } from '../../shared/util/util-encrypt';
 
 @Component({
   selector: 'app-product-detail',
@@ -13,30 +17,78 @@ import { ReviewsService } from '../../shared/services/reviews.service';
 })
 export class ProductDetailComponent implements OnInit {
 
+  selectedImage = 0;
+  cartForm: any;
+  optionId: string = '';
+  productId: string = '';
+
   product$!: Observable<ProductDetailResponse>;
+
   colorCode = "#ff0000";
   tuhna = '0 0 0 2px #fff, 0 0 0 4px #ff0000';
   isActive = true;
   rating: number = 3.5;
+  hasError: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private categoryService: CategoriesService,
+    private service: ProductsService,
     private reviewService: ReviewsService,
-    private discountService: DiscountsService
-  ) { 
-    
-  } 
+    private discountService: DiscountsService,
+    private cartService: CartsService
+  ) {
 
-  images = [
-    'https://via.placeholder.com/400x300',
-    'https://via.placeholder.com/400x300',
-    'https://via.placeholder.com/400x300',
-    'https://via.placeholder.com/400x300',
-  ];
+  }
 
   ngOnInit(): void {
+    this.cartForm = new FormGroup({
+      quantity: new FormControl(1) 
+    });
+    this.route.queryParams.subscribe((params: Params) => {
+      const productId = decrypt<{ id: string }>(params['productId']);
+      if (productId) {
+        this.productId = productId.id;
+        this.product$ = this.service.GetProductDetail(productId.id).pipe(
+          catchError(err => {
+            this.router.navigate(['/']);
+            throw err;
+          }),
+          map((product: ProductDetailResponse) => {
+            this.optionId = product.option.id;
+            this.reviewService.GetReviewsPreview(product.option.id).subscribe((reviews: any) => {
+              product.option.reviews = reviews;
+              product.option.averageRating = reviews.reduce((acc: any, review: any) => acc + review.rating, 0) / reviews.length;
+            });
+            this.discountService.GetOptionDiscount(product.option.id).subscribe((discount: any) => {
+              product.option.discount = discount;
+              product.option.offerPrice = product.option.price - (product.option.price * (discount.value / 100));
+            });
+            return product;
+          })
+        );
+      }
+      else
+        this.router.navigate(['/']);
+    });
+  }
 
+  AddToCart(cartFormValue: any) {
+    const cart = { ...cartFormValue };
+
+    const cartDto: PurchaseDetailDto = {
+      productId: this.productId,
+      quantity: cart.quantity,
+      optionId: this.optionId
+    }
+    console.log(cartDto)
+    this.cartService.AddProductToCart(cartDto).subscribe({
+      next: () => {
+        this.router.navigate(['']);
+      }, error: (err) => {
+        this.hasError = true;
+        console.log(err);
+      }
+    });
   }
 }

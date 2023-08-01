@@ -63,8 +63,8 @@
                             <div ngbDropdown class="d-inline-block ps-0 pe-0" display="dynamic" placement="bottom-end">
                                 <button type="button" class="btn btn-outline-primary border-0 navbar-cart"
                                     id="dropdownForm1" aria-labelledby="navbarDropdown3" ngbDropdownToggle>
-                                    <div class="navbar-cart-items" *ngIf="cartItems?.length">
-                                        <p>{{cartItems.length}}</p>
+                                    <div class="navbar-cart-items" *ngIf="total">
+                                        <p>{{total}}</p>
                                     </div>
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </button>

@@ -29,6 +29,12 @@ internal sealed class ProductService : IProductService
 	public async Task<ICollection<ManagementProductsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.ManagementGetAllAsync(cancellationToken);
+		foreach (var product in products)
+		{
+			product.CreatedBy = await _repositoryManager.UserRepository.GetUserName(product.CreatedBy, cancellationToken);
+			if (product.UpdatedBy != null)
+				product.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(product.UpdatedBy, cancellationToken);
+		}
 		ICollection<ManagementProductsResponse> productsResponse = products.Adapt<ICollection<ManagementProductsResponse>>();
 		return productsResponse;
 	}
@@ -45,6 +51,9 @@ internal sealed class ProductService : IProductService
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
 		ProductResponse productResponse = product.Adapt<ProductResponse>();
+		productResponse.CreatedBy = await _repositoryManager.UserRepository.GetUserName(product.CreatedBy, cancellationToken);
+		if (product.UpdatedBy != null)
+			productResponse.UpdatedBy = await _repositoryManager.UserRepository.GetUserName(product.UpdatedBy, cancellationToken);
 		return productResponse;
 	}
 
@@ -105,12 +114,11 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<ProductDetailResponse> GetProductDetail(Guid productCode, Guid optionId,
+	public async Task<ProductDetailResponse> GetProductDetail(Guid id,
 		CancellationToken cancellationToken = default)
 	{
-		ProductEntity product = await _repositoryManager.ProductRepository.GetProductAndOption(productCode, optionId, cancellationToken);
+		ProductEntity product = await _repositoryManager.ProductRepository.GetDetailAsync(id, cancellationToken);
 		ProductDetailResponse productDetailResponse = product.Adapt<ProductDetailResponse>();
-		productDetailResponse.Option = product.Options[0].Adapt<OptionDetailResponse>();
 		return productDetailResponse;
 	}
 

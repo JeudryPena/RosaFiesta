@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
 
+using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
 
@@ -23,9 +24,16 @@ public class ReviewsController : ControllerBase
 	}
 
 	[HttpGet("options/{optionId:guid}")]
+	public async Task<IActionResult> GetReviewsPreview(Guid optionId, CancellationToken cancellationToken)
+	{
+		IEnumerable<ReviewPreviewResponse> reviews = await _serviceManager.ReviewService.GetAllAsync(optionId, cancellationToken);
+		return Ok(reviews);
+	}
+
+	[HttpGet("options/{optionId:guid}/all")]
 	public async Task<IActionResult> GetReviews(Guid optionId, CancellationToken cancellationToken)
 	{
-		IEnumerable<ReviewResponse> reviews = await _serviceManager.ReviewService.GetAllAsync(optionId, cancellationToken);
+		IEnumerable<ReviewResponse> reviews = await _serviceManager.ReviewService.GetOptionReviews(optionId, cancellationToken);
 		return Ok(reviews);
 	}
 

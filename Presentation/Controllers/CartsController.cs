@@ -23,6 +23,16 @@ public class CartsController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
+	[HttpGet]
+	public async Task<IActionResult> GetCartDetailsCountAsync(CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		int count = await _serviceManager.CartService.GetCartDetailsCountAsync(userId, cancellationToken);
+		return Ok(count);
+	}
+
 	[HttpGet("myCart")]
 	public async Task<IActionResult> GetMyCartAsync(CancellationToken cancellationToken)
 	{
@@ -33,7 +43,7 @@ public class CartsController : ControllerBase
 		return Ok(cart);
 	}
 
-	[HttpPut("AddProductToCart")]
+	[HttpPut("addProductToCart")]
 	public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,7 +53,7 @@ public class CartsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPut("/option/{optionId:guid}/AddPackToCart")]
+	[HttpPut("/option/{optionId:guid}/addPackToCart")]
 	public async Task<IActionResult> AddPackToCartAsync([FromBody] List<PurchaseDetailDto> cartItemsItems, CancellationToken cancellationToken, Guid optionId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

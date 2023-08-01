@@ -1,36 +1,22 @@
 <div class="container ">
-    <div class="product-div">
-        <div class="product-div-left">
-            <div class="img-container">
-                <a class="share"><i class="fas fa-share-alt"></i></a>
-                <img src="assets/shoes_images/shoe_1.jpg" alt="watch">
-            </div>
-            <div class="img-select">
-                <div class="img-item">
-                    <a href="#" data-id="1">
-                        <img src="assets/shoes_images/shoe_1.jpg" alt="shoe image">
-                    </a>
+    <ng-container *ngIf="product$ | async as product; else loadOrError">
+        <div class="product-div">
+            <div class="product-div-left">
+                <div class="img-container">
+                    <a class="share"><i class="fas fa-share-alt"></i></a>
+                    <img src="{{product.option.image | imgPath}}" width="400" height="480">
                 </div>
-                <div class="img-item">
-                    <a href="#" data-id="2">
-                        <img src="assets/shoes_images/shoe_2.jpg" alt="shoe image">
-                    </a>
-                </div>
-                <div class="img-item">
-                    <a href="#" data-id="3">
-                        <img src="assets/shoes_images/shoe_3.jpg" alt="shoe image">
-                    </a>
-                </div>
-                <div class="img-item">
-                    <a href="#" data-id="4">
-                        <img src="assets/shoes_images/shoe_4.jpg" alt="shoe image">
-                    </a>
+                <div class="img-select" *ngFor="let image of product.option.images">
+                    <div class="img-item">
+                        <a>
+                            <img src="{{image | imgPath}}" width="128" height="128">
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="product-div-right">
+            <div class="product-div-right">
 
-            <!-- <div class="social-links">
+                <!-- <div class="social-links">
                         <p>Share At: </p>
                         <a href="#">
                             <i class="fab fa-facebook-f"></i>
@@ -48,48 +34,66 @@
                             <i class="fab fa-pinterest"></i>
                         </a>
                     </div> -->
-            <span class="product-name"><a href="#" class="product-link">Nuevo</a> Analog Watch - For Men</span>
-            <div class="row price-rating">
-                <div class="col product-price">
-                    <span class="last-price">$257.00 </span>
-                    <span class="new-price">$249.00 (5%)</span>
-                </div>
-                <div class="col product-rating">
-                    <app-rating [rating]="rating"></app-rating>
-                    <span>(350)</span>
-                </div>
-            </div>
-
-            <p class="product-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae animi
-                ad minima veritatis dolore. Architecto facere dignissimos voluptate fugit ratione molestias quis
-                quidem exercitationem voluptas.</p>
-            <div class="product-detail">
-                <ul>
-                    <li>Available: <span>Disponible</span></li>
-                    <li>Shipping Area: <span>Republica Dominicana</span></li>
-                    <li>Shipping Fee: <span>Gratis</span></li>
-                </ul>
-            </div>
-            <div class="color-price">
-                <div class="color-option">
-                    <span class="color">Color:</span>
-                    <div class="circles">
-                        <span [ngClass]="{'focus': isActive}"
-                            [ngStyle]="{'background': colorCode, 'box-shadow': isActive ? '0 0 0 2px #fff, 0 0 0 4px ' + colorCode : 'none'}"
-                            class="circle"></span>
+                <span class="product-name"><a href="#" class="product-link">{{product.option.condition}}</a>
+                    {{product.option.title}}</span>
+                <div class="row price-rating">
+                    <div class="product-price col">
+                        <span *ngIf="product.option.discount" class="last-price me-1">{{product.option.offerPrice |
+                            currency }}</span>
+                        <span class="new-price">{{product.option.price | currency}}<span class="ms-1"
+                                *ngIf="product.option.discount">({{product.option.discount.value}}%)</span></span>
+                    </div>
+                    <div class="col product-rating">
+                        <app-rating [rating]="product.option.averageRating"></app-rating>
+                        <span class="review-quantity">{{(product.option.reviews)?.length}}</span>
                     </div>
                 </div>
-            </div>
-            <div class="btn-groups d-flex">
-                <input type="number" min="0" value="1" step="1" enabled>
-                <div class="button ms-1 p-0">
-                    <div class="button-layer"></div>
-                    <button><i class="fa-solid fa-cart-shopping me-1"></i>Añadir al carrito</button>
-                    <!-- <button type="button" class="add-cart-btn"><i class="fas fa-shopping-cart"></i>Añadir al
-                            carrito</button> -->
+
+                <p class="product-description">{{product.option.description}}</p>
+                <div class="product-detail">
+                    <ul>
+                        <li *ngIf="product.option.stock != 'OutOfStock'">Disponibilidad:
+                            <span>{{product.option.stock}}</span></li>
+                        <li>Shipping Area: <span>Republica Dominicana</span></li>
+                        <li>Shipping Fee: <span>Gratis</span></li>
+                    </ul>
                 </div>
-                <button type="button" class="buy-now-btn ms-2"><i class="fas fa-wallet"></i>COMPRAR</button>
+                <div class="color-price">
+                    <div class="color-option">
+                        <span class="color">Color:</span>
+                        <div class="circles" *ngFor="let color of product.options">
+                            <span [ngClass]="{'focus': isActive}"
+                                [ngStyle]="{'background': colorCode, 'box-shadow': isActive ? '0 0 0 2px #fff, 0 0 0 4px ' + colorCode : 'none'}"
+                                class="circle"></span>
+                        </div>
+                    </div>
+                </div>
+                <form action="" [formGroup]="cartForm">
+                    <div class="btn-groups d-flex">
+
+                        <input formControlName="quantity" type="number" min="0" value="1" step="1" enabled>
+
+                        <div class="button ms-1 p-0">
+                            <div class="button-layer"></div>
+                            <button (click)="AddToCart(cartForm.value)"><i class="fa-solid fa-cart-shopping me-1"></i>Añadir al carrito</button>
+                            <!-- <button type="button" class="add-cart-btn"><i class="fas fa-shopping-cart"></i>Añadir al
+                            carrito</button> -->
+                        </div>
+                        <button type="button" class="buy-now-btn ms-2"><i class="fas fa-wallet"></i>COMPRAR</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </ng-container>
+    <ng-template #loadOrError>
+        <section *ngIf="hasError; else loading">
+            Ha ocurrido un error, por favor intente más tarde
+        </section>
+        <ng-template #loading>
+            <div class="loading-container">
+
+                <h3>Cargando...</h3>
+            </div>
+        </ng-template>
+    </ng-template>
 </div>

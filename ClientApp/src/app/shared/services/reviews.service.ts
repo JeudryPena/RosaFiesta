@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { config } from "../../env/config.prod";
+import { ReviewResponse } from '../../interfaces/Product/UserInteract/Response/reviewResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,12 @@ export class ReviewsService {
     private http: HttpClient
   ) { }
 
-  GetReviews(optionId: string) {
+  GetReviewsPreview(optionId: string) {
     return this.http.get(`${this.apiUrl}options/${optionId}`);
+  }
+
+  GetReviews(optionId: string): Observable<ReviewResponse[]> {
+    return this.http.get<ReviewResponse[]>(`${this.apiUrl}options/${optionId}/all`);
   }
 
   CreateReview(optionId: string, review: any) {

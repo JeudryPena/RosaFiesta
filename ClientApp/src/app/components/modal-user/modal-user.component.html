@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row group">
+            <div class="row">
                 <div class="col">
                     <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
                         <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required
@@ -153,8 +153,8 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="read" class="">
-                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
+            <div *ngIf="read" class="grp">
+                <div class="input-container grp" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
                     <input readOnly #createdAtInput type="text" formControlName="createdAt"
                         [ngModel]="userForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
                     <label>Fecha de Creación</label>

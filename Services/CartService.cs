@@ -108,18 +108,17 @@ internal sealed class CartService : ICartService
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
 		cart.Details ??= new List<PurchaseDetailEntity>();
 		PurchaseDetailEntity? detail = cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
-		var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(cartItem.OptionId, cancellationToken);
 		if (detail == null)
 		{
-			if (option.QuantityAvailable < cartItem.Quantity)
-				throw new Exception($"You are adding {cartItem.Quantity - option.QuantityAvailable} more items than the quantity available");
+			double optionPrice = await _repositoryManager.ProductRepository.CartItemPrice(cartItem.OptionId, cartItem.Quantity, cancellationToken);
 			detail = new PurchaseDetailEntity();
+			detail.PurchaseOptions ??= new List<PurchaseDetailOptions>();
 			detail.ProductId = cartItem.ProductId;
 			detail.PurchaseOptions.Add(new PurchaseDetailOptions
 			{
 				OptionId = cartItem.OptionId,
 				Quantity = cartItem.Quantity,
-				UnitPrice = cartItem.Quantity,
+				UnitPrice = optionPrice,
 			});
 			cart.Details.Add(detail);
 		}
@@ -127,10 +126,15 @@ internal sealed class CartService : ICartService
 		{
 			PurchaseDetailOptions optionDetail = detail.PurchaseOptions.FirstOrDefault(po => po.OptionId == cartItem.OptionId) ?? throw new Exception("Option not found");
 			optionDetail.Quantity += cartItem.Quantity;
-			if (optionDetail.Quantity < option.QuantityAvailable)
-				throw new Exception($"You are adding {optionDetail.Quantity - option.QuantityAvailable} more items than the quantity available");
+			await _repositoryManager.ProductRepository.CheckOptionAviabilityAsync(cartItem.OptionId, optionDetail.Quantity, cancellationToken);
 		}
 		_repositoryManager.CartRepository.UpdateCartItem(detail);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+	}
+
+	public async Task<int> GetCartDetailsCountAsync(string userId, CancellationToken cancellationToken = default)
+	{
+		int count = await _repositoryManager.CartRepository.GetCartDetailsCountAsync(userId, cancellationToken);
+		return count;
 	}
 }

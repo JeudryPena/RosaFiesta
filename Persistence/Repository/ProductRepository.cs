@@ -128,4 +128,33 @@ public class ProductRepository : IProductRepository
 	}
 
 	public async Task<IEnumerable<OptionEntity>> GetOptionsList(CancellationToken cancellationToken = default) => await _dbContext.Options.ToListAsync(cancellationToken);
+
+	public async Task<ProductEntity> GetDetailAsync(Guid id, CancellationToken cancellationToken = default)
+	{
+		ProductEntity? product = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Images).Include(x => x.Warranty).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+		if (product == null)
+			throw new ArgumentNullException(nameof(product));
+		return product;
+	}
+
+	public async Task<double> CartItemPrice(Guid optionId, int quantity, CancellationToken cancellationToken = default)
+	{
+		OptionEntity? option = await _dbContext.Options.FirstOrDefaultAsync(x => x.QuantityAvailable >= quantity && x.Id == optionId, cancellationToken);
+		if (option == null)
+			throw new Exception("Option not found");
+		if (option.QuantityAvailable < quantity)
+			throw new Exception($"You are adding {quantity - option.QuantityAvailable} more items than the quantity available");
+		return option.Price;
+	}
+
+	public async Task CheckOptionAviabilityAsync(Guid optionId, int quantity, CancellationToken cancellationToken = default)
+	{
+		OptionEntity? option = await _dbContext.Options.FirstOrDefaultAsync(x => x.Id == optionId, cancellationToken);
+		if (option == null)
+			throw new ArgumentNullException(nameof(option));
+		if (option.QuantityAvailable < quantity)
+			if (quantity < option.QuantityAvailable)
+				throw new Exception($"You are adding {option. QuantityAvailable - option.QuantityAvailable} more items than the quantity available");
+	}
+
 }

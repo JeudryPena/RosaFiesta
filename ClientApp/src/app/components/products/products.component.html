@@ -39,7 +39,7 @@
                 <span class="review-quantity">{{(product.option.reviews)?.length}}</span>
               </div>
               <div class="product-price">
-                <span *ngIf="product.option.discount" class="last-price me-1">${{product.option.offerPrice | currency }}</span>
+                <span *ngIf="product.option.discount" class="last-price me-1">{{product.option.offerPrice | currency }}</span>
                 <span class="new-price">{{product.option.price | currency}}<span class="ms-1"
                     *ngIf="product.option.discount">({{product.option.discount.value}}%)</span></span>
               </div>

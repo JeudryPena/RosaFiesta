@@ -15,4 +15,5 @@ public interface ICartService
 	Task ClearCartAsync(string userId, CancellationToken cancellationToken = default);
 	Task AddProductToCartAsync(string userId, PurchaseDetailDto cartItem,
 		CancellationToken cancellationToken = default);
+	Task<int> GetCartDetailsCountAsync(string userId, CancellationToken cancellationToken = default);
 }

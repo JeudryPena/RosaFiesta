@@ -1,8 +1,10 @@
-﻿namespace Contracts.Model.Product.UserInteract.Response;
+﻿using Contracts.Model.Product.Response;
+
+namespace Contracts.Model.Product.UserInteract.Response;
 
 public class PurchaseDetailOptionResponse : BaseResponse
 {
-	public string Image { get; set; }
+	public OptionCartResponse Option { get; set; }
 	public int Quantity { get; set; }
 	public Guid OptionId { get; set; }
 	public double UnitPrice { get; set; }
