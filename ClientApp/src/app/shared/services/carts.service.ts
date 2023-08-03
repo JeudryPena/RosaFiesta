@@ -28,4 +28,16 @@ export class CartsService {
   AddProductToCart(cartItem: PurchaseDetailDto): Observable<CartResponse> {
     return this.http.put<CartResponse>(`${this.apiUrl}addProductToCart`, cartItem);
   }
+
+  UpdateQuantity(quantity: number, detailId: string, optionId: string){
+    return this.http.get(`${this.apiUrl}detail/${detailId}/option/${optionId}/adjust/${quantity}`);
+  }
+
+  RemoveItem(detailId: string, optionId: string) {
+    return this.http.delete(`${this.apiUrl}detail/${detailId}/option/${optionId}/remove`);
+  }
+
+  ClearCart() {
+    return this.http.delete(`${this.apiUrl}clear`);
+  }
 }

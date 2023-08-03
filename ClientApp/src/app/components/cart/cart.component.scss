@@ -1,19 +1,25 @@
+.tablex {
+    width: 900px;
+}
+
 .btn-groups {
     align-content: center;
 }
 
-.btn-groups input {
+input {
     border: 1.5px solid #ddd;
     border-radius: 25px;
     text-align: center;
     outline: 0;
     margin-right: 0.2rem;
+    width: 75px;
 }
 
 .btn-groups button {
     font-family: inherit;
     text-transform: uppercase;
     padding: 0 16px;
+    height: 40px;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;

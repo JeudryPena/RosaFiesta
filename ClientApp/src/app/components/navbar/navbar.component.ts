@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
 import { CartResponse } from '../../interfaces/Product/Response/cartResponse';
@@ -6,6 +6,7 @@ import { AuthenticateService } from '../../shared/services/authenticate.service'
 import { CartsService } from '../../shared/services/carts.service';
 import { SidenavService } from '../../shared/services/side-nav.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { PurchaseDetailOptionResponse } from '../../interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -72,11 +73,12 @@ export class NavbarComponent implements OnInit {
   @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
 
   viewCart: boolean = false;
-  total: number | null = null;
+  
   isSearchInputFocused = false;
   isAuthenticated = false;
   lastScrollTop = 0;
   navbar: any;
+  totalItems: number = 0;
 
   constructor(
     private router: Router,
@@ -84,18 +86,17 @@ export class NavbarComponent implements OnInit {
     private authService: AuthenticateService,
     private sidenavService: SidenavService,
   ) {
-    this.getCartItems();
+    
     this.isAuthenticated = this.authService.isUserAuthenticated();
+  }
+
+  total(event: any) {
+    console.log(event);
+    this.totalItems = event;
   }
 
   ToggleCollapsed(): void {
     this.sidenavService.toggleCollapsed();
-  }
-
-  getCartItems() {
-    this.service.getCartCount().subscribe((res: number) => {
-      this.total = res;
-    });
   }
 
   onToggleCart() {

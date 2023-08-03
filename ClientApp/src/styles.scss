@@ -17,11 +17,6 @@
     box-sizing: border-box;
 }
 
-body {
-    position: relative;
-    font-family: 'roboto', sans-serif;
-}
-
 .card{
     display: flex;
     flex-direction: column;
@@ -45,9 +40,9 @@ body {
 
 .body {
     width: calc(100% - 3.5rem);
-    height: 100vh;
     z-index: 0;
-    position: relative;
+    position: absolute;
+    font-family: 'roboto', sans-serif;
     top: 0;
     margin-left: 3.5rem;
     padding: 3.5rem 1rem 0 1rem;

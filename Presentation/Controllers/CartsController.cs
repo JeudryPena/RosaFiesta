@@ -63,27 +63,27 @@ public class CartsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPut("detail/{detailId:guid}/option/{optionId:guid}/adjust")]
-	public async Task<IActionResult> AdjustCartItemQuantityAsync(int adjust, CancellationToken cancellationToken, Guid purchaseNumber, Guid optionId)
+	[HttpGet("detail/{detailId:guid}/option/{optionId:guid}/adjust/{quantity:int}")]
+	public async Task<IActionResult> AdjustCartItemQuantityAsync(int quantity, CancellationToken cancellationToken, Guid detailId, Guid optionId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.CartService.AdjustCartItemQuantityAsync(userId, purchaseNumber, optionId, adjust, cancellationToken);
+		await _serviceManager.CartService.AdjustCartItemQuantityAsync(userId, detailId, optionId, quantity, cancellationToken);
 		return Ok();
 	}
 
-	[HttpPut("product/{productId:guid}/option/{optionId:guid?}/remove")]
-	public async Task<IActionResult> RemoveCartItemAsync(Guid productId, CancellationToken cancellationToken, Guid? optionId = null)
+	[HttpDelete("detail/{detailId:guid}/option/{optionId:guid?}/remove")]
+	public async Task<IActionResult> RemoveCartItemAsync(Guid detailId, CancellationToken cancellationToken, Guid? optionId = null)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.CartService.RemoveCartItemAsync(userId, productId, optionId, cancellationToken);
+		await _serviceManager.CartService.RemoveCartItemAsync(userId, detailId, optionId, cancellationToken);
 		return Ok();
 	}
 
-	[HttpPut("clear")]
+	[HttpDelete("clear")]
 	public async Task<IActionResult> ClearCartAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -10,7 +10,7 @@ public interface ICartService
 		CancellationToken cancellationToken = default);
 	Task AdjustCartItemQuantityAsync(string userId, Guid purchaseNumber, Guid optionId, int adjust,
 		CancellationToken cancellationToken = default);
-	Task RemoveCartItemAsync(string userId, Guid productId, Guid? optionId,
+	Task RemoveCartItemAsync(string userId, Guid detailId, Guid? optionId,
 		CancellationToken cancellationToken = default);
 	Task ClearCartAsync(string userId, CancellationToken cancellationToken = default);
 	Task AddProductToCartAsync(string userId, PurchaseDetailDto cartItem,

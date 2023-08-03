@@ -2,13 +2,13 @@
     <div class="container ">
         <div class="card-table">
             <div class="cart-product">
-                <table class="table table-responsive">
+                <table class="table table-responsive mb-0 tablex">
                     <thead>
                         <tr>
                             <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Precio</th>
-                            <th>C.</th>
+                            <th>Cantidad</th>
                             <th>Total</th>
                             <th></th>
                         </tr>
@@ -18,21 +18,22 @@
                             <td><img style="width: 120px;" src="{{product.option.image | imgPath}}" alt=""></td>
                             <td>{{product.option.title}}</td>
                             <td>{{product.option.price | currency}}</td>
-                            <td><input formControlName="quantity" type="number" min="0" value={{product.quantity}} step="1" enabled></td>
+                            <td><input (input)="OnQuantityChange($event, product.detailId, product.optionId)" type="number" min="0" value={{product.quantity}} step="1" enabled></td>
                             <td>{{product.quantity * product.option.price | currency}}</td>
                             <td>
-                                <button class="btn btn-danger p-1"><i class="fas fa-trash-alt"></i></button>
+                                <button class="btn btn-danger p-1" (click)="deleteItem(product.detailId, product.optionId)"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="row ps-2">
-                    <div class="col-md-3">
-                        <strong>Total: {{totalPrice | currency}}</strong>
+                <div class="row p-3">
+                    <div class="col-md-5 d-flex">
+                        <strong>Total: </strong>
+                        <p class="mb-0 ms-2">{{totalPrice | currency}}</p>
                     </div>
-                    <div class="btn-groups col-md-9 d-flex justify-content-between ">
-                        <button type="button" class="buy-now-btn mb-2"><i class="fas fa-wallet"></i>COMPRAR</button>
-                        <button type="button" class="add-cart-btn mb-2 me-2"><i class="fas fa-shopping-cart"></i>Limpiar carrito</button> 
+                    <div class="btn-groups col-md-7 d-flex justify-content-between">
+                        <button type="button" (click)="purchase()" class="buy-now-btn btn-sm"><i class="fas fa-wallet"></i>Comprar</button>
+                        <button type="button" (click)="clearCart()" class="add-cart-btn btn-sm"><i class="fa-solid fa-trash me-1" ></i>Limpiar carrito</button> 
                     </div>
                 </div>
             </div>
