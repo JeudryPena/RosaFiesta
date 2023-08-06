@@ -6,8 +6,6 @@ export interface UserForCreationDto {
 	password: string;
 	confirmPassword: string;
 	birthDate: string;
-	name: string;
-	lastName: string;
 	rolesId: UserRolesDto[];
 	promotionalMails: boolean;
 }

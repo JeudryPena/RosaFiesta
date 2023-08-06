@@ -12,12 +12,8 @@ public class UserEntity : IdentityUser, IAutoBy
 {
 	[NotMapped]
 	public override string PhoneNumber { get; set; }
-
 	[NotMapped]
 	public override bool PhoneNumberConfirmed { get; set; }
-
-	[StringLength(120, MinimumLength = 3)]
-	public string FullName { get; set; }
 	[Range(16, 150)]
 	public DateOnly BirthDate { get; set; }
 	public string? RefreshToken { get; set; }

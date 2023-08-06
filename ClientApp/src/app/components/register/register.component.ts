@@ -17,8 +17,6 @@ export class RegisterComponent {
   passwordFocused = false;
   confirmPasswordFocused = false;
   birthDateFocused = false;
-  nameFocused = false;
-  lastNameFocused = false;
   model!: NgbDateStruct;
   registerForm: any;
 
@@ -34,8 +32,6 @@ export class RegisterComponent {
       password: new FormControl(''),
       confirmPassword: new FormControl(''),
       birthDate: new FormControl(''),
-      name: new FormControl(''),
-      lastName: new FormControl(''),
       promotionalMails: new FormControl('')
     })
   }
@@ -50,8 +46,6 @@ export class RegisterComponent {
 
     const userForRegister: RegisterDto = {
       userName: register.userName,
-      name: register.name,
-      lastName: register.lastName,
       promotionalMails: register.promotionalMails,
       password: register.password,
       email: register.email,

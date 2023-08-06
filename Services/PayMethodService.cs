@@ -1,4 +1,5 @@
-﻿using Contracts.Model.Security.Response;
+﻿using Contracts.Model.Product.UserInteract;
+using Contracts.Model.Security.Response;
 
 using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
@@ -51,6 +52,14 @@ public class PayMethodService : IPayMethodService
 		UserEntity user = await _repositoryManager.PayMethodRepository.GetUserByDefaultPayment(userId, paymentId, cancellationToken);
 		user.DefaultPayMethodId = paymentId;
 		_repositoryManager.UserRepository.Update(user);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
+	}
+
+	public async Task CreateAsync(PayMethodDto payMethodDto, string userId, CancellationToken cancellationToken = default)
+	{
+		PayMethodEntity payMethodEntity = payMethodDto.Adapt<PayMethodEntity>();
+		payMethodEntity.UserId = userId;
+		_repositoryManager.PayMethodRepository.Create(payMethodEntity);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 }

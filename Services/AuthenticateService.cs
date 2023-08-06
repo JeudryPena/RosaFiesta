@@ -50,7 +50,6 @@ internal sealed class AuthenticateService : IAuthenticateService
 	)
 	{
 		UserEntity user = registerDto.Adapt<UserEntity>();
-		user.FullName = registerDto.Name + " " + registerDto.LastName;
 		user.Id = Guid.NewGuid().ToString();
 		var result = await _userManager.CreateAsync(user, registerDto.Password)
 			.ConfigureAwait(false);
@@ -297,7 +296,6 @@ internal sealed class AuthenticateService : IAuthenticateService
 				new (ClaimTypes.NameIdentifier, user.Id),
 				new (ClaimTypes.Name, user.UserName ?? string.Empty),
 				new (ClaimTypes.Role, userRole.FirstOrDefault() ?? string.Empty),
-				new ("FullName", user.FullName),
 				new (JwtRegisteredClaimNames.Iss, _configuration["JWT:ValidIssuer"] ?? throw new InvalidOperationException()),
 				new (JwtRegisteredClaimNames.Aud, _configuration["JWT:ValidAudience"] ?? throw new InvalidOperationException()),
 			}),

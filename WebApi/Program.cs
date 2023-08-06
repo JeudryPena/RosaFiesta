@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -98,8 +99,6 @@ public static class Program
 
 	private static void AddFileManage(IServiceCollection services, WebApplicationBuilder builder)
 	{
-
-
 		services.Configure<FormOptions>(o =>
 		{
 			o.ValueLengthLimit = int.MaxValue;
@@ -213,7 +212,7 @@ public static class Program
 				c.AddPolicy(AllowOriginKey,
 					builder =>
 						builder
-							.AllowAnyOrigin()
+							.WithOrigins(origins)
 							.AllowAnyMethod()
 							.AllowAnyHeader()
 							.AllowAnyMethod()
@@ -299,6 +298,15 @@ public static class Program
 		services.Configure<DataProtectionTokenProviderOptions>(
 			opt => opt.TokenLifespan = TimeSpan.FromHours(2)
 		);
+
+		services.AddAuthentication()
+		.AddGoogle("google", opt =>
+		{
+		var googleAuth = configuration.GetSection("Authentication:Google");
+		opt.ClientId = googleAuth["ClientId"];
+		opt.ClientSecret = googleAuth["ClientSecret"];
+		opt.SignInScheme = IdentityConstants.ExternalScheme;
+	});
 	}
 
 	private static void AddJwtTokenAuthentication(

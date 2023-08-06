@@ -15,34 +15,6 @@
                         <h5 *ngIf="validate('userName', 'minlength', userFocused)">El Usuario es<strong> muy
                                 corto</strong></h5>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': nameFocused}">
-                                <input type="text" class="form-control contact-input" id="name" required minlength="2"
-                                    maxlength="50" formControlName="name" placeholder="Nombre" (focus)="nameFocused = true"
-                                    (blur)="nameFocused = false" />
-                                <label for="floatingInput">Nombre</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': lastNameFocused}">
-                                <input type="text" class="form-control contact-input" id="lastName" required minlength="2"
-                                    maxlength="50" formControlName="lastName" placeholder="Apellido" (focus)="lastNameFocused = true"
-                                    (blur)="lastNameFocused = false" />
-                                <label for="floatingInput">Apellido</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('lastName', 'required', lastNameFocused)">El Apellido es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('lastName', 'minlength', lastNameFocused)">El Apellido es<strong> muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-                    </div>
                     <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': emailFocused}">
                         <input type="email" class="form-control contact-input" id="email" required minlength="5" maxlength="253"
                             placeholder="Correo" formControlName="email" (focus)="emailFocused = true"

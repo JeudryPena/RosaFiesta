@@ -66,7 +66,6 @@ internal sealed class UserService : IUserService
 			cancellationToken
 		) ?? throw new UserNotFoundException(userId);
 		user = userForUpdateDto.Adapt(user);
-		user.FullName = userForUpdateDto.Name + " " + userForUpdateDto.LastName;
 		_repositoryManager.UserRepository.Update(user);
 		IEnumerable<string> newRoles = new List<string>();
 		foreach (var rol in userForUpdateDto.RolesId)
@@ -112,7 +111,6 @@ internal sealed class UserService : IUserService
 	public async Task CreateAsync(UserForCreationDto userForCreationDto, string userId, CancellationToken cancellationToken = default)
 	{
 		UserEntity user = userForCreationDto.Adapt<UserEntity>();
-		user.FullName = userForCreationDto.Name + " " + userForCreationDto.LastName;
 		user.EmailConfirmed = true;
 		user.LockoutEnabled = true;
 		user.LockoutEnd = null;

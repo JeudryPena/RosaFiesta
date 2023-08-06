@@ -12,4 +12,5 @@ public interface IPayMethodRepository
 	Task<UserEntity> GetUserByDefaultPayment(string userId, Guid paymentId,
 		CancellationToken cancellationToken = default);
 	void Update(PayMethodEntity payment);
+	void Create(PayMethodEntity payment);
 }

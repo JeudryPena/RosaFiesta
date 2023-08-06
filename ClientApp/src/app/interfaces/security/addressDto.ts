@@ -2,6 +2,9 @@ export interface AddressDto {
 	title: string;
 	city: string;
 	zipCode: string;
-	street: string;
+	state: string;
+	name: string;
+	lastName: string;
+	phoneNumber: string;
 	extraDetail: string | null;
 }

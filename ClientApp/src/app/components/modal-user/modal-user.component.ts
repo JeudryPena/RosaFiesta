@@ -38,8 +38,6 @@ export class ModalUserComponent {
   passwordFocused = false;
   confirmPasswordFocused = false;
   birthDateFocused = false;
-  nameFocused = false;
-  lastNameFocused = false;
   userRolesFocused = false;
   promotionalMailsFocused = false;
 
@@ -78,8 +76,6 @@ export class ModalUserComponent {
       confirmPassword: new FormControl(''),
       birthDate: new FormControl(''),
       date: new FormControl(''),
-      name: new FormControl(''),
-      lastName: new FormControl(''),
       userRoles: new FormControl(''),
       promotionalMails: new FormControl(false),
     });
@@ -93,17 +89,16 @@ export class ModalUserComponent {
           email: response.email,
           birthDate: response.birthDate,
           promotionalMails: response.promotionalMails,
-
         });
 
-        let splitName = response.fullName.split(' ');
+        // let splitName = response.fullName.split(' ');
 
-        let firstName = splitName.slice(0, (splitName.length / 2)).join(' ');
-        let lastName = splitName.slice((splitName.length / 2)).join(' ');
-        this.userForm.patchValue({
-          name: firstName,
-          lastName: lastName
-        });
+        // let firstName = splitName.slice(0, (splitName.length / 2)).join(' ');
+        // let lastName = splitName.slice((splitName.length / 2)).join(' ');
+        // this.userForm.patchValue({
+        //   name: firstName,
+        //   lastName: lastName
+        // });
 
 
         this.roles = response.userRoles.map(userRole => userRole.role) || [];
@@ -117,8 +112,6 @@ export class ModalUserComponent {
         confirmPassword: new FormControl(''),
         birthDate: new FormControl(''),
         date: new FormControl(''),
-        name: new FormControl(''),
-        lastName: new FormControl(''),
         userRoles: new FormControl(''),
         promotionalMails: new FormControl(false),
         createdAt: new FormControl(''),
@@ -184,8 +177,6 @@ export class ModalUserComponent {
           password: user.password,
           confirmPassword: user.confirmPassword,
           birthDate: this.date.toISOString(),
-          name: user.name,
-          lastName: user.lastName,
           rolesId: this.roles,
           promotionalMails: user.promotionalMails,
         }
@@ -223,8 +214,6 @@ export class ModalUserComponent {
           password: user.password,
           confirmPassword: user.confirmPassword,
           birthDate: user.birthDate,
-          name: user.name,
-          lastName: user.lastName,
           rolesId: this.roles,
           promotionalMails: user.promotionalMails,
         }

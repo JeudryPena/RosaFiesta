@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
 
+using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Security.Response;
 
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ public class PaymentController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 
-	[HttpGet()]
+	[HttpGet]
 	public async Task<IActionResult> RetrieveAllAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -51,6 +52,16 @@ public class PaymentController : ControllerBase
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
 		await _serviceManager.PayMethodService.MakePaymentDefaultAsync(paymentId, userId, cancellationToken);
+		return Ok();
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> CreateAsync([FromBody] PayMethodDto payMethodDto, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		await _serviceManager.PayMethodService.CreateAsync(payMethodDto, userId, cancellationToken);
 		return Ok();
 	}
 

@@ -10,8 +10,7 @@ import { decrypt, encrypt } from '../../shared/util/util-encrypt';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
   category$!: Observable<CategoryResponse>;

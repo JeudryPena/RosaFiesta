@@ -22,7 +22,6 @@
                         <thead class="tables">
                             <tr class="table-row">
                                 <th scope="col" class="table-cell">Usuario</th>
-                                <th scope="col" class="table-cell">Nombre</th>
                                 <th scope="col" class="table-cell">Email</th>
                                 <th scope="col" class="table-cell">Nacimiento</th>
                                 <th scope="col" class="table-cell">Confirmado</th>
@@ -39,8 +38,6 @@
                         <tbody class="rows">
                             <tr class="scroll" *ngFor="let item of users$ | async ">
                                 <td><ngb-highlight [result]="item.userName" [term]="service.searchTerm"></ngb-highlight>
-                                </td>
-                                <td><ngb-highlight [result]="item.fullName" [term]="service.searchTerm"></ngb-highlight>
                                 </td>
                                 <td>
                                     <ngb-highlight [result]="item.email" [term]="service.searchTerm"></ngb-highlight>

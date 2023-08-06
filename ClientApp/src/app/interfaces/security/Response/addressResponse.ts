@@ -6,6 +6,8 @@ export interface AddressResponse extends BaseResponse {
 	title: string;
 	city: string;
 	zipCode: string;
-	street: string;
+	state: string;
+	fullName: string;
+	phoneNumber: string;
 	userId: string;
 }

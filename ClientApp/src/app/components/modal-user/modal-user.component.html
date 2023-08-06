@@ -123,36 +123,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
-                        <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required
-                            minlength="3" maxlength="100" (focus)="nameFocused = true" (blur)="nameFocused = false" />
-                        <label>Nombre *</label>
-                        <span>Nombre *</span>
-                        <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong> requerido</strong>
-                        </h5>
-                        <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy corto</strong>
-                        </h5>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-container"
-                        [ngClass]="{'focus': lastNameFocused || lastNameInput.value.length > 0 }">
-                        <input [readOnly]="read" #lastNameInput type="text" formControlName="lastName" class="input"
-                            required minlength="3" maxlength="100" (focus)="lastNameFocused = true"
-                            (blur)="lastNameFocused = false" />
-                        <label>Apellido *</label>
-                        <span>Apellido *</span>
-                        <h5 *ngIf="validate('lastName', 'required', lastNameFocused)">El Apellido es<strong>
-                                requerido</strong>
-                        </h5>
-                        <h5 *ngIf="validate('lastName', 'minlength', lastNameFocused)">El Apellido es<strong> muy
-                                corto</strong>
-                        </h5>
-                    </div>
-                </div>
-            </div>
             <div *ngIf="read" class="grp">
                 <div class="input-container grp" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
                     <input readOnly #createdAtInput type="text" formControlName="createdAt"

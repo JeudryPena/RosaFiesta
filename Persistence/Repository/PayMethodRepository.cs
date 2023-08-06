@@ -15,6 +15,9 @@ internal sealed class PayMethodRepository : IPayMethodRepository
 		_context = context;
 	}
 
+	public void Create(PayMethodEntity payment)
+	=> _context.PayMethods.Add(payment);
+
 	public void Delete(PayMethodEntity payment)
 	=> _context.PayMethods.Remove(payment);
 
