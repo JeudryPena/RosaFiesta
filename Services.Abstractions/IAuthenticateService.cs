@@ -18,4 +18,5 @@ public interface IAuthenticateService
 	Task<LoginResponse> LoginAsync(LogingDto logingDto, CancellationToken cancellationToken = default);
 	LoginResponse RefreshToken(TokenApiDto tokenApiDto);
 	void RevokeToken(string username);
+	Task<LoginResponse> VerifyGoogle(ExternalAuthDto externalAuth, string client);
 }

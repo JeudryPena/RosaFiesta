@@ -54,7 +54,6 @@ export class WarrantiesService {
     private pipe: DecimalPipe,
     private http: HttpClient,
   ) {
-    this.RetrieveData();
   }
 
   RetrieveData() {

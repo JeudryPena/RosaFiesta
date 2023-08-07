@@ -43,7 +43,6 @@ export class CartComponent implements OnInit {
   }
 
   getCartItems() {
-    console.log("tuhna")
     this.service.getMyCart().subscribe((response: CartResponse) => {
       if (response.details) {
         this.viewCart = true;
@@ -97,7 +96,6 @@ export class CartComponent implements OnInit {
       this.totalPrice += element.option.price * element.quantity;
       total += element.quantity;
     });
-    console.log(total)
     this.total.emit(total);
   }
 

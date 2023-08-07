@@ -53,7 +53,6 @@ export class SuppliersService {
     private pipe: DecimalPipe,
     private http: HttpClient,
   ) {
-    this.RetrieveData();
   }
 
   RetrieveData() {

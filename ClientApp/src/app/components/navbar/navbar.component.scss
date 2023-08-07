@@ -1,22 +1,44 @@
+.item {
+  color: white;
+  text-decoration: none;
+  transition: 0.2s;
+  padding: 2px 6px 2px 6px;
+  border-radius: 10px;
+}
+
+.item:hover {
+  background-color: #0D6EFD;
+}
+
 .navbar-cart {
   position: relative;
   color: white;
+  padding: 2px 6px 2px 6px;
+  border-radius: 10px;
+  transition: 0.2s;
+  font-size: 95%;
   &-items {
     position: absolute;
-    left: 40.5px;
+    left: 29px;
     top: 6px;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     background-color: rgb(172, 14, 14);
-    height: 20px;
-    width: 20px;
+    height: 60%;
+    width: 40%;
 
     p {
-      font-size: 0.8rem;
+      font-size: 60%;
       text-align: center;
     }
   }
+}
+
+.navbar-cart:hover {
+  color: white;
+  background-color: #0D6EFD;
+  text-decoration: none;
 }
 
 .rounded-circle {

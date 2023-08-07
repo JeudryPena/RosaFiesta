@@ -57,7 +57,7 @@ export class CategoriesService {
     private http: HttpClient,
     private service: UsersService
   ) {
-    this.RetrieveData();
+    
   }
 
   RetrieveData() {

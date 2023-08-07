@@ -1,8 +1,11 @@
-﻿using Contracts.Model.Security;
+﻿using System.Security.Claims;
+
+using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 using Services.Abstractions;
 
@@ -13,10 +16,25 @@ namespace Presentation.Controllers;
 public class AuthenticateController : ControllerBase
 {
 	private readonly IServiceManager _serviceManager;
+	private readonly IConfiguration _goolgeSettings;
 
-	public AuthenticateController(IServiceManager serviceManager)
+
+
+	public AuthenticateController(IServiceManager serviceManager, IConfiguration goolgeSettings)
 	{
 		_serviceManager = serviceManager;
+		_goolgeSettings = goolgeSettings;
+	}
+
+	[HttpGet("currentUser")]
+	[Authorize]
+	public async Task<IActionResult> CurrentUser(CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			throw new Exception("User not found");
+		string userName = await _serviceManager.UserService.GetUserName(userId, cancellationToken);
+		return Ok(new { UserName = userName });
 	}
 
 	[HttpPost("register")]
@@ -38,6 +56,19 @@ public class AuthenticateController : ControllerBase
 		if (!result.IsAuthSuccessful)
 			return Unauthorized(new { message = result.Message });
 		return Ok(result);
+	}
+
+
+	[HttpPost("external")]
+	public async Task<IActionResult> ExternalLogin([FromBody] ExternalAuthDto externalAuth)
+	{
+		var client = _goolgeSettings["GoogleAuthSettings:clientId"];
+		if (client == null)
+			throw new ArgumentNullException(nameof(client));
+		LoginResponse response = await _serviceManager.AuthenticateService.VerifyGoogle(externalAuth, client);
+		if (!response.IsAuthSuccessful)
+			return Unauthorized(new { message = response.Message });
+		return Ok(response);
 	}
 
 	[HttpGet("confirm-email")]

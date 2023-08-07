@@ -13,6 +13,8 @@ using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
 
+using Google.Apis.Auth;
+
 using Mapster;
 
 using Messaging;
@@ -78,6 +80,59 @@ internal sealed class AuthenticateService : IAuthenticateService
 
 		var message = new EmailMessage(new[] { email }, "Email Confirmation token", $"Click the next button to confirm your user registration: <br/> <br/> {htmlButton}", null);
 		await _emailSender.SendEmailAsync(message);
+	}
+
+	public async Task<LoginResponse> VerifyGoogle(ExternalAuthDto externalAuth, string client)
+	{
+		var payload = await VerifyGoogleToken(externalAuth, client);
+		if (payload == null)
+			throw new("Invalid External Authentication.");
+
+		var info = new UserLoginInfo(externalAuth.Provider, payload.Subject, externalAuth.Provider);
+
+		var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+		if (user == null)
+		{
+			user = await _userManager.FindByEmailAsync(payload.Email);
+
+			if (user == null)
+			{
+				user = new UserEntity
+				{
+					Email = payload.Email,
+					UserName = payload.Email,
+					EmailConfirmed = payload.EmailVerified,
+					Cart = new CartEntity { Id = Guid.NewGuid() }
+				};
+				await _userManager.CreateAsync(user);
+				await _userManager.AddToRoleAsync(user, "Client");
+				await _userManager.AddLoginAsync(user, info);
+			}
+			else
+				await _userManager.AddLoginAsync(user, info);
+		}
+		if (user == null)
+			throw new("Invalid External Authentication.");
+		var token = GenerateAccessToken(user);
+		return new LoginResponse { Token = token.Token, IsAuthSuccessful = true };
+	}
+
+	public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalAuthDto externalAuth, string client)
+	{
+		try
+		{
+			var settings = new GoogleJsonWebSignature.ValidationSettings()
+			{
+				Audience = new List<string>() { client }
+			};
+			var payload = await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, settings);
+			return payload;
+		}
+		catch (Exception ex)
+		{
+			//log an exception
+			return null;
+		}
 	}
 
 	public async Task ConfirmEmailAsync(string token, string email, CancellationToken cancellationToken = default)
@@ -301,7 +356,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			}),
 			Issuer = _configuration["Issuer"],
 			Audience = _configuration["Audience"],
-			Expires = DateTime.UtcNow.AddHours(4),
+			Expires = DateTime.UtcNow.AddHours(8),
 			SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
 		};
 

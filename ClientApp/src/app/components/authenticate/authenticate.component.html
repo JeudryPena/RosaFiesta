@@ -4,32 +4,36 @@
       <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"></div>
       <div class="col bg-white p-4 rounded-end">
         <h2 class="fw-bold text-center py-3">Ingresa con un click!</h2>
-        <form action="#" [formGroup]="loginForm">
+        <form [formGroup]="loginForm">
           <div class="container w-100 my-3">
-            <div class="btn btn-outline-primary w-100 my-1">
+            <!-- <div class="btn btn-outline-primary w-100 my-1" (click)="loginFacebook()">
               <div class="row align-items-center">
                 <div class="col-2 d-none d-md-block">
                   <img src="assets/icons/facebook.png" width="32" alt="" />
                 </div>
                 <div class="col-12 col-md-10 text-center">Facebook</div>
               </div>
-            </div>
-            <div class="btn btn-outline-danger w-100 my-1">
+            </div> -->
+            
+            <div class="fb-login-button" data-width="" data-size="" data-button-type="" data-layout="" data-auto-logout-link="false"
+              data-use-continue-as="true"></div>
+            <asl-google-signin-button size="large" shape="rectangular" type="standard"></asl-google-signin-button>
+            <!-- <div id="googleButton" class="btn btn-outline-danger w-100 my-1" >
               <div class="row align-items-center">
                 <div class="col-2 d-none d-md-block">
                   <img src="assets/icons/google.png" width="32" alt="" />
                 </div>
                 <div class="col-12 col-md-10 text-center">Google</div>
               </div>
-            </div>
-            <div class="btn btn-outline-pink w-100 my-1">
+            </div> -->
+            <!-- <div class="btn btn-outline-pink w-100 my-1">
               <div class="row align-items-center">
                 <div class="col-2 d-none d-md-block">
                   <img src="assets/icons/instagram.png" width="32" alt="" />
                 </div>
                 <div class="col-12 col-md-10 text-center">Instagram</div>
               </div>
-            </div>
+            </div> -->
             <!-- <div class="btn btn-outline-dark w-100 my-1">
               <div class="row align-items-center">
                 <div class="col-2 d-none d-md-block">

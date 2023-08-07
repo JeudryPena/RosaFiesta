@@ -26,13 +26,17 @@
             </div>
             <div class="col-md-7 col-lg-8">
                 <h4 class="mb-3">Dirección de Envío</h4>
-                <form class="needs-validation" novalidate>
+                <form class="needs-validation" novalidate [formGroup]="purchaseForm">
                     <div class="row g-3">
                         <div class="col-sm-6">
-                            <label for="firstName" class="form-label">First name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                            <div class="invalid-feedback">
-                                Valid first name is required.
+                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': nameFocused}">
+                                <input #userInput type="email" class="form-control contact-input" id="username" placeholder="Usuario" required
+                                    minlength="5" maxlength="50" formControlName="username" (focus)="nameFocused = true"
+                                    (blur)="nameFocused = false" />
+                                <label for="floatingInput">Usuario</label>
+                                <i class="icon fa-regular fa-id-card"></i>
+                                <h5 *ngIf="validate('username', 'required', nameFocused)">El Usuario es<strong> Requerido</strong></h5>
+                                <h5 *ngIf="validate('username', 'minlength', nameFocused)">El Usuario es<strong> muy corto</strong></h5>
                             </div>
                         </div>
 

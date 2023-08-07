@@ -1,30 +1,31 @@
+import { config } from './env/config.dev';
 import { RatingDirective } from './shared/directives/rating.directive';
 
 // Providers
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 
-
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { CommonModule, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtModule } from '@auth0/angular-jwt';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbModule, NgbPaginationModule, NgbRatingConfig, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxFileDropModule } from 'ngx-file-drop';
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
-import { NgxFileDropModule } from 'ngx-file-drop';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-
-import { JwtModule } from '@auth0/angular-jwt';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AvatarModule } from 'ngx-avatar';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
 import { AlbumComponent } from './components/album/album.component';
@@ -37,6 +38,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { CoupensComponent } from './components/coupens/coupens.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DownloadComponent } from './components/download/download.component';
 import { FeaturesComponent } from './components/features/features.component';
 import { FinishRegisterComponent } from './components/finish-register/finish-register.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -58,6 +60,9 @@ import { ModalCategoryComponent } from './components/modal-category/modal-catego
 import { ModalDiscountComponent } from './components/modal-discount/modal-discount.component';
 import { ModalProductComponent } from './components/modal-product/modal-product.component';
 import { ModalQuoteComponent } from './components/modal-quote/modal-quote.component';
+import { ModalSuppliersComponent } from './components/modal-suppliers/modal-suppliers.component';
+import { ModalUserComponent } from './components/modal-user/modal-user.component';
+import { ModalWarrantyComponent } from './components/modal-warranty/modal-warranty.component';
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NormalizedVerticalBarChartComponent } from './components/normalized-vertical-bar-chart/normalized-vertical-bar-chart.component';
@@ -111,12 +116,8 @@ import { TimePickerComponent } from './helpers/time-picker/time-picker.component
 import { ToastContainerComponent } from './helpers/toast-container/toast-container.component';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
 import { TreeMapChartComponent } from './helpers/tree-map-chart/tree-map-chart.component';
-import { TruncatePipe } from './shared/pipes/truncate.pipe';
-import { DownloadComponent } from './components/download/download.component';
-import { ModalWarrantyComponent } from './components/modal-warranty/modal-warranty.component';
-import { ModalSuppliersComponent } from './components/modal-suppliers/modal-suppliers.component';
-import { ModalUserComponent } from './components/modal-user/modal-user.component';
 import { ImgPathPipe } from './shared/pipes/img-path.pipe';
+import { TruncatePipe } from './shared/pipes/truncate.pipe';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -217,7 +218,7 @@ export function tokenGetter() {
     ModalSuppliersComponent,
     ModalUserComponent,
     ImgPathPipe,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -252,9 +253,42 @@ export function tokenGetter() {
     TimepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
     NgxFileDropModule,
-    TooltipModule
+    TooltipModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule,
+    AvatarModule
   ],
-  providers: [NgbRatingConfig, DecimalPipe, ImgPathPipe
+  providers: [
+    NgbRatingConfig,
+    DecimalPipe,
+    ImgPathPipe,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              `${config.googleClientId}`, {
+              scopes: 'email',
+            }
+            )
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider(
+              `${config.facebookClientId}`, {
+              scope: 'email',
+            }
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig
+    }
   ],
   bootstrap: [AppComponent],
 })

@@ -1,12 +1,11 @@
-import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
-import { CartResponse } from '../../interfaces/Product/Response/cartResponse';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { CartsService } from '../../shared/services/carts.service';
 import { SidenavService } from '../../shared/services/side-nav.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
-import { PurchaseDetailOptionResponse } from '../../interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
+import { UsersService } from '../../shared/services/users.service';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -71,9 +70,9 @@ const statesWithFlags: { name: string; flag: string }[] = [
 })
 export class NavbarComponent implements OnInit {
   @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
-
+  userName: string;
   viewCart: boolean = false;
-  
+
   isSearchInputFocused = false;
   isAuthenticated = false;
   lastScrollTop = 0;
@@ -81,17 +80,23 @@ export class NavbarComponent implements OnInit {
   totalItems: number = 0;
 
   constructor(
-    private router: Router,
     public service: CartsService,
     private authService: AuthenticateService,
     private sidenavService: SidenavService,
   ) {
-    
+    this.Authenticate();
+  }
+
+  Authenticate() {
     this.isAuthenticated = this.authService.isUserAuthenticated();
+    if (this.isAuthenticated) {
+      this.authService.currentUser().subscribe((data: any) => {
+        this.userName = data.userName;
+      });
+    }
   }
 
   total(event: any) {
-    console.log(event);
     this.totalItems = event;
   }
 
@@ -117,10 +122,13 @@ export class NavbarComponent implements OnInit {
 
   Logout() {
     this.authService.logout();
+    if (this.authService.isExternalAuth)
+      this.authService.signOutExternal();
     window.location.reload();
   }
 
   ngOnInit() {
+    
   }
 
   onSearchInputFocus() {

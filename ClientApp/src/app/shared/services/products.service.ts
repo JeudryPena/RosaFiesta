@@ -57,7 +57,6 @@ export class ProductsService {
     private pipe: DecimalPipe,
     private http: HttpClient
   ) {
-    this.RetrieveData();
   }
 
   RetrieveData() {

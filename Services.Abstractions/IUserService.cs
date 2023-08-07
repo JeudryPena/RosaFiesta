@@ -21,4 +21,5 @@ public interface IUserService
 	Task DisableAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken);
 	Task<IEnumerable<UsersListResponse>> GetUsersListAsync(CancellationToken cancellationToken = default);
 	Task<IEnumerable<RolesListResponse>> GetRolesListAsync(CancellationToken cancellationToken = default);
+	Task<string> GetUserName(string userId, CancellationToken cancellationToken);
 }

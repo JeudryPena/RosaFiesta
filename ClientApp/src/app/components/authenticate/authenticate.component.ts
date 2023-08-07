@@ -6,6 +6,11 @@ import { LoginResponse } from '../../interfaces/Security/Response/loginResponse'
 import { LogingDto } from '../../interfaces/Security/logingDto';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { ExternalAuthDto } from '../../interfaces/Security/external-auth-dto';
+import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
+import { config } from '../../env/config.dev';
+
+declare const FB: any;
 
 @Component({
   selector: 'app-authenticate',
@@ -15,6 +20,7 @@ import { ToastService } from '../../shared/services/toast.service';
 export class AuthenticateComponent implements OnInit {
   userFocused = false;
   passwordFocused = false;
+  loginProvider: any; 
 
   loginForm: any;
 
@@ -29,6 +35,7 @@ export class AuthenticateComponent implements OnInit {
       password: new FormControl(''),
       rememberMe: new FormControl(false)
     })
+    this.loginProvider = config.googleClientId;
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
@@ -36,7 +43,31 @@ export class AuthenticateComponent implements OnInit {
     return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
+  loginFacebook() {
+    FB.login(function (response) {
+      if (response.status === 'connected') {
+
+      } else {
+
+      }
+    });
+  }
+
+  logoutFacebook() {
+    FB.logout(function (response) {
+      
+    });
+  }
+  
+  checkLoginState() {
+    FB.getLoginStatus(function (response) {
+      // statusChangeCallback(response);
+      console.log(response)
+    });
+  }
+
   ngOnInit() {
+    this.checkLoginState();
     const token = this.route.snapshot.queryParams['token'];
     if (token) {
       const email = this.route.snapshot.queryParams['email'];
@@ -63,10 +94,10 @@ export class AuthenticateComponent implements OnInit {
       .subscribe({
         next: (res: LoginResponse) => {
           if (res.token && res.refreshToken && res.expiration) {
+            this.authService.isExternalAuth = false;
             this.toastService.show(null, 'Ingreso exitoso!', { classname: 'bg-success text-light', delay: 2000 });
             localStorage.setItem("token", res.token);
-            const refreshToken = res.refreshToken;
-            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("refreshToken", res.refreshToken);
             localStorage.setItem('expiration', res.expiration);
             this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
             this.router.navigate(['']);

@@ -55,7 +55,6 @@ export class UsersService {
     private pipe: DecimalPipe,
     private http: HttpClient,
   ) {
-    this.RetrieveData();
   }
 
   RetrieveData() {

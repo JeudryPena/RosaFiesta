@@ -58,45 +58,46 @@
                         </ng-template>
                     </div>
                 </form>
+
                 <div *ngIf="isAuthenticated; else elseBlock">
                     <div class="row">
-                        <div class="col ps-0 pe-0">
+                        <div class="col ps-1 pe-1">
                             <div ngbDropdown class="d-inline-block ps-0 pe-0" display="dynamic" placement="bottom-end">
-                                <button type="button" class="btn btn-outline-primary border-0 navbar-cart"
+                                <div type="button" class="navbar-cart"
                                     id="dropdownForm1" aria-labelledby="navbarDropdown3" ngbDropdownToggle>
-                                    <div class="navbar-cart-items"   *ngIf="totalItems != 0">
+                                    <div class="navbar-cart-items" *ngIf="totalItems != 0">
                                         <p>{{totalItems | number}}</p>
                                     </div>
                                     <i class="fa-solid fa-cart-shopping"></i>
-                                </button>
+                                </div>
                                 <div ngbDropdownMenu aria-labelledby="dropdownForm1">
                                     <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
                                 </div>
                             </div>
                         </div>
                         <div class="col ps-0 pe-0">
-                            <div ngbDropdown placement="bottom-end" display="dynamic"
-                                class="container d-flex flex-wrap justify-content-center ps-0 pe-0">
-                                <button type="button" class="btn btn-outline-primary border-0 navbar-cart" id="userMenu"
-                                    aria-labelledby="navbarDropdown3" ngbDropdownToggle>
-                                    <a class=" link-dark text-decoration-none" aria-expanded="false">
-                                        <img src="https://github.com/mdo.png" alt="mdo" width="34" height="34"
-                                            class="rounded-circle">
-                                    </a>
-                                </button>
-                                <div ngbDropdownMenu aria-labelledby="userMenu">
+                            <div ngbDropdown #myDrop="ngbDropdown" [ngbPopover]="dropdown" placement="bottom-end"
+                                display="dynamic" class="d-flex ps-0 pe-0">
+                                <div class="d-flex navbar-cart">
+                                
+                                    <ngx-avatar size="36" [name]="userName"
+                                        (click)="myDrop.toggle();"></ngx-avatar>
+                                </div>
+                                <ng-template #dropdown>
                                     <div class="d-flex flex-column">
-                                        <a class="dropdown-item" routerLink="/config"><i
+                                        <a class="item" routerLink="/profile">{{userName}}</a>
+                                        <hr class="mt-2 mb-2">
+                                        <a class="item" routerLink="/config"><i
                                                 class="fa-solid fa-gear"></i>&nbsp;&nbsp;Configuración</a>
-                                        <a class="dropdown-item" routerLink="/my-wish-lists"><i
+                                        <a class="item" routerLink="/my-wish-lists"><i
                                                 class="fa-solid fa-heart"></i>&nbsp;&nbsp;Lista de deseos</a>
-                                        <a class="dropdown-item" routerLink="/my-orders"><i
+                                        <a class="item" routerLink="/my-orders"><i
                                                 class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis ordenes</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" (click)="Logout()"><i
+                                        <hr class="mt-2 mb-2">
+                                        <a class="item" (click)="Logout()"><i
                                                 class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
                                     </div>
-                                </div>
+                                </ng-template>
                             </div>
                         </div>
                     </div>

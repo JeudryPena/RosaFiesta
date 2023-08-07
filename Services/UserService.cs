@@ -212,4 +212,10 @@ internal sealed class UserService : IUserService
 		var rolesResponse = roles.Adapt<IEnumerable<RolesListResponse>>();
 		return rolesResponse;
 	}
+
+	public async Task<string> GetUserName(string userId, CancellationToken cancellationToken)
+	{
+		string userName = await _repositoryManager.UserRepository.GetUserName(userId, cancellationToken);
+		return userName;
+	}
 }

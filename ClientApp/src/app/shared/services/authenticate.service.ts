@@ -1,13 +1,16 @@
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from 'rxjs';
 import { config } from '../../env/config.dev';
 import { LoginResponse } from '../../interfaces/Security/Response/loginResponse';
+import { ExternalAuthDto } from '../../interfaces/Security/external-auth-dto';
 import { LogingDto } from '../../interfaces/Security/logingDto';
 import { RegisterDto } from '../../interfaces/Security/registerDto';
-import { CustomEncoder } from '../custom-encoder';
 import { ResetPasswordDto } from '../../interfaces/Security/resetPasswordDto';
+import { CustomEncoder } from '../custom-encoder';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +19,73 @@ export class AuthenticateService {
   private apiUrl = `${config.apiURL}authenticate/`
   private authChangeSub = new Subject<boolean>()
   public authChanged = this.authChangeSub.asObservable();
+  private extAuthChangeSub = new Subject<SocialUser>();
+  public extAuthChanged = this.extAuthChangeSub.asObservable();
+  public isExternalAuth: boolean;
 
   constructor(
     private http: HttpClient,
-    private jwtHelper: JwtHelperService
-  ) { }
+    private jwtHelper: JwtHelperService,
+    private externalAuthService: SocialAuthService,
+    private router: Router
+  ) {
+    this.externalAuthService.authState.subscribe((user) => {
+      console.log("tuhnastra")
+      this.externalLogin();
+      this.extAuthChangeSub.next(user);
+      this.isExternalAuth = true;
+
+    })
+  }
+
+  currentUser() {
+    return this.http.get(`${this.apiUrl}currentUser`);
+  }
+
+  private validateExternalAuth(externalAuth: ExternalAuthDto) {
+    this.externalLoginx(externalAuth)
+      .subscribe({
+        next: (res) => {
+          localStorage.setItem("token", res.token);
+          this.sendAuthStateChangeNotification(res.isAuthSuccessful);
+          if (this.router.url === '/')
+            window.location.reload();
+          else
+            this.router.navigate(['']);
+        },
+        error: (err: any) => {
+          this.signOutExternal();
+        }
+      });
+  }
+
+  externalLogin = () => {
+
+
+    this.extAuthChanged.subscribe(user => {
+      const externalAuth: ExternalAuthDto = {
+        provider: user.provider,
+        idToken: user.idToken
+      }
+      this.validateExternalAuth(externalAuth);
+    })
+  }
+
+  public externalLoginx = (body: ExternalAuthDto) => {
+    return this.http.post<LoginResponse>(`${this.apiUrl}external`, body);
+  }
+
+  public signInWithGoogle = () => {
+    this.externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  public signInWithFacebook = () => {
+    this.externalAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
+  public signOutExternal = () => {
+    this.externalAuthService.signOut();
+  }
 
   register = (body: RegisterDto) => {
     return this.http.post(`${this.apiUrl}register`, body);

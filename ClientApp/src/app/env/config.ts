@@ -3,4 +3,6 @@ export interface Config {
   production: boolean;
   encrypt: boolean,
   keyEncrypt: string;
+  googleClientId: string;
+  facebookClientId: string;
 }
