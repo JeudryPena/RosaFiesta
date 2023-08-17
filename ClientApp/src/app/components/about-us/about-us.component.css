@@ -31,23 +31,94 @@ body {
  * Header
  */
 
-.nav-masthead .nav-link {
-    color: rgba(255, 255, 255, .5);
-    border-bottom: .25rem solid transparent;
-}
+ .information {
+     display: flex;
+     color: #fff;
+     margin: 0.7rem 0;
+     align-items: center;
+     font-size: 0.95rem;
+ }
 
-.nav-masthead .nav-link:hover,
-.nav-masthead .nav-link:focus {
-    border-bottom-color: rgba(255, 255, 255, .25);
-}
+ .icon {
+     width: 28px;
+     margin-right: 0.7rem;
+ }
 
-.nav-masthead .nav-link+.nav-link {
-    margin-left: 1rem;
-}
+ .social-media {
+     padding: 2rem 0 0 0;
+ }
 
-.nav-masthead .active {
-    color: #fff;
-    border-bottom-color: #fff;
+ .social-media p {
+     color: #fff;
+ }
+
+ .social-icons {
+     display: flex;
+     margin-top: 0.5rem;
+ }
+
+ .social-icons a {
+     width: 35px;
+     height: 35px;
+     border-radius: 5px;
+     background: linear-gradient(45deg, #1abc9c, #149279);
+     color: #fff;
+     text-align: center;
+     line-height: 35px;
+     margin-right: 0.5rem;
+     transition: 0.3s;
+ }
+
+ .social-icons a:hover {
+     transform: scale(1.05);
+ }
+
+ .contact-info:before {
+     content: "";
+     position: absolute;
+     width: 110px;
+     height: 100px;
+     border: 22px solid #1abc9c;
+     border-radius: 50%;
+     bottom: -77px;
+     right: 50px;
+     opacity: 0.3;
+ }
+
+ .big-circle {
+     position: absolute;
+     width: 500px;
+     height: 500px;
+     border-radius: 50%;
+     background: linear-gradient(to bottom, #1cd4af, #159b80);
+     bottom: 50%;
+     right: 50%;
+     transform: translate(-40%, 38%);
+ }
+
+ .big-circle:after {
+     content: "";
+     position: absolute;
+     width: 360px;
+     height: 360px;
+     background-color: #fafafa;
+     border-radius: 50%;
+     top: calc(50% - 180px);
+     left: calc(50% - 180px);
+ }
+
+ .square {
+     position: absolute;
+     height: 400px;
+     top: 50%;
+     left: 50%;
+     transform: translate(181%, 11%);
+     opacity: 0.2;
+ }
+
+.text {
+    color: #d5d4d4;
+    margin: 1.5rem 0 2rem 0;
 }
 
 .bd-placeholder-img {

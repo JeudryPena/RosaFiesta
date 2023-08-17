@@ -7,7 +7,7 @@ import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, So
 import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { CommonModule, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,8 +23,9 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { NgxStarsModule } from 'ngx-stars';
 import { AppRoutingModule } from './app-routing.module';
-import { NgbdSortableHeader } from './shared/directives/sortable.directive';
+import { NgxPayPalModule } from 'ngx-paypal';
 
+import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 import { AvatarModule } from 'ngx-avatar';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
@@ -118,6 +119,7 @@ import { ToastGlobalComponent } from './helpers/toast-global/toast-global.compon
 import { TreeMapChartComponent } from './helpers/tree-map-chart/tree-map-chart.component';
 import { ImgPathPipe } from './shared/pipes/img-path.pipe';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
+import { PayMethodComponent } from './components/pay-method/pay-method.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -218,6 +220,7 @@ export function tokenGetter() {
     ModalSuppliersComponent,
     ModalUserComponent,
     ImgPathPipe,
+    PayMethodComponent,
 
   ],
   imports: [
@@ -256,7 +259,9 @@ export function tokenGetter() {
     TooltipModule,
     SocialLoginModule,
     GoogleSigninButtonModule,
-    AvatarModule
+    AvatarModule,
+    NgxPayPalModule,
+    
   ],
   providers: [
     NgbRatingConfig,
@@ -291,5 +296,6 @@ export function tokenGetter() {
     }
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

@@ -5,4 +5,5 @@ export interface Config {
   keyEncrypt: string;
   googleClientId: string;
   facebookClientId: string;
+  payPalClientId: string;
 }

@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <img src="assets/images/logo.png" (click)="ToggleCollapsed()" alt="" height="38" width="40"
             class="d-flex ms-0 me-3 rounded-circle">
-        <a class="navbar-brand" href="#">RosaFiesta</a>
+        <a class="navbar-brand fw-semibold" href="#">RosaFiesta</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06"
             aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa-sharp fa-solid fa-caret-down"></i>
@@ -11,18 +11,14 @@
 
         <div class="collapse navbar-collapse " id="navbarsExample06">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item d-flex justify-content-between">
-                    <div class="div">
-                        <a class="nav-link active" aria-current="page" routerLink="">Home</a>
-                    </div>
-                    <a class="nav-link" routerLink="/about-us">Nosotros</a>
-                    <div class="div">
+                <nav class="nav nav-masthead justify-content-center float-md-end">
+                    <li class="nav-item d-flex justify-content-between">
+                        <a class="nav-link fw-semibold active" aria-current="page" routerLink="">Home</a>
+                        <a class="nav-link fw-semibold" routerLink="/about-us">Nosotros</a>
                         <div ngbDropdown placement="bottom-end" display="dynamic"
-                            class="container d-flex flex-wrap justify-content-center ps-0 pe-0">
-                            <button type="button" class="nav-link btn btn-outline-primary border-0" id="adminMenu"
-                                aria-labelledby="navbarDropdown3" ngbDropdownToggle>
-                                <a>Admin</a>
-                            </button>
+                            class="container">
+                            <a class="nav-link fw-semibold" id="adminMenu" aria-labelledby="navbarDropdown3"
+                                ngbDropdownToggle>Admin</a>
                             <div ngbDropdownMenu aria-labelledby="adminMenu">
                                 <div class="d-flex flex-column">
                                     <a class="dropdown-item" routerLink="/inventory"><i
@@ -33,8 +29,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                </nav>
+
             </ul>
             <div class="d-flex flex-wrap d-inline justify-content-end">
                 <form class=" me-lg-3 col-lg-auto" role="search" (ngSubmit)="Search()">
@@ -63,8 +60,8 @@
                     <div class="row">
                         <div class="col ps-1 pe-1">
                             <div ngbDropdown class="d-inline-block ps-0 pe-0" display="dynamic" placement="bottom-end">
-                                <div type="button" class="navbar-cart"
-                                    id="dropdownForm1" aria-labelledby="navbarDropdown3" ngbDropdownToggle>
+                                <div type="button" class="navbar-cart" id="dropdownForm1"
+                                    aria-labelledby="navbarDropdown3" ngbDropdownToggle>
                                     <div class="navbar-cart-items" *ngIf="totalItems != 0">
                                         <p>{{totalItems | number}}</p>
                                     </div>
@@ -79,9 +76,8 @@
                             <div ngbDropdown #myDrop="ngbDropdown" [ngbPopover]="dropdown" placement="bottom-end"
                                 display="dynamic" class="d-flex ps-0 pe-0">
                                 <div class="d-flex navbar-cart">
-                                
-                                    <ngx-avatar size="36" [name]="userName"
-                                        (click)="myDrop.toggle();"></ngx-avatar>
+
+                                    <ngx-avatar size="36" [name]="userName" (click)="myDrop.toggle();"></ngx-avatar>
                                 </div>
                                 <ng-template #dropdown>
                                     <div class="d-flex flex-column">

@@ -46,16 +46,16 @@ export class AuthenticateComponent implements OnInit {
   loginFacebook() {
     FB.login(function (response) {
       if (response.status === 'connected') {
-
+        console.log(response)
       } else {
-
+        console.log(response);
       }
     });
   }
 
   logoutFacebook() {
-    FB.logout(function (response) {
-      
+    FB.logout(function (response) { 
+      console.log(response)
     });
   }
   
