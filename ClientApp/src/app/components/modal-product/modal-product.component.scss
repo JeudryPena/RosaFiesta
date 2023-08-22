@@ -121,31 +121,9 @@ form {
     transition: 0.3s;
 }
 
-.input-group {
-    display: flex;
-}
-
-.input-group .wrapper {
-    width: calc(100% - 50px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.input-group .wrap {
-    width: 50px;
-}
-
 .first.focus {
     background-color: #ffffff;
     color: #149279;
-}
-
-.input-group .wrapper2 {
-    width: calc(100% - 100px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .bi {

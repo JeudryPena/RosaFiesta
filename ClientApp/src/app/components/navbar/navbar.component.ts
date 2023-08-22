@@ -96,6 +96,10 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  isFocused(event: any) {
+    console.log(event)
+  }
+
   total(event: any) {
     this.totalItems = event;
   }

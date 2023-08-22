@@ -6,7 +6,6 @@ import { Status } from '../../helpers/save-modal/status';
 import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
 import { CategoryDto } from '../../interfaces/Product/categoryDto';
 import { CategoriesService } from '../../shared/services/categories.service';
-import { UsersService } from '../../shared/services/users.service';
 
 @Component({
   selector: 'app-modal-category',
@@ -19,17 +18,12 @@ export class ModalCategoryComponent implements OnInit {
   @Input() title: string = '';
   @Input() categoryId: number = 0;
 
-  titleFocused = false;
-  iconFocused = false;
-  descriptionFocused = false;
-
   categoryForm: any;
 
   constructor(
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
-    private service: CategoriesService,
-    private userService: UsersService
+    private service: CategoriesService
   ) {
   }
 
@@ -74,9 +68,9 @@ export class ModalCategoryComponent implements OnInit {
     }
   }
 
-  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+  validate = (controlName: string, errorName: string) => {
     const control = this.categoryForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+    return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
   close() {

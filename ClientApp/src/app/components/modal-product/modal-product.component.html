@@ -4,69 +4,67 @@
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off" [formGroup]="productForm">
             <h3 class="title">{{title}}</h3>
-            <div class="input-container" [ngClass]="{'focus': codeFocused || codeInput.value.length > 0 }">
-                <input [readOnly]="read" #codeInput type="text" formControlName="code" class="input" minlength="3"
-                    maxlength="500" (focus)="codeFocused = true" (blur)="codeFocused = false" />
+            <div isFocus class="input-container">
+                <input [readOnly]="read" type="text" formControlName="code" class="input" minlength="3"
+                    maxlength="500" />
                 <label>Código</label>
                 <span>Código</span>
-                <h5 *ngIf="validate('code', 'minlength', codeFocused)">El Código es<strong> muy Corto</strong></h5>
+              <h5 *ngIf="validate('code', 'minlength')">El Código es<strong> muy Corto</strong></h5>
             </div>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                <input class="form-check-input" type="checkbox" role="switch" id="isService"
                     formControlName="isService">
-                <label class="form-check-label text-white" for="flexSwitchCheckDefault">Es Servicio</label>
+                <label class="form-check-label text-white" for="isService">Es Servicio</label>
             </div>
+
             <div *ngIf="read">
-                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
-                    <input readOnly #createdAtInput type="text" formControlName="createdAt"
+                <div class="input-container" isFocus>
+                    <input readOnly type="text" formControlName="createdAt"
                         [ngModel]="productForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
                     <label>Fecha de Creación</label>
                     <span>Fecha de Creación</span>
                 </div>
-                <div class="input-container" [ngClass]="{'focus': createdByInput.value.length > 0 }">
-                    <input readOnly #createdByInput type="text" formControlName="createdBy" class="input" />
+                <div class="input-container" isFocus>
+                    <input readOnly type="text" formControlName="createdBy" class="input" />
                     <label>Creado por</label>
                     <span>Creado por</span>
                 </div>
-                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0 }">
-                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt"
+                <div class="input-container" isFocus>
+                    <input readOnly type="text" formControlName="updatedAt"
                         [ngModel]="productForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
                     <label>Fecha de Modificación</label>
                     <span>Fecha de Modificación</span>
                 </div>
-                <div class="input-container" [ngClass]="{'focus': updatedByInput.value.length > 0 }">
+                <div class="input-container">
                     <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
                     <label>Modificado por</label>
                     <span>Modificado por</span>
                 </div>
             </div>
-            <div class="input-container" *ngIf="!read"
-                [ngClass]="{'focus': optionsFocused || optionsInput.value.length > 0 }">
-                <div class="input-group">
-                    <input #optionsInput type="text" formControlName="options" class="input wrapper"
-                        (focus)="optionsFocused = true" (blur)="optionsFocused = false" />
-                    <button class="btn btn-outline-light bi pe-2 ps-2 wrap" type="button"
-                        [disabled]="optionsInput.value.length < 3" (click)="addNewOption(optionsInput.value)">
-                        <i class="fas fa-plus"></i>
+            <div class="input-container" isFocus *ngIf="!read">
+                <div class="input-group flex-nowrap">
+                    <input #optionsInput type="text" formControlName="options" class="input" />
+                    <button class="input-group-text btn btn-outline-light bi pe-2 ps-2" [disabled]="optionsInput.value.length < 3" (click)="addNewOption(optionsInput.value)">
+                        <i class="fas fa-plus "></i>
                     </button>
                 </div>
                 <label>Opciones</label>
                 <span>Opciones</span>
-                <h5 *ngIf="validate('options', 'minlength', optionsFocused)">El nombre de la SubCategoría
+                <div *ngIf="validate('options', 'minlength')">El nombre de la SubCategoría
                     es<strong> muy corto</strong>
-                </h5>
+                </div>
             </div>
             <div class="input-container">
                 <ol class="list-group list-group-numbered " *ngFor="let option of options; let i = index">
                     <li>
-                        <div class="input-group">
-                            <button type="text" class="btn text-md-start list btn-outline-light wrapper2"
+                        <div class="input-group flex-nowrap">
+                            <button type="text" class="w-100 btn text-md-start list btn-outline-light"
                                 (click)="selectOption(i)">{{i+1}}. {{option.title}}</button>
-                            <button [ngClass]="{'focus': optionFirst === i}" [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap first"
+                            <button [ngClass]="{'focus': optionFirst === i}" [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 input-group-text first"
                                 (click)="SelectFirst(i)">
                                 <i class="fa-solid fa-1"></i>
                             </button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
+                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 input-group-text"
                                 (click)="removeOption(i)">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -74,11 +72,11 @@
                     </li>
                 </ol>
             </div>
-            <div class="input-container" [ngClass]="{'focus': categoryIdFocused || categoryIdInput.value.length > 0 }">
+            <div class="input-container" isFocus>
                 <div class="input-group">
-                    <input #categoryIdInput type="search" required formControlName="categoryId" class="input"
-                        [readOnly]="read" (focus)="categoryIdFocused = true;" (blur)="categoryIdFocused = false"
-                        id="typeahead-focus" [adaptivePosition]="true" [(ngModel)]="categorySelected"
+                    <input type="search" required formControlName="categoryId" class="input"
+                        [readOnly]="read"
+                         [adaptivePosition]="true" [(ngModel)]="categorySelected"
                         [typeaheadSingleWords]="true" [typeaheadOptionsLimit]="7" [typeahead]="categories"
                         typeaheadOptionField="name" (typeaheadOnSelect)="onSelect($event, 'category')"
                         [typeaheadMinLength]="0" [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20"
@@ -87,10 +85,9 @@
                 <label>Categoría</label>
                 <span>Categoría</span>
             </div>
-            <div class="input-container" [ngClass]="{'focus': warrantyIdFocused || warrantyIdInput.value.length > 0 }">
+            <div class="input-container" isFocus>
                 <div class="input-group">
-                    <input #warrantyIdInput type="search" formControlName="warrantyId" class="input" [readOnly]="read"
-                        (focus)="warrantyIdFocused = true;" (blur)="warrantyIdFocused = false" id="typeahead-focus"
+                    <input type="search" formControlName="warrantyId" class="input" [readOnly]="read"
                         [adaptivePosition]="true" [(ngModel)]="warrantySelected" [typeaheadSingleWords]="true"
                         [typeaheadOptionsLimit]="7" [typeahead]="warranties" typeaheadOptionField="name"
                         (typeaheadOnSelect)="onSelect($event, 'warranty')" [typeaheadMinLength]="0"
@@ -99,10 +96,9 @@
                 <label>Garantía</label>
                 <span>Garantía</span>
             </div>
-            <div class="input-container" [ngClass]="{'focus': supplierIdFocused || supplierIdInput.value.length > 0 }">
+            <div class="input-container" isFocus>
                 <div class="input-group">
-                    <input #supplierIdInput type="search" formControlName="supplierId" class="input" [readOnly]="read"
-                        (focus)="supplierIdFocused = true;" (blur)="supplierIdFocused = false" id="typeahead-focus"
+                    <input type="search" formControlName="supplierId" class="input" [readOnly]="read"
                         [adaptivePosition]="true" [(ngModel)]="supplierSelected" [typeaheadSingleWords]="true"
                         [typeaheadOptionsLimit]="7" [typeahead]="suppliers" typeaheadOptionField="name"
                         (typeaheadOnSelect)="onSelect($event, 'supplier')" [typeaheadMinLength]="0"
@@ -128,72 +124,65 @@
     <div class="contact-info" *ngIf="optionForm != null">
         <form action="index.html" autocomplete="off" [formGroup]="optionForm">
             <h3 class="title">{{optionTitle}}</h3>
-            <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0 }">
-                <input [readOnly]="read" #titleInput type="text" formControlName="title" class="input"
-                    (focus)="titleFocused = true" (blur)="titleFocused = false" required />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" #titleInput type="text" formControlName="title" class="input" required />
                 <label>Título *</label>
                 <span>Título *</span>
-                <h5 *ngIf="validateOption('title', 'required', titleFocused)">El Título es<strong> Requerido</strong>
+                <h5 *ngIf="validateOption('title', 'required')">El Título es<strong> Requerido</strong>
                 </h5>
-                <h5 *ngIf="validateOption('title', 'minlength', titleFocused)">El Título es<strong> muy Corto</strong>
+                <h5 *ngIf="validateOption('title', 'minlength')">El Título es<strong> muy Corto</strong>
                 </h5>
             </div>
             <div class="input-container">
                 <app-upload-images [read]="read" [pictures]="pictures" [uploadFiles]="uploadFiles" [imageFirst]="imageFirst"
                     [multiple]="true"></app-upload-images>
             </div>
-            <div class="input-container"
-                [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
-                <textarea [readOnly]="read" #descriptionInput type="text" formControlName="description" class="input"
-                    (focus)="descriptionFocused = true" (blur)="descriptionFocused = false" required minlength="3"
+            <div class="input-container" isFocus>
+                <textarea [readOnly]="read" type="text" formControlName="description" class="input"
+                    required minlength="3"
                     maxlength="1000"></textarea>
                 <label>Descripción *</label>
                 <span>Descripción *</span>
-                <h5 *ngIf="validateOption('description', 'required', descriptionFocused)">La Descripción
+                <h5 *ngIf="validateOption('description', 'required')">La Descripción
                     es<strong>Requerida</strong></h5>
-                <h5 *ngIf="validateOption('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
+                <h5 *ngIf="validateOption('description', 'minlength')">La Descripción es<strong> muy
                         Corta</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': priceFocused || priceInput.value.length > 0 }">
-                <input [readOnly]="read" #priceInput type="number" formControlName="price" class="input" required
-                    (focus)="priceFocused = true" (blur)="priceFocused = false" />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" type="number" formControlName="price" class="input" required/>
                 <label>Precio</label>
                 <span>Precio</span>
-                <h5 *ngIf="validateOption('price', 'required', priceFocused)">El Precio es<strong> Requerido</strong>
+                <h5 *ngIf="validateOption('price', 'required')">El Precio es<strong> Requerido</strong>
                 </h5>
             </div>
-            <div class="input-container"
-                [ngClass]="{'focus': quantityAvailableFocused || quantityAvailableInput.value.length > 0 }">
-                <input [readOnly]="read" #quantityAvailableInput type="number" formControlName="quantityAvailable"
-                    class="input" required (focus)="quantityAvailableFocused = true"
-                    (blur)="quantityAvailableFocused = false" />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" type="number" formControlName="quantityAvailable"
+                    class="input" required/>
                 <label>Cantidad Disponible *</label>
                 <span>Cantidad Disponible *</span>
-                <h5 *ngIf="validateOption('quantityAvailable', 'required', quantityAvailableFocused)">La Cantidad
+                <h5 *ngIf="validateOption('quantityAvailable', 'required')">La Cantidad
                     Disponible
                     es<strong> Requerida</strong>
                 </h5>
-                <h5 *ngIf="validateOption('quantityAvailable', 'min', quantityAvailableFocused)">La Cantidad Disponible
+                <h5 *ngIf="validateOption('quantityAvailable', 'min')">La Cantidad Disponible
                     es<strong> muy Corta</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': colorFocused || colorInput.value.length > 0 }">
-                <input [readOnly]="read" #colorInput type="text" formControlName="color" class="input" required
-                    minlength="6" maxlength="9" (focus)="colorFocused = true" (blur)="colorFocused = false" />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" type="text" formControlName="color" class="input" required
+                    minlength="6" maxlength="9"/>
                 <label>Color *</label>
                 <span>Color *</span>
-                <h5 *ngIf="validateOption('color', 'required', colorFocused)">El Color es<strong>
+                <h5 *ngIf="validateOption('color', 'required')">El Color es<strong>
                         Requerido</strong>
                 </h5>
-                <h5 *ngIf="validateOption('color', 'min', colorFocused)">El Color es<strong> muy
+                <h5 *ngIf="validateOption('color', 'min')">El Color es<strong> muy
                         Corto</strong></h5>
             </div>
             <div class="row group">
                 <div class="col">
-                    <div class="input-container"
-                        [ngClass]="{'focus': genderForFocused || genderForInput.value.length > 0 }">
-                        <select #genderForInput class="input form-select form-select-sm" formControlName="genderFor"
-                            required type="number" aria-label=".form-select-sm example"
-                            (focus)="genderForFocused = true" (blur)="genderForFocused = false">
+                    <div class="input-container" isFocus>
+                        <select class="input form-select form-select-sm" formControlName="genderFor"
+                            required type="number" aria-label=".form-select-sm example">
                             <option value=1 selected=1>Varón</option>
                             <option value=2>Hembra</option>
                             <option value=3>Both</option>
@@ -203,11 +192,9 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-container"
-                        [ngClass]="{'focus': conditionFocused || conditionInput.value.length > 0 }">
-                        <select #conditionInput class="input form-select form-select-sm" formControlName="condition"
-                            required type="number" aria-label=".form-select-sm example"
-                            (focus)="conditionFocused = true" (blur)="conditionFocused = false">
+                    <div class="input-container" isFocus>
+                        <select class="input form-select form-select-sm" formControlName="condition"
+                            required type="number" aria-label=".form-select-sm example">
                             <option value=1 selected>Nuevo</option>
                             <option value=2>Usado</option>
                             <option value=3>Renovado</option>

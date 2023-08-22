@@ -4,55 +4,55 @@
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off" [formGroup]="categoryForm">
             <h3 class="title">{{title}}</h3>
-            <div class="input-container" [ngClass]="{'focus': titleFocused || titleInput.value.length > 0}">
-                <input [readOnly]="read" #titleInput type="text" required minlength="3" maxlength="50" formControlName="name"
-                    class="input" (focus)="titleFocused = true" (blur)="titleFocused = false;" />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" type="text" required minlength="3" maxlength="50" formControlName="name"
+                    class="input"/>
                 <label>Nombre *</label>
                 <span>Nombre *</span>
-                <h5 *ngIf="validate('name', 'required', titleFocused)">El Nombre es<strong> Requerido</strong></h5>
-                <h5 *ngIf="validate('name', 'minlength', titleFocused)">El Nombre es<strong> muy corto</strong></h5>
+                <h5 *ngIf="validate('name', 'required')">El Nombre es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
             </div>
-            <div *ngIf="read">
-                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
-                    <input readOnly #createdAtInput type="text" formControlName="createdAt" [ngModel]="categoryForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input"/>
-                    <label>Fecha de Creación</label>
-                    <span>Fecha de Creación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': createdByInput.value.length > 0 }">
-                    <input readOnly #createdByInput type="text" formControlName="createdBy"  class="input"/>
-                    <label>Creado por</label>
-                    <span>Creado por</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0 }">
-                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt" [ngModel]="categoryForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'"  class="input"/>
-                    <label>Fecha de Modificación</label>
-                    <span>Fecha de Modificación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedByInput.value.length > 0 }">
-                    <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input"/>
-                    <label>Modificado por</label>
-                    <span>Modificado por</span>
-                </div>
+          <div *ngIf="read">
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="createdAt"
+                     [ngModel]="categoryForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+              <label>Fecha de Creación</label>
+              <span>Fecha de Creación</span>
             </div>
-            <div class="input-container" [ngClass]="{'focus': iconFocused || iconInput.value.length > 0 }">
-                <input [readOnly]="read" #iconInput type="text" formControlName="icon" class="input" (focus)="iconFocused = true"
-                    (blur)="iconFocused = false" required minlength="3" maxlength="200" />
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="createdBy" class="input" />
+              <label>Creado por</label>
+              <span>Creado por</span>
+            </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="updatedAt"
+                     [ngModel]="categoryForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+              <label>Fecha de Modificación</label>
+              <span>Fecha de Modificación</span>
+            </div>
+            <div class="input-container">
+              <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
+              <label>Modificado por</label>
+              <span>Modificado por</span>
+            </div>
+          </div>
+            <div  class="input-container" isFocus>
+                <input [readOnly]="read" type="text" formControlName="icon" class="input"  required minlength="3" maxlength="200" />
                 <label>Icono *</label>
                 <span>Icono *</span>
-                <h5 *ngIf="validate('icon', 'required', iconFocused)">El Icono es<strong> Requerido</strong></h5>
-                <h5 *ngIf="validate('icon', 'minlength', iconFocused)">El Icono es<strong> muy corto</strong></h5>
+                <h5 *ngIf="validate('icon', 'required')">El Icono es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('icon', 'minlength')">El Icono es<strong> muy corto</strong></h5>
             </div>
-            <div class="input-container"
-                [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
+            <div class="input-container" isFocus>
                 <textarea [readOnly]="read" #descriptionInput type="text" formControlName="description" class="input"
-                    (focus)="descriptionFocused = true" (blur)="descriptionFocused = false" rows="3" required
+                     rows="3" required
                     minlength="5" maxlength="250"></textarea>
                 <label>Descripción *</label>
                 <span>Descripción *</span>
-                <h5 *ngIf="validate('description', 'required', descriptionFocused)">La Descripción es<strong>
+                <h5 *ngIf="validate('description', 'required')">La Descripción es<strong>
                         Requerida</strong>
                 </h5>
-                <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
+                <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
                         corta</strong>
                 </h5>
             </div>

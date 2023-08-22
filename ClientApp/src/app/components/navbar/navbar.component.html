@@ -11,12 +11,11 @@
 
         <div class="collapse navbar-collapse " id="navbarsExample06">
             <ul class="navbar-nav me-auto">
-                <nav class="nav nav-masthead justify-content-center float-md-end">
+                <nav class="nav nav-masthead justify-content-between float-md-end">
                     <li class="nav-item d-flex justify-content-between">
                         <a class="nav-link fw-semibold active" aria-current="page" routerLink="">Home</a>
                         <a class="nav-link fw-semibold" routerLink="/about-us">Nosotros</a>
-                        <div ngbDropdown placement="bottom-end" display="dynamic"
-                            class="container">
+                        <div ngbDropdown placement="bottom-end" display="dynamic" class="container">
                             <a class="nav-link fw-semibold" id="adminMenu" aria-labelledby="navbarDropdown3"
                                 ngbDropdownToggle>Admin</a>
                             <div ngbDropdownMenu aria-labelledby="adminMenu">
@@ -30,81 +29,83 @@
                             </div>
                         </div>
                     </li>
-                </nav>
-
-            </ul>
-            <div class="d-flex flex-wrap d-inline justify-content-end">
-                <form class=" me-lg-3 col-lg-auto" role="search" (ngSubmit)="Search()">
-                    <div class="input-group-sm d-flex search-container">
-                        <div class="col">
-                            <input type="search" id="typeahead-template" type="text" placeholder="Buscar..."
-                                aria-label="Buscar" class="form-control col input-search" role="search"
-                                [ngClass]="{'input-search-expanded': isSearchInputFocused}" [(ngModel)]="model"
-                                [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
-                                [focusFirst]="focusFirst" container="body" (focus)="onSearchInputFocus()"
-                                (blur)="onSearchInputBlur()">
-                        </div>
-                        <button class="input-group-text text-end search-icon" type="submit"
-                            *ngIf="isSearchInputFocused">
-                            <i class="fa fa-search"></i>
-                        </button>
-                        <ng-template #rt let-r="result" let-t="term">
-                            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
-                                class="me-1" style="width: 16px" />
-                            <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-                        </ng-template>
-                    </div>
-                </form>
-
-                <div *ngIf="isAuthenticated; else elseBlock">
-                    <div class="row">
-                        <div class="col ps-1 pe-1">
-                            <div ngbDropdown class="d-inline-block ps-0 pe-0" display="dynamic" placement="bottom-end">
-                                <div type="button" class="navbar-cart" id="dropdownForm1"
-                                    aria-labelledby="navbarDropdown3" ngbDropdownToggle>
-                                    <div class="navbar-cart-items" *ngIf="totalItems != 0">
-                                        <p>{{totalItems | number}}</p>
+                    <li class="nav-item">
+                        <div class="d-inline-flex justify-content-end">
+                            <form class="me-lg-3 col-lg-auto" role="search" (ngSubmit)="Search()">
+                                <div class="input-group input-group-sm flex-nowrap">
+                                    <input focus type="search" id="search" placeholder="Buscar..."
+                                        aria-label="Buscar" class="form-control input-search" role="search">
+                                    <div class="input-group-text">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
                                     </div>
-                                    <i class="fa-solid fa-cart-shopping"></i>
                                 </div>
-                                <div ngbDropdownMenu aria-labelledby="dropdownForm1">
-                                    <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col ps-0 pe-0">
-                            <div ngbDropdown #myDrop="ngbDropdown" [ngbPopover]="dropdown" placement="bottom-end"
-                                display="dynamic" class="d-flex ps-0 pe-0">
-                                <div class="d-flex navbar-cart">
-
-                                    <ngx-avatar size="36" [name]="userName" (click)="myDrop.toggle();"></ngx-avatar>
-                                </div>
-                                <ng-template #dropdown>
-                                    <div class="d-flex flex-column">
-                                        <a class="item" routerLink="/profile">{{userName}}</a>
-                                        <hr class="mt-2 mb-2">
-                                        <a class="item" routerLink="/config"><i
-                                                class="fa-solid fa-gear"></i>&nbsp;&nbsp;Configuración</a>
-                                        <a class="item" routerLink="/my-wish-lists"><i
-                                                class="fa-solid fa-heart"></i>&nbsp;&nbsp;Lista de deseos</a>
-                                        <a class="item" routerLink="/my-orders"><i
-                                                class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis ordenes</a>
-                                        <hr class="mt-2 mb-2">
-                                        <a class="item" (click)="Logout()"><i
-                                                class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
-                                    </div>
+                                <ng-template #rt let-r="result" let-t="term">
+                                    <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
+                                        class="me-1" style="width: 16px" />
+                                    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
                                 </ng-template>
+
+                            </form>
+
+                            <div *ngIf="isAuthenticated; else elseBlock">
+                                <div class="row">
+                                    <div class="col ps-1 pe-1">
+                                        <div ngbDropdown class="d-inline-block ps-0 pe-0" display="dynamic"
+                                            placement="bottom-end">
+                                            <div type="button" class="navbar-cart" id="dropdownForm1"
+                                                aria-labelledby="navbarDropdown3" ngbDropdownToggle>
+                                                <div class="navbar-cart-items" *ngIf="totalItems != 0">
+                                                    <p>{{totalItems | number}}</p>
+                                                </div>
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </div>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownForm1">
+                                                <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 pe-0">
+                                        <div ngbDropdown #myDrop="ngbDropdown" [ngbPopover]="dropdown"
+                                            placement="bottom-end" display="dynamic" class="d-flex ps-0 pe-0">
+                                            <div class="d-flex navbar-cart">
+
+                                                <ngx-avatar size="36" [name]="userName"
+                                                    (click)="myDrop.toggle();"></ngx-avatar>
+                                            </div>
+                                            <ng-template #dropdown>
+                                                <div class="d-flex flex-column">
+                                                    <a class="item" routerLink="/profile">{{userName}}</a>
+                                                    <hr class="mt-2 mb-2">
+                                                    <a class="item" routerLink="/config"><i
+                                                            class="fa-solid fa-gear"></i>&nbsp;&nbsp;Configuración</a>
+                                                    <a class="item" routerLink="/my-wish-lists"><i
+                                                            class="fa-solid fa-heart"></i>&nbsp;&nbsp;Lista de
+                                                        deseos</a>
+                                                    <a class="item" routerLink="/my-orders"><i
+                                                            class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis
+                                                        ordenes</a>
+                                                    <hr class="mt-2 mb-2">
+                                                    <a class="item" (click)="Logout()"><i
+                                                            class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <ng-template #elseBlock>
+                                <div class="btn-cont">
+                                    <button type="button" class="btn btn-primary btn"
+                                        routerLink="/authenticate">Acceso</button>
+                                    <button type="button" class="btn btn-warning"
+                                        routerLink="/register">Registro</button>
+                                </div>
+                            </ng-template>
                         </div>
-                    </div>
-                </div>
-                <ng-template #elseBlock>
-                    <div class="btn-cont">
-                        <button type="button" class="btn btn-primary btn" routerLink="/authenticate">Acceso</button>
-                        <button type="button" class="btn btn-warning" routerLink="/register">Registro</button>
-                    </div>
-                </ng-template>
-            </div>
+                    </li>
+                </nav>
+            </ul>
+
         </div>
     </div>
 </nav>

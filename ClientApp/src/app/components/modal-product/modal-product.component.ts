@@ -32,21 +32,6 @@ export class ModalProductComponent implements OnInit {
   @Input() title: string = '';
   @Input() productId: string = '';
 
-  codeFocused = false;
-  optionsFocused = false;
-  categoryIdFocused = false;
-  warrantyIdFocused = false;
-  supplierIdFocused = false;
-
-  titleFocused = false;
-  descriptionFocused = false;
-  priceFocused = false;
-  quantityAvailableFocused = false;
-  colorFocused = false;
-  genderForFocused = false;
-  conditionFocused = false;
-  imagesFocused = false;
-
   productForm: any;
   options: any[] = [];
   optionForm: any;
@@ -224,9 +209,6 @@ export class ModalProductComponent implements OnInit {
       images: new FormControl(''),
       quantityAvailable: new FormControl(0),
     })
-    setTimeout(() => {
-
-    }, 10);
   }
 
   saveOption(optionFormValue: any) {
@@ -317,14 +299,14 @@ export class ModalProductComponent implements OnInit {
     });
   }
 
-  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+  validate = (controlName: string, errorName: string) => {
     const control = this.productForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+    return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
-  validateOption = (controlName: string, errorName: string, isFocused: boolean) => {
+  validateOption = (controlName: string, errorName: string) => {
     const control = this.optionForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+    return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
   cancelOption() {

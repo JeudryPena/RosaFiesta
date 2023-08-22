@@ -1,42 +1,48 @@
-<ng-container>
-    <div class="container ">
-        <div class="card-table">
-            <div class="cart-product">
-                <table class="table table-responsive mb-0 tablex">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let product of this.details">
-                            <td><img style="width: 120px;" src="{{product.option.image | imgPath}}" alt=""></td>
-                            <td>{{product.option.title}}</td>
-                            <td>{{product.option.price | currency}}</td>
-                            <td><input (input)="OnQuantityChange($event, product.detailId, product.optionId)" type="number" min="0" value={{product.quantity}} step="1" enabled></td>
-                            <td>{{product.quantity * product.option.price | currency}}</td>
-                            <td>
-                                <button class="btn btn-danger p-1" (click)="deleteItem(product.detailId, product.optionId)"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row p-3">
-                    <div class="col-md-5 d-flex">
-                        <strong>Total: </strong>
-                        <p class="mb-0 ms-2">{{totalPrice | currency}}</p>
+<div class="container">
+    <div class="card-table">
+        <div class="cart-product">
+            <div *ngFor="let product of this.details" class="m-3">
+                <div class="row">
+                    <div class="col-xl-2">
+                        <img style="width: 120px" class="rounded-2" src="{{product.option.image | imgPath}}" alt="">
                     </div>
-                    <div class="btn-groups col-md-7 d-flex justify-content-between">
-                        <button type="button" (click)="purchase()" class="buy-now-btn btn-sm"><i class="fas fa-wallet"></i>Comprar</button>
-                        <button type="button" (click)="clearCart()" class="add-cart-btn btn-sm"><i class="fa-solid fa-trash me-1" ></i>Limpiar carrito</button> 
+                    <div class="col-xl-8">
+                        <div class="row fw-bold">
+                            {{product.option.title}}
+                        </div>
+                        <div class="row">
+                            {{product.option.price | currency}}
+                        </div>
                     </div>
+                    <div class="col-xl-2">
+                        <div class="row">
+                            <input (input)="OnQuantityChange($event, product.detailId, product.optionId)" type="number"
+                                min="0" value={{product.quantity}} step="1" enabled>
+                        </div>
+                        <div class="row">
+                            {{product.quantity * product.option.price | currency}}
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-danger p-1"
+                                (click)="deleteItem(product.detailId, product.optionId)"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="row p-3">
+                <div class="col-md-5 d-flex">
+                    <strong>Total: </strong>
+                    <p class="mb-0 ms-2">{{totalPrice | currency}}</p>
+                </div>
+                <div class="btn-groups col-md-7 d-flex justify-content-between">
+                    <button type="button" (click)="purchase()" class="buy-now-btn btn-sm"><i
+                            class="fas fa-wallet"></i>Comprar</button>
+                    <button type="button" (click)="clearCart()" class="add-cart-btn btn-sm"><i
+                            class="fa-solid fa-trash me-1"></i>Limpiar carrito</button>
                 </div>
             </div>
         </div>
     </div>
-</ng-container>
+</div>

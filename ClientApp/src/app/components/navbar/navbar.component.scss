@@ -91,53 +91,13 @@ nav {
   padding-top: 0px;
 }
 
-.form-control {
-  width: 300px;
-  height: 30px;
-  max-height: 30px;
-  margin-top: 2px;
-
-}
-
 .input-search {
-  transition: width 0.3s ease-in-out;
+  width: 200px;
+  transition: width 0.5s ease-in-out;
 }
 
-.input-search.input-search-expanded {
-  width: 500px;
-  transition-delay: 0.2s;
-}
-
-.search-container {
-  position: relative;
-}
-
-.search-icon {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  margin-top: 2px;
-}
-
-.input-group-sm .input-search {
-  padding-right: 40px;
-  /* ajusta el valor según sea necesario para que el botón encaje correctamente */
-}
-
-.input-group-sm .input-search-expanded+.input-group-text {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 3;
-  width: 40px;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: left;
-  justify-content: left;
+.input-search.focus {
+  width: 400px;
 }
 
 .bd-placeholder-img {

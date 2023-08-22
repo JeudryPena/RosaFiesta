@@ -1,1 +1,78 @@
-<p>pay-method works!</p>
+<form [formGroup]="payMethodForm">
+    <div class="my-3">
+        <div class="form-check">
+            <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+            <label class="form-check-label" for="credit">Tarjeta de Crédito</label>
+        </div>
+        <div class="form-check">
+            <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+            <label class="form-check-label" for="debit">Tarjeta de Débito </label>
+        </div>
+        <div class="form-check">
+            <input name="paymentMethod" type="radio" class="form-check-input" required>
+            <label class="form-check-label">PayPal</label>
+        </div>
+    </div>
+
+    <div class="row gy-3">
+        <div class="col-md-12">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': numberFocused}">
+                <input type="text" class="form-control contact-input" id="cardNumber" placeholder="Número de Tarjeta"
+                    required minlength="3" maxlength="20" formControlName="cardNumber" (focus)="numberFocused = true"
+                    (blur)="numberFocused = false" />
+                <label for="floatingInput">Número de Tarjeta</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="payValidate('cardNumber', 'required', numberFocused)">El Número es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="payValidate('cardNumber', 'minlength', numberFocused)">El Número es<strong>
+                        muy
+                        corto</strong></h5>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': ownerFocused}">
+                <input type="text" class="form-control contact-input" id="cardOwner" placeholder="Número de Tarjeta"
+                    required minlength="3" maxlength="50" formControlName="ownerName" (focus)="ownerFocused = true"
+                    (blur)="ownerFocused = false" />
+                <label for="floatingInput">Nombre de Propietario</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="payValidate('ownerName', 'required', ownerFocused)">El Nombre es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="payValidate('ownerName', 'minlength', ownerFocused)">El Nombre es<strong>
+                        muy
+                        corto</strong></h5>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': expirationFocused}">
+                <input type="date" class="form-control contact-input" id="expiration" placeholder="Fecha de Expiración"
+                    formControlName="expiration" (focus)="expirationFocused = true"
+                    (blur)="expirationFocused = false" />
+                <label for="floatingInput">Fecha de Expiración</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="payValidate('expiration', 'required', expirationFocused)">La Fecha
+                    es<strong>
+                        Requerida</strong></h5>
+                <h5 *ngIf="payValidate('expiration', 'minlength', expirationFocused)">La Fecha
+                    es<strong>
+                        muy corta</strong></h5>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': cvvFocused}">
+                <input type="number" class="form-control contact-input" id="cvv" placeholder="CVV" required
+                    minlength="3" maxlength="7" formControlName="cvv" (focus)="cvvFocused = true"
+                    (blur)="cvvFocused = false" />
+                <label for="floatingInput">CVV</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="payValidate('cvv', 'required', cvvFocused)">El CVV es<strong>
+                        Requerido</strong>
+                </h5>
+                <h5 *ngIf="payValidate('cvv', 'minlength', cvvFocused)">El CVV es<strong> muy
+                        corto</strong></h5>
+            </div>
+        </div>
+    </div>

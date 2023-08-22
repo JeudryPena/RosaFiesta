@@ -1,239 +1,66 @@
-<div class="container">
-    <main>
-        <div class="py-0 pb-4 text-center">
-            <h2>Formulario de Pago</h2>
+<div class="m-4">
+    <div class="pb-4 text-center">
+        <h2>Formulario de Pago</h2>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Tu carrito</span>
+                <span class="badge bg-primary rounded-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">Nombre de Producto</h6>
+                        <small class="text-body-secondary">Brief description</small>
+                    </div>
+                    <span class="text-body-secondary">$12</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Total (RD$)</span>
+                    <strong>$20</strong>
+                </li>
+            </ul>
         </div>
-
-        <div class="row g-5">
-            <div class="col-md-5 col-lg-4 order-md-last">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">Tu carrito</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
-                </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Nombre de Producto</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$12</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (RD$)</span>
-                        <strong>$20</strong>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Dirección de Envío</h4>
-                <form [formGroup]="addressForm">
-                    <div class="row g-3">
-                        <div class="col-sm-6">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': nameFocused}">
-                                <input #userInput type="text" class="form-control contact-input" id="name"
-                                    placeholder="Nombres" required minlength="5" maxlength="50" formControlName="name"
-                                    (focus)="nameFocused = true" (blur)="nameFocused = false" />
-                                <label for="floatingInput">Nombres</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': lastNameFocused}">
-                                <input #userInput type="text" class="form-control contact-input" id="lastName"
-                                    placeholder="Apellidos" required minlength="5" maxlength="50"
-                                    formControlName="lastName" (focus)="lastNameFocused = true"
-                                    (blur)="lastNameFocused = false" />
-                                <label for="floatingInput">Apellidos</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('lastName', 'required', lastNameFocused)">El Apellido es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('lastName', 'minlength', lastNameFocused)">El Apellido es<strong>
-                                        muy corto</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': titleFocused}">
-                                <input #userInput type="text" class="form-control contact-input" id="title"
-                                    placeholder="Título" required minlength="5" maxlength="50" formControlName="title"
-                                    (focus)="titleFocused = true" (blur)="titleFocused = false" />
-                                <label for="floatingInput">Título</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('title', 'required', titleFocused)">El Título es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('title', 'minlength', titleFocused)">El Título es<strong> muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': phoneFocused}">
-                                <input #userInput type="phone" class="form-control contact-input" id="phone"
-                                    placeholder="Teléfono" required minlength="5" maxlength="17"
-                                    formControlName="phoneNumber" (focus)="phoneFocused = true"
-                                    (blur)="phoneFocused = false" />
-                                <label for="floatingInput">Teléfono</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('phoneNumber', 'required', phoneFocused)">El Teléfono es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('phoneNumber', 'minlength', phoneFocused)">El Teléfono es<strong>
-                                        muy corto</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': cityFocused}">
-                                <input type="text" class="form-control contact-input" id="city" placeholder="Ciudad"
-                                    required minlength="3" maxlength="50" formControlName="city"
-                                    (focus)="cityFocused = true" (blur)="cityFocused = false" />
-                                <label for="floatingInput">Ciudad</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('city', 'required', cityFocused)">La Ciudad es<strong>
-                                        Requerida</strong></h5>
-                                <h5 *ngIf="validate('city', 'minlength', cityFocused)">La Ciudad es<strong> muy
-                                        corta</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': stateFocused}">
-                                <input type="text" class="form-control contact-input" id="state" placeholder="Estado"
-                                    required minlength="3" maxlength="70" formControlName="state"
-                                    (focus)="stateFocused = true" (blur)="stateFocused = false" />
-                                <label for="floatingInput">Estado</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('state', 'required', stateFocused)">El Estado es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('state', 'minlength', stateFocused)">El Estado es<strong> muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': zipFocused}">
-                                <input type="text" class="form-control contact-input" id="zipCode"
-                                    placeholder="Código Postal" required minlength="3" maxlength="15"
-                                    formControlName="zipCode" (focus)="zipFocused = true" (blur)="zipFocused = false" />
-                                <label for="floatingInput">Código Postal</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="validate('zipCode', 'required', zipFocused)">El Código es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="validate('zipCode', 'minlength', zipFocused)">El Código es<strong> muy
-                                        corto</strong></h5>
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Dirección de Envío</h4>
+            <form [formGroup]="purchaseForm">
+                <div class="row g-3 mb-4 mt-3">
+                    <div class="col-sm-9">
+                        <div class="input-group" role="group">
+                            <input #categoryIdInput type="search" required formControlName="categoryId"
+                                class="form-control input" placeholder="Elegir de mis métodos de pago"
+                                id="typeahead-focus" [adaptivePosition]="true" [(ngModel)]="addressSelected"
+                                [typeaheadSingleWords]="true" [typeaheadOptionsLimit]="7" [typeahead]="payMethods"
+                                typeaheadOptionField="title" (typeaheadOnSelect)="onSelect($event, 'payMethod')"
+                                [typeaheadMinLength]="0" [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20"
+                                [isAnimated]="true" />
+                            <div class="input-group-text">
+                                <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': phoneFocused}">
-                            <textarea type="text" class="form-control contact-input" id="description"
-                                placeholder="Detalles Extra" minlength="5" maxlength="256" formControlName="extraDetail"
-                                (focus)="phoneFocused = true" (blur)="phoneFocused = false"></textarea>
-                            <label for="floatingInput">Detalles Extra</label>
-                            <i class="icon fa-regular fa-id-card"></i>
-                            <h5 *ngIf="validate('phoneNumber', 'minlength', phoneFocused)">El Detalle es<strong> muy
-                                    corto</strong></h5>
-                        </div>
+                    <div class="col-sm-3 d-inline-flex">
+                        <caption class="me-3 caption">/</caption>
+                        <button type="button" class="btn btn-primary w-100" ngbAutofocus (click)="createAddress()">
+                            Crear Nueva Dirección
+                        </button>
                     </div>
-                </form>
-                <hr class="my-4">
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="same-address">
-                    <label class="form-check-label" for="same-address">Mi dirección de envío, es el mismo que mi
-                        dirección de factura</label>
                 </div>
+            </form>
+            <hr class="my-4">
 
-                <hr class="my-4">
+            <h4 class="mb-3">Método de Pago</h4>
 
-                <h4 class="mb-3">Método de Pago</h4>
-                <form [formGroup]="payMethodForm">
-                    <div class="my-3">
-                        <div class="form-check">
-                            <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked
-                                required>
-                            <label class="form-check-label" for="credit">Tarjeta de Crédito</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                            <label class="form-check-label" for="debit">Tarjeta de Débito </label>
-                        </div>
-                        <div class="form-check">
-                            <input name="paymentMethod" type="radio" class="form-check-input" required>
-                            <label class="form-check-label" >PayPal</label>
-                        </div>
-                    </div>
-                    <ngx-paypal [config]="payPalConfig">
+            <ngx-paypal [config]="payPalConfig">
 
-                    </ngx-paypal>
+            </ngx-paypal>
 
-                    <div class="row gy-3">
-                        <div class="col-md-12">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': numberFocused}">
-                                <input type="text" class="form-control contact-input" id="cardNumber"
-                                    placeholder="Número de Tarjeta" required minlength="3" maxlength="20"
-                                    formControlName="cardNumber" (focus)="numberFocused = true"
-                                    (blur)="numberFocused = false" />
-                                <label for="floatingInput">Número de Tarjeta</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="payValidate('cardNumber', 'required', numberFocused)">El Número es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="payValidate('cardNumber', 'minlength', numberFocused)">El Número es<strong>
-                                        muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': ownerFocused}">
-                                <input type="text" class="form-control contact-input" id="cardOwner"
-                                    placeholder="Número de Tarjeta" required minlength="3" maxlength="50"
-                                    formControlName="ownerName" (focus)="ownerFocused = true"
-                                    (blur)="ownerFocused = false" />
-                                <label for="floatingInput">Nombre de Propietario</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="payValidate('ownerName', 'required', ownerFocused)">El Nombre es<strong>
-                                        Requerido</strong></h5>
-                                <h5 *ngIf="payValidate('ownerName', 'minlength', ownerFocused)">El Nombre es<strong>
-                                        muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': expirationFocused}">
-                                <input type="date" class="form-control contact-input" id="expiration"
-                                    placeholder="Fecha de Expiración" formControlName="expiration"
-                                    (focus)="expirationFocused = true" (blur)="expirationFocused = false" />
-                                <label for="floatingInput">Fecha de Expiración</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="payValidate('expiration', 'required', expirationFocused)">La Fecha
-                                    es<strong>
-                                        Requerida</strong></h5>
-                                <h5 *ngIf="payValidate('expiration', 'minlength', expirationFocused)">La Fecha
-                                    es<strong>
-                                        muy corta</strong></h5>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': cvvFocused}">
-                                <input type="number" class="form-control contact-input" id="cvv" placeholder="CVV"
-                                    required minlength="3" maxlength="7" formControlName="cvv"
-                                    (focus)="cvvFocused = true" (blur)="cvvFocused = false" />
-                                <label for="floatingInput">CVV</label>
-                                <i class="icon fa-regular fa-id-card"></i>
-                                <h5 *ngIf="payValidate('cvv', 'required', cvvFocused)">El CVV es<strong>
-                                        Requerido</strong>
-                                </h5>
-                                <h5 *ngIf="payValidate('cvv', 'minlength', cvvFocused)">El CVV es<strong> muy
-                                        corto</strong></h5>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="my-4">
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-                </form>
+            <hr class="my-4">
+            <div class="justify-content-center">
+                <button class="btn btn-primary btn-lg" type="submit">Confirmar Compra</button>
             </div>
         </div>
-    </main>
+    </div>
 </div>

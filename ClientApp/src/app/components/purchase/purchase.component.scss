@@ -71,6 +71,38 @@
     z-index: 1500;
 }
 
-.container {
-    max-width: 960px;
+.add {
+    color: #101010;
+    background-color: #fff;
+    border-color: lightsteelblue;
+    width: 100%;
+}
+
+.add:hover {
+    color: #fff;
+    background-color: lightsteelblue;
+    border-color: lightsteelblue;
+}
+
+.input {
+    width: 100%;
+    outline: none;
+    border: 2px solid lightsteelblue;
+    background: #fff;
+    padding: 0.6rem 1.2rem;
+    color: #101010;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.input-group-text {
+    border-radius: 25px;
+}
+
+.caption {
+    font-weight: 400;
+    font-size: 1.3rem;
 }

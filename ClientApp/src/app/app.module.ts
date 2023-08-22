@@ -120,6 +120,9 @@ import { TreeMapChartComponent } from './helpers/tree-map-chart/tree-map-chart.c
 import { ImgPathPipe } from './shared/pipes/img-path.pipe';
 import { TruncatePipe } from './shared/pipes/truncate.pipe';
 import { PayMethodComponent } from './components/pay-method/pay-method.component';
+import { AddressesComponent } from './components/addresses/addresses.component';
+import { FocusDirective } from './shared/directives/focus.directive';
+import { IsFocusDirective } from './shared/directives/is-focus.directive';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -221,6 +224,9 @@ export function tokenGetter() {
     ModalUserComponent,
     ImgPathPipe,
     PayMethodComponent,
+    AddressesComponent,
+    FocusDirective,
+    IsFocusDirective,
 
   ],
   imports: [
