@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
@@ -9,6 +9,7 @@ import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResp
 import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
 import { ProductsService } from '../../shared/services/products.service';
 import { WarrantiesService } from '../../shared/services/warranties.service';
+import {FocusDirective} from "../../shared/directives/focus.directive";
 
 @Component({
   selector: 'app-modal-warranty',
@@ -21,19 +22,12 @@ export class ModalWarrantyComponent implements OnInit {
   @Input() title: string = '';
   @Input() id: string = '';
 
+  dataLoaded = false;
+
   warrantyForm: any;
   products: any[] = [];
   selected?: string;
-  updateProduct = false;
-  productTitle = '';
   productsList: ProductsListResponse[] = [];
-
-  nameFocused = false;
-  typeFocused = false;
-  periodFocused = false;
-  descriptionFocused = false;
-  productsFocused = false;
-
   constructor(
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -47,7 +41,7 @@ export class ModalWarrantyComponent implements OnInit {
     this.products.push({
       id: event.item.id,
       option: {
-        title: event.item.option.title,  
+        title: event.item.option.title,
       }
     });
     this.selected = '';
@@ -72,6 +66,7 @@ export class ModalWarrantyComponent implements OnInit {
         });
 
         this.products = response.products || [];
+        this.dataLoaded = true;
       });
     } else if (this.read) {
       this.warrantyForm = new FormGroup({
@@ -100,6 +95,7 @@ export class ModalWarrantyComponent implements OnInit {
         });
 
         this.products = response.products || [];
+        this.dataLoaded = true;
       });
     }
 
@@ -110,11 +106,12 @@ export class ModalWarrantyComponent implements OnInit {
         console.log(error);
       }
     });
+
   }
 
-  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+  validate = (controlName: string, errorName: string) => {
     const control = this.warrantyForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+    return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
   close() {

@@ -29,17 +29,7 @@ export class ModalUserComponent {
   userForm: any;
   roles: any[] = [];
   selected?: string;
-  updateRole = false;
-  roleTitle = '';
   rolesList: RolesListResponse[] = [];
-
-  userNameFocused = false;
-  emailFocused = false;
-  passwordFocused = false;
-  confirmPasswordFocused = false;
-  birthDateFocused = false;
-  userRolesFocused = false;
-  promotionalMailsFocused = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -150,9 +140,9 @@ export class ModalUserComponent {
     });
   }
 
-  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+  validate = (controlName: string, errorName: string) => {
     const control = this.userForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+    return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
   close() {

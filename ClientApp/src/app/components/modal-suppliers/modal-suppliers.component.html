@@ -4,34 +4,33 @@
         <span class="circle two"></span>
         <form action="index.html" autocomplete="off" [formGroup]="supplierForm">
             <h3 class="title">{{title}}</h3>
-            <div class="input-container" [ngClass]="{'focus': nameFocused || nameInput.value.length > 0 }">
+            <div class="input-container" isFocus>
                 <input [readOnly]="read" #nameInput type="text" formControlName="name" class="input" required
-                    minlength="3" maxlength="50" (focus)="nameFocused = true" (blur)="nameFocused = false" />
+                    minlength="3" maxlength="50"/>
                 <label>Nombre *</label>
                 <span>Nombre *</span>
-                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong> requerido</strong></h5>
-                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy corto</strong></h5>
+                <h5 *ngIf="validate('name', 'required')">El Nombre es<strong> requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
             </div>
-            <div class="input-container" [ngClass]="{'focus': emailFocused || emailInput.value.length > 0 }">
-                <input [readOnly]="read" #emailInput type="string" formControlName="email" class="input"
-                    minlength="3" maxlength="253" (focus)="emailFocused = true" (blur)="emailFocused = false" />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" type="string" formControlName="email" class="input"
+                    minlength="3" maxlength="253"/>
                 <label>Email</label>
                 <span>Email</span>
-                <h5 *ngIf="validate('email', 'minlength', emailFocused)">El email es<strong> muy corto</strong></h5>
+                <h5 *ngIf="validate('email', 'minlength')">El email es<strong> muy corto</strong></h5>
             </div>
 
-            <div class="input-container" [ngClass]="{'focus': phoneFocused || phoneInput.value.length > 0 }">
-                <input [readOnly]="read" #phoneInput type="text" formControlName="phone" class="input" 
-                    minlength="3" maxlength="50" (focus)="phoneFocused = true" (blur)="phoneFocused = false" />
+            <div class="input-container" isFocus>
+                <input [readOnly]="read" type="text" formControlName="phone" class="input"
+                    minlength="3" maxlength="50"/>
                 <label>Teléfono</label>
                 <span>Teléfono</span>
-                <h5 *ngIf="validate('phone', 'minlength', phoneFocused)">El telefono es<strong> muy corto</strong></h5>
+                <h5 *ngIf="validate('phone', 'minlength')">El telefono es<strong> muy corto</strong></h5>
             </div>
-            <div class="input-container" *ngIf="!read"
-                [ngClass]="{'focus': productsFocused || productsInput.value.length > 0 }">
-                <div class="input-group">
-                    <input #productsInput type="search" formControlName="products" class="input"
-                        (focus)="productsFocused = true;" (blur)="productsFocused = false" id="typeahead-focus"
+            <div class="input-container" *ngIf="!read" isFocus>
+                <div class="input-group flex-nowrap">
+                    <input type="search" formControlName="products" class="input"
+                         id="search"
                         [adaptivePosition]="true" [(ngModel)]="selected" [typeaheadSingleWords]="true"
                         [typeaheadOptionsLimit]="7" [typeahead]="productsList" typeaheadOptionField="option.title"
                         (typeaheadOnSelect)="onSelect($event)" [typeaheadMinLength]="0" [typeaheadWaitMs]="100"
@@ -43,58 +42,56 @@
             <div class="input-container">
                 <ol class="list-group list-group-numbered " *ngFor="let product of products; let i = index">
                     <li>
-                        <div class="input-group">
-                            <button type="text" class="btn text-md-start list btn-outline-light wrapper">{{i+1}}.
+                        <div class="input-group flex-nowrap">
+                            <button type="text" class="btn text-md-start list w-100 btn-outline-light">{{i+1}}.
                                 {{product.option.title}}</button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
+                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 input-group-text"
                                 (click)="removeProduct(i)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </li>
                 </ol>
-            </div>            
-            <div class="input-container"
-                [ngClass]="{'focus': descriptionFocused || descriptionInput.value.length > 0 }">
-                <textarea [readOnly]="read" #descriptionInput type="text" formControlName="description" class="input"
-                    minlength="3" maxlength="250" (focus)="descriptionFocused = true"
-                    (blur)="descriptionFocused = false" rows="3"></textarea>
+            </div>
+            <div class="input-container" isFocus>
+                <textarea [readOnly]="read" type="text" formControlName="description" class="input"
+                    minlength="3" maxlength="250" rows="3"></textarea>
                 <label>Descripción</label>
                 <span>Descripción</span>
-                <h5 *ngIf="validate('description', 'minlength', descriptionFocused)">La Descripción es<strong> muy
+                <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
                         corta</strong></h5></div>
-            <div class="input-container" [ngClass]="{'focus': addressFocused || nameInput.value.length > 0 }">
-                <textarea [readOnly]="read" #addressInput type="text" formControlName="address" class="input" 
-                    minlength="3" maxlength="250" (focus)="addressFocused = true" (blur)="addressFocused = false"></textarea>
+            <div class="input-container" isFocus>
+                <textarea [readOnly]="read" type="text" formControlName="address" class="input"
+                    minlength="3" maxlength="250"></textarea>
                 <label>Dirección</label>
                 <span>Dirección</span>
-                <h5 *ngIf="validate('address', 'minlength', addressFocused)">La dirección es<strong> muy corta</strong></h5>
-            </div>              
-            <div *ngIf="read">
-                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
-                    <input readOnly #createdAtInput type="text" formControlName="createdAt"
-                        [ngModel]="supplierForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
-                    <label>Fecha de Creación</label>
-                    <span>Fecha de Creación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': createdByInput.value.length > 0 }">
-                    <input readOnly #createdByInput type="text" formControlName="createdBy" class="input" />
-                    <label>Creado por</label>
-                    <span>Creado por</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0 }">
-                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt"
-                        [ngModel]="supplierForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
-                    <label>Fecha de Modificación</label>
-                    <span>Fecha de Modificación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedByInput.value.length > 0 }">
-                    <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
-                    <label>Modificado por</label>
-                    <span>Modificado por</span>
-                </div>
+                <h5 *ngIf="validate('address', 'minlength')">La dirección es<strong> muy corta</strong></h5>
             </div>
-            <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
+          <div *ngIf="read">
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="createdAt"
+                     [ngModel]="supplierForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+              <label>Fecha de Creación</label>
+              <span>Fecha de Creación</span>
+            </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="createdBy" class="input" />
+              <label>Creado por</label>
+              <span>Creado por</span>
+            </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="updatedAt"
+                     [ngModel]="supplierForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+              <label>Fecha de Modificación</label>
+              <span>Fecha de Modificación</span>
+            </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="updatedBy" class="input" />
+              <label>Modificado por</label>
+              <span>Modificado por</span>
+            </div>
+          </div>
+          <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
                 <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
                 <input *ngIf="read == false" type="submit" value="Crear" [disabled]="!supplierForm.valid"
                     class="btn submit" (click)="AddSupplier(supplierForm.value)" />
@@ -108,4 +105,4 @@
             </ng-template>
         </form>
     </div>
-</div> 
+</div>

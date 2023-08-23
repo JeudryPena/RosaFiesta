@@ -6,71 +6,64 @@
             <h3 class="title">{{title}}</h3>
             <div class="row group">
                 <div class="col">
-                    <div class="input-container"
-                        [ngClass]="{'focus': userNameFocused || userNameInput.value.length > 0 }">
-                        <input [readOnly]="read" #userNameInput type="text" formControlName="userName" class="input"
-                            required minlength="3" maxlength="256" (focus)="userNameFocused = true"
-                            (blur)="userNameFocused = false" />
+                    <div class="input-container" isFocus>
+                        <input [readOnly]="read" type="text" formControlName="userName" class="input"
+                            required minlength="3" maxlength="256"/>
                         <label>Usuario *</label>
                         <span>Usuario *</span>
-                        <h5 *ngIf="validate('userName', 'required', userNameFocused)">El Usuario es<strong>
+                        <h5 *ngIf="validate('userName', 'required')">El Usuario es<strong>
                                 requerido</strong>
                         </h5>
-                        <h5 *ngIf="validate('userName', 'minlength', userNameFocused)">El Usuario es<strong> muy
+                        <h5 *ngIf="validate('userName', 'minlength')">El Usuario es<strong> muy
                                 corto</strong>
                         </h5>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-container" [ngClass]="{'focus': emailFocused || emailInput.value.length > 0 }">
-                        <input [readOnly]="read" #emailInput type="text" formControlName="email" class="input"
-                            minlength="3" maxlength="253" (focus)="emailFocused = true" (blur)="emailFocused = false" />
+                    <div class="input-container" isFocus>
+                        <input [readOnly]="read" type="text" formControlName="email" class="input"
+                            minlength="3" maxlength="253"/>
                         <label>Email *</label>
                         <span>Email *</span>
-                        <h5 *ngIf="validate('email', 'required', emailFocused)">El Email es<strong> requerido</strong>
+                        <h5 *ngIf="validate('email', 'required')">El Email es<strong> requerido</strong>
                         </h5>
-                        <h5 *ngIf="validate('email', 'minlength', emailFocused)">El Email es<strong> muy corto</strong>
+                        <h5 *ngIf="validate('email', 'minlength')">El Email es<strong> muy corto</strong>
                         </h5>
                     </div>
                 </div>
             </div>
             <div class="row group">
                 <div class="col">
-                    <div class="input-container"
-                        [ngClass]="{'focus': passwordFocused || passwordInput.value.length > 0 }">
-                        <input [readOnly]="read" #passwordInput type="password" formControlName="password" class="input"
-                            required minlength="8" maxlength="256" (focus)="passwordFocused = true"
-                            (blur)="passwordFocused = false" />
+                    <div class="input-container" isFocus>
+                        <input [readOnly]="read" type="password" formControlName="password" class="input"
+                            required minlength="8" maxlength="256"/>
                         <label>Contraseña *</label>
                         <span>Contraseña *</span>
-                        <h5 *ngIf="validate('password', 'required', passwordFocused)">La Contraseña<strong>
+                        <h5 *ngIf="validate('password', 'required')">La Contraseña<strong>
                                 requerida</strong>
                         </h5>
-                        <h5 *ngIf="validate('password', 'minlength', passwordFocused)">La Contraseña es<strong> muy
+                        <h5 *ngIf="validate('password', 'minlength')">La Contraseña es<strong> muy
                                 corta</strong></h5>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-container"
-                        [ngClass]="{'focus': confirmPasswordFocused || confirmPasswordInput.value.length > 0 }">
-                        <input [readOnly]="read" #confirmPasswordInput type="password" formControlName="confirmPassword"
-                            class="input" required minlength="8" maxlength="256" (focus)="confirmPasswordFocused = true"
-                            (blur)="confirmPasswordFocused = false" />
+                    <div class="input-container" isFocus>
+                        <input [readOnly]="read" type="password" formControlName="confirmPassword"
+                            class="input" required minlength="8" maxlength="256"/>
                         <label>Confirmar contraseña *</label>
                         <span>Confirmar contraseña *</span>
-                        <h5 *ngIf="validate('confirmPassword', 'required', confirmPasswordFocused)">La Contraseña
+                        <h5 *ngIf="validate('confirmPassword', 'required')">La Contraseña
                             es<strong>requerida</strong></h5>
-                        <h5 *ngIf="validate('confirmPassword', 'minlength', confirmPasswordFocused)">La Contraseña
+                        <h5 *ngIf="validate('confirmPassword', 'minlength')">La Contraseña
                             es<strong>
                                 muy corta</strong></h5>
                     </div>
                 </div>
             </div>
-            <div class="input-container" *ngIf="!read"
-                [ngClass]="{'focus': userRolesFocused || roleInput.value.length > 0 }">
-                <div class="input-group">
-                    <input #roleInput type="search" formControlName="userRoles" class="input"
-                        (focus)="userRolesFocused = true;" (blur)="userRolesFocused = false" id="typeahead-focus"
+            <div class="input-container" *ngIf="!read" isFocus>
+                <div class="input-group flex-nowrap">
+                    <input type="search" formControlName="userRoles" class="input"
+                        id="search"
                         [adaptivePosition]="true" [(ngModel)]="selected" [typeaheadSingleWords]="true"
                         [typeaheadOptionsLimit]="7" [typeahead]="rolesList" typeaheadOptionField="name"
                         (typeaheadOnSelect)="onSelect($event)" [typeaheadMinLength]="0" [typeaheadWaitMs]="100"
@@ -82,10 +75,10 @@
             <div class="input-container">
                 <ol class="list-group list-group-numbered" *ngFor="let role of roles; let i = index">
                     <li>
-                        <div class="input-group">
-                            <button type="text" class="btn text-md-start list btn-outline-light wrapper">{{i+1}}.
+                        <div class="input-group flex-nowrap">
+                            <button type="text" class="btn text-md-start list btn-outline-light w-100">{{i+1}}.
                                 {{role.name}}</button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
+                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 input-group-text"
                                 (click)="removeRoles(i)">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -103,50 +96,48 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-container mt-0"
-                        [ngClass]="{'focus': birthDateFocused || birthDateInput.value.length > 0 }">
-                        <div class="input-group">
-                            <input [readOnly]="true" #birthDateInput type="text" class="input wrapper" (bsValueChange)="changeTime($event)"
+                    <div class="input-container mt-0" isFocus>
+                        <div class="input-group flex-nowrap">
+                            <input [readOnly]="true" type="text" class="input" (bsValueChange)="changeTime($event)"
                                 required [disabled]="read" [bsValue]="date" bsDatepicker #dp="bsDatepicker" formControlName="date" placement="top"
                                 [bsConfig]="{ isAnimated:true, dateInputFormat:'MMMM Do YYYY', containerClass: 'theme-dark-blue', showTodayButton:true,  showClearButton:true, todayPosition:'left', clearPosition:'right', adaptivePosition: true}"
-                                [minDate]="minDate" [maxDate]="maxDate" (focus)="birthDateFocused = true"
-                                (blur)="birthDateFocused = false" />
-                            <button (click)="dp.toggle()" class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 wrap" type="button"></button>
+                                [minDate]="minDate" [maxDate]="maxDate"/>
+                            <button (click)="dp.toggle()" class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 input-group-text" type="button"></button>
                         </div>
                         <label>Fecha de Nacimiento *</label>
                         <span>Fecha de Nacimiento *</span>
-                        <h5 *ngIf="validate('date', 'required',birthDateFocused)">La Fecha de Nacimiento
+                        <h5 *ngIf="validate('date', 'required')">La Fecha de Nacimiento
                             es<strong>requerida</strong></h5>
-                        <h5 *ngIf="validate('date', 'minlength', birthDateFocused)">La Fecha de Nacimiento<strong>
+                        <h5 *ngIf="validate('date', 'minlength')">La Fecha de Nacimiento<strong>
                                 muy
                                 corta</strong></h5>
                     </div>
                 </div>
             </div>
-            <div *ngIf="read" class="grp">
-                <div class="input-container grp" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
-                    <input readOnly #createdAtInput type="text" formControlName="createdAt"
-                        [ngModel]="userForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
-                    <label>Fecha de Creación</label>
-                    <span>Fecha de Creación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': createdByInput.value.length > 0 }">
-                    <input readOnly #createdByInput type="text" formControlName="createdBy" class="input" />
-                    <label>Creado por</label>
-                    <span>Creado por</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0 }">
-                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt"
-                        [ngModel]="userForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
-                    <label>Fecha de Modificación</label>
-                    <span>Fecha de Modificación</span>
-                </div>
-                <div class="input-container" [ngClass]="{'focus': updatedByInput.value.length > 0 }">
-                    <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
-                    <label>Modificado por</label>
-                    <span>Modificado por</span>
-                </div>
+          <div *ngIf="read" class="grp">
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="createdAt"
+                     [ngModel]="userForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+              <label>Fecha de Creación</label>
+              <span>Fecha de Creación</span>
             </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="createdBy" class="input" />
+              <label>Creado por</label>
+              <span>Creado por</span>
+            </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="updatedAt"
+                     [ngModel]="userForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+              <label>Fecha de Modificación</label>
+              <span>Fecha de Modificación</span>
+            </div>
+            <div class="input-container" isFocus>
+              <input readOnly type="text" formControlName="updatedBy" class="input" />
+              <label>Modificado por</label>
+              <span>Modificado por</span>
+            </div>
+          </div>
             <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
                 <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
                 <input *ngIf="read == false" type="submit" value="Crear" [disabled]="!userForm.valid" class="btn submit"

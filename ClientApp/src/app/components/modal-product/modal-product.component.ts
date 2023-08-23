@@ -37,6 +37,7 @@ export class ModalProductComponent implements OnInit {
   optionForm: any;
   optionFirst!: number;
   imageFirst!: number | null;
+  dataLoaded = false;
 
   categoryForm!: CategoriesListResponse;
   warrantyForm!: WarrantiesListResponse | null;
@@ -104,7 +105,7 @@ export class ModalProductComponent implements OnInit {
     return `https://localhost:7136/${serverPath}`;
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.productForm = new FormGroup({
       code: new FormControl(''),
       options: new FormControl(''),
@@ -114,21 +115,22 @@ export class ModalProductComponent implements OnInit {
       supplierId: new FormControl(''),
     })
     if (this.update != true && this.read != true)
-      this.RetrieveRelations();
+      await this.RetrieveRelations();
     else if (this.update) {
-      this.service.GetProduct(this.productId).subscribe((response: ProductResponse) => {
-        this.productForm.patchValue({
-          code: response.code,
-          isService: response.isService,
-        });
-        this.optionFirst = response.options.indexOf(response.option)
-        this.categoryForm = response.category;
-        this.warrantyForm = response.warranty;
-        this.supplierForm = response.supplier;
-        this.options = response.options || [];
-        this.ReSelect()
+      const product$ = this.service.GetProduct(this.productId);
+      let response: ProductResponse = await lastValueFrom(product$);
+      this.productForm.patchValue({
+        code: response.code,
+        isService: response.isService,
       });
-      this.RetrieveRelations();
+      this.optionFirst = response.options.indexOf(response.option)
+      this.categoryForm = response.category;
+      this.warrantyForm = response.warranty;
+      this.supplierForm = response.supplier;
+      this.options = response.options || [];
+      this.ReSelect()
+      await this.RetrieveRelations();
+      this.dataLoaded = true;
     } else if (this.read) {
       this.productForm = new FormGroup({
         code: new FormControl(''),
@@ -143,24 +145,24 @@ export class ModalProductComponent implements OnInit {
         createdBy: new FormControl(''),
         updatedBy: new FormControl(''),
       })
-
-      this.service.GetProduct(this.productId).subscribe((response: ProductResponse) => {
-        this.productForm.patchValue({
-          code: response.code,
-          isService: response.isService,
-          option: response.option,
-          createdAt: response.createdAt,
-          updatedAt: response.updatedAt,
-          createdBy: response.createdBy,
-          updatedBy: response.updatedBy,
-        });
-        this.optionFirst = this.optionFirst = response.options.indexOf(response.option)
-        this.categoryForm = response.category;
-        this.warrantyForm = response.warranty;
-        this.supplierForm = response.supplier;
-        this.options = response.options || [];
-        this.ReSelect()
+      const product$ = this.service.GetProduct(this.productId);
+      let response: ProductResponse = await lastValueFrom(product$);
+      this.productForm.patchValue({
+        code: response.code,
+        isService: response.isService,
+        option: response.option,
+        createdAt: response.createdAt,
+        updatedAt: response.updatedAt,
+        createdBy: response.createdBy,
+        updatedBy: response.updatedBy,
       });
+      this.optionFirst = this.optionFirst = response.options.indexOf(response.option)
+      this.categoryForm = response.category;
+      this.warrantyForm = response.warranty;
+      this.supplierForm = response.supplier;
+      this.options = response.options || [];
+      this.ReSelect()
+      this.dataLoaded = true;
     }
   }
 
@@ -170,7 +172,7 @@ export class ModalProductComponent implements OnInit {
     this.supplierSelected = this.supplierForm?.name ? this.supplierForm.name : null;
   }
 
-  RetrieveRelations() {
+  async RetrieveRelations() {
     this.categoriesService.GetCategoriesList().subscribe({
       next: (response) => {
         this.categories = response;

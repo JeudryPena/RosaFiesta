@@ -1,4 +1,4 @@
-<div class="form">
+<div class="form" *ngIf="(!this.update && !this.read) || this.dataLoaded">
     <div class="contact-form">
         <span class="circle one"></span>
         <span class="circle two"></span>
@@ -35,7 +35,7 @@
                     <label>Fecha de Modificación</label>
                     <span>Fecha de Modificación</span>
                 </div>
-                <div class="input-container">
+                <div class="input-container" isFocus>
                     <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
                     <label>Modificado por</label>
                     <span>Modificado por</span>

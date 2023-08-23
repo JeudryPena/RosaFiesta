@@ -24,16 +24,7 @@ export class ModalSuppliersComponent implements OnInit {
   supplierForm: any;
   products: any[] = [];
   selected?: string;
-  updateProduct = false;
-  productTitle = '';
   productsList: ProductsListResponse[] = [];
-
-  nameFocused = false;
-  emailFocused = false;
-  phoneFocused = false;
-  descriptionFocused = false;
-  addressFocused = false;
-  productsFocused = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -117,9 +108,9 @@ export class ModalSuppliersComponent implements OnInit {
     });
   }
 
-  validate = (controlName: string, errorName: string, isFocused: boolean) => {
+  validate = (controlName: string, errorName: string) => {
     const control = this.supplierForm.get(controlName);
-    return isFocused == false && control.invalid && control.dirty && control.touched && control.hasError(errorName);
+    return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
   close() {

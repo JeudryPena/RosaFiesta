@@ -1,115 +1,123 @@
-<div class="form"> 
+<div *ngIf="discountForm$ | async as discountForm" class="form">
     <div class="contact-form">
         <span class="circle one"></span>
         <span class="circle two"></span>
-        <form action="index.html" autocomplete="off" [formGroup]="discountForm">
+        <form [formGroup]="discountForm" action="index.html" autocomplete="off">
             <h3 class="title">{{title}}</h3>
-            <div class="input-container" *ngIf="!read"
-                [ngClass]="{'focus': productsDiscountsFocused || productsDiscountsInput.value.length > 0 }">
+            <div class="row">
+                <div class="col">
+                    <div class="input-container" isFocus>
+                        <input class="input" formControlName="value" required
+                               type="number"/>
+                        <label>Valor</label>
+                        <span>Valor</span>
+                        <h5 *ngIf="validate('value', 'required')">El Valor es<strong> Requerido</strong>
+                        </h5>
+                        <h5 *ngIf="validate('value', 'min')">El Valor es<strong> muy corto</strong></h5>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-container" isFocus>
+                        <div #p="ngbPopover" [autoClose]="false" [ngbPopover]="iconTemplate"
+                             class="input-group flex-nowrap" required triggers="manual">
+                            <input #dp="bsDaterangepicker" (bsValueChange)="p.toggle()"
+                                   [bsConfig]="{ isAnimated:true, dateInputFormat:'MMMM Do  YYYY, h:mm:ss a', containerClass: 'theme-dark-blue', showTodayButton:true,  showClearButton:true, todayPosition:'left', clearPosition:'right'}"
+                                   [bsValue]="date"
+                                   [maxDate]="maxDate" [minDate]="minDate" [readOnly]="true" bsDaterangepicker
+                                   class="input"
+                                   formControlName="date"
+                                   placement="bottom"
+                                   required type="text"/>
+                            <ng-template #iconTemplate>
+                                <timepicker [formControlName]="'start'" [min]="minDate">
+                                </timepicker>
+                                <timepicker [formControlName]="'end'" [min]="maxDate">
+                                </timepicker>
+                                <button (click)="p.toggle(); changeTime(discountForm.get('start')?.value, discountForm.get('end')?.value)"
+                                        class="btn btn-dark pe-2 ps-2 wrap" type="button">
+                                    Agregar
+                                </button>
+
+                            </ng-template>
+                            <button (click)="dp.toggle()" [disabled]="read"
+                                    class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 input-group-text"
+                                    type="button"></button>
+                        </div>
+                        <label>Periodo *</label>
+                        <span>Periodo *</span>
+                        <h5 *ngIf="validate('date', 'bsDate')">El Inicio es<strong> Requerido</strong>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!read" class="input-container" isFocus>
                 <div class="input-group">
-                    <input #productsDiscountsInput type="search" 
-                        formControlName="productsDiscounts" class="input"
-                        (focus)="productsDiscountsFocused = true;" (blur)="productsDiscountsFocused = false"
-                        id="typeahead-focus" [adaptivePosition]="true"
-                        [(ngModel)]="selected" [typeaheadSingleWords]="true"
-                        [typeaheadOptionsLimit]="7"
-                        [typeahead]="optionsList"
-                        typeaheadOptionField="title" (typeaheadOnSelect)="onSelect($event)" [typeaheadMinLength]="0" [typeaheadWaitMs]="100"
-                        [typeaheadOptionsInScrollableView]="20"
-                        [isAnimated]="true" />
+                    <input (typeaheadOnSelect)="onSelect($event)"
+                           [(ngModel)]="selected" [adaptivePosition]="true"
+                           [isAnimated]="true" [typeaheadMinLength]="0"
+                           [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7"
+                           [typeaheadSingleWords]="true"
+                           [typeaheadWaitMs]="100"
+                           [typeahead]="optionsList" class="input" formControlName="productsDiscounts"
+                           id="typeahead-focus"
+                           type="search"
+                           typeaheadOptionField="title"/>
                 </div>
                 <label>Opción</label>
                 <span>Opción</span>
             </div>
             <div class="input-container">
-                <ol class="list-group list-group-numbered " *ngFor="let product of products; let i = index">
+                <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered ">
                     <li>
                         <div class="input-group">
-                            <button type="text" class="btn text-md-start list btn-outline-light wrapper">{{i+1}}.
+                            <button class="btn text-md-start list btn-outline-light wrapper" type="text">{{i + 1}}.
                                 {{product.option.title}}</button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 wrap"
-                                (click)="removeProduct(i)">
+                            <button (click)="removeProduct(i)" [disabled]="read"
+                                    class="btn btn-outline-light list pe-2 ps-2 wrap">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </li>
                 </ol>
             </div>
-            <div class="row group">
-                <div class="col">
-                    <div class="input-container" [ngClass]="{'focus': valueFocused || valueInput.value.length > 0 }">
-                        <input [readOnly]="read" #valueInput type="number" formControlName="value" class="input"
-                            required (focus)="valueFocused = true" (blur)="valueFocused = false" />
-                        <label>Valor</label>
-                        <span>Valor</span>
-                        <h5 *ngIf="validate('value', 'required', valueFocused)">El Valor es<strong> Requerido</strong>
-                        </h5>
-                        <h5 *ngIf="validate('value', 'min', valueFocused)">El Valor es<strong> muy corto</strong></h5>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-container" [ngClass]="{'focus': startFocused || startInput.value.length > 0 }">
-                        <div class="input-group" [autoClose]="false" triggers="manual" [ngbPopover]="iconTemplate" required #p="ngbPopover">
-                            <input [readOnly]="true" #startInput type="text" class="input wrapper" placement="bottom" required
-                                [disabled]="read" [bsValue]="date" bsDaterangepicker #dp="bsDaterangepicker" (bsValueChange)="p.toggle()"
-                                formControlName="date"
-                                [bsConfig]="{ isAnimated:true, dateInputFormat:'MMMM Do  YYYY, h:mm:ss a', containerClass: 'theme-dark-blue', showTodayButton:true,  showClearButton:true, todayPosition:'left', clearPosition:'right'}"
-                                [minDate]="minDate" [maxDate]="maxDate" (blur)="startFocused = false" (focus)="startFocused = true" />
-                            <ng-template #iconTemplate>
-                                <timepicker [min]="minDate" [formControlName]="'start'">
-                                </timepicker>
-                                <timepicker [min]="maxDate" [formControlName]="'end'">
-                                </timepicker>
-                                <button (click)="p.toggle(); changeTime(discountForm.get('start')?.value, discountForm.get('end')?.value)"
-                                    class="btn btn-dark pe-2 ps-2 wrap" type="button">
-                                    Agregar
-                                </button>
-                    
-                            </ng-template>
-                            <button (click)="dp.toggle()" class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 wrap"
-                                type="button"></button>
-                        </div>
-                        <label>Periodo *</label>
-                        <span>Periodo *</span>
-                        <h5 *ngIf="validate('date', 'bsDate', startFocused)">El Inicio es<strong> Requerido</strong>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="read" class="group">
-                <div class="input-container" [ngClass]="{'focus': createdAtInput.value.length > 0 }">
-                    <input readOnly #createdAtInput type="text" formControlName="createdAt"
-                        [ngModel]="discountForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+            <div *ngIf="read">
+                <div class="input-container" isFocus>
+                    <input class="input"
+                           formControlName="createdAt"
+                           readOnly type="text"/>
                     <label>Fecha de Creación</label>
                     <span>Fecha de Creación</span>
                 </div>
-                <div class="input-container" [ngClass]="{'focus': createdByInput.value.length > 0 }">
-                    <input readOnly #createdByInput type="text" formControlName="createdBy" class="input" />
+                <div class="input-container" isFocus>
+                    <input class="input" formControlName="createdBy" readOnly type="text"/>
                     <label>Creado por</label>
                     <span>Creado por</span>
                 </div>
-                <div class="input-container" [ngClass]="{'focus': updatedAtInput.value.length > 0 }">
-                    <input readOnly #updatedAtInput type="text" formControlName="updatedAt"
-                        [ngModel]="discountForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
+                <div class="input-container" isFocus>
+                    <input class="input"
+                           formControlName="updatedAt"
+                           readOnly type="text"/>
                     <label>Fecha de Modificación</label>
                     <span>Fecha de Modificación</span>
                 </div>
-                <div class="input-container" [ngClass]="{'focus': updatedByInput.value.length > 0 }">
-                    <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
+                <div class="input-container" isFocus>
+                    <input class="input" formControlName="updatedBy" readOnly type="text"/>
                     <label>Modificado por</label>
                     <span>Modificado por</span>
                 </div>
             </div>
             <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
-                <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
-                <input *ngIf="read == false" type="submit" value="Crear" [disabled]="!discountForm.valid"
-                    class="btn submit" (click)="AddDiscount(discountForm.value)" />
+                <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+                <input (click)="AddDiscount(discountForm.value)" *ngIf="read == false" [disabled]="!discountForm.valid"
+                       class="btn submit"
+                       type="submit" value="Crear"/>
             </div>
             <ng-template #updateP>
                 <div class="d-flex justify-content-between">
-                    <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
-                    <input type="submit" value="Actualizar" [disabled]="!discountForm.valid" class="btn submit"
-                        (click)="updateDiscount(discountForm.value)" />
+                    <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+                    <input (click)="updateDiscount(discountForm.value)" [disabled]="!discountForm.valid"
+                           class="btn submit" type="submit"
+                           value="Actualizar"/>
                 </div>
             </ng-template>
         </form>
