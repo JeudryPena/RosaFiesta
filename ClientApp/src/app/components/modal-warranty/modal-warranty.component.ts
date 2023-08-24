@@ -1,15 +1,16 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
-import { Status } from '../../helpers/save-modal/status';
-import { ProductsListResponse } from '../../interfaces/Product/Response/productsListResponse';
-import { WarrantyResponse } from '../../interfaces/Product/Response/warrantyResponse';
-import { WarrantyDto } from '../../interfaces/Product/warrantyDto';
-import { ProductsService } from '../../shared/services/products.service';
-import { WarrantiesService } from '../../shared/services/warranties.service';
-import {FocusDirective} from "../../shared/directives/focus.directive";
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import {SaveModalComponent} from '../../helpers/save-modal/save-modal.component';
+import {Status} from '../../helpers/save-modal/status';
+import {ProductsListResponse} from '../../interfaces/Product/Response/productsListResponse';
+import {WarrantyResponse} from '../../interfaces/Product/Response/warrantyResponse';
+import {WarrantyDto} from '../../interfaces/Product/warrantyDto';
+import {ProductsService} from '../../shared/services/products.service';
+import {WarrantiesService} from '../../shared/services/warranties.service';
+import {BehaviorSubject, lastValueFrom} from "rxjs";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-modal-warranty',
@@ -22,18 +23,19 @@ export class ModalWarrantyComponent implements OnInit {
   @Input() title: string = '';
   @Input() id: string = '';
 
-  dataLoaded = false;
-
-  warrantyForm: any;
+  warrantyForm$ = new BehaviorSubject<FormGroup>(null);
   products: any[] = [];
   selected?: string;
   productsList: ProductsListResponse[] = [];
+
   constructor(
+    private fb: FormBuilder,
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private service: WarrantiesService,
     public el: ElementRef,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private datePipe: DatePipe
   ) {
   }
 
@@ -49,56 +51,13 @@ export class ModalWarrantyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.warrantyForm = new FormGroup({
-      name: new FormControl(''),
-      type: new FormControl(0),
-      period: new FormControl(0),
-      description: new FormControl(''),
-      products: new FormControl(''),
-    });
-    if (this.update) {
-      this.service.GetManagementWarranty(this.id).subscribe((response: WarrantyResponse) => {
-        this.warrantyForm.patchValue({
-          name: response.name,
-          type: response.type,
-          period: response.period,
-          description: response.description,
-        });
-
-        this.products = response.products || [];
-        this.dataLoaded = true;
-      });
-    } else if (this.read) {
-      this.warrantyForm = new FormGroup({
-        name: new FormControl(''),
-        type: new FormControl(0),
-        period: new FormControl(0),
-        description: new FormControl(''),
-        products: new FormControl(''),
-        createdAt: new FormControl(''),
-        createdBy: new FormControl(''),
-        updatedAt: new FormControl(''),
-        updatedBy: new FormControl('')
-      })
-
-      this.service.GetManagementWarranty(this.id).subscribe((response: WarrantyResponse) => {
-
-        this.warrantyForm.patchValue({
-          name: response.name,
-          type: response.type,
-          period: response.period,
-          description: response.description,
-          createdAt: response.createdAt,
-          updatedAt: response.updatedAt,
-          createdBy: response.createdBy,
-          updatedBy: response.updatedBy,
-        });
-
-        this.products = response.products || [];
-        this.dataLoaded = true;
-      });
+    if (!this.update && !this.read) {
+      this.onCreate();
+    } else if (this.update) {
+      this.onEdit();
+    } else {
+      this.onRead();
     }
-
     this.productService.GetProductsList().subscribe({
       next: (response: ProductsListResponse[]) => {
         this.productsList = response;
@@ -106,11 +65,51 @@ export class ModalWarrantyComponent implements OnInit {
         console.log(error);
       }
     });
+  }
 
+  onCreate() {
+    this.warrantyForm$.next(this.fb.group({
+      name: [''],
+      type: [0],
+      period: [0],
+      description: [''],
+      products: [],
+    }));
+  }
+
+  async onEdit() {
+    const warranty$ = this.service.GetManagementWarranty(this.id);
+    let response: WarrantyResponse = await lastValueFrom(warranty$);
+    this.products = response.products || [];
+    this.warrantyForm$.next(this.fb.group({
+      name: [response.name],
+      type: [response.type],
+      period: [response.period],
+      description: [response.description],
+      products: [],
+    }));
+  }
+
+  async onRead() {
+    const warranty$ = this.service.GetManagementWarranty(this.id);
+    let response: WarrantyResponse = await lastValueFrom(warranty$);
+    this.products = response.products || [];
+    this.warrantyForm$.next(this.fb.group({
+      name: [{value: response.name, disabled: true}],
+      type: [{value: response.type, disabled: true}],
+      period: [{value: response.period, disabled: true}],
+      description: [{value: response.description, disabled: true}],
+      products: [],
+      createdAt: [{value: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'), disabled: true}],
+      updatedAt: [{value: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'), disabled: true}],
+      createdBy: [{value: response.createdBy, disabled: true}],
+      updatedBy: [{value: response.updatedBy, disabled: true}],
+    }));
   }
 
   validate = (controlName: string, errorName: string) => {
-    const control = this.warrantyForm.get(controlName);
+    const form = this.warrantyForm$.getValue();
+    const control = form.get(controlName);
     return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
@@ -118,18 +117,19 @@ export class ModalWarrantyComponent implements OnInit {
     this.activeModal.close();
   }
 
-  removeProduct(index: number) {
+  removeProduct(index: number
+  ) {
     this.products.splice(index, 1);
   }
 
   updateWarranty = (warrantyFormValue: any) => {
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea actualizar la garantía?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const warranty = { ...warrantyFormValue };
+        const warranty = {...warrantyFormValue};
         const warrantyDto: WarrantyDto = {
           name: warranty.name,
           type: warranty.type,
@@ -139,7 +139,7 @@ export class ModalWarrantyComponent implements OnInit {
         }
         this.service.UpdateWarranty(this.id, warrantyDto).subscribe({
           next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = 'Garantía actualizada!';
             modalRef.componentInstance.status = Status.Success;
 
@@ -147,7 +147,7 @@ export class ModalWarrantyComponent implements OnInit {
               this.activeModal.close(true);
             });
           }, error: (error) => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
@@ -158,13 +158,13 @@ export class ModalWarrantyComponent implements OnInit {
 
   AddWarranty = (warrantyFormValue: any) => {
 
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea guardar la garantía?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const warranty = { ...warrantyFormValue };
+        const warranty = {...warrantyFormValue};
 
         const warrantyDto: WarrantyDto = {
           name: warranty.name,
@@ -176,7 +176,7 @@ export class ModalWarrantyComponent implements OnInit {
 
         this.service.AddWarranty(warrantyDto).subscribe({
           next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = 'Garantía guardada!';
             modalRef.componentInstance.status = Status.Success;
 
@@ -185,7 +185,7 @@ export class ModalWarrantyComponent implements OnInit {
             });
           }, error: (error) => {
             console.log(error);
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
