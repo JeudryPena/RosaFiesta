@@ -82,10 +82,10 @@ export class ModalWarrantyComponent implements OnInit {
     let response: WarrantyResponse = await lastValueFrom(warranty$);
     this.products = response.products || [];
     this.warrantyForm$.next(this.fb.group({
-      name: [response.name],
-      type: [response.type],
-      period: [response.period],
-      description: [response.description],
+      name: response.name,
+      type: response.type,
+      period: response.period,
+      description: response.description,
       products: [],
     }));
   }
@@ -94,17 +94,19 @@ export class ModalWarrantyComponent implements OnInit {
     const warranty$ = this.service.GetManagementWarranty(this.id);
     let response: WarrantyResponse = await lastValueFrom(warranty$);
     this.products = response.products || [];
-    this.warrantyForm$.next(this.fb.group({
-      name: [{value: response.name, disabled: true}],
-      type: [{value: response.type, disabled: true}],
-      period: [{value: response.period, disabled: true}],
-      description: [{value: response.description, disabled: true}],
+    const form = this.fb.group({
+      name: response.name,
+      type: response.type,
+      period: response.period,
+      description: response.description,
       products: [],
-      createdAt: [{value: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'), disabled: true}],
-      updatedAt: [{value: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'), disabled: true}],
-      createdBy: [{value: response.createdBy, disabled: true}],
-      updatedBy: [{value: response.updatedBy, disabled: true}],
-    }));
+      createdAt: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
+      updatedAt: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
+      createdBy: response.createdBy,
+      updatedBy: response.updatedBy
+    });
+    form.disable();
+    this.warrantyForm$.next(form);
   }
 
   validate = (controlName: string, errorName: string) => {

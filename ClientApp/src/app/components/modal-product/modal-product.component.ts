@@ -1,9 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { lastValueFrom } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
 import { Status } from '../../helpers/save-modal/status';
 import { CategoriesListResponse } from '../../interfaces/Product/Response/categoriesListResponse';
@@ -17,6 +17,8 @@ import { FilesService } from '../../shared/services/files.service';
 import { ProductsService } from '../../shared/services/products.service';
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { WarrantiesService } from '../../shared/services/warranties.service';
+import { DatePipe } from "@angular/common";
+import { CategoryDto } from '../../interfaces/Product/categoryDto';
 
 @Component({
   selector: 'app-modal-product',
@@ -32,7 +34,7 @@ export class ModalProductComponent implements OnInit {
   @Input() title: string = '';
   @Input() productId: string = '';
 
-  productForm: any;
+  productForm$: BehaviorSubject<FormGroup<any>> = new BehaviorSubject<FormGroup<any>>(null);
   options: any[] = [];
   optionForm: any;
   optionFirst!: number;
@@ -58,19 +60,79 @@ export class ModalProductComponent implements OnInit {
     private categoriesService: CategoriesService,
     private warrantiesService: WarrantiesService,
     private suppliersService: SuppliersService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
 
+  }
+
+  async ngOnInit() {
+    if (!this.update && !this.read)
+      this.onCreate();
+    else if (this.update) {
+      this.onEdit();
+    } else if (this.read) {
+      this.onRead();
+    }
+  }
+
+  async onCreate() {
+    await this.RetrieveRelations();
+    this.productForm$.next(this.fb.group({
+      code: [''],
+      options: [],
+      isService: [false],
+      categoryId: [''],
+      warrantyId: [''],
+      supplierId: ['']
+    }));
+  }
+
+  async onEdit() {
+    const product$ = this.service.GetProduct(this.productId);
+    let response: ProductResponse = await lastValueFrom(product$);
+    this.optionFirst = response.options.indexOf(response.option)
+    this.categoryForm = response.category;
+    this.warrantyForm = response.warranty;
+    this.supplierForm = response.supplier;
+    this.options = response.options || [];
+    this.ReSelect()
+    await this.RetrieveRelations();
+    this.dataLoaded = true;
+    this.productForm$.next(this.fb.group({
+      code: [response.code],
+      isService: [response.isService],
+    }));
+  }
+
+  async onRead() {
+    const product$ = this.service.GetProduct(this.productId);
+    let response: ProductResponse = await lastValueFrom(product$);
+    this.optionFirst = this.optionFirst = response.options.indexOf(response.option)
+    this.categoryForm = response.category;
+    this.warrantyForm = response.warranty;
+    this.supplierForm = response.supplier;
+    this.options = response.options || [];
+    this.ReSelect()
+    this.dataLoaded = true;
+    this.productForm$.next(this.fb.group({
+      code: [response.code],
+      isService: [response.isService],
+      option: [response.option],
+      createdAt: [this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a')],
+      updatedAt: [this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a')],
+      createdBy: [response.createdBy],
+      updatedBy: [response.updatedBy],
+    }));
   }
 
   onSelect(event: TypeaheadMatch, form: string): void {
     if (form == 'category') {
       this.categoryForm = event.item;
-    }
-    else if (form == 'warranty') {
+    } else if (form == 'warranty') {
       this.warrantyForm = event.item;
-    }
-    else if (form == 'supplier') {
+    } else if (form == 'supplier') {
       this.supplierForm = event.item;
     }
   }
@@ -98,71 +160,6 @@ export class ModalProductComponent implements OnInit {
       const file = new File([downloadedFile], fileName, { type: `${data.body.type}` });
 
       this.uploadFiles.push(file);
-    }
-  }
-
-  createImgPath = (serverPath: string) => {
-    return `https://localhost:7136/${serverPath}`;
-  }
-
-  async ngOnInit() {
-    this.productForm = new FormGroup({
-      code: new FormControl(''),
-      options: new FormControl(''),
-      isService: new FormControl(false),
-      categoryId: new FormControl(null),
-      warrantyId: new FormControl(''),
-      supplierId: new FormControl(''),
-    })
-    if (this.update != true && this.read != true)
-      await this.RetrieveRelations();
-    else if (this.update) {
-      const product$ = this.service.GetProduct(this.productId);
-      let response: ProductResponse = await lastValueFrom(product$);
-      this.productForm.patchValue({
-        code: response.code,
-        isService: response.isService,
-      });
-      this.optionFirst = response.options.indexOf(response.option)
-      this.categoryForm = response.category;
-      this.warrantyForm = response.warranty;
-      this.supplierForm = response.supplier;
-      this.options = response.options || [];
-      this.ReSelect()
-      await this.RetrieveRelations();
-      this.dataLoaded = true;
-    } else if (this.read) {
-      this.productForm = new FormGroup({
-        code: new FormControl(''),
-        options: new FormControl(''),
-        isService: new FormControl(false),
-        option: new FormControl(''),
-        categoryId: new FormControl(null),
-        warrantyId: new FormControl(''),
-        supplierId: new FormControl(''),
-        createdAt: new FormControl(''),
-        updatedAt: new FormControl(''),
-        createdBy: new FormControl(''),
-        updatedBy: new FormControl(''),
-      })
-      const product$ = this.service.GetProduct(this.productId);
-      let response: ProductResponse = await lastValueFrom(product$);
-      this.productForm.patchValue({
-        code: response.code,
-        isService: response.isService,
-        option: response.option,
-        createdAt: response.createdAt,
-        updatedAt: response.updatedAt,
-        createdBy: response.createdBy,
-        updatedBy: response.updatedBy,
-      });
-      this.optionFirst = this.optionFirst = response.options.indexOf(response.option)
-      this.categoryForm = response.category;
-      this.warrantyForm = response.warranty;
-      this.supplierForm = response.supplier;
-      this.options = response.options || [];
-      this.ReSelect()
-      this.dataLoaded = true;
     }
   }
 
@@ -280,8 +277,7 @@ export class ModalProductComponent implements OnInit {
     this.imageFirst = this.options[index].imageIndex;
     if (this.update == true || this.read == true) {
       this.ReadImages(this.options[index].images);
-    }
-    else {
+    } else {
       this.uploadFiles = this.options[index].images;
     }
     setTimeout(() => {
@@ -302,7 +298,8 @@ export class ModalProductComponent implements OnInit {
   }
 
   validate = (controlName: string, errorName: string) => {
-    const control = this.productForm.get(controlName);
+    const form = this.productForm$.getValue();
+    const control = form.get(controlName);
     return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
@@ -335,30 +332,21 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         const product = { ...productFormValue };
-        let uploadsCompleted = 0;
-        if (this.options.length !== 0) {
-          this.options.forEach(option => {
-            const files = option.images.filter((image: any) => image instanceof File);
-            if (files != null && files.length > 0) {
-              const response$ = this.filesService.UploadFiles(files);
-              lastValueFrom(response$).then(response => {
-                option.images = response
-                uploadsCompleted++;
-                if (uploadsCompleted === this.options.length) {
-                  this.OnUpdateProduct(product);
-                }
-              });
-            } else {
-              uploadsCompleted++;
-              if (uploadsCompleted === this.options.length) {
-                this.OnUpdateProduct(product);
-              }
-            }
-          });
-        } else
+        if (this.options.length !== 0)
+          this.UpdateImages();
+        else
           this.OnUpdateProduct(product);
       }
     });
+  }
+
+  async UpdateImages() {
+    for (const option of this.options) {
+      const files = option.images.filter((image: any) => image instanceof File);
+      if (files != null && files.length > 0) {
+        option.images = await this.filesService.UpdateFiles(option.images, option.id);
+      }
+    }
   }
 
   OnUpdateProduct(product: any) {
@@ -392,37 +380,27 @@ export class ModalProductComponent implements OnInit {
     modalRef.componentInstance.title = '¿Desea guardar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
 
-    modalRef.result.then(result => {
+    modalRef.result.then(async result => {
       if (result) {
         const product = { ...productFormValue };
-        let uploadsCompleted = 0;
         if (this.options.length !== 0) {
-          this.options.forEach(async option => {
-            const files = option.images.filter((image: any) => image instanceof File);
-            if (files != null && files.length > 0) {
-              const response$ = this.filesService.UploadFiles(option.images);
-              let response: any = await lastValueFrom(response$);
-              option.images = response;
-              uploadsCompleted++;
-              if (uploadsCompleted === this.options.length) {
-                this.OnAddProduct(product);
-              }
-            }
-            else {
-              uploadsCompleted++;
-              if (uploadsCompleted === this.options.length) {
-                this.OnAddProduct(product);
-              }
-            }
-          });
-        } else {
-          this.OnAddProduct(product);
+          await this.AddImages();
         }
+        await this.OnAddProduct(product);
       }
     });
   }
 
-  OnAddProduct(product: any) {
+  async AddImages() {
+    for (const option of this.options) {
+      const files = option.images.filter((image: any) => image instanceof File);
+      if (files != null && files.length > 0) {
+        option.images = await this.filesService.UploadFiles(option.images);
+      }
+    }
+  }
+
+  async OnAddProduct(product: any) {
     const productDto: ProductDto = {
       code: product.code ? product.code : null,
       isService: product.isService,

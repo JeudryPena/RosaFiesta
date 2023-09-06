@@ -1,8 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { config } from '../../env/config.dev';
-import { MultipleImageDto } from '../../interfaces/Product/UserInteract/multipleImageDto';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {lastValueFrom} from 'rxjs';
+import {config} from '../../env/config.dev';
+import {MultipleImageDto} from '../../interfaces/Product/UserInteract/multipleImageDto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,8 @@ export class FilesService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   public getPhoto(fileUrl: string) {
     return this.http.get(`${this.apiUrl}getPhoto?fileUrl=${fileUrl}`, {
@@ -25,7 +26,7 @@ export class FilesService {
   GetPhotos() {
     this.http.get('/api/getPhotos').subscribe((data: any) => {
       data.forEach((fileData: any) => {
-        let blob = new Blob([fileData], { type: 'application/octet-stream' });
+        let blob = new Blob([fileData], {type: 'application/octet-stream'});
         console.log(blob);
       })
     })
@@ -54,7 +55,7 @@ export class FilesService {
     return filesToUpload;
   }
 
-  UpdateFiles(files: any, optionId: number): Observable<MultipleImageDto[]> {
+  async UpdateFiles(files: any, optionId: number): Promise<MultipleImageDto[]> {
     if (files.length > 5)
       throw new Error('You cant upload more than 5 images');
     let filesToUpload: File[] = files;
@@ -62,10 +63,11 @@ export class FilesService {
     Array.from(filesToUpload).map((file, index) => {
       return formData.append('file' + index, file, file.name);
     });
-    return this.http.put<MultipleImageDto[]>(`${this.apiUrl}updateFiles/options/${optionId}`, formData);
+    const observable = this.http.put<MultipleImageDto[]>(`${this.apiUrl}updateFiles/options/${optionId}`, formData);
+    return await lastValueFrom(observable);
   }
 
-  UploadFiles(files: any): Observable<MultipleImageDto[]> {
+  async UploadFiles(files: any): Promise<MultipleImageDto[]> {
     if (files.length > 5)
       throw new Error('You cant upload more than 5 images');
 
@@ -75,6 +77,7 @@ export class FilesService {
     Array.from(filesToUpload).map((file, index) => {
       return formData.append('file' + index, file, file.name);
     });
-    return this.http.post<MultipleImageDto[]>(`${this.apiUrl}multiImages`, formData);
+    const observable = this.http.post<MultipleImageDto[]>(`${this.apiUrl}multiImages`, formData);
+    return await lastValueFrom(observable);
   }
 }

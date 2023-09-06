@@ -1,221 +1,214 @@
-<div class="form" *ngIf="(!this.update && !this.read) || this.dataLoaded">
-    <div class="contact-form">
-        <span class="circle one"></span>
-        <span class="circle two"></span>
-        <form action="index.html" autocomplete="off" [formGroup]="productForm">
-            <h3 class="title">{{title}}</h3>
-            <div isFocus class="input-container">
-                <input [readOnly]="read" type="text" formControlName="code" class="input" minlength="3"
-                    maxlength="500" />
-                <label>Código</label>
-                <span>Código</span>
-              <h5 *ngIf="validate('code', 'minlength')">El Código es<strong> muy Corto</strong></h5>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="isService"
-                    formControlName="isService">
-                <label class="form-check-label text-white" for="isService">Es Servicio</label>
-            </div>
+<div *ngIf="productForm$ | async as productForm" class="form">
+  <div class="contact-form">
+    <span class="circle one"></span>
+    <span class="circle two"></span>
+    <form [formGroup]="productForm" action="index.html" autocomplete="off">
+      <h3 class="title">{{title}}</h3>
+      <div class="input-container" isFocus>
+        <input class="input" formControlName="code" maxlength="500" minlength="3" type="text" />
+        <label>Código</label>
+        <span>Código</span>
+        <h5 *ngIf="validate('code', 'minlength')">El Código es<strong> muy Corto</strong></h5>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" formControlName="isService" id="isService" role="switch" type="checkbox">
+        <label class="form-check-label text-white" for="isService">Es Servicio</label>
+      </div>
 
-            <div *ngIf="read">
-                <div class="input-container" isFocus>
-                    <input readOnly type="text" formControlName="createdAt"
-                        [ngModel]="productForm.get('createdAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
-                    <label>Fecha de Creación</label>
-                    <span>Fecha de Creación</span>
-                </div>
-                <div class="input-container" isFocus>
-                    <input readOnly type="text" formControlName="createdBy" class="input" />
-                    <label>Creado por</label>
-                    <span>Creado por</span>
-                </div>
-                <div class="input-container" isFocus>
-                    <input readOnly type="text" formControlName="updatedAt"
-                        [ngModel]="productForm.get('updatedAt').value | date:'dd-MMM-yyyy HH-mm-ss'" class="input" />
-                    <label>Fecha de Modificación</label>
-                    <span>Fecha de Modificación</span>
-                </div>
-                <div class="input-container" isFocus>
-                    <input readOnly #updatedByInput type="text" formControlName="updatedBy" class="input" />
-                    <label>Modificado por</label>
-                    <span>Modificado por</span>
-                </div>
+      <div *ngIf="read">
+        <div class="input-container" isFocus>
+          <input class="input" formControlName="createdAt" type="text" />
+          <label>Fecha de Creación</label>
+          <span>Fecha de Creación</span>
+        </div>
+        <div class="input-container" isFocus>
+          <input class="input" formControlName="createdBy" type="text" />
+          <label>Creado por</label>
+          <span>Creado por</span>
+        </div>
+        <div class="input-container" isFocus>
+          <input class="input" formControlName="updatedAt" type="text" />
+          <label>Fecha de Modificación</label>
+          <span>Fecha de Modificación</span>
+        </div>
+        <div class="input-container" isFocus>
+          <input class="input" formControlName="updatedBy" type="text" />
+          <label>Modificado por</label>
+          <span>Modificado por</span>
+        </div>
+      </div>
+
+      <div *ngIf="!read" class="input-container" isFocus>
+        <div class="input-group flex-nowrap">
+          <input #optionsInput class="input" formControlName="options" type="text" />
+          <button (click)="addNewOption(optionsInput.value)" [disabled]="optionsInput.value.length < 3"
+            class="input-group-text btn btn-outline-light bi pe-2 ps-2">
+            <i class="fas fa-plus "></i>
+          </button>
+        </div>
+        <label>Opciones</label>
+        <span>Opciones</span>
+        <div *ngIf="validate('options', 'minlength')">El nombre de la SubCategoría
+          es<strong> muy corto</strong>
+        </div>
+      </div>
+      <div class="input-container">
+        <ol *ngFor="let option of options; let i = index" class="list-group list-group-numbered ">
+          <li>
+            <div class="input-group flex-nowrap">
+              <button (click)="selectOption(i)" class="w-100 btn text-md-start list btn-outline-light" type="text">{{i +
+                1}}. {{option.title}}</button>
+              <button (click)="SelectFirst(i)" [disabled]="read" [ngClass]="{'focus': optionFirst === i}"
+                class="btn btn-outline-light list pe-2 ps-2 input-group-text first">
+                <i class="fa-solid fa-1"></i>
+              </button>
+              <button (click)="removeOption(i)" [disabled]="read"
+                class="btn btn-outline-light list pe-2 ps-2 input-group-text">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
-            <div class="input-container" isFocus *ngIf="!read">
-                <div class="input-group flex-nowrap">
-                    <input #optionsInput type="text" formControlName="options" class="input" />
-                    <button class="input-group-text btn btn-outline-light bi pe-2 ps-2" [disabled]="optionsInput.value.length < 3" (click)="addNewOption(optionsInput.value)">
-                        <i class="fas fa-plus "></i>
-                    </button>
-                </div>
-                <label>Opciones</label>
-                <span>Opciones</span>
-                <div *ngIf="validate('options', 'minlength')">El nombre de la SubCategoría
-                    es<strong> muy corto</strong>
-                </div>
-            </div>
-            <div class="input-container">
-                <ol class="list-group list-group-numbered " *ngFor="let option of options; let i = index">
-                    <li>
-                        <div class="input-group flex-nowrap">
-                            <button type="text" class="w-100 btn text-md-start list btn-outline-light"
-                                (click)="selectOption(i)">{{i+1}}. {{option.title}}</button>
-                            <button [ngClass]="{'focus': optionFirst === i}" [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 input-group-text first"
-                                (click)="SelectFirst(i)">
-                                <i class="fa-solid fa-1"></i>
-                            </button>
-                            <button [disabled]="read" class="btn btn-outline-light list pe-2 ps-2 input-group-text"
-                                (click)="removeOption(i)">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-            <div class="input-container" isFocus>
-                <div class="input-group">
-                    <input type="search" required formControlName="categoryId" class="input"
-                        [readOnly]="read"
-                         [adaptivePosition]="true" [(ngModel)]="categorySelected"
-                        [typeaheadSingleWords]="true" [typeaheadOptionsLimit]="7" [typeahead]="categories"
-                        typeaheadOptionField="name" (typeaheadOnSelect)="onSelect($event, 'category')"
-                        [typeaheadMinLength]="0" [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20"
-                        [isAnimated]="true" />
-                </div>
-                <label>Categoría</label>
-                <span>Categoría</span>
-            </div>
-            <div class="input-container" isFocus>
-                <div class="input-group">
-                    <input type="search" formControlName="warrantyId" class="input" [readOnly]="read"
-                        [adaptivePosition]="true" [(ngModel)]="warrantySelected" [typeaheadSingleWords]="true"
-                        [typeaheadOptionsLimit]="7" [typeahead]="warranties" typeaheadOptionField="name"
-                        (typeaheadOnSelect)="onSelect($event, 'warranty')" [typeaheadMinLength]="0"
-                        [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
-                </div>
-                <label>Garantía</label>
-                <span>Garantía</span>
-            </div>
-            <div class="input-container" isFocus>
-                <div class="input-group">
-                    <input type="search" formControlName="supplierId" class="input" [readOnly]="read"
-                        [adaptivePosition]="true" [(ngModel)]="supplierSelected" [typeaheadSingleWords]="true"
-                        [typeaheadOptionsLimit]="7" [typeahead]="suppliers" typeaheadOptionField="name"
-                        (typeaheadOnSelect)="onSelect($event, 'supplier')" [typeaheadMinLength]="0"
-                        [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20" [isAnimated]="true" />
-                </div>
-                <label>Suplidor</label>
-                <span>Suplidor</span>
-            </div>
-            <div *ngIf="update == false; else updateCat" class="d-flex justify-content-between">
-                <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
-                <input *ngIf="read == false" type="submit" value="Crear" [disabled]="!productForm.valid"
-                    class="btn submit" (click)="AddProduct(productForm.value)" />
-            </div>
-            <ng-template #updateCat>
-                <div class="d-flex justify-content-between">
-                    <input type="submit" value="Cerrar" class="btn btn-outline-light bi" (click)="close()" />
-                    <input type="submit" value="Actualizar" [disabled]="!productForm.valid" class="btn submit"
-                        (click)="updateProduct(productForm.value)" />
-                </div>
-            </ng-template>
-        </form>
-    </div>
-    <div class="contact-info" *ngIf="optionForm != null">
-        <form action="index.html" autocomplete="off" [formGroup]="optionForm">
-            <h3 class="title">{{optionTitle}}</h3>
-            <div class="input-container" isFocus>
-                <input [readOnly]="read" #titleInput type="text" formControlName="title" class="input" required />
-                <label>Título *</label>
-                <span>Título *</span>
-                <h5 *ngIf="validateOption('title', 'required')">El Título es<strong> Requerido</strong>
-                </h5>
-                <h5 *ngIf="validateOption('title', 'minlength')">El Título es<strong> muy Corto</strong>
-                </h5>
-            </div>
-            <div class="input-container">
-                <app-upload-images [read]="read" [pictures]="pictures" [uploadFiles]="uploadFiles" [imageFirst]="imageFirst"
-                    [multiple]="true"></app-upload-images>
-            </div>
-            <div class="input-container" isFocus>
-                <textarea [readOnly]="read" type="text" formControlName="description" class="input"
-                    required minlength="3"
-                    maxlength="1000"></textarea>
-                <label>Descripción *</label>
-                <span>Descripción *</span>
-                <h5 *ngIf="validateOption('description', 'required')">La Descripción
-                    es<strong>Requerida</strong></h5>
-                <h5 *ngIf="validateOption('description', 'minlength')">La Descripción es<strong> muy
-                        Corta</strong></h5>
-            </div>
-            <div class="input-container" isFocus>
-                <input [readOnly]="read" type="number" formControlName="price" class="input" required/>
-                <label>Precio</label>
-                <span>Precio</span>
-                <h5 *ngIf="validateOption('price', 'required')">El Precio es<strong> Requerido</strong>
-                </h5>
-            </div>
-            <div class="input-container" isFocus>
-                <input [readOnly]="read" type="number" formControlName="quantityAvailable"
-                    class="input" required/>
-                <label>Cantidad Disponible *</label>
-                <span>Cantidad Disponible *</span>
-                <h5 *ngIf="validateOption('quantityAvailable', 'required')">La Cantidad
-                    Disponible
-                    es<strong> Requerida</strong>
-                </h5>
-                <h5 *ngIf="validateOption('quantityAvailable', 'min')">La Cantidad Disponible
-                    es<strong> muy Corta</strong></h5>
-            </div>
-            <div class="input-container" isFocus>
-                <input [readOnly]="read" type="text" formControlName="color" class="input" required
-                    minlength="6" maxlength="9"/>
-                <label>Color *</label>
-                <span>Color *</span>
-                <h5 *ngIf="validateOption('color', 'required')">El Color es<strong>
-                        Requerido</strong>
-                </h5>
-                <h5 *ngIf="validateOption('color', 'min')">El Color es<strong> muy
-                        Corto</strong></h5>
-            </div>
-            <div class="row group">
-                <div class="col">
-                    <div class="input-container" isFocus>
-                        <select class="input form-select form-select-sm" formControlName="genderFor"
-                            required type="number" aria-label=".form-select-sm example">
-                            <option value=1 selected=1>Varón</option>
-                            <option value=2>Hembra</option>
-                            <option value=3>Both</option>
-                        </select>
-                        <label>Genero *</label>
-                        <span>Genero *</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-container" isFocus>
-                        <select class="input form-select form-select-sm" formControlName="condition"
-                            required type="number" aria-label=".form-select-sm example">
-                            <option value=1 selected>Nuevo</option>
-                            <option value=2>Usado</option>
-                            <option value=3>Renovado</option>
-                        </select>
-                        <label>Condición *</label>
-                        <span>Condición *</span>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="updateOption == false; else updateOp" class="d-flex justify-content-between">
-                <input type="submit" value="Cancelar" class="btn btn-outline-light bi" (click)="cancelOption()" />
-                <input type="submit" value="Añadir" [disabled]="!optionForm.valid" class="btn submit"
-                    (click)="saveOption(optionForm.value)" />
-            </div>
-            <ng-template #updateOp>
-                <div class="d-flex justify-content-between">
-                    <input type="submit" value="Cancelar" class="btn btn-outline-light bi" (click)="cancelOption()" />
-                    <input *ngIf="this.read == false" type="submit" [disabled]="!optionForm.valid" value="Actualizar"
-                        class="btn submit" (click)="updateOpt(optionForm.value)" />
-                </div>
-            </ng-template>
-        </form>
-    </div>
+          </li>
+        </ol>
+      </div>
+      <div class="input-container" isFocus>
+        <div class="input-group">
+          <input (typeaheadOnSelect)="onSelect($event, 'category')" [(ngModel)]="categorySelected"
+            [adaptivePosition]="true" [isAnimated]="true" [typeaheadMinLength]="0"
+            [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7" [typeaheadSingleWords]="true"
+            [typeaheadWaitMs]="100" [typeahead]="categories" class="input" formControlName="categoryId" required
+            type="search" typeaheadOptionField="name" />
+        </div>
+        <label>Categoría</label>
+        <span>Categoría</span>
+      </div>
+      <div class="input-container" isFocus>
+        <div class="input-group">
+          <input (typeaheadOnSelect)="onSelect($event, 'warranty')" [(ngModel)]="warrantySelected"
+            [adaptivePosition]="true" [isAnimated]="true" [typeaheadMinLength]="0"
+            [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7" [typeaheadSingleWords]="true"
+            [typeaheadWaitMs]="100" [typeahead]="warranties" class="input" formControlName="warrantyId" type="search"
+            typeaheadOptionField="name" />
+        </div>
+        <label>Garantía</label>
+        <span>Garantía</span>
+      </div>
+      <div class="input-container" isFocus>
+        <div class="input-group">
+          <input (typeaheadOnSelect)="onSelect($event, 'supplier')" [(ngModel)]="supplierSelected"
+            [adaptivePosition]="true" [isAnimated]="true" [typeaheadMinLength]="0"
+            [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7" [typeaheadSingleWords]="true"
+            [typeaheadWaitMs]="100" [typeahead]="suppliers" class="input" formControlName="supplierId" type="search"
+            typeaheadOptionField="name" />
+        </div>
+        <label>Suplidor</label>
+        <span>Suplidor</span>
+      </div>
+      <div *ngIf="update == false; else updateCat" class="d-flex justify-content-between">
+        <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar" />
+        <input (click)="AddProduct(productForm.value)" *ngIf="read == false" [disabled]="!productForm.valid"
+          class="btn submit" type="submit" value="Crear" />
+      </div>
+      <ng-template #updateCat>
+        <div class="d-flex justify-content-between">
+          <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar" />
+          <input (click)="updateProduct(productForm.value)" [disabled]="!productForm.valid" class="btn submit"
+            type="submit" value="Actualizar" />
+        </div>
+      </ng-template>
+    </form>
+  </div>
+  <div *ngIf="optionForm != null" class="contact-info">
+    <form [formGroup]="optionForm" action="index.html" autocomplete="off">
+      <h3 class="title">{{optionTitle}}</h3>
+      <div class="input-container" isFocus>
+        <input class="input" formControlName="title" required type="text" />
+        <label>Título *</label>
+        <span>Título *</span>
+        <h5 *ngIf="validateOption('title', 'required')">El Título es<strong> Requerido</strong>
+        </h5>
+        <h5 *ngIf="validateOption('title', 'minlength')">El Título es<strong> muy Corto</strong>
+        </h5>
+      </div>
+      <div class="input-container">
+        <app-upload-images [imageFirst]="imageFirst" [multiple]="true" [pictures]="pictures" [read]="read"
+          [uploadFiles]="uploadFiles"></app-upload-images>
+      </div>
+      <div class="input-container" isFocus>
+        <textarea class="input" formControlName="description" maxlength="1000" minlength="3" required
+          type="text"></textarea>
+        <label>Descripción *</label>
+        <span>Descripción *</span>
+        <h5 *ngIf="validateOption('description', 'required')">La Descripción
+          es<strong>Requerida</strong></h5>
+        <h5 *ngIf="validateOption('description', 'minlength')">La Descripción es<strong> muy
+            Corta</strong></h5>
+      </div>
+      <div class="input-container" isFocus>
+        <input class="input" formControlName="price" required type="number" />
+        <label>Precio</label>
+        <span>Precio</span>
+        <h5 *ngIf="validateOption('price', 'required')">El Precio es<strong> Requerido</strong>
+        </h5>
+      </div>
+      <div class="input-container" isFocus>
+        <input class="input" formControlName="quantityAvailable" required type="number" />
+        <label>Cantidad Disponible *</label>
+        <span>Cantidad Disponible *</span>
+        <h5 *ngIf="validateOption('quantityAvailable', 'required')">La Cantidad
+          Disponible
+          es<strong> Requerida</strong>
+        </h5>
+        <h5 *ngIf="validateOption('quantityAvailable', 'min')">La Cantidad Disponible
+          es<strong> muy Corta</strong></h5>
+      </div>
+      <div class="input-container" isFocus>
+        <input class="input" formControlName="color" maxlength="9" minlength="6" required type="text" />
+        <label>Color *</label>
+        <span>Color *</span>
+        <h5 *ngIf="validateOption('color', 'required')">El Color es<strong>
+            Requerido</strong>
+        </h5>
+        <h5 *ngIf="validateOption('color', 'min')">El Color es<strong> muy
+            Corto</strong></h5>
+      </div>
+      <div class="row group">
+        <div class="col">
+          <div class="input-container" isFocus>
+            <select aria-label=".form-select-sm example" class="input form-select form-select-sm"
+              formControlName="genderFor" required type="number">
+              <option selected=1 value=1>Varón</option>
+              <option value=2>Hembra</option>
+              <option value=3>Ambos</option>
+            </select>
+            <label>Genero *</label>
+            <span>Genero *</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-container" isFocus>
+            <select aria-label=".form-select-sm example" class="input form-select form-select-sm"
+              formControlName="condition" required type="number">
+              <option selected value=1>Nuevo</option>
+              <option value=2>Usado</option>
+              <option value=3>Renovado</option>
+            </select>
+            <label>Condición *</label>
+            <span>Condición *</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="updateOption == false; else updateOp" class="d-flex justify-content-between">
+        <input (click)="cancelOption()" class="btn btn-outline-light bi" type="submit" value="Cancelar" />
+        <input (click)="saveOption(optionForm.value)" [disabled]="!optionForm.valid" class="btn submit" type="submit"
+          value="Añadir" />
+      </div>
+      <ng-template #updateOp>
+        <div class="d-flex justify-content-between">
+          <input (click)="cancelOption()" class="btn btn-outline-light bi" type="submit" value="Cancelar" />
+          <input (click)="updateOpt(optionForm.value)" *ngIf="this.read == false" [disabled]="!optionForm.valid"
+            class="btn submit" type="submit" value="Actualizar" />
+        </div>
+      </ng-template>
+    </form>
+  </div>
 </div>

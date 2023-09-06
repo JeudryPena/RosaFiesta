@@ -66,6 +66,18 @@ export class ModalDiscountComponent implements OnInit {
     this.discountForm$.next(form);
   }
 
+  async ngOnInit() {
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    if (!this.update && !this.read) {
+      this.onCreate();
+    } else if (this.update) {
+      this.onEdit();
+    } else if (this.read) {
+      this.onRead();
+    }
+  }
+
   onCreate() {
     this.maxDate.setDate(this.minDate.getDate() + 3648);
     this.maxDate.setHours(this.maxDate.getHours(), this.maxDate.getMinutes(), this.maxDate.getSeconds() + 1);
@@ -91,10 +103,10 @@ export class ModalDiscountComponent implements OnInit {
     this.products = response.productsDiscounts || [];
     this.navegationProperties();
     this.discountForm$.next(this.fb.group({
-      value: [response.value],
-      date: [this.date],
-      start: [this.minDate],
-      end: [this.maxDate],
+      value: response.value,
+      date: this.date,
+      start: this.minDate,
+      end: this.maxDate,
       productsDiscounts: [],
     }));
   }
@@ -106,28 +118,18 @@ export class ModalDiscountComponent implements OnInit {
     let end = new Date(response.end);
     this.date = [start, end];
     this.products = response.productsDiscounts || [];
-    this.discountForm$.next(this.fb.group({
-      value: [{value: response.value, disabled: true}],
-      date: [{value: this.date, disabled: true}],
-      start: [{value: this.minDate, disabled: true}],
-      end: [{value: this.maxDate, disabled: true}],
-      createdAt: [{value: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'), disabled: true}],
-      updatedAt: [{value: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'), disabled: true}],
-      createdBy: [{value: response.createdBy, disabled: true}],
-      updatedBy: [{value: response.updatedBy, disabled: true}],
-    }));
-  }
-
-  async ngOnInit() {
-    this.minDate = new Date();
-    this.maxDate = new Date();
-    if (!this.update && !this.read) {
-      this.onCreate();
-    } else if (this.update) {
-      this.onEdit();
-    } else if (this.read) {
-      this.onRead();
-    }
+    const form = this.fb.group({
+      value: response.value,
+      date: this.date,
+      start: this.minDate,
+      end: this.maxDate,
+      createdAt: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
+      updatedAt: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
+      createdBy: response.createdBy,
+      updatedBy: response.updatedBy,
+    });
+    form.disable();
+    this.discountForm$.next(form);
   }
 
   navegationProperties() {

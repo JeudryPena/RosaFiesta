@@ -1,0 +1,111 @@
+<form [formGroup]="addressForm">
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': nameFocused}">
+                <input #userInput type="text" class="form-control contact-input" id="name" placeholder="Nombres"
+                    required minlength="5" maxlength="50" formControlName="name" (focus)="nameFocused = true"
+                    (blur)="nameFocused = false" />
+                <label for="floatingInput">Nombres</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('name', 'required', nameFocused)">El Nombre es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength', nameFocused)">El Nombre es<strong> muy
+                        corto</strong></h5>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': lastNameFocused}">
+                <input #userInput type="text" class="form-control contact-input" id="lastName" placeholder="Apellidos"
+                    required minlength="5" maxlength="50" formControlName="lastName" (focus)="lastNameFocused = true"
+                    (blur)="lastNameFocused = false" />
+                <label for="floatingInput">Apellidos</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('lastName', 'required', lastNameFocused)">El Apellido es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="validate('lastName', 'minlength', lastNameFocused)">El Apellido es<strong>
+                        muy corto</strong></h5>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': titleFocused}">
+                <input #userInput type="text" class="form-control contact-input" id="title" placeholder="Título"
+                    required minlength="5" maxlength="50" formControlName="title" (focus)="titleFocused = true"
+                    (blur)="titleFocused = false" />
+                <label for="floatingInput">Título</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('title', 'required', titleFocused)">El Título es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="validate('title', 'minlength', titleFocused)">El Título es<strong> muy
+                        corto</strong></h5>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': phoneFocused}">
+                <input #userInput type="phone" class="form-control contact-input" id="phone" placeholder="Teléfono"
+                    required minlength="5" maxlength="17" formControlName="phoneNumber" (focus)="phoneFocused = true"
+                    (blur)="phoneFocused = false" />
+                <label for="floatingInput">Teléfono</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('phoneNumber', 'required', phoneFocused)">El Teléfono es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="validate('phoneNumber', 'minlength', phoneFocused)">El Teléfono es<strong>
+                        muy corto</strong></h5>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': cityFocused}">
+                <input type="text" class="form-control contact-input" id="city" placeholder="Ciudad" required
+                    minlength="3" maxlength="50" formControlName="city" (focus)="cityFocused = true"
+                    (blur)="cityFocused = false" />
+                <label for="floatingInput">Ciudad</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('city', 'required', cityFocused)">La Ciudad es<strong>
+                        Requerida</strong></h5>
+                <h5 *ngIf="validate('city', 'minlength', cityFocused)">La Ciudad es<strong> muy
+                        corta</strong></h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': stateFocused}">
+                <input type="text" class="form-control contact-input" id="state" placeholder="Estado" required
+                    minlength="3" maxlength="70" formControlName="state" (focus)="stateFocused = true"
+                    (blur)="stateFocused = false" />
+                <label for="floatingInput">Estado</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('state', 'required', stateFocused)">El Estado es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="validate('state', 'minlength', stateFocused)">El Estado es<strong> muy
+                        corto</strong></h5>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': zipFocused}">
+                <input type="text" class="form-control contact-input" id="zipCode" placeholder="Código Postal" required
+                    minlength="3" maxlength="15" formControlName="zipCode" (focus)="zipFocused = true"
+                    (blur)="zipFocused = false" />
+                <label for="floatingInput">Código Postal</label>
+                <i class="icon fa-regular fa-id-card"></i>
+                <h5 *ngIf="validate('zipCode', 'required', zipFocused)">El Código es<strong>
+                        Requerido</strong></h5>
+                <h5 *ngIf="validate('zipCode', 'minlength', zipFocused)">El Código es<strong> muy
+                        corto</strong></h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="mb-4 input-wrap form-floating" [ngClass]="{'focus': phoneFocused}">
+            <textarea type="text" class="form-control contact-input" id="description" placeholder="Detalles Extra"
+                minlength="5" maxlength="256" formControlName="extraDetail" (focus)="phoneFocused = true"
+                (blur)="phoneFocused = false"></textarea>
+            <label for="floatingInput">Detalles Extra</label>
+            <i class="icon fa-regular fa-id-card"></i>
+            <h5 *ngIf="validate('phoneNumber', 'minlength', phoneFocused)">El Detalle es<strong> muy
+                    corto</strong></h5>
+        </div>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="same-address">
+        <label class="form-check-label" for="same-address">Mi dirección de envío, es el mismo que mi
+            dirección de factura</label>
+    </div>
+</form>

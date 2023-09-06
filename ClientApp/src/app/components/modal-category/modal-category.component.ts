@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SaveModalComponent } from '../../helpers/save-modal/save-modal.component';
-import { Status } from '../../helpers/save-modal/status';
-import { CategoryManagementResponse } from '../../interfaces/Product/Response/categoryManagementResponse';
-import { CategoryDto } from '../../interfaces/Product/categoryDto';
-import { CategoriesService } from '../../shared/services/categories.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {SaveModalComponent} from '../../helpers/save-modal/save-modal.component';
+import {Status} from '../../helpers/save-modal/status';
+import {CategoryDto} from '../../interfaces/Product/categoryDto';
+import {CategoriesService} from '../../shared/services/categories.service';
+import {BehaviorSubject, lastValueFrom} from "rxjs";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-modal-category',
@@ -18,58 +19,64 @@ export class ModalCategoryComponent implements OnInit {
   @Input() title: string = '';
   @Input() categoryId: number = 0;
 
-  categoryForm: any;
+  categoryForm$: BehaviorSubject<FormGroup<any>> = new BehaviorSubject<FormGroup<any>>(null);
 
   constructor(
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
-    private service: CategoriesService
+    private service: CategoriesService,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
   }
 
   ngOnInit(): void {
-    this.categoryForm = new FormGroup({
-      name: new FormControl(''),
-      subCategories: new FormControl(''),
-      icon: new FormControl(''),
-      description: new FormControl('')
-    })
-    if (this.update) {
-      this.service.GetCategoryManagement(this.categoryId).subscribe((response: CategoryManagementResponse) => {
-        this.categoryForm.patchValue({
-          name: response.name,
-          icon: response.icon,
-          description: response.description
-        });
-      });
-    } else if (this.read) {
-      this.categoryForm = new FormGroup({
-        name: new FormControl(''),
-        subCategories: new FormControl(''),
-        icon: new FormControl(''),
-        description: new FormControl(''),
-        createdAt: new FormControl(''),
-        createdBy: new FormControl(''),
-        updatedAt: new FormControl(''),
-        updatedBy: new FormControl('')
-      })
+    if (!this.read && !this.update)
+      this.onCreate();
+    else if (this.update)
+      this.onEdit();
+    else
+      this.onRead();
+  }
 
-      this.service.GetCategoryManagement(this.categoryId).subscribe((response: CategoryManagementResponse) => {
-        this.categoryForm.patchValue({
-          name: response.name,
-          icon: response.icon,
-          description: response.description,
-          createdAt: response.createdAt,
-          updatedAt: response.updatedAt,
-          createdBy: response.createdBy,
-          updatedBy: response.updatedBy
-        });
-      });
-    }
+  onCreate() {
+    this.categoryForm$.next(this.fb.group({
+      name: [''],
+      subCategories: [],
+      icon: [''],
+      description: [''],
+    }));
+  }
+
+  async onEdit() {
+    const category$ = this.service.GetCategoryManagement(this.categoryId);
+    let response = await lastValueFrom(category$);
+    this.categoryForm$.next(this.fb.group({
+      name: response.name,
+      icon: response.icon,
+      description: response.description
+    }));
+  }
+
+  async onRead() {
+    const product$ = this.service.GetCategoryManagement(this.categoryId);
+    let response = await lastValueFrom(product$);
+    const form = this.fb.group({
+      name: response.name,
+      icon: response.icon,
+      description: response.description,
+      createdAt: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
+      updatedAt: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
+      createdBy: response.createdBy,
+      updatedBy: response.updatedBy
+    });
+    form.disable();
+    this.categoryForm$.next(form);
   }
 
   validate = (controlName: string, errorName: string) => {
-    const control = this.categoryForm.get(controlName);
+    const form = this.categoryForm$.getValue();
+    const control = form.get(controlName);
     return control.invalid && control.dirty && control.touched && control.hasError(errorName);
   }
 
@@ -78,13 +85,13 @@ export class ModalCategoryComponent implements OnInit {
   }
 
   updateCategory = (categoryFormValue: any) => {
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea actualizar la Categoría?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const category = { ...categoryFormValue };
+        const category = {...categoryFormValue};
 
         const categoryDto: CategoryDto = {
           name: category.name,
@@ -93,7 +100,7 @@ export class ModalCategoryComponent implements OnInit {
         }
         this.service.UpdateCategory(this.categoryId, categoryDto).subscribe({
           next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = 'Categoría actualizada!';
             modalRef.componentInstance.status = Status.Success;
 
@@ -101,7 +108,7 @@ export class ModalCategoryComponent implements OnInit {
               this.activeModal.close(true);
             });
           }, error: (error) => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
@@ -112,13 +119,13 @@ export class ModalCategoryComponent implements OnInit {
 
   AddCategory = (categoryFormValue: any) => {
 
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea guardar la categoría?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const category = { ...categoryFormValue };
+        const category = {...categoryFormValue};
 
         const categoryDto: CategoryDto = {
           name: category.name,
@@ -128,7 +135,7 @@ export class ModalCategoryComponent implements OnInit {
 
         this.service.AddCategory(categoryDto).subscribe({
           next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = 'Categoría guardada!';
             modalRef.componentInstance.status = Status.Success;
 
@@ -136,7 +143,7 @@ export class ModalCategoryComponent implements OnInit {
               this.activeModal.close(true);
             });
           }, error: (error) => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
