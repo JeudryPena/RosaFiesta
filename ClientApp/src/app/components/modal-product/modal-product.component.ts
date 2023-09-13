@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -17,8 +18,6 @@ import { FilesService } from '../../shared/services/files.service';
 import { ProductsService } from '../../shared/services/products.service';
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { WarrantiesService } from '../../shared/services/warranties.service';
-import { DatePipe } from "@angular/common";
-import { CategoryDto } from '../../interfaces/Product/categoryDto';
 
 @Component({
   selector: 'app-modal-product',
@@ -39,7 +38,6 @@ export class ModalProductComponent implements OnInit {
   optionForm: any;
   optionFirst!: number;
   imageFirst!: number | null;
-  dataLoaded = false;
 
   categoryForm!: CategoriesListResponse;
   warrantyForm!: WarrantiesListResponse | null;
@@ -99,7 +97,6 @@ export class ModalProductComponent implements OnInit {
     this.options = response.options || [];
     this.ReSelect()
     await this.RetrieveRelations();
-    this.dataLoaded = true;
     this.productForm$.next(this.fb.group({
       code: [response.code],
       isService: [response.isService],
@@ -115,7 +112,6 @@ export class ModalProductComponent implements OnInit {
     this.supplierForm = response.supplier;
     this.options = response.options || [];
     this.ReSelect()
-    this.dataLoaded = true;
     this.productForm$.next(this.fb.group({
       code: [response.code],
       isService: [response.isService],

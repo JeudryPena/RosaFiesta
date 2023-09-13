@@ -1,11 +1,9 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, OperatorFunction, debounceTime, map } from 'rxjs';
 import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { CartsService } from '../../shared/services/carts.service';
 import { SidenavService } from '../../shared/services/side-nav.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
-import { UsersService } from '../../shared/services/users.service';
 
 const statesWithFlags: { name: string; flag: string }[] = [
   { name: 'Alabama', flag: '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png' },
@@ -79,6 +77,16 @@ export class NavbarComponent implements OnInit {
   navbar: any;
   totalItems: number = 0;
 
+  isFocused = false;
+
+  onFocus() {
+    this.isFocused = true;
+  }
+
+  onBlur() {
+    this.isFocused = false;
+  }
+
   constructor(
     public service: CartsService,
     private authService: AuthenticateService,
@@ -94,10 +102,6 @@ export class NavbarComponent implements OnInit {
         this.userName = data.userName;
       });
     }
-  }
-
-  isFocused(event: any) {
-    console.log(event)
   }
 
   total(event: any) {
@@ -132,7 +136,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
   onSearchInputFocus() {

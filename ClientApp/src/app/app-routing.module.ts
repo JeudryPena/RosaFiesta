@@ -16,6 +16,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { ManagementCategoriesComponent } from './components/management-categories/management-categories.component';
 import { ManagementDiscountsComponent } from './components/management-discounts/management-discounts.component';
 import { ManagementProductsComponent } from './components/management-products/management-products.component';
+import { ManagementSuppliersComponent } from './components/management-suppliers/management-suppliers.component';
 import { ManagementUsersComponent } from './components/management-users/management-users.component';
 import { ManagementWarrantiesComponent } from './components/management-warranties/management-warranties.component';
 import { MediaComponent } from './components/media/media.component';
@@ -30,11 +31,11 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { WishListsComponent } from './components/wish-lists/wish-lists.component';
 import { ActionDropdownComponent } from './helpers/action-dropdown/action-dropdown.component';
 import { ToastGlobalComponent } from './helpers/toast-global/toast-global.component';
-
 import { AuthGuard } from './shared/guards/auth.guard';
-import { ManagementSuppliersComponent } from './components/management-suppliers/management-suppliers.component';
+
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
       { path: 'cart', component: CartComponent },
       { path: 'toast', component: ToastGlobalComponent },
+      { path: 'wishlist', component: WishListsComponent }
     ]
   },
   {
