@@ -13,6 +13,7 @@ interface SidenavToggle {
 export class LayoutComponent {
   isSideNavCollapsed = false;
   screenWidth = 0;
+  main = true;
 
   onToggleSidenav(data: SidenavToggle): void {
     this.screenWidth = data.screenWidth;

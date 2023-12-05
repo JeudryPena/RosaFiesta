@@ -1,0 +1,46 @@
+.search-bar {
+    margin: 0 6px;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #ccc;
+}
+
+.contenedor {
+    height: 100vh;
+}
+
+.contenido {
+    height: 100%;
+    margin-top: 10px;
+}
+
+.imagen {
+    height: 80px;
+}
+
+.nombre {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.agregar {
+    background-color: #8becff !important;
+    font-size: 13px;
+}
+
+.input-group-sm {
+    width: auto;
+    height: 30px;
+}
+
+.input-search {
+    width: 150px !important;
+    transition: width 0.3s ease-in-out;
+}
+
+.input-search.focus {
+    width: 225px !important;
+}

@@ -1,48 +1,53 @@
 <div class="container">
-    <div class="card-table">
-        <div class="cart-product">
-            <div *ngFor="let product of this.details" class="m-3">
+    <h1 class="title">Mi Carrito (<span>{{totalItems}}</span>)</h1>
+    <hr>
+    <div *ngFor="let product of this.details" class="cart-form">
+        <div class="row">
+            <div class="col-auto px-0">
+                <img class="rounded-2 image" src="{{product.option.image | imgPath}}" alt="">
+            </div>
+            <div class="col">
+                <div class="row fw-bold">
+                    {{product.option.title}}
+                </div>
                 <div class="row">
-                    <div class="col-xl-2">
-                        <img style="width: 120px" class="rounded-2" src="{{product.option.image | imgPath}}" alt="">
-                    </div>
-                    <div class="col-xl-8">
-                        <div class="row fw-bold">
-                            {{product.option.title}}
-                        </div>
-                        <div class="row">
-                            {{product.option.price | currency}}
-                        </div>
-                    </div>
-                    <div class="col-xl-2">
-                        <div class="row">
-                            <input (input)="OnQuantityChange($event, product.detailId, product.optionId)" type="number"
-                                min="0" value={{product.quantity}} step="1" enabled>
-                        </div>
-                        <div class="row">
-                            {{product.quantity * product.option.price | currency}}
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-danger p-1"
-                                (click)="deleteItem(product.detailId, product.optionId)"><i
-                                    class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
+                    <span class="price">{{product.option.price | currency}}</span>
                 </div>
-                <hr>
-            </div>
-            <div class="row p-3">
-                <div class="col-md-5 d-flex">
-                    <strong>Total: </strong>
-                    <p class="mb-0 ms-2">{{totalPrice | currency}}</p>
-                </div>
-                <div class="btn-groups col-md-7 d-flex justify-content-between">
-                    <button type="button" (click)="purchase()" class="buy-now-btn btn-sm"><i
-                            class="fas fa-wallet"></i>Comprar</button>
-                    <button type="button" (click)="clearCart()" class="add-cart-btn btn-sm"><i
-                            class="fa-solid fa-trash me-1"></i>Limpiar carrito</button>
+                <div class="row gap-2">
+                    <button class="btn btn-sm btn-thrash" (click)="deleteItem(product.detailId, product.optionId)"><i
+                            class="fas fa-trash-alt me-1"></i>
+                        Remover
+                    </button>
+                    <button class="btn btn-sm btn-save" (click)="deleteItem(product.detailId, product.optionId)"><i
+                            class="fas fa-heart me-1"></i>
+                        Guardar para después
+                    </button>
                 </div>
             </div>
+            <div class="col-auto px-0">
+                <div class="row">
+                    <input class="m-0" (input)="OnQuantityChange($event, product.detailId, product.optionId)"
+                        type="number" min="0" value={{product.quantity}} step="1" enabled>
+                </div>
+                <div class="row">
+                    <span class="price total">
+                        {{product.quantity * product.option.price | currency}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="row">
+        <div class="col d-flex px-0 pb-1">
+            <strong>Total: </strong>
+            <p class="mb-0 ms-2">{{totalPrice | currency}}</p>
+        </div>
+        <div class="btn-groups col-auto">
+            <button type="button" (click)="purchase()" class="buy-now-btn btn-sm"><i
+                    class="fas fa-wallet"></i>Comprar</button>
+            <button type="button" (click)="clearCart()" class="add-cart-btn btn-sm"><i
+                    class="fa-solid fa-trash me-1"></i>Limpiar carrito</button>
         </div>
     </div>
 </div>

@@ -1,15 +1,11 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
-import { ManagementProductsResponse } from '../../interfaces/Product/Response/managementProductsResponse';
-import { AuthenticateService } from '../../shared/services/authenticate.service';
-import { ProductsService } from '../../shared/services/products.service';
-import { CartsService } from '../../shared/services/carts.service';
-import { CartResponse } from '../../interfaces/Product/Response/cartResponse';
-import { PurchaseDetailResponse } from '../../interfaces/Product/UserInteract/Response/purchaseDetailResponse';
-import { PurchaseDetailOptionResponse } from '../../interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CartResponse } from '../../interfaces/Product/Response/cartResponse';
+import { PurchaseDetailOptionResponse } from '../../interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
+import { CartsService } from '../../shared/services/carts.service';
+import { ProductsService } from '../../shared/services/products.service';
 
 @Component({
   selector: 'app-cart',
@@ -21,8 +17,8 @@ export class CartComponent implements OnInit {
   viewCart: boolean = false;
   details: PurchaseDetailOptionResponse[] = [];
   totalPrice: number = 0;
-  @Input() totalItems: number = 0;
 
+  @Input() totalItems: number = 0;
   @Output() total: EventEmitter<number> = new EventEmitter<number>();
 
   ngOnInit(): void {
@@ -34,8 +30,8 @@ export class CartComponent implements OnInit {
     public modalService: NgbModal,
     private router: Router,
   ) {
-    
-    
+
+
   }
 
   purchase() {
@@ -58,7 +54,7 @@ export class CartComponent implements OnInit {
     });
   }
 
-  OnQuantityChange(event: any, detailId: string, optionId: string) { 
+  OnQuantityChange(event: any, detailId: string, optionId: string) {
     const quantity = event.target.value;
     this.service.UpdateQuantity(quantity, detailId, optionId).subscribe({
       next: (response: any) => {

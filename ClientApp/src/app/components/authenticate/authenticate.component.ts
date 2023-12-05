@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginResponse } from '../../interfaces/Security/Response/loginResponse';
@@ -15,13 +15,14 @@ declare const FB: any;
 @Component({
   selector: 'app-authenticate',
   templateUrl: './authenticate.component.html',
-  styleUrls: ['./authenticate.component.css']
+  styleUrls: ['./authenticate.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AuthenticateComponent implements OnInit {
   userFocused = false;
   passwordFocused = false;
-  loginProvider: any; 
-
+  loginProvider: any;
+  config = config;
   loginForm: any;
 
   constructor(
@@ -36,6 +37,10 @@ export class AuthenticateComponent implements OnInit {
       rememberMe: new FormControl(false)
     })
     this.loginProvider = config.googleClientId;
+  }
+
+  onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
   }
 
   validate = (controlName: string, errorName: string, isFocused: boolean) => {
@@ -54,11 +59,11 @@ export class AuthenticateComponent implements OnInit {
   }
 
   logoutFacebook() {
-    FB.logout(function (response) { 
+    FB.logout(function (response) {
       console.log(response)
     });
   }
-  
+
   checkLoginState() {
     FB.getLoginStatus(function (response) {
       // statusChangeCallback(response);
@@ -79,6 +84,7 @@ export class AuthenticateComponent implements OnInit {
         }
       })
     }
+
   }
 
   loginUser = (loginFormValue: any) => {

@@ -1,0 +1,35 @@
+﻿$background-white: #f4f7fa
+$background-dark: #1F2326
+
+@mixin main-custom($background-color: $background-dark)
+  background-color: $background-color !important
+
+.about-us-main
+  @include main-custom($background-dark)
+
+main
+  width: calc(100% - 3.5rem)
+  z-index: 0
+  position: absolute
+  font-family: 'roboto', sans-serif
+  top: 0
+  margin-left: 3.5rem
+  padding: 3.5rem 1rem 0 1rem
+  transition: width .5s ease
+  background: $background-white
+  overflow-y: auto
+  overflow-x: hidden
+  height: 100%
+
+  &.no-sidenav
+    width: 100%
+    margin-left: 0
+    padding: 2.5rem 0 0 0
+
+  &-trimmed
+    width: calc(100% - 16.5625rem)
+    margin-left: 16.5625rem
+
+  &-md-screen
+    width: calc(100% - 5rem)
+    margin-left: 5rem

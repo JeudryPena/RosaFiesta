@@ -1,3 +1,2 @@
-<app-navbar></app-navbar>
-<app-sidenav Secciones="Categorías" (onToggleSidenav)="onToggleSidenav($event)"></app-sidenav>
-<app-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></app-body>
+<app-navbar [main]="main"></app-navbar>
+<app-body [main]="main" [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></app-body>

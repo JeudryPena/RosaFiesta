@@ -1,10 +1,109 @@
 .container {
-    width: 70vw;
-    padding: 1rem;
+    width: 50vw;
+    max-width: 50vw;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 0.8rem;
+}
+
+@media (max-width: 900px) {
+    .container {
+        width: 80vw;
+        max-width: 80vw;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        width: 90vw;
+        max-width: 90vw;
+    }
+}
+
+.title {
+    font-size: medium;
+    font-weight: 600;
+}
+
+.btn-danger {
+    padding: 0 0.25rem !important;
+    max-width: none;
+    width: fit-content;
+}
+
+.image {
+    width: 80px;
+    height: 70px;
+    border: #ddd 1px solid;
+    box-shadow: #ddddddcf 0.5px 0.5px 2px 0px;
+}
+
+.btn-thrash {
+    border: #ddd 1px solid;
+    border-radius: 5px;
+    color: #e23636;
+    width: auto;
+    max-width: auto;
+    box-shadow: #ddddddcf 0.5px 0.5px 2px 0px;
+    transition: 0.3s;
+    padding: 0 6px
+}
+
+.btn-save {
+    border: #ddd 1px solid;
+    border-radius: 5px;
+    color: #7C9FBF;
+    width: auto;
+    max-width: auto;
+    box-shadow: #ddddddcf 0.5px 0.5px 2px 0px;
+    transition: 0.3s;
+    padding: 0 6px;
+}
+
+.btn-thrash:hover {
+    color: #fff;
+    background-color: #e23636;
+}
+
+.btn-save:hover {
+    color: #fff;
+    background-color: #7C9FBF;
+}
+
+.price {
+    margin: 0;
+    margin-right: 2px;
+    padding: 0;
+    font-size: 14px;
+}
+
+.total {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    text-align: end;
+}
+
+.row {
+    margin: 0;
+}
+
+hr {
+    margin: 0.5rem 0;
+}
+
+
+.cart-form {
+    gap: 1rem;
 }
 
 .btn-groups {
     align-content: center;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 0.5rem;
 }
 
 input {
@@ -35,6 +134,8 @@ input {
     border: 2px solid #FF9F00;
     margin-right: 8px;
     border-radius: 25px;
+    height: 30px;
+    max-height: 30px;
 }
 
 .add-cart-btn:hover {
@@ -46,6 +147,8 @@ input {
     background-color: #000;
     border: 2px solid #000;
     border-radius: 25px;
+    height: 30px;
+    max-height: 30px;
 }
 
 .buy-now-btn:hover {

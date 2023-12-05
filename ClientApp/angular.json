@@ -7,7 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "sass"
         }
       },
       "root": "",
@@ -29,8 +29,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/styles.scss"
+              "src/styles.sass"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -96,8 +95,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/styles.scss",
+              "src/styles.sass",
               "src/styles/bootstrap.min.css",
               "node_modules/@ng-bootstrap/ng-bootstrap//ng-bootstrap.css",
               "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"

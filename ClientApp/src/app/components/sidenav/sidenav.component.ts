@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 import { CategoryPreviewResponse } from '../../interfaces/Product/Response/categoryPreviewResponse';
 import { CategoriesService } from '../../shared/services/categories.service';
 import { SidenavService } from '../../shared/services/side-nav.service';
+import { encrypt } from '../../shared/util/util-encrypt';
 import { dashboardData } from './dashboard-data';
 import { inventoryData } from './inventory-data';
 import { Layout } from './layout';
-import { encrypt } from '../../shared/util/util-encrypt';
 
 interface SidenavToggle {
   screenWidth: number;
@@ -49,7 +49,6 @@ export class SidenavComponent implements OnDestroy {
   private subscription: Subscription;
   @Output() onToggleSidenav: EventEmitter<SidenavToggle> = new EventEmitter();
 
-  @Input() Secciones: string = '';
   @Input() layout: Layout = Layout.Normal;
 
   collapsed = false;

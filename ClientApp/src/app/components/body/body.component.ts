@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 
 interface SidenavToggle {
   screenWidth: number;
@@ -8,12 +8,14 @@ interface SidenavToggle {
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
-  styleUrls: ['./body.component.scss']
+  styleUrls: ['./body.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BodyComponent {
 
   @Input() collapsed = false;
   @Input() screenWidth = 0;
+  @Input() main;
 
   isSideNavCollapsed = false;
   screenWidths = 0;
@@ -23,13 +25,4 @@ export class BodyComponent {
     this.isSideNavCollapsed = data.collapsed;
   }
 
-  getBodyClass(): string{
-    let styleClass = '';
-    if (this.collapsed && this.screenWidth > 768) {
-      styleClass = 'body-trimmed'; 
-    } else if (this.collapsed && this.screenWidth <= 768 && this.screenWidth > 0) {
-      styleClass = '';
-    }   
-    return styleClass;
-  }
 }
