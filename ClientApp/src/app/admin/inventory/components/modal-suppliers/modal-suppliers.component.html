@@ -1,0 +1,111 @@
+<div *ngIf="supplierForm$ | async as supplierForm" class="form">
+    <div class="contact-form">
+        <span class="circle one"></span>
+        <span class="circle two"></span>
+        <form [formGroup]="supplierForm" action="../../../../index.html" autocomplete="off">
+            <h3 class="title">{{title}}</h3>
+            <div class="input-container" isFocus>
+                <input class="input" formControlName="name" maxlength="50" minlength="3"
+                       required type="text"/>
+                <label>Nombre *</label>
+                <span>Nombre *</span>
+                <h5 *ngIf="validate('name', 'required')">El Nombre es<strong> requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
+            </div>
+            <div class="input-container" isFocus>
+                <input class="input" formControlName="email" maxlength="253"
+                       minlength="3" type="string"/>
+                <label>Email</label>
+                <span>Email</span>
+                <h5 *ngIf="validate('email', 'minlength')">El email es<strong> muy corto</strong></h5>
+            </div>
+            <div class="input-container" isFocus>
+                <input class="input" formControlName="phone" maxlength="50"
+                       minlength="3" type="text"/>
+                <label>Teléfono</label>
+                <span>Teléfono</span>
+                <h5 *ngIf="validate('phone', 'minlength')">El telefono es<strong> muy corto</strong></h5>
+            </div>
+            <div *ngIf="!read" class="input-container" isFocus>
+                <div class="input-group flex-nowrap">
+                    <input (typeaheadOnSelect)="onSelect($event)" [(ngModel)]="selected" [adaptivePosition]="true"
+                           [isAnimated]="true"
+                           [typeaheadMinLength]="0" [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7"
+                           [typeaheadSingleWords]="true" [typeaheadWaitMs]="100" [typeahead]="productsList"
+                           class="input" formControlName="products" id="search"
+                           type="search" typeaheadOptionField="option.title"/>
+                </div>
+                <label>Productos</label>
+                <span>Productos</span>
+            </div>
+            <div class="input-container">
+                <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered ">
+                    <li>
+                        <div class="input-group flex-nowrap">
+                            <button class="btn text-md-start list w-100 btn-outline-light" type="text">{{i + 1}}.
+                                {{product.option.title}}</button>
+                            <button (click)="removeProduct(i)" [disabled]="read"
+                                    class="btn btn-outline-light list pe-2 ps-2 input-group-text">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            <div class="input-container" isFocus>
+                <textarea class="input" formControlName="description" maxlength="250"
+                          minlength="3" rows="3" type="text"></textarea>
+                <label>Descripción</label>
+                <span>Descripción</span>
+                <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
+                    corta</strong></h5></div>
+            <div class="input-container" isFocus>
+                <textarea class="input" formControlName="address" maxlength="250"
+                          minlength="3" type="text"></textarea>
+                <label>Dirección</label>
+                <span>Dirección</span>
+                <h5 *ngIf="validate('address', 'minlength')">La dirección es<strong> muy corta</strong></h5>
+            </div>
+            <div *ngIf="read">
+                <div class="input-container" isFocus>
+                    <input class="input"
+                           formControlName="createdAt"
+                           type="text"/>
+                    <label>Fecha de Creación</label>
+                    <span>Fecha de Creación</span>
+                </div>
+                <div class="input-container" isFocus>
+                    <input class="input" formControlName="createdBy" type="text"/>
+                    <label>Creado por</label>
+                    <span>Creado por</span>
+                </div>
+                <div class="input-container" isFocus>
+                    <input class="input"
+                           formControlName="updatedAt"
+                           type="text"/>
+                    <label>Fecha de Modificación</label>
+                    <span>Fecha de Modificación</span>
+                </div>
+                <div class="input-container" isFocus>
+                    <input class="input" formControlName="updatedBy" type="text"/>
+                    <label>Modificado por</label>
+                    <span>Modificado por</span>
+                </div>
+            </div>
+            <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
+                <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+                <input (click)="AddSupplier(supplierForm.value)" *ngIf="read == false" [disabled]="!supplierForm.valid"
+                       class="btn submit"
+                       type="submit" value="Crear"/>
+            </div>
+            <ng-template #updateP>
+                <div class="d-flex justify-content-between">
+                    <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+                    <input (click)="updateSupplier(supplierForm.value)" [disabled]="!supplierForm.valid"
+                           class="btn submit" type="submit"
+                           value="Actualizar"/>
+                </div>
+            </ng-template>
+        </form>
+    </div>
+</div>

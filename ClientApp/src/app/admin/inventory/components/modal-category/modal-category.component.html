@@ -1,0 +1,80 @@
+<div *ngIf="categoryForm$ | async as categoryForm" class="form">
+    <div class="contact-form">
+        <span class="circle one"></span>
+        <span class="circle two"></span>
+        <form [formGroup]="categoryForm" action="../../../../index.html" autocomplete="off">
+            <h3 class="title">{{title}}</h3>
+            <div class="input-container" isFocus>
+                <input class="input" formControlName="name" maxlength="50" minlength="3" required
+                       type="text"/>
+                <label>Nombre *</label>
+                <span>Nombre *</span>
+                <h5 *ngIf="validate('name', 'required')">El Nombre es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
+            </div>
+            <div class="input-container" isFocus>
+                <input class="input" formControlName="icon" maxlength="200" minlength="3" required
+                       type="text"/>
+                <label>Icono *</label>
+                <span>Icono *</span>
+                <h5 *ngIf="validate('icon', 'required')">El Icono es<strong> Requerido</strong></h5>
+                <h5 *ngIf="validate('icon', 'minlength')">El Icono es<strong> muy corto</strong></h5>
+            </div>
+            <div class="input-container" isFocus>
+                <textarea class="input" formControlName="description"
+                          maxlength="250"
+                          minlength="5" required
+                          rows="3" type="text"></textarea>
+                <label>Descripción *</label>
+                <span>Descripción *</span>
+                <h5 *ngIf="validate('description', 'required')">La Descripción es<strong>
+                    Requerida</strong>
+                </h5>
+                <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
+                    corta</strong>
+                </h5>
+            </div>
+            <div *ngIf="read">
+                <div class="input-container" isFocus>
+                    <input class="input"
+                           formControlName="createdAt"
+                           type="text"/>
+                    <label>Fecha de Creación</label>
+                    <span>Fecha de Creación</span>
+                </div>
+                <div class="input-container" isFocus>
+                    <input class="input" formControlName="createdBy" type="text"/>
+                    <label>Creado por</label>
+                    <span>Creado por</span>
+                </div>
+                <div class="input-container" isFocus>
+                    <input class="input"
+                           formControlName="updatedAt"
+                           type="text"/>
+                    <label>Fecha de Modificación</label>
+                    <span>Fecha de Modificación</span>
+                </div>
+                <div class="input-container" isFocus>
+                    <input class="input" formControlName="updatedBy" type="text"/>
+                    <label>Modificado por</label>
+                    <span>Modificado por</span>
+                </div>
+            </div>
+            <div *ngIf="update == false; else updateCat" class="d-flex justify-content-between">
+                <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+                <input (click)="AddCategory(categoryForm.value)" *ngIf="read == false" [disabled]="!categoryForm.valid"
+                       class="btn submit" type="submit"
+                       value="Crear"/>
+            </div>
+            <ng-template #updateCat>
+                <div class="d-flex justify-content-between">
+                    <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+                    <input (click)="updateCategory(categoryForm.value)" [disabled]="!categoryForm.valid"
+                           class="btn submit"
+                           type="submit"
+                           value="Actualizar"/>
+                </div>
+            </ng-template>
+        </form>
+    </div>
+</div>

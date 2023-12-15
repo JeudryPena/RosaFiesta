@@ -1,0 +1,67 @@
+<section class="contact">
+    <div class="container">
+        <div class="left">
+            <div class="form-wrapper">
+                <div class="contact-heading">
+                    <h1>Let's work together<span>.</span></h1>
+                    <p class="text">Or reach us via: <a href="mailto:Publius@gmail.com">
+                            Publius@gmail.com</a></p>
+                </div>
+                <form action="../../../index.html" class="contact-form" method="post">
+                    <div [ngClass]="{'focus': firstNameFocused}" class="input-wrap form-floating">
+                        <input #firstNameInput (blur)="firstNameFocused = false" (focus)="firstNameFocused = true" class="form-control contact-input"
+                            placeholder="First Name" required type="text">
+                        <label for="floatingInput">First Name </label>
+                        <i class="icon fa-solid fa-address-card"></i>
+                    </div>
+                    <div [ngClass]="{'focus': lastNameFocused}" class="input-wrap form-floating">
+                        <input #lastNameInput (blur)="lastNameFocused = false;" (focus)="lastNameFocused = true" class="form-control contact-input"
+                            placeholder="Last Name" required type="text">
+                        <label for="floatingInput">Last Name </label>
+                        <i class="icon fa-solid fa-address-card"></i>
+                    </div>
+                    <div [ngClass]="{'focus': emailFocused}" class="input-wrap w-100 form-floating">
+                        <input #emailInput (blur)="emailFocused = false" (focus)="emailFocused = true" class="form-control contact-input" placeholder="Email"
+                            required type="email">
+                        <label for="floatingInput">Email </label>
+                        <i class="icon fa-solid fa-envelope"></i>
+                    </div>
+                    <div [ngClass]="{'focus': messageFocused}" class="input-wrap textarea w-100 form-floating">
+                        <textarea #messageInput (blur)="messageFocused = false" (focus)="messageFocused = true"
+                            autocomplete="off" class="contact-input form-control" placeholder="Message"
+                            required></textarea>
+                        <label for="floatingInput">Message </label>
+                        <i class="icon fa-solid fa-inbox"></i>
+                    </div>
+
+                    <div class="contact-buttons w-100">
+                        <button class="btn upload">
+                            <span>
+                                <i class="fa-solid fa-paperclip"></i> Añade un archivo
+                            </span>
+                            <input name="attachement" type="file">
+                        </button>
+                        <input class="btn" type="submit" value="Send message">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <div class="image-wrapper">
+                <img class="img" src="../../../assets/img/backgrounds/loginBG.jpg">
+                <div class="wave-wrap">
+                    <svg class="wave" fill="none" viewBox="0 0 783 1536" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M236.705 1356.18C200.542 1483.72 64.5004 1528.54 1 1535V1H770.538C793.858 63.1213 797.23 196.197 624.165 231.531C407.833 275.698 274.374 331.715 450.884 568.709C627.393 805.704 510.079 815.399 347.561 939.282C185.043 1063.17 281.908 1196.74 236.705 1356.18Z"
+                            id="wave" />
+                    </svg>
+                    <svg class="dashed-wave" fill="none" viewBox="0 0 345 877" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.5 876C25.6667 836.167 73.2 739.8 62 673C48 589.5 35.5 499.5 125.5 462C215.5 424.5 150 365 87 333.5C24 302 44 237.5 125.5 213.5C207 189.5 307 138.5 246 87C185 35.5 297 1 344.5 1"
+                            id="dashed-wave" />
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
