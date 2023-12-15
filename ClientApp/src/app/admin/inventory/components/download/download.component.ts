@@ -1,6 +1,6 @@
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import { FilesService } from '../../../../../shared/services/files.service';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {FilesService} from '@core/shared/services/files.service';
 
 @Component({
   selector: 'app-download',
@@ -12,7 +12,8 @@ export class DownloadComponent implements OnInit {
   message!: string;
   progress!: number;
 
-  constructor(private filesService: FilesService) { }
+  constructor(private filesService: FilesService) {
+  }
 
   download = () => {
     this.filesService.getPhoto(this.fileUrl).subscribe((response: any) => {
@@ -25,11 +26,12 @@ export class DownloadComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   private downloadFile = (data: HttpResponse<Blob>) => {
     if (data.body) {
-      const downloadedFile = new Blob([data.body], { type: data.body.type });
+      const downloadedFile = new Blob([data.body], {type: data.body.type});
       const a = document.createElement('a');
       a.setAttribute('style', 'display:none;');
       document.body.appendChild(a);

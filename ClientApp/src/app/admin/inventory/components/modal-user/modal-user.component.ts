@@ -1,14 +1,14 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { SaveModalComponent } from '../../../../../shared/components/save-modal/save-modal.component';
-import { Status } from '../../../../../shared/components/save-modal/status';
-import { RolesListResponse } from '../../../../../core/interfaces/Security/Response/rolesListResponse';
-import { UserResponse } from '../../../../../core/interfaces/Security/Response/userResponse';
-import { UserForCreationDto } from '../../../../../core/interfaces/Security/userForCreationDto';
-import { UsersService } from '../../services/users.service';
+import {DatePipe} from '@angular/common';
+import {Component, ElementRef, Input} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
+import {Status} from '@core/shared/components/save-modal/status';
+import {RolesListResponse} from '../../../../core/interfaces/Security/Response/rolesListResponse';
+import {UserResponse} from '../../../../core/interfaces/Security/Response/userResponse';
+import {UserForCreationDto} from '../../../../core/interfaces/Security/userForCreationDto';
+import {UsersService} from '../../services/users.service';
 
 @Component({
   selector: 'app-modal-user',
@@ -71,8 +71,7 @@ export class ModalUserComponent {
     });
     if (!this.update && !this.read) {
       this.RetrieveNavigation();
-    }
-    else if (this.update) {
+    } else if (this.update) {
       this.service.GetManagement(this.id).subscribe((response: UserResponse) => {
         this.userForm.patchValue({
           userName: response.userName,
@@ -154,13 +153,13 @@ export class ModalUserComponent {
   }
 
   updateUser = (userFormValue: any) => {
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea actualizar el Usuario?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const user = { ...userFormValue };
+        const user = {...userFormValue};
         const UserForUpdateDto: UserForCreationDto = {
           userName: user.userName,
           email: user.email,
@@ -172,7 +171,7 @@ export class ModalUserComponent {
         }
         this.service.Update(this.id, UserForUpdateDto).subscribe({
           next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = 'Usuario actualizado!';
             modalRef.componentInstance.status = Status.Success;
 
@@ -180,7 +179,7 @@ export class ModalUserComponent {
               this.activeModal.close(true);
             });
           }, error: (error) => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
@@ -191,13 +190,13 @@ export class ModalUserComponent {
 
   Add = (userFormValue: any) => {
 
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea guardar el usuario?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const user = { ...userFormValue };
+        const user = {...userFormValue};
         const UserForCreationDto: UserForCreationDto = {
           userName: user.userName,
           email: user.email,
@@ -210,7 +209,7 @@ export class ModalUserComponent {
 
         this.service.Add(UserForCreationDto).subscribe({
           next: () => {
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = 'Usuario guardado!';
             modalRef.componentInstance.status = Status.Success;
 
@@ -219,7 +218,7 @@ export class ModalUserComponent {
             });
           }, error: (error) => {
             console.log(error);
-            const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+            const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
             modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }

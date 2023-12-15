@@ -4,7 +4,33 @@
     "types": [
       "d3-scale"
     ],
-    "baseUrl": "./",
+    "paths": {
+      "@admin/*": [
+        "app/admin/*"
+      ],
+      "@auth/*": [
+        "app/auth/*"
+      ],
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@intranet/*": [
+        "app/intranet/*"
+      ],
+      "@public/*": [
+        "app/public/*"
+      ],
+      "@root/*": [
+        "app/root/*"
+      ],
+      "@env/*": [
+        "env/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ]
+    },
+    "baseUrl": "./src/",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": false,

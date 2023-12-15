@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ToastService } from '../../../core/services/toast.service';
+import {Component, OnDestroy} from '@angular/core';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-toast-global',
@@ -7,7 +7,8 @@ import { ToastService } from '../../../core/services/toast.service';
   styleUrls: ['./toast-global.component.scss'],
 })
 export class ToastGlobalComponent implements OnDestroy {
-  constructor(public toastService: ToastService) { }
+  constructor(public toastService: ToastService) {
+  }
 
 
   ngOnDestroy(): void {

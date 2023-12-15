@@ -1,14 +1,14 @@
-import { DecimalPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
-import { config } from "../../../../../env/config.prod";
-import { SupplierResponse } from '../../../../core/interfaces/Product/Response/supplierResponse';
-import { SupplierDto } from '../../../../core/interfaces/Product/supplierDto';
-import { SortColumn, SortDirection } from '../../../../shared/directives/sortable.directive';
-import { SearchResult } from '../../../../core/interfaces/search-result';
-import { State } from '../../../../core/interfaces/state';
-import { SuppliersListResponse } from '../../../../core/interfaces/Product/Response/suppliersListResponse';
+import {DecimalPipe} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Injectable, PipeTransform} from '@angular/core';
+import {BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap} from 'rxjs';
+import {config} from "../../../../env/config.prod";
+import {SupplierResponse} from '../../../core/interfaces/Product/Response/supplierResponse';
+import {SupplierDto} from '../../../core/interfaces/Product/supplierDto';
+import {SortColumn, SortDirection} from '@core/shared/directives/sortable.directive';
+import {SearchResult} from '../../../core/interfaces/search-result';
+import {State} from '../../../core/interfaces/state';
+import {SuppliersListResponse} from '../../../core/interfaces/Product/Response/suppliersListResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -74,7 +74,7 @@ export class SuppliersService {
   }
 
   set page(page: number) {
-    this._set({ page });
+    this._set({page});
   }
 
   get pageSize() {
@@ -82,7 +82,7 @@ export class SuppliersService {
   }
 
   set pageSize(pageSize: number) {
-    this._set({ pageSize });
+    this._set({pageSize});
   }
 
   get searchTerm() {
@@ -90,15 +90,15 @@ export class SuppliersService {
   }
 
   set searchTerm(searchTerm: string) {
-    this._set({ searchTerm });
+    this._set({searchTerm});
   }
 
   set sortColumn(sortColumn: SortColumn) {
-    this._set({ sortColumn });
+    this._set({sortColumn});
   }
 
   set sortDirection(sortDirection: SortDirection) {
-    this._set({ sortDirection });
+    this._set({sortDirection});
   }
 
   RetrieveData() {
@@ -155,7 +155,7 @@ export class SuppliersService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+    const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
     let items = sort(this._managementSuppliers$, sortColumn, sortDirection);
@@ -166,6 +166,6 @@ export class SuppliersService {
 
     // 3. paginate
     items = items.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ items, total });
+    return of({items, total});
   }
 }

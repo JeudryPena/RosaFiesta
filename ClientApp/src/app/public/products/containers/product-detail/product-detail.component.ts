@@ -4,10 +4,10 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {catchError, map, Observable} from 'rxjs';
 import {ProductDetailResponse} from '@core/interfaces/Product/Response/productDetailResponse';
 import {PurchaseDetailDto} from '@core/interfaces/Product/UserInteract/purchaseDetailDto';
-import {CartsService} from '@privy/services/carts.service';
+import {CartsService} from '../../../../intranet/services/carts.service';
 import {DiscountsService} from '@admin/inventory/services/discounts.service';
 import {ProductsService} from '@admin/inventory/services/products.service';
-import {ReviewsService} from '@privy/services/reviews.service';
+import {ReviewsService} from '../../../../intranet/services/reviews.service';
 import {decrypt} from '@core/shared/util/util-encrypt';
 
 @Component({

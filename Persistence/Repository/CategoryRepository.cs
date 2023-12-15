@@ -22,7 +22,7 @@ public class CategoryRepository : ICategoryRepository
 
 	public async Task<CategoryEntity> GetByIdAsync(int categoryId, CancellationToken cancellationToken = default)
 	{
-		var category = await _rosaFiestaContext.Categories.Include(x => x.Products).ThenInclude(x => x.Option).ThenInclude(x => x.Image).FirstOrDefaultAsync(x => x.Id == categoryId);
+		CategoryEntity? category = await _rosaFiestaContext.Categories.Include(x => x.Products).ThenInclude(x => x.Option).ThenInclude(x => x.Image).FirstOrDefaultAsync(x => x.Id == categoryId);
 		if (category == null)
 			throw new ArgumentNullException(nameof(category));
 		return category;

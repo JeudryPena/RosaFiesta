@@ -1,9 +1,9 @@
-import { SortColumn, SortDirection } from "../../shared/directives/sortable.directive";
+import {SortColumn, SortDirection} from "@core/shared/directives/sortable.directive";
 
 export interface State {
-    page: number;
-    pageSize: number;
-    searchTerm: string;
-    sortColumn: SortColumn;
-    sortDirection: SortDirection;
+  page: number;
+  pageSize: number;
+  searchTerm: string;
+  sortColumn: SortColumn;
+  sortDirection: SortDirection;
 }

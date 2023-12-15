@@ -1,17 +1,17 @@
-import { DecimalPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Injectable, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, debounceTime, delay, of, switchMap, tap } from 'rxjs';
-import { config } from "../../../../../env/config.dev";
-import { CategoriesListResponse } from '../../../../core/interfaces/Product/Response/categoriesListResponse';
-import { CategoryManagementResponse } from '../../../../core/interfaces/Product/Response/categoryManagementResponse';
-import { CategoryPreviewResponse } from '../../../../core/interfaces/Product/Response/categoryPreviewResponse';
-import { CategoryDto } from '../../../../core/interfaces/Product/categoryDto';
-import { SortColumn, SortDirection } from '../../../../shared/directives/sortable.directive';
-import { SearchResult } from '../../../../core/interfaces/search-result';
-import { State } from '../../../../core/interfaces/state';
-import { UsersService } from './users.service';
-import { CategoryResponse } from '../../../../core/interfaces/Product/Response/categoryResponse';
+import {DecimalPipe} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Injectable, PipeTransform} from '@angular/core';
+import {BehaviorSubject, debounceTime, delay, Observable, of, Subject, switchMap, tap} from 'rxjs';
+import {config} from "../../../../env/config.dev";
+import {CategoriesListResponse} from '../../../core/interfaces/Product/Response/categoriesListResponse';
+import {CategoryManagementResponse} from '../../../core/interfaces/Product/Response/categoryManagementResponse';
+import {CategoryPreviewResponse} from '@core/interfaces/Product/Response/categoryPreviewResponse';
+import {CategoryDto} from '../../../core/interfaces/Product/categoryDto';
+import {SortColumn, SortDirection} from '@core/shared/directives/sortable.directive';
+import {SearchResult} from '../../../core/interfaces/search-result';
+import {State} from '../../../core/interfaces/state';
+import {UsersService} from './users.service';
+import {CategoryResponse} from '../../../core/interfaces/Product/Response/categoryResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -79,7 +79,7 @@ export class CategoriesService {
   }
 
   set page(page: number) {
-    this._set({ page });
+    this._set({page});
   }
 
   get pageSize() {
@@ -87,7 +87,7 @@ export class CategoriesService {
   }
 
   set pageSize(pageSize: number) {
-    this._set({ pageSize });
+    this._set({pageSize});
   }
 
   get searchTerm() {
@@ -95,15 +95,15 @@ export class CategoriesService {
   }
 
   set searchTerm(searchTerm: string) {
-    this._set({ searchTerm });
+    this._set({searchTerm});
   }
 
   set sortColumn(sortColumn: SortColumn) {
-    this._set({ sortColumn });
+    this._set({sortColumn});
   }
 
   set sortDirection(sortDirection: SortDirection) {
-    this._set({ sortDirection });
+    this._set({sortDirection});
   }
 
   RetrieveData() {
@@ -164,14 +164,13 @@ export class CategoriesService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+    const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
     let items = sort(this.categoriesData, sortColumn, sortDirection);
 
     items = items.filter((category) => matches(category, searchTerm, this.pipe));
     const total = items.length;
 
     items = items.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ items, total });
+    return of({items, total});
   }
 }
-

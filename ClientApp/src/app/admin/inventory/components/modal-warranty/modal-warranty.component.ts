@@ -2,11 +2,11 @@ import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
-import {SaveModalComponent} from '../../../../shared/components/save-modal/save-modal.component';
-import {Status} from '../../../../shared/components/save-modal/status';
-import {ProductsListResponse} from '../../../../core/interfaces/Product/Response/productsListResponse';
-import {WarrantyResponse} from '../../../../core/interfaces/Product/Response/warrantyResponse';
-import {WarrantyDto} from '../../../../core/interfaces/Product/warrantyDto';
+import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
+import {Status} from '@core/shared/components/save-modal/status';
+import {ProductsListResponse} from '@core/interfaces/Product/Response/productsListResponse';
+import {WarrantyResponse} from '@core/interfaces/Product/Response/warrantyResponse';
+import {WarrantyDto} from '@core/interfaces/Product/warrantyDto';
 import {ProductsService} from '../../services/products.service';
 import {WarrantiesService} from '../../services/warranties.service';
 import {BehaviorSubject, lastValueFrom} from "rxjs";
@@ -196,5 +196,3 @@ export class ModalWarrantyComponent implements OnInit {
     });
   }
 }
-
-

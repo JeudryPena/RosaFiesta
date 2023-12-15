@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { LoginResponse } from '../../core/interfaces/Security/Response/loginResponse';
-import { AuthenticateService } from '../../core/services/authenticate.service';
-import { config } from '../../env/config.dev';
+import { LoginResponse } from '../interfaces/Security/Response/loginResponse';
+import { AuthenticateService } from '../../auth/services/authenticate.service';
+import { config } from '../../../env/config.dev';
 
 @Injectable({
   providedIn: 'root'

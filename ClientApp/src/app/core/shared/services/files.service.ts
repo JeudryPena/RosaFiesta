@@ -1,8 +1,8 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
-import {config} from '../../../env/config.dev';
-import {MultipleImageDto} from '../../core/interfaces/Product/UserInteract/multipleImageDto';
+import {config} from '../../../../env/config.dev';
+import {MultipleImageDto} from '../../interfaces/Product/UserInteract/multipleImageDto';
 
 @Injectable({
   providedIn: 'root'

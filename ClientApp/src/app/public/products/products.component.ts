@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, catchError, map } from 'rxjs';
-import { CategoryResponse } from '../../../core/interfaces/Product/Response/categoryResponse';
-import { CategoriesService } from '../../admin/inventory/services/categories.service';
-import { DiscountsService } from '../../admin/inventory/services/discounts.service';
-import { ReviewsService } from '../../private/services/reviews.service';
-import { decrypt, encrypt } from '../../../shared/util/util-encrypt';
-import { ProductsService } from '../../admin/inventory/services/products.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {catchError, map, Observable} from 'rxjs';
+import {CategoryResponse} from '../../core/interfaces/Product/Response/categoryResponse';
+import {CategoriesService} from '../../admin/inventory/services/categories.service';
+import {DiscountsService} from '../../admin/inventory/services/discounts.service';
+import {ReviewsService} from '../../intranet/services/reviews.service';
+import {decrypt, encrypt} from '@core/shared/util/util-encrypt';
+import {ProductsService} from '../../admin/inventory/services/products.service';
 
 @Component({
   selector: 'app-products',
@@ -33,9 +33,9 @@ export class ProductsComponent implements OnInit {
   }
 
   ProductDetail(id: string) {
-    const data = { id: id };
+    const data = {id: id};
     const productId = encrypt(JSON.stringify(data));
-    this.router.navigate([`/product-detail`], { queryParams: { productId } });
+    this.router.navigate([`/product-detail`], {queryParams: {productId}});
   }
 
   async Retrieve() {

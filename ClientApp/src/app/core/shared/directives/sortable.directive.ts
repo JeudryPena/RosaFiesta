@@ -1,5 +1,5 @@
-import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { ProductPreviewResponse } from '../../core/interfaces/Product/Response/productPreviewResponse';
+import {Directive, EventEmitter, Input, Output} from '@angular/core';
+import {ProductPreviewResponse} from '../../interfaces/Product/Response/productPreviewResponse';
 
 @Directive({
   selector: 'th[sortable]',
@@ -17,13 +17,13 @@ export class NgbdSortableHeader {
 
   rotate() {
     this.direction = rotate[this.direction];
-    this.sort.emit({ column: this.sortable, direction: this.direction });
+    this.sort.emit({column: this.sortable, direction: this.direction});
   }
 }
 
 export type SortColumn = keyof ProductPreviewResponse | '';
 export type SortDirection = 'asc' | 'desc' | '';
-const rotate: { [key: string]: SortDirection } = { asc: 'desc', desc: '', '': 'asc' };
+const rotate: { [key: string]: SortDirection } = {asc: 'desc', desc: '', '': 'asc'};
 
 export interface SortEvent {
   column: SortColumn;

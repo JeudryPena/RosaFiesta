@@ -1,23 +1,23 @@
-import { DatePipe } from "@angular/common";
-import { HttpResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { BehaviorSubject, lastValueFrom } from 'rxjs';
-import { SaveModalComponent } from '../../../../../shared/components/save-modal/save-modal.component';
-import { Status } from '../../../../../shared/components/save-modal/status';
-import { CategoriesListResponse } from '../../../../../core/interfaces/Product/Response/categoriesListResponse';
-import { ProductResponse } from '../../../../../core/interfaces/Product/Response/productResponse';
-import { SuppliersListResponse } from '../../../../../core/interfaces/Product/Response/suppliersListResponse';
-import { WarrantiesListResponse } from '../../../../../core/interfaces/Product/Response/warrantiesListResponse';
-import { OptionDto } from '../../../../../core/interfaces/Product/optionDto';
-import { ProductDto } from '../../../../../core/interfaces/Product/productDto';
-import { CategoriesService } from '../../services/categories.service';
-import { FilesService } from '../../../../../shared/services/files.service';
-import { ProductsService } from '../../services/products.service';
-import { SuppliersService } from '../../services/suppliers.service';
-import { WarrantiesService } from '../../services/warranties.service';
+import {DatePipe} from "@angular/common";
+import {HttpResponse} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import {BehaviorSubject, lastValueFrom} from 'rxjs';
+import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
+import {Status} from '@core/shared/components/save-modal/status';
+import {CategoriesListResponse} from '../../../../core/interfaces/Product/Response/categoriesListResponse';
+import {ProductResponse} from '../../../../core/interfaces/Product/Response/productResponse';
+import {SuppliersListResponse} from '../../../../core/interfaces/Product/Response/suppliersListResponse';
+import {WarrantiesListResponse} from '../../../../core/interfaces/Product/Response/warrantiesListResponse';
+import {OptionDto} from '../../../../core/interfaces/Product/optionDto';
+import {ProductDto} from '../../../../core/interfaces/Product/productDto';
+import {CategoriesService} from '../../services/categories.service';
+import {FilesService} from '@core/shared/services/files.service';
+import {ProductsService} from '../../services/products.service';
+import {SuppliersService} from '../../services/suppliers.service';
+import {WarrantiesService} from '../../services/warranties.service';
 
 @Component({
   selector: 'app-modal-product',
@@ -151,9 +151,9 @@ export class ModalProductComponent implements OnInit {
   RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
     if (data.body) {
 
-      const downloadedFile = new Blob([data.body], { type: data.body.type });
+      const downloadedFile = new Blob([data.body], {type: data.body.type});
 
-      const file = new File([downloadedFile], fileName, { type: `${data.body.type}` });
+      const file = new File([downloadedFile], fileName, {type: `${data.body.type}`});
 
       this.uploadFiles.push(file);
     }
@@ -207,7 +207,7 @@ export class ModalProductComponent implements OnInit {
   }
 
   saveOption(optionFormValue: any) {
-    const option = { ...optionFormValue };
+    const option = {...optionFormValue};
     option.images = this.uploadFiles;
     const optionDto: OptionDto = {
       id: option.id,
@@ -232,7 +232,7 @@ export class ModalProductComponent implements OnInit {
   }
 
   updateOpt(optionFormValue: any) {
-    const option = { ...optionFormValue };
+    const option = {...optionFormValue};
     option.images = this.uploadFiles;
     const optionDto: OptionDto = {
       id: option.id,
@@ -321,13 +321,13 @@ export class ModalProductComponent implements OnInit {
   }
 
   async updateProduct(productFormValue: any) {
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea actualizar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(result => {
       if (result) {
-        const product = { ...productFormValue };
+        const product = {...productFormValue};
         if (this.options.length !== 0)
           this.UpdateImages();
         else
@@ -357,14 +357,14 @@ export class ModalProductComponent implements OnInit {
     }
     this.service.UpdateProduct(this.productId, productDto).subscribe({
       next: () => {
-        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
         modalRef.componentInstance.title = 'Producto actualizado!';
         modalRef.componentInstance.status = Status.Success;
         modalRef.result.then(result => {
           this.activeModal.close(true);
         });
       }, error: (error) => {
-        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
         modalRef.componentInstance.title = error;
         modalRef.componentInstance.status = Status.Failed;
       }
@@ -372,13 +372,13 @@ export class ModalProductComponent implements OnInit {
   }
 
   async AddProduct(productFormValue: any) {
-    const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+    const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
     modalRef.componentInstance.title = '¿Desea guardar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
 
     modalRef.result.then(async result => {
       if (result) {
-        const product = { ...productFormValue };
+        const product = {...productFormValue};
         if (this.options.length !== 0) {
           await this.AddImages();
         }
@@ -408,7 +408,7 @@ export class ModalProductComponent implements OnInit {
     }
     this.service.AddProduct(productDto).subscribe({
       next: () => {
-        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
         modalRef.componentInstance.title = 'Producto guardado!';
         modalRef.componentInstance.status = Status.Success;
 
@@ -418,7 +418,7 @@ export class ModalProductComponent implements OnInit {
         });
       }, error: (error) => {
         console.log(error);
-        const modalRef = this.modalService.open(SaveModalComponent, { size: '', scrollable: true });
+        const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
         modalRef.componentInstance.title = error;
         modalRef.componentInstance.status = Status.Failed;
       }

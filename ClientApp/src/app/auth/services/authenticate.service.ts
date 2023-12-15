@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from 'rxjs';
-import { config } from '@env/config.dev';
+import { config } from '@env/config';
 import { LoginResponse } from '../../core/interfaces/Security/Response/loginResponse';
 import { ExternalAuthDto } from '../../core/interfaces/Security/external-auth-dto';
 import { LogingDto } from '../../core/interfaces/Security/logingDto';
@@ -30,11 +30,9 @@ export class AuthenticateService {
     private router: Router
   ) {
     this.externalAuthService.authState.subscribe((user) => {
-      console.log("tuhnastra")
       this.externalLogin();
       this.extAuthChangeSub.next(user);
       this.isExternalAuth = true;
-
     })
   }
 

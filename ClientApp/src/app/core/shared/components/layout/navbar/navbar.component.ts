@@ -1,6 +1,6 @@
 import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {AuthenticateService} from '@auth/services/authenticate.service';
-import {CartsService} from '@privy/services/carts.service';
+import {CartsService} from '../../../../../intranet/services/carts.service';
 import {SidenavService} from '../../../services/side-nav.service';
 import {SidenavComponent} from '../sidenav/sidenav.component';
 import {Router} from "@angular/router";
