@@ -25,6 +25,7 @@ import {
   ManagementWarrantiesComponent
 } from "@admin/inventory/containers/management-warranties/management-warranties.component";
 import {ModalWarrantyComponent} from "@admin/inventory/components/modal-warranty/modal-warranty.component";
+import {AdminModule} from "@admin/admin.module";
 
 @NgModule({
   declarations: [
@@ -45,11 +46,11 @@ import {ModalWarrantyComponent} from "@admin/inventory/components/modal-warranty
     ManagementWarrantiesComponent
   ],
   imports: [
-    inventoryRouter
+    inventoryRouter,
+    AdminModule
   ],
   exports: [],
-  providers: [],
-  bootstrap: [InventoryComponent]
+  providers: []
 })
 export class InventoryModule {
 }

@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
-import {homeRouter} from "@public/home/home-routing.module";
-import {HomeComponent} from "@public/home/home.component";
+import {HomeComponent} from "@public/home/containers/home/home.component";
 import {FeaturesComponent} from "@public/home/components/features/features.component";
 import {HeroesComponent} from "@public/home/components/heroes/heroes.component";
 import {AboutUsComponent} from "@public/home/containers/about-us/about-us.component";
 import {PublicModule} from "@public/public.module";
 import {CarouselComponent} from "@public/home/components/carousel/carousel.component";
 import {ProductsModule} from "@public/products/products.module";
-import { MainPageComponent } from './containers/main-page/main-page.component';
+import {mainPageRouter} from "@public/home/main-page-routing.module";
+import {MainPageComponent} from "@public/home/main-page.component";
 
 
 @NgModule({
@@ -20,12 +20,12 @@ import { MainPageComponent } from './containers/main-page/main-page.component';
         MainPageComponent
     ],
     imports: [
-        homeRouter,
+        mainPageRouter,
         PublicModule,
         ProductsModule
     ],
     exports: [],
     providers: []
 })
-export class HomeModule {
+export class MainPageModule {
 }

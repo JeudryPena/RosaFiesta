@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
-import { config } from 'src/env/config.dev';
-import { AddressesComponent } from './addresses/addresses.component';
-import { PayMethodsListResponse } from '../../core/interfaces/Product/Response/pay-methods-list-response';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { AddressesListResponse } from '../../core/interfaces/Product/UserInteract/Response/addresses-list-response';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ICreateOrderRequest, IPayPalConfig} from 'ngx-paypal';
+import {AddressesComponent} from './addresses/addresses.component';
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import {PayMethodsListResponse} from "@core/interfaces/Product/Response/pay-methods-list-response";
+import {AddressesListResponse} from "@core/interfaces/Product/UserInteract/Response/addresses-list-response";
+import {config} from "@env/config.dev";
 
 
 @Component({
@@ -18,19 +18,17 @@ export class PurchaseComponent implements OnInit {
   purchaseForm: any;
 
   payMethods: PayMethodsListResponse[] = [];
-  payMethodSelected: string | null = null;
   payMethodForms!: PayMethodsListResponse;
 
-  addresses: AddressesListResponse[] = [];
   addressSelected: string | null = null;
   addressForms!: AddressesListResponse;
 
   public payPalConfig?: IPayPalConfig;
 
   constructor(
-    public modalService: NgbModal,
-    config: NgbModalConfig
-  ) { }
+    public modalService: NgbModal
+  ) {
+  }
 
   ngOnInit(): void {
     this.initConfig();
@@ -41,7 +39,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   createAddress() {
-    const modalRef = this.modalService.open(AddressesComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(AddressesComponent, {size: 'xl', scrollable: true});
     modalRef.result.then((result) => {
       if (result)
         this.retrieveData();
@@ -55,8 +53,7 @@ export class PurchaseComponent implements OnInit {
   onSelect(event: TypeaheadMatch, form: string): void {
     if (form == 'address') {
       this.addressForms = event.item;
-    }
-    else if (form == 'payMethod') {
+    } else if (form == 'payMethod') {
       this.payMethodForms = event.item;
     }
   }

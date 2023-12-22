@@ -1,16 +1,21 @@
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Subject } from 'rxjs';
-import { config } from '@env/config';
-import { LoginResponse } from '../../core/interfaces/Security/Response/loginResponse';
-import { ExternalAuthDto } from '../../core/interfaces/Security/external-auth-dto';
-import { LogingDto } from '../../core/interfaces/Security/logingDto';
-import { RegisterDto } from '../../core/interfaces/Security/registerDto';
-import { ResetPasswordDto } from '../../core/interfaces/Security/resetPasswordDto';
-import { CustomEncoder } from '../../core/classes/custom-encoder';
+import {
+  FacebookLoginProvider,
+  GoogleLoginProvider,
+  SocialAuthService,
+  SocialUser
+} from "@abacritt/angularx-social-login";
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {Subject} from 'rxjs';
+import {config} from "@env/config.dev";
+import {ExternalAuthDto} from "@core/interfaces/Security/external-auth-dto";
+import {LoginResponse} from "@core/interfaces/Security/Response/loginResponse";
+import {RegisterDto} from "@core/interfaces/Security/registerDto";
+import {CustomEncoder} from "@core/classes/custom-encoder";
+import {ResetPasswordDto} from "@core/interfaces/Security/resetPasswordDto";
+import {LogingDto} from "@core/interfaces/Security/logingDto";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +24,6 @@ export class AuthenticateService {
   public isExternalAuth: boolean;
   private apiUrl = `${config.apiURL}authenticate/`
   private authChangeSub = new Subject<boolean>()
-  public authChanged = this.authChangeSub.asObservable();
   private extAuthChangeSub = new Subject<SocialUser>();
   public extAuthChanged = this.extAuthChangeSub.asObservable();
 
@@ -73,17 +77,17 @@ export class AuthenticateService {
   }
 
   confirmEmail(token: string, email: string) {
-    let params = new HttpParams({ encoder: new CustomEncoder() })
+    let params = new HttpParams({encoder: new CustomEncoder()})
     params = params.append('token', token);
     params = params.append('email', email);
-    return this.http.get(`${this.apiUrl}confirm-email`, { params });
+    return this.http.get(`${this.apiUrl}confirm-email`, {params});
   }
 
   resetPassword(reset: ResetPasswordDto, token: string, email: string) {
-    let params = new HttpParams({ encoder: new CustomEncoder() })
+    let params = new HttpParams({encoder: new CustomEncoder()})
     params = params.append('token', token);
     params = params.append('email', email);
-    return this.http.post(`${this.apiUrl}reset-password`, reset, { params });
+    return this.http.post(`${this.apiUrl}reset-password`, reset, {params});
   }
 
   forgotPassword(email: string) {

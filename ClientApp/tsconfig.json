@@ -5,6 +5,9 @@
       "d3-scale"
     ],
     "paths": {
+      "@node/*": [
+        "node_modules/*"
+      ],
       "@admin/*": [
         "app/admin/*"
       ],

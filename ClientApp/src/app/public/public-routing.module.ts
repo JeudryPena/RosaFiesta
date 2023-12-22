@@ -1,20 +1,14 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
-import {AboutUsComponent} from "@public/home/containers/about-us/about-us.component";
+
+const mainPageModule = () => import('@public/home/main-page.module').then(x => x.MainPageModule);
+const productsModule = () => import('@public/products/products.module').then(x => x.ProductsModule);
+
 
 const routes: Routes = [
-  {
-    path: '', component: LayoutComponent, children: [
-      {
-        path: '', loadChildren: () => import('@public/home/home.module').then(m => m.HomeModule)
-      },
-      {
-        path: 'products', loadChildren: () => import('@public/products/products.module').then(m => m.ProductsModule)
-      },
-      {path: 'about-us', component: AboutUsComponent},
-    ]
-  }
+  {path: 'products', loadChildren: productsModule, component: LayoutComponent},
+  {path: 'main-page', loadChildren: mainPageModule, component: LayoutComponent},
 ];
 
 export const publicRouter: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

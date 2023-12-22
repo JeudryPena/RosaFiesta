@@ -1,11 +1,13 @@
-import { DecimalPipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CartResponse } from '../../core/interfaces/Product/Response/cartResponse';
-import { PurchaseDetailOptionResponse } from '../../core/interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
-import { CartsService } from '../services/carts.service';
-import { ProductsService } from '../../admin/inventory/services/products.service';
+import {DecimalPipe} from '@angular/common';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CartResponse} from '../../../../interfaces/Product/Response/cartResponse';
+import {
+  PurchaseDetailOptionResponse
+} from '../../../../interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
+import {CartsService} from '@intranet/services/carts.service';
+import {ProductsService} from '@admin/inventory/services/products.service';
 
 @Component({
   selector: 'app-cart',

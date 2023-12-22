@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule, DatePipe, DecimalPipe, NgTemplateOutlet} from '@angular/common';
+import {CommonModule, CurrencyPipe, DatePipe, DecimalPipe, NgTemplateOutlet} from '@angular/common';
 import {ActionDropdownComponent} from "@core/shared/components/action-dropdown/action-dropdown.component";
 import {BreadcrumbComponent} from "@core/shared/components/breadcrumb/breadcrumb.component";
 import {CheckboxComponent} from "@core/shared/components/checkbox/checkbox.component";
@@ -18,8 +18,6 @@ import {RoundedButtonsComponent} from "@core/shared/components/rounded-buttons/r
 import {SaveModalComponent} from "@core/shared/components/save-modal/save-modal.component";
 import {SelectListComponent} from "@core/shared/components/select-list/select-list.component";
 import {TimePickerComponent} from "@core/shared/components/time-picker/time-picker.component";
-import {ToastContainerComponent} from "@core/shared/components/toast-container/toast-container.component";
-import {ToastGlobalComponent} from "@core/shared/components/toast-global/toast-global.component";
 import {FocusDirective} from "@core/shared/directives/focus.directive";
 import {IsFocusDirective} from "@core/shared/directives/is-focus.directive";
 import {RatingDirective} from "@core/shared/directives/rating.directive";
@@ -35,151 +33,161 @@ import {FooterComponent} from "@core/shared/components/layout/footer/footer.comp
 import {NavbarComponent} from "@core/shared/components/layout/navbar/navbar.component";
 import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
 import {
-  NgbDatepickerModule,
-  NgbDropdownModule,
-  NgbModalModule,
-  NgbModule,
-  NgbPaginationModule,
-  NgbRatingConfig,
-  NgbToastModule,
-  NgbTooltipModule,
-  NgbTypeaheadModule
+    NgbDatepickerModule,
+    NgbDropdownModule,
+    NgbModalModule,
+    NgbModule,
+    NgbPaginationModule,
+    NgbRatingConfig,
+    NgbTooltipModule,
+    NgbTypeaheadModule
 } from "@ng-bootstrap/ng-bootstrap";
-import {tokenGetter} from "@root/app.module";
 import {NgxPayPalModule} from "ngx-paypal";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarsModule} from "ngx-stars";
 import {NgbdSortableHeader} from "@core/shared/directives/sortable.directive";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
-import {JwtModule} from "@auth0/angular-jwt";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {PopoverModule} from "ngx-bootstrap/popover";
 import {TimepickerModule} from "ngx-bootstrap/timepicker";
 import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 import {NgxFileDropModule} from "ngx-file-drop";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
-import {
-  FacebookLoginProvider,
-  GoogleLoginProvider,
-  GoogleSigninButtonModule,
-  SocialAuthServiceConfig,
-  SocialLoginModule
-} from "@abacritt/angularx-social-login";
 import {AvatarModule} from "ngx-avatar";
-import {config} from "@env/config.dev";
+import {CartComponent} from "@core/shared/components/layout/cart/cart.component";
 
 
 @NgModule({
-  declarations: [
-    AdminLayoutComponent,
-    InventoryLayoutComponent,
-    BodyComponent,
-    SidenavComponent,
-    FooterComponent,
-    NavbarComponent,
-    LayoutComponent,
-    ActionDropdownComponent,
-    BreadcrumbComponent,
-    CheckboxComponent,
-    CloseButtonComponent,
-    DateSelectorComponent,
-    EnableModalComponent,
-    EnterIconComponent,
-    ExpandedButtonsComponent,
-    JumbotronComponent,
-    LoadingButtonComponent,
-    MenuDropdownComponent,
-    NotificationsComponent,
-    PaginationComponent,
-    RatingComponent,
-    RoundedButtonsComponent,
-    SaveModalComponent,
-    SelectListComponent,
-    TimePickerComponent,
-    ToastContainerComponent,
-    ToastGlobalComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
+    declarations: [
+        AdminLayoutComponent,
+        InventoryLayoutComponent,
+        BodyComponent,
+        CartComponent,
+        SidenavComponent,
+        FooterComponent,
+        NavbarComponent,
+        LayoutComponent,
+        ActionDropdownComponent,
+        BreadcrumbComponent,
+        CheckboxComponent,
+        CloseButtonComponent,
+        DateSelectorComponent,
+        EnableModalComponent,
+        EnterIconComponent,
+        ExpandedButtonsComponent,
+        JumbotronComponent,
+        LoadingButtonComponent,
+        MenuDropdownComponent,
+        NotificationsComponent,
+        PaginationComponent,
+        RatingComponent,
+        RoundedButtonsComponent,
+        SaveModalComponent,
+        SelectListComponent,
+        TimePickerComponent,
+        FocusDirective,
+        IsFocusDirective,
+        RatingDirective,
+        ImgPathPipe,
+        TruncatePipe
+    ],
+    imports: [
+        RouterModule,
+        CommonModule,
+        FontAwesomeModule,
+        FormsModule,
+        NgbDropdownModule,
+        NgxStarsModule,
+        NgbPaginationModule,
+        NgbModule,
+        NgbdSortableHeader,
+        NgbTypeaheadModule,
+        NgbModalModule,
+        NgbDatepickerModule,
+        NgxChartsModule,
+        NgbTooltipModule,
+        NgTemplateOutlet,
+        BsDatepickerModule.forRoot(),
+        PopoverModule.forRoot(),
+        TimepickerModule.forRoot(),
+        TypeaheadModule.forRoot(),
+        NgxFileDropModule,
+        TooltipModule,
+        AvatarModule,
+        NgxPayPalModule,
+        SortableModule,
+        CurrencyPipe,
+        DatePipe,
+        DecimalPipe
+    ],
+    exports: [
+        AdminLayoutComponent,
+        InventoryLayoutComponent,
+        BodyComponent,
+        CartComponent,
+        SidenavComponent,
+        FooterComponent,
+        NavbarComponent,
+        LayoutComponent,
+        ActionDropdownComponent,
+        BreadcrumbComponent,
+        CheckboxComponent,
+        CloseButtonComponent,
+        DateSelectorComponent,
+        EnableModalComponent,
+        EnterIconComponent,
+        ExpandedButtonsComponent,
+        JumbotronComponent,
+        LoadingButtonComponent,
+        MenuDropdownComponent,
+        NotificationsComponent,
+        PaginationComponent,
+        RatingComponent,
+        RoundedButtonsComponent,
+        SaveModalComponent,
+        SelectListComponent,
+        TimePickerComponent,
+        FocusDirective,
+        IsFocusDirective,
+        RatingDirective,
+        ImgPathPipe,
+        TruncatePipe,
+        CommonModule,
+        RouterModule,
+        FontAwesomeModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbDropdownModule,
+        NgxStarsModule,
+        NgbPaginationModule,
+        NgbModule,
+        NgbdSortableHeader,
+        NgbTypeaheadModule,
+        NgbModalModule,
+        NgbDatepickerModule,
+        NgxChartsModule,
+        NgbTooltipModule,
+        NgTemplateOutlet,
+        BsDatepickerModule,
+        PopoverModule,
+        TimepickerModule,
+        TypeaheadModule,
+        NgxFileDropModule,
+        TooltipModule,
+        AvatarModule,
+        NgxPayPalModule,
+        SortableModule,
+        CurrencyPipe,
+        DatePipe,
+        DecimalPipe,
 
-    FontAwesomeModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbDropdownModule,
-    NgxStarsModule,
-    NgbPaginationModule,
-    NgbModule,
-    NgbdSortableHeader,
-    NgbTypeaheadModule,
-    NgbModalModule,
-    CommonModule,
-    NgbDatepickerModule,
-    NgxChartsModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:7136"],
-        disallowedRoutes: []
-      }
-    }),
-    NgbTooltipModule,
-    NgbToastModule,
-    NgTemplateOutlet,
-    BsDatepickerModule.forRoot(),
-    PopoverModule.forRoot(),
-    TimepickerModule.forRoot(),
-    TypeaheadModule.forRoot(),
-    NgxFileDropModule,
-    TooltipModule,
-    SocialLoginModule,
-    GoogleSigninButtonModule,
-    AvatarModule,
-    NgxPayPalModule
-  ],
-  exports: [],
-  providers: [
-    FocusDirective,
-    IsFocusDirective,
-    RatingDirective,
-    SortableModule,
-    ImgPathPipe,
-    TruncatePipe,
-    DatePipe,
-    NgbRatingConfig,
-    DecimalPipe,
-    ImgPathPipe,
-
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              `${config.googleClientId}`, {
-                scopes: 'email',
-              }
-            )
-          },
-          {
-            id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider(
-              `${config.facebookClientId}`, {
-                scope: 'email',
-              }
-            )
-          }
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig
-    }
-  ],
-  bootstrap: []
+    ],
+    providers: [
+        NgbRatingConfig,
+        DecimalPipe
+    ],
+    bootstrap: []
 })
 export class SharedModule {
 }

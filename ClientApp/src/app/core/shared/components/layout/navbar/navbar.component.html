@@ -1,115 +1,117 @@
 <nav aria-label="Sixth navbar example" class="navbar fixed-top navbar-expand-xl navbar-dark bg-dark navbar-sm"
-    id="navbar">
-    <div class="container-fluid">
-        <ng-container *ngIf="main; else elseMain">
-            <a class="navbar-brand fw-semibold" routerLink=""><img alt="" class="logo" height="30"
-                                                                   src="../../../assets/img/logo.png" width="35">RosaFiesta</a>
-        </ng-container>
-        <ng-template #elseMain>
-            <div (click)="ToggleCollapsed()" class="navbar-brand" type="button">
-                <i class="fa-solid fa-bars categories"></i>
-                <p class="m-0">Categorías</p>
-            </div>
-        </ng-template>
+     id="navbar">
+  <div class="container-fluid">
+    <ng-container *ngIf="main; else elseMain">
+      <a class="navbar-brand fw-semibold" routerLink=""><img alt="" class="logo" height="30"
+                                                             src="../../../assets/img/logo.png"
+                                                             width="35">RosaFiesta</a>
+    </ng-container>
+    <ng-template #elseMain>
+      <div (click)="ToggleCollapsed()" class="navbar-brand" type="button">
+        <i class="fa-solid fa-bars categories"></i>
+        <p class="m-0">Categorías</p>
+      </div>
+    </ng-template>
 
-        <button aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+    <button aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-bs-target="#navbarsExample06" data-bs-toggle="collapse" type="button">
-            <i class="fa-sharp fa-solid fa-caret-down"></i>
-        </button>
+      <i class="fa-sharp fa-solid fa-caret-down"></i>
+    </button>
 
-        <div class="collapse navbar-collapse " id="navbarsExample06">
-            <ul class="navbar-nav me-auto">
-                <nav class="nav row nav-masthead">
-                    <div class="col-md-auto left-side">
-                        <div class="nav-item d-inline-flex">
-                            <a class="nav-link" routerLink="/products"><i
-                                    class="fa-solid fa-box-open me-1"></i>Productos</a>
-                            <a class="nav-link" routerLink="/about-us">
-                                <div class="d-inline-flex">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    <p class="m-0">Nosotros</p>
-                                </div>
-                            </a>
-                            <div display="dynamic" ngbDropdown placement="bottom-end">
-                                <a aria-labelledby="navbarDropdown3" class="nav-link" id="adminMenu"
-                                    ngbDropdownToggle><i class="fa-solid fa-user-tie me-1"></i>Admin</a>
-                                <div aria-labelledby="adminMenu" ngbDropdownMenu>
-                                    <div class="d-flex flex-column">
-                                        <a class="dropdown-item" routerLink="/inventory"><i
-                                                class="fa-solid fa-warehouse me-1"></i>Inventario</a>
-                                        <a class="dropdown-item " routerLink="/admin"><i
-                                                class="fa-solid fa-chart-simple me-1"></i>Panel
-                                            de
-                                            Admin</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-auto d-flex justify-content-end px-0 right-side">
-                        <div class="d-inline-flex">
-                            <div class="input-group input-group-sm flex-nowrap search-bar">
-                                <input aria-label="Buscar" class="form-control input-search" focus id="search" placeholder="Buscar..."
-                                    role="search" type="search">
-                                <div class="input-group-text">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </div>
-                            </div>
-                            <ng-template #rt let-r="result" let-t="term">
-                                <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
-                                    class="me-1" style="width: 16px" />
-                                <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-                            </ng-template>
-                        </div>
-                        <ng-container *ngIf="isAuthenticated; else elseBlock">
+    <div class="collapse navbar-collapse " id="navbarsExample06">
+      <ul class="navbar-nav me-auto">
+        <nav class="nav row nav-masthead">
+          <div class="col-md-auto left-side">
+            <div class="nav-item d-inline-flex">
+              <a class="nav-link" routerLink="/products"><i
+                class="fa-solid fa-box-open me-1"></i>Productos</a>
+              <a class="nav-link" routerLink="/about-us">
+                <div class="d-inline-flex">
+                  <i class="bi bi-info-circle me-1"></i>
+                  <p class="m-0">Nosotros</p>
+                </div>
+              </a>
+              <div display="dynamic" ngbDropdown placement="bottom-end">
+                <a aria-labelledby="navbarDropdown3" class="nav-link" id="adminMenu"
+                   ngbDropdownToggle><i class="fa-solid fa-user-tie me-1"></i>Admin</a>
+                <div aria-labelledby="adminMenu" ngbDropdownMenu>
+                  <div class="d-flex flex-column">
+                    <a class="dropdown-item" routerLink="/inventory"><i
+                      class="fa-solid fa-warehouse me-1"></i>Inventario</a>
+                    <a class="dropdown-item " routerLink="/admin"><i
+                      class="fa-solid fa-chart-simple me-1"></i>Panel
+                      de
+                      Admin</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-auto d-flex justify-content-end px-0 right-side">
+            <div class="d-inline-flex">
+              <div class="input-group input-group-sm flex-nowrap search-bar">
+                <input aria-label="Buscar" class="form-control input-search" focus id="search" placeholder="Buscar..."
+                       role="search" type="search">
+                <div class="input-group-text">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+              </div>
+              <ng-template #rt let-r="result" let-t="term">
+                <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']"
+                     class="me-1" style="width: 16px"/>
+                <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+              </ng-template>
+            </div>
+            <ng-container *ngIf="isAuthenticated; else elseBlock">
 
-                            <div class="d-inline-block ps-0 pe-0" display="dynamic" ngbDropdown placement="bottom-end">
-                                <div aria-labelledby="navbarDropdown3" class="navbar-cart" id="dropdownForm1"
-                                    ngbDropdownToggle type="button">
-                                    <div *ngIf="totalItems != 0" class="navbar-cart-items">
-                                        <p>{{totalItems | number}}</p>
-                                    </div>
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                </div>
-                                <div aria-labelledby="dropdownForm1" ngbDropdownMenu>
-                                    <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
-                                </div>
-                            </div>
-                            <div #myDrop="ngbDropdown" [ngbPopover]="dropdown" class="d-flex ps-0 pe-0" display="dynamic"
-                                ngbDropdown placement="bottom-end">
-                                <div class="d-flex navbar-user">
-                                    <ngx-avatar (click)="myDrop.toggle();" [name]="userName" [size]="30"
-                                        size="36"></ngx-avatar>
-                                </div>
-                                <ng-template #dropdown>
-                                    <div class="d-flex flex-column">
-                                        <a class="item" routerLink="/profile">{{userName}}</a>
-                                        <hr class="mt-2 mb-2">
-                                        <a class="item" routerLink="/config"><i
-                                                class="fa-solid fa-gear"></i>&nbsp;&nbsp;Configuración</a>
-                                        <a class="item" routerLink="/my-wish-lists"><i
-                                                class="fa-solid fa-heart"></i>&nbsp;&nbsp;Lista de
-                                            deseos</a>
-                                        <a class="item" routerLink="/my-orders"><i
-                                                class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis
-                                            ordenes</a>
-                                        <hr class="mt-2 mb-2">
-                                        <a (click)="Logout()" class="item"><i
-                                                class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
-                                    </div>
-                                </ng-template>
-                            </div>
-                        </ng-container>
-                        <ng-template #elseBlock>
-                            <div class="btn-cont">
-                                <button class="btn btn-primary btn" routerLink="/authenticate"
-                                    type="button">Acceso</button>
-                                <button class="btn btn-warning" routerLink="/register" type="button">Registro</button>
-                            </div>
-                        </ng-template>
-                    </div>
-                </nav>
-            </ul>
-        </div>
+              <div class="d-inline-block ps-0 pe-0" display="dynamic" ngbDropdown placement="bottom-end">
+                <div aria-labelledby="navbarDropdown3" class="navbar-cart" id="dropdownForm1"
+                     ngbDropdownToggle>
+                  <div *ngIf="totalItems != 0" class="navbar-cart-items">
+                    <p>{{totalItems | number}}</p>
+                  </div>
+                  <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <div aria-labelledby="dropdownForm1" ngbDropdownMenu>
+                  <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
+                </div>
+              </div>
+              <div #myDrop="ngbDropdown" [ngbPopover]="dropdown" class="d-flex ps-0 pe-0" display="dynamic"
+                   ngbDropdown placement="bottom-end">
+                <div class="d-flex navbar-user">
+                  <ngx-avatar (click)="myDrop.toggle();" [name]="userName" [size]="30"
+                              size="36"></ngx-avatar>
+                </div>
+                <ng-template #dropdown>
+                  <div class="d-flex flex-column">
+                    <a class="item" routerLink="/profile">{{userName}}</a>
+                    <hr class="mt-2 mb-2">
+                    <a class="item" routerLink="/config"><i
+                      class="fa-solid fa-gear"></i>&nbsp;&nbsp;Configuración</a>
+                    <a class="item" routerLink="/my-wish-lists"><i
+                      class="fa-solid fa-heart"></i>&nbsp;&nbsp;Lista de
+                      deseos</a>
+                    <a class="item" routerLink="/my-orders"><i
+                      class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;Mis
+                      ordenes</a>
+                    <hr class="mt-2 mb-2">
+                    <a (click)="Logout()" class="item"><i
+                      class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-container>
+            <ng-template #elseBlock>
+              <div class="btn-cont">
+                <button class="btn btn-primary btn" routerLink="/authenticate"
+                        type="button">Acceso
+                </button>
+                <button class="btn btn-warning" routerLink="/register" type="button">Registro</button>
+              </div>
+            </ng-template>
+          </div>
+        </nav>
+      </ul>
     </div>
+  </div>
 </nav>

@@ -5,6 +5,7 @@ import {CardsComponent} from "@public/products/components/cards/cards.component"
 import {ModalQuoteComponent} from "@public/products/components/modal-quote/modal-quote.component";
 import {ProductCardComponent} from "@public/products/components/product-card/product-card.component";
 import {ProductDetailComponent} from "@public/products/containers/product-detail/product-detail.component";
+import {PublicModule} from "@public/public.module";
 
 @NgModule({
   declarations: [
@@ -15,11 +16,13 @@ import {ProductDetailComponent} from "@public/products/containers/product-detail
     ProductDetailComponent
   ],
   imports: [
-    productsRouter
+    productsRouter,
+    PublicModule
   ],
-  exports: [],
-  providers: [],
-  bootstrap: [ProductsComponent]
+  exports: [
+    CardsComponent
+  ],
+  providers: []
 })
 export class ProductsModule {
 }

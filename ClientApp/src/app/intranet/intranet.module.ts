@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {IntranetComponent} from './intranet.component';
-import {CartComponent} from "./cart/cart.component";
 import {MyOrdersComponent} from "./my-orders/my-orders.component";
 import {SettingsComponent} from "./settings/settings.component";
 import {WishListsComponent} from "./wish-lists/wish-lists.component";
@@ -11,18 +10,18 @@ import {intranetRouter} from "@intranet/intranet-routing.module";
 @NgModule({
   declarations: [
     IntranetComponent,
-    CartComponent,
     MyOrdersComponent,
     SettingsComponent,
     WishListsComponent
   ],
   imports: [
-    SharedModule,
-    intranetRouter
+    intranetRouter,
+    SharedModule
   ],
-  exports: [],
-  providers: [],
-  bootstrap: [IntranetComponent]
+  exports: [
+    SharedModule,
+  ],
+  providers: []
 })
 export class IntranetModule {
 }

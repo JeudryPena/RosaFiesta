@@ -8,25 +8,27 @@ import {RegisterComponent} from "@auth/containers/register/register.component";
 import {ResetPasswordComponent} from "@auth/containers/reset-password/reset-password.component";
 import {authRouter} from "@auth/auth-routing.module";
 import {AuthComponent} from './auth.component';
+import {SharedModule} from "@core/shared/shared.module";
+import {GoogleSigninButtonModule} from "@abacritt/angularx-social-login";
 
 @NgModule({
-  declarations: [
-    AuthComponent,
-    AuthenticateComponent,
-    ChangePasswordComponent,
-    FinishRegisterComponent,
-    ForgotPasswordComponent,
-    RegisterComponent,
-    ResetPasswordComponent,
-    AuthComponent
-  ],
-  imports: [
-    authRouter,
-    ReactiveFormsModule
-  ],
-  exports: [],
-  providers: [],
-  bootstrap: [AuthComponent]
+    declarations: [
+        AuthComponent,
+        AuthenticateComponent,
+        ChangePasswordComponent,
+        FinishRegisterComponent,
+        ForgotPasswordComponent,
+        RegisterComponent,
+        ResetPasswordComponent,
+    ],
+    imports: [
+        authRouter,
+        SharedModule,
+        ReactiveFormsModule,
+        GoogleSigninButtonModule,
+    ],
+    exports: [],
+    providers: []
 })
 export class AuthModule {
 }

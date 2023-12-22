@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 interface SidenavToggle {
   screenWidth: number;
@@ -14,9 +14,4 @@ export class LayoutComponent {
   isSideNavCollapsed = false;
   screenWidth = 0;
   main = true;
-
-  onToggleSidenav(data: SidenavToggle): void {
-    this.screenWidth = data.screenWidth;
-    this.isSideNavCollapsed = data.collapsed;
-  }
 }
