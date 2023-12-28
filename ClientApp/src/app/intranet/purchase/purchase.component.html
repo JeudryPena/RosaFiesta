@@ -1,66 +1,62 @@
 <div class="m-4">
-    <div class="pb-4 text-center">
-        <h2>Formulario de Pago</h2>
+  <div class="pb-4 text-center">
+    <h2>Formulario de Pago</h2>
+  </div>
+
+  <div class="row g-5">
+    <div class="col-md-5 col-lg-4 order-md-last">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-primary">Tu carrito</span>
+        <span class="badge bg-primary rounded-pill">3</span>
+      </h4>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0">Nombre de Producto</h6>
+            <small class="text-body-secondary">Brief description</small>
+          </div>
+          <span class="text-body-secondary">$12</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total (RD$)</span>
+          <strong>$20</strong>
+        </li>
+      </ul>
     </div>
-
-    <div class="row g-5">
-        <div class="col-md-5 col-lg-4 order-md-last">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-primary">Tu carrito</span>
-                <span class="badge bg-primary rounded-pill">3</span>
-            </h4>
-            <ul class="list-group mb-3">
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0">Nombre de Producto</h6>
-                        <small class="text-body-secondary">Brief description</small>
-                    </div>
-                    <span class="text-body-secondary">$12</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>Total (RD$)</span>
-                    <strong>$20</strong>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-7 col-lg-8">
-            <h4 class="mb-3">Dirección de Envío</h4>
-            <form [formGroup]="purchaseForm">
-                <div class="row g-3 mb-4 mt-3">
-                    <div class="col-sm-9">
-                        <div class="input-group" role="group">
-                            <input #categoryIdInput type="search" required formControlName="categoryId"
-                                class="form-control input" placeholder="Elegir de mis métodos de pago"
-                                id="typeahead-focus" [adaptivePosition]="true" [(ngModel)]="addressSelected"
-                                [typeaheadSingleWords]="true" [typeaheadOptionsLimit]="7" [typeahead]="payMethods"
-                                typeaheadOptionField="title" (typeaheadOnSelect)="onSelect($event, 'payMethod')"
-                                [typeaheadMinLength]="0" [typeaheadWaitMs]="100" [typeaheadOptionsInScrollableView]="20"
-                                [isAnimated]="true" />
-                            <div class="input-group-text">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 d-inline-flex">
-                        <caption class="me-3 caption">/</caption>
-                        <button type="button" class="btn btn-primary w-100" ngbAutofocus (click)="createAddress()">
-                            Crear Nueva Dirección
-                        </button>
-                    </div>
-                </div>
-            </form>
-            <hr class="my-4">
-
-            <h4 class="mb-3">Método de Pago</h4>
-
-            <ngx-paypal [config]="payPalConfig">
-
-            </ngx-paypal>
-
-            <hr class="my-4">
-            <div class="justify-content-center">
-                <button class="btn btn-primary btn-lg" type="submit">Confirmar Compra</button>
+    <div class="col-md-7 col-lg-8">
+      <h4 class="mb-3">Dirección de Envío</h4>
+      <form [formGroup]="purchaseForm">
+        <div class="row g-3 mb-4 mt-3">
+          <div class="col-sm-9">
+            <div class="input-group" role="group">
+              <input #categoryIdInput [(ngModel)]="addressSelected" class="form-control input" formControlName="categoryId"
+                     id="typeahead-focus" placeholder="Elegir de mis métodos de pago"
+                     required type="search"/>
+              <div class="input-group-text">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
             </div>
+          </div>
+          <div class="col-sm-3 d-inline-flex">
+            <caption class="me-3 caption">/</caption>
+            <button (click)="createAddress()" class="btn btn-primary w-100" ngbAutofocus type="button">
+              Crear Nueva Dirección
+            </button>
+          </div>
         </div>
+      </form>
+      <hr class="my-4">
+
+      <h4 class="mb-3">Método de Pago</h4>
+
+      <ngx-paypal [config]="payPalConfig">
+
+      </ngx-paypal>
+
+      <hr class="my-4">
+      <div class="justify-content-center">
+        <button class="btn btn-primary btn-lg" type="submit">Confirmar Compra</button>
+      </div>
     </div>
+  </div>
 </div>

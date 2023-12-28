@@ -3,7 +3,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ICreateOrderRequest, IPayPalConfig} from 'ngx-paypal';
 import {AddressesComponent} from './addresses/addresses.component';
-import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
 import {PayMethodsListResponse} from "@core/interfaces/Product/Response/pay-methods-list-response";
 import {AddressesListResponse} from "@core/interfaces/Product/UserInteract/Response/addresses-list-response";
 import {config} from "@env/config.dev";
@@ -48,14 +47,6 @@ export class PurchaseComponent implements OnInit {
 
   retrieveData() {
 
-  }
-
-  onSelect(event: TypeaheadMatch, form: string): void {
-    if (form == 'address') {
-      this.addressForms = event.item;
-    } else if (form == 'payMethod') {
-      this.payMethodForms = event.item;
-    }
   }
 
   private initConfig(): void {

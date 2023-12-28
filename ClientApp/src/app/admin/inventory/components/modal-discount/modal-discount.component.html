@@ -17,26 +17,20 @@
 
         <div class="input-container m-0 ms-3" isFocus>
           <div #p="ngbPopover" [autoClose]="false" [ngbPopover]="iconTemplate"
-               class="input-group flex-nowrap" required triggers="manual">
-            <input #dp="bsDaterangepicker" (bsValueChange)="p.toggle()"
-                   [bsConfig]="{ isAnimated:true, dateInputFormat:'MMMM Do  YYYY, h:mm:ss a', containerClass: 'theme-dark-blue', showTodayButton:true,  showClearButton:true, todayPosition:'left', clearPosition:'right'}"
-                   [bsValue]="date"
-                   [maxDate]="maxDate" [minDate]="minDate" [readOnly]="true" bsDaterangepicker
-                   class="input"
-                   formControlName="date"
-                   placement="bottom"
-                   required type="text"/>
+               class="input-group flex-nowrap" triggers="manual">
+            <input
+              [readOnly]="true"
+              class="input"
+              formControlName="date"
+              required type="text"/>
             <ng-template #iconTemplate>
-              <timepicker [formControlName]="'start'" [min]="minDate">
-              </timepicker>
-              <timepicker [formControlName]="'end'" [min]="maxDate">
-              </timepicker>
+
               <button (click)="p.toggle(); changeTime(discountForm.get('start')?.value, discountForm.get('end')?.value)"
                       class="btn btn-dark pe-2 ps-2 wrap" type="button">
                 Agregar
               </button>
             </ng-template>
-            <button (click)="dp.toggle()" [disabled]="read"
+            <button [disabled]="read"
                     class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 input-group-text"
                     type="button"></button>
           </div>
@@ -49,16 +43,11 @@
 
       <div *ngIf="!read" class="input-container" isFocus>
         <div class="input-group">
-          <input (typeaheadOnSelect)="onSelect($event)"
-                 [(ngModel)]="selected" [adaptivePosition]="true"
-                 [isAnimated]="true" [typeaheadMinLength]="0"
-                 [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7"
-                 [typeaheadSingleWords]="true"
-                 [typeaheadWaitMs]="100"
-                 [typeahead]="optionsList" class="input" formControlName="productsDiscounts"
-                 id="typeahead-focus"
-                 type="search"
-                 typeaheadOptionField="title"/>
+          <input
+            [(ngModel)]="selected" class="input" formControlName="productsDiscounts"
+            id="typeahead-focus"
+            type="search"
+          />
         </div>
         <label>Opción</label>
         <span>Opción</span>

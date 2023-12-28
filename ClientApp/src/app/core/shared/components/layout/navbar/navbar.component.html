@@ -79,8 +79,7 @@
               <div #myDrop="ngbDropdown" [ngbPopover]="dropdown" class="d-flex ps-0 pe-0" display="dynamic"
                    ngbDropdown placement="bottom-end">
                 <div class="d-flex navbar-user">
-                  <ngx-avatar (click)="myDrop.toggle();" [name]="userName" [size]="30"
-                              size="36"></ngx-avatar>
+                  <ngx-avatars (click)="myDrop.toggle();" [name]="userName" size="30"></ngx-avatars>
                 </div>
                 <ng-template #dropdown>
                   <div class="d-flex flex-column">

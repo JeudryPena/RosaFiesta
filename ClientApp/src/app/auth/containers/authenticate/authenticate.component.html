@@ -9,7 +9,7 @@
             <div (click)="loginFacebook()" class="btn btn-outline-primary w-100 my-1">
               <div class="row align-items-center">
                 <div class="col-2 d-none d-md-block">
-                  <img alt="" src="../../../assets/icons/facebook.png" width="32" />
+                  <img alt="" src="../../../assets/icons/facebook.png" width="32"/>
                 </div>
                 <div class="col-12 col-md-10 text-center">Facebook</div>
               </div>
@@ -17,28 +17,31 @@
             <div (click)="logoutFacebook()" class="btn btn-primary"></div>
             <!-- <div class="fb-login-button" data-width="" data-size="" data-button-type="" data-layout="" data-auto-logout-link="false"
               data-use-continue-as="true"></div> -->
-            <asl-google-signin-button id="google-button" shape="rectangular" size="large" type="standard" width="400"></asl-google-signin-button>
+            <asl-google-signin-button [width]="400" id="google-button" shape="rectangular" size="large"
+                                      type="standard"></asl-google-signin-button>
           </div>
-          <br />
+          <br/>
           <div class="row text-center">
             <div class="col-12 my-2">
               <h4>o con tu usuario</h4>
             </div>
           </div>
           <div [ngClass]="{'focus': userFocused}" class="mb-4 input-wrap form-floating">
-            <input #userInput (blur)="userFocused = false" (focus)="userFocused = true" class="form-control contact-input" formControlName="username"
-              id="username" maxlength="50" minlength="5" placeholder="Usuario" required
-              type="email" />
-            <label for="floatingInput">Usuario</label>
+            <input #userInput (blur)="userFocused = false" (focus)="userFocused = true"
+                   class="form-control contact-input" formControlName="username"
+                   id="username" maxlength="50" minlength="5" placeholder="Usuario" required
+                   type="email"/>
+            <label>Usuario</label>
             <i class="icon fa-regular fa-id-card"></i>
             <h5 *ngIf="validate('username', 'required', userFocused)">El Usuario es<strong> Requerido</strong></h5>
             <h5 *ngIf="validate('username', 'minlength', userFocused)">El Usuario es<strong> muy corto</strong></h5>
           </div>
           <div [ngClass]="{'focus': passwordFocused}" class="mb-4 input-wrap form-floating">
-            <input #passwordInput (blur)="passwordFocused = false" (focus)="passwordFocused = true" class="form-control contact-input" formControlName="password"
-              id="password" maxlength="256" minlength="8" placeholder="Contraseña"
-              required type="password" />
-            <label for="floatingInput">Contraseña</label>
+            <input #passwordInput (blur)="passwordFocused = false" (focus)="passwordFocused = true"
+                   class="form-control contact-input" formControlName="password"
+                   id="password" maxlength="256" minlength="8" placeholder="Contraseña"
+                   required type="password"/>
+            <label>Contraseña</label>
             <i class="icon fa-solid fa-lock"></i>
             <h5 *ngIf="validate('password', 'required', passwordFocused)">La Contraseña es<strong> Requerida</strong>
             </h5>
@@ -48,8 +51,9 @@
           <div class="mb"></div>
           <div class="row mb-4">
             <div class="col">
-              <input class="form-check-input" formControlName="rememberMe" id="connected" name="connected" type="checkbox"
-                value="remember-me" />
+              <input class="form-check-input" formControlName="rememberMe" id="connected" name="connected"
+                     type="checkbox"
+                     value="remember-me"/>
               <label class="form-check-label" for="connected">&nbsp;&nbsp;Recordarme</label>
             </div>
             <div class="col-7 text-end">
@@ -66,7 +70,7 @@
             <div class="col">
               <div class="d-grid">
                 <button (click)="loginUser(loginForm.value)" [disabled]="!loginForm.valid" class="btn btn-primary"
-                  type="submit">
+                        type="submit">
                   Iniciar Sesión
                 </button>
               </div>

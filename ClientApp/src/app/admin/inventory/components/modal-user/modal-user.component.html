@@ -1,161 +1,158 @@
 <div class="form">
-    <div class="contact-form">
-        <span class="circle one"></span>
-        <span class="circle two"></span>
-        <form [formGroup]="userForm" action="../../../../index.html" autocomplete="off">
-            <h3 class="title">{{title}}</h3>
-            <div class="row group">
-                <div class="col">
-                    <div class="input-container" isFocus>
-                        <input [readOnly]="read" class="input" formControlName="userName" maxlength="256"
-                               minlength="3" required type="text"/>
-                        <label>Usuario *</label>
-                        <span>Usuario *</span>
-                        <h5 *ngIf="validate('userName', 'required')">El Usuario es<strong>
-                            requerido</strong>
-                        </h5>
-                        <h5 *ngIf="validate('userName', 'minlength')">El Usuario es<strong> muy
-                            corto</strong>
-                        </h5>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-container" isFocus>
-                        <input [readOnly]="read" class="input" formControlName="email" maxlength="253"
-                               minlength="3" type="text"/>
-                        <label>Email *</label>
-                        <span>Email *</span>
-                        <h5 *ngIf="validate('email', 'required')">El Email es<strong> requerido</strong>
-                        </h5>
-                        <h5 *ngIf="validate('email', 'minlength')">El Email es<strong> muy corto</strong>
-                        </h5>
-                    </div>
-                </div>
+  <div class="contact-form">
+    <span class="circle one"></span>
+    <span class="circle two"></span>
+    <form [formGroup]="userForm" action="../../../../index.html" autocomplete="off">
+      <h3 class="title">{{title}}</h3>
+      <div class="row group">
+        <div class="col">
+          <div class="input-container" isFocus>
+            <input [readOnly]="read" class="input" formControlName="userName" maxlength="256"
+                   minlength="3" required type="text"/>
+            <label>Usuario *</label>
+            <span>Usuario *</span>
+            <h5 *ngIf="validate('userName', 'required')">El Usuario es<strong>
+              requerido</strong>
+            </h5>
+            <h5 *ngIf="validate('userName', 'minlength')">El Usuario es<strong> muy
+              corto</strong>
+            </h5>
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-container" isFocus>
+            <input [readOnly]="read" class="input" formControlName="email" maxlength="253"
+                   minlength="3" type="text"/>
+            <label>Email *</label>
+            <span>Email *</span>
+            <h5 *ngIf="validate('email', 'required')">El Email es<strong> requerido</strong>
+            </h5>
+            <h5 *ngIf="validate('email', 'minlength')">El Email es<strong> muy corto</strong>
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="row group">
+        <div class="col">
+          <div class="input-container" isFocus>
+            <input [readOnly]="read" class="input" formControlName="password" maxlength="256"
+                   minlength="8" required type="password"/>
+            <label>Contraseña *</label>
+            <span>Contraseña *</span>
+            <h5 *ngIf="validate('password', 'required')">La Contraseña<strong>
+              requerida</strong>
+            </h5>
+            <h5 *ngIf="validate('password', 'minlength')">La Contraseña es<strong> muy
+              corta</strong></h5>
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-container" isFocus>
+            <input [readOnly]="read" class="input" formControlName="confirmPassword"
+                   maxlength="256" minlength="8" required type="password"/>
+            <label>Confirmar contraseña *</label>
+            <span>Confirmar contraseña *</span>
+            <h5 *ngIf="validate('confirmPassword', 'required')">La Contraseña
+              es<strong>requerida</strong></h5>
+            <h5 *ngIf="validate('confirmPassword', 'minlength')">La Contraseña
+              es<strong>
+                muy corta</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!read" class="input-container" isFocus>
+        <div class="input-group flex-nowrap">
+          <input [(ngModel)]="selected"
+                 class="input" formControlName="userRoles" id="search"
+                 type="search"/>
+        </div>
+        <label>Roles *</label>
+        <span>Roles *</span>
+      </div>
+      <div class="input-container">
+        <ol *ngFor="let role of roles; let i = index" class="list-group list-group-numbered">
+          <li>
+            <div class="input-group flex-nowrap">
+              <button class="btn text-md-start list btn-outline-light w-100" type="text">{{i + 1}}.
+                {{role.name}}</button>
+              <button (click)="removeRoles(i)" [disabled]="read"
+                      class="btn btn-outline-light list pe-2 ps-2 input-group-text">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
-            <div class="row group">
-                <div class="col">
-                    <div class="input-container" isFocus>
-                        <input [readOnly]="read" class="input" formControlName="password" maxlength="256"
-                               minlength="8" required type="password"/>
-                        <label>Contraseña *</label>
-                        <span>Contraseña *</span>
-                        <h5 *ngIf="validate('password', 'required')">La Contraseña<strong>
-                            requerida</strong>
-                        </h5>
-                        <h5 *ngIf="validate('password', 'minlength')">La Contraseña es<strong> muy
-                            corta</strong></h5>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-container" isFocus>
-                        <input [readOnly]="read" class="input" formControlName="confirmPassword"
-                               maxlength="256" minlength="8" required type="password"/>
-                        <label>Confirmar contraseña *</label>
-                        <span>Confirmar contraseña *</span>
-                        <h5 *ngIf="validate('confirmPassword', 'required')">La Contraseña
-                            es<strong>requerida</strong></h5>
-                        <h5 *ngIf="validate('confirmPassword', 'minlength')">La Contraseña
-                            es<strong>
-                                muy corta</strong></h5>
-                    </div>
-                </div>
+          </li>
+        </ol>
+      </div>
+      <div class="row group">
+        <div class="col">
+          <div class="form-check form-switch mt-0">
+            <input class="form-check-input" formControlName="promotionalMails" id="flexSwitchCheckDefault" role="switch"
+                   type="checkbox">
+            <label class="form-check-label text-white" for="flexSwitchCheckDefault">Aceptar
+              Promociones</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-container mt-0" isFocus>
+            <div class="input-group flex-nowrap">
+              <input
+                [disabled]="read" [readOnly]="true"
+                class="input" formControlName="date"
+                required type="text"/>
+              <button
+                class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 input-group-text"
+                type="button"></button>
             </div>
-            <div *ngIf="!read" class="input-container" isFocus>
-                <div class="input-group flex-nowrap">
-                    <input (typeaheadOnSelect)="onSelect($event)" [(ngModel)]="selected" [adaptivePosition]="true"
-                           [isAnimated]="true"
-                           [typeaheadMinLength]="0" [typeaheadOptionsInScrollableView]="20" [typeaheadOptionsLimit]="7"
-                           [typeaheadSingleWords]="true" [typeaheadWaitMs]="100" [typeahead]="rolesList"
-                           class="input" formControlName="userRoles" id="search"
-                           type="search" typeaheadOptionField="name"/>
-                </div>
-                <label>Roles *</label>
-                <span>Roles *</span>
-            </div>
-            <div class="input-container">
-                <ol *ngFor="let role of roles; let i = index" class="list-group list-group-numbered">
-                    <li>
-                        <div class="input-group flex-nowrap">
-                            <button class="btn text-md-start list btn-outline-light w-100" type="text">{{i + 1}}.
-                                {{role.name}}</button>
-                            <button (click)="removeRoles(i)" [disabled]="read"
-                                    class="btn btn-outline-light list pe-2 ps-2 input-group-text">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-            <div class="row group">
-                <div class="col">
-                    <div class="form-check form-switch mt-0">
-                        <input class="form-check-input" formControlName="promotionalMails" id="flexSwitchCheckDefault" role="switch"
-                               type="checkbox">
-                        <label class="form-check-label text-white" for="flexSwitchCheckDefault">Aceptar
-                            Promociones</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-container mt-0" isFocus>
-                        <div class="input-group flex-nowrap">
-                            <input #dp="bsDatepicker" (bsValueChange)="changeTime($event)" [bsConfig]="{ isAnimated:true, dateInputFormat:'MMMM Do YYYY', containerClass: 'theme-dark-blue', showTodayButton:true,  showClearButton:true, todayPosition:'left', clearPosition:'right', adaptivePosition: true}" [bsValue]="date"
-                                   [disabled]="read" [maxDate]="maxDate" [minDate]="minDate" [readOnly]="true" bsDatepicker
-                                   class="input" formControlName="date"
-                                   placement="top"
-                                   required type="text"/>
-                            <button (click)="dp.toggle()"
-                                    class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 input-group-text"
-                                    type="button"></button>
-                        </div>
-                        <label>Fecha de Nacimiento *</label>
-                        <span>Fecha de Nacimiento *</span>
-                        <h5 *ngIf="validate('date', 'required')">La Fecha de Nacimiento
-                            es<strong>requerida</strong></h5>
-                        <h5 *ngIf="validate('date', 'minlength')">La Fecha de Nacimiento<strong>
-                            muy
-                            corta</strong></h5>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="read">
-                <div class="input-container" isFocus>
-                    <input class="input"
-                           formControlName="createdAt"
-                           type="text"/>
-                    <label>Fecha de Creación</label>
-                    <span>Fecha de Creación</span>
-                </div>
-                <div class="input-container" isFocus>
-                    <input class="input" formControlName="createdBy" type="text"/>
-                    <label>Creado por</label>
-                    <span>Creado por</span>
-                </div>
-                <div class="input-container" isFocus>
-                    <input class="input"
-                           formControlName="updatedAt"
-                           type="text"/>
-                    <label>Fecha de Modificación</label>
-                    <span>Fecha de Modificación</span>
-                </div>
-                <div class="input-container" isFocus>
-                    <input class="input" formControlName="updatedBy" type="text"/>
-                    <label>Modificado por</label>
-                    <span>Modificado por</span>
-                </div>
-            </div>
+            <label>Fecha de Nacimiento *</label>
+            <span>Fecha de Nacimiento *</span>
+            <h5 *ngIf="validate('date', 'required')">La Fecha de Nacimiento
+              es<strong>requerida</strong></h5>
+            <h5 *ngIf="validate('date', 'minlength')">La Fecha de Nacimiento<strong>
+              muy
+              corta</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="read">
+        <div class="input-container" isFocus>
+          <input class="input"
+                 formControlName="createdAt"
+                 type="text"/>
+          <label>Fecha de Creación</label>
+          <span>Fecha de Creación</span>
+        </div>
+        <div class="input-container" isFocus>
+          <input class="input" formControlName="createdBy" type="text"/>
+          <label>Creado por</label>
+          <span>Creado por</span>
+        </div>
+        <div class="input-container" isFocus>
+          <input class="input"
+                 formControlName="updatedAt"
+                 type="text"/>
+          <label>Fecha de Modificación</label>
+          <span>Fecha de Modificación</span>
+        </div>
+        <div class="input-container" isFocus>
+          <input class="input" formControlName="updatedBy" type="text"/>
+          <label>Modificado por</label>
+          <span>Modificado por</span>
+        </div>
+      </div>
 
-            <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
-                <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-                <input (click)="Add(userForm.value)" *ngIf="read == false" [disabled]="!userForm.valid" class="btn submit" type="submit"
-                       value="Crear"/>
-            </div>
-            <ng-template #updateP>
-                <div class="d-flex justify-content-between">
-                    <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-                    <input (click)="updateUser(userForm.value)" [disabled]="!userForm.valid" class="btn submit" type="submit"
-                           value="Actualizar"/>
-                </div>
-            </ng-template>
-        </form>
-    </div>
+      <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
+        <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+        <input (click)="Add(userForm.value)" *ngIf="read == false" [disabled]="!userForm.valid" class="btn submit"
+               type="submit"
+               value="Crear"/>
+      </div>
+      <ng-template #updateP>
+        <div class="d-flex justify-content-between">
+          <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+          <input (click)="updateUser(userForm.value)" [disabled]="!userForm.valid" class="btn submit" type="submit"
+                 value="Actualizar"/>
+        </div>
+      </ng-template>
+    </form>
+  </div>
 </div>

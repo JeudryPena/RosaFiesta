@@ -9,23 +9,22 @@ import {ProductsModule} from "@public/products/products.module";
 import {mainPageRouter} from "@public/home/main-page-routing.module";
 import {MainPageComponent} from "@public/home/main-page.component";
 
-
 @NgModule({
-    declarations: [
-        HomeComponent,
-        CarouselComponent,
-        FeaturesComponent,
-        HeroesComponent,
-        AboutUsComponent,
-        MainPageComponent
-    ],
-    imports: [
-        mainPageRouter,
-        PublicModule,
-        ProductsModule
-    ],
-    exports: [],
-    providers: []
+  declarations: [
+    HomeComponent,
+    CarouselComponent,
+    FeaturesComponent,
+    HeroesComponent,
+    AboutUsComponent,
+    MainPageComponent
+  ],
+  imports: [
+    mainPageRouter,
+    PublicModule,
+    ProductsModule
+  ],
+  exports: [],
+  providers: []
 })
 export class MainPageModule {
 }

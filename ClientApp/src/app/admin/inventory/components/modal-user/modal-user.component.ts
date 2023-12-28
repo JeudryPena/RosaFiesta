@@ -2,12 +2,11 @@ import {DatePipe} from '@angular/common';
 import {Component, ElementRef, Input} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {RolesListResponse} from '../../../../core/interfaces/Security/Response/rolesListResponse';
-import {UserResponse} from '../../../../core/interfaces/Security/Response/userResponse';
-import {UserForCreationDto} from '../../../../core/interfaces/Security/userForCreationDto';
+import {RolesListResponse} from '@core/interfaces/Security/Response/rolesListResponse';
+import {UserResponse} from '@core/interfaces/Security/Response/userResponse';
+import {UserForCreationDto} from '@core/interfaces/Security/userForCreationDto';
 import {UsersService} from '../../services/users.service';
 
 @Component({
@@ -46,7 +45,7 @@ export class ModalUserComponent {
     })
   }
 
-  onSelect(event: TypeaheadMatch): void {
+  onSelect(event: any): void {
     this.roles.push({
       roleId: event.item.id,
       name: event.item.name

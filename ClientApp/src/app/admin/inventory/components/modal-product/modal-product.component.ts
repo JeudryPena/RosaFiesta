@@ -3,16 +3,15 @@ import {HttpResponse} from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
 import {BehaviorSubject, lastValueFrom} from 'rxjs';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {CategoriesListResponse} from '../../../../core/interfaces/Product/Response/categoriesListResponse';
-import {ProductResponse} from '../../../../core/interfaces/Product/Response/productResponse';
-import {SuppliersListResponse} from '../../../../core/interfaces/Product/Response/suppliersListResponse';
-import {WarrantiesListResponse} from '../../../../core/interfaces/Product/Response/warrantiesListResponse';
-import {OptionDto} from '../../../../core/interfaces/Product/optionDto';
-import {ProductDto} from '../../../../core/interfaces/Product/productDto';
+import {CategoriesListResponse} from '@core/interfaces/Product/Response/categoriesListResponse';
+import {ProductResponse} from '@core/interfaces/Product/Response/productResponse';
+import {SuppliersListResponse} from '@core/interfaces/Product/Response/suppliersListResponse';
+import {WarrantiesListResponse} from '@core/interfaces/Product/Response/warrantiesListResponse';
+import {OptionDto} from '@core/interfaces/Product/optionDto';
+import {ProductDto} from '@core/interfaces/Product/productDto';
 import {CategoriesService} from '../../services/categories.service';
 import {FilesService} from '@core/shared/services/files.service';
 import {ProductsService} from '../../services/products.service';
@@ -123,7 +122,7 @@ export class ModalProductComponent implements OnInit {
     }));
   }
 
-  onSelect(event: TypeaheadMatch, form: string): void {
+  onSelect(event: any, form: string): void {
     if (form == 'category') {
       this.categoryForm = event.item;
     } else if (form == 'warranty') {

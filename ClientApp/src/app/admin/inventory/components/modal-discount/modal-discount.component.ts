@@ -1,12 +1,11 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {ManagementDiscountsResponse} from '../../../../core/interfaces/Product/Response/managementDiscountsResponse';
-import {OptionsListResponse} from '../../../../core/interfaces/Product/Response/optionsListResponse';
-import {DiscountDto} from '../../../../core/interfaces/Product/discountDto';
+import {ManagementDiscountsResponse} from '@core/interfaces/Product/Response/managementDiscountsResponse';
+import {OptionsListResponse} from '@core/interfaces/Product/Response/optionsListResponse';
+import {DiscountDto} from '@core/interfaces/Product/discountDto';
 import {DiscountsService} from '../../services/discounts.service';
 import {ProductsService} from '../../services/products.service';
 import {BehaviorSubject, lastValueFrom} from "rxjs";
@@ -45,7 +44,7 @@ export class ModalDiscountComponent implements OnInit {
   ) {
   }
 
-  onSelect(event: TypeaheadMatch): void {
+  onSelect(event: any): void {
     this.products.push({
       optionId: event.item.id,
       option: {
