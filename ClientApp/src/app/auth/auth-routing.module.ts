@@ -7,7 +7,7 @@ import {AuthenticateComponent} from "@auth/containers/authenticate/authenticate.
 
 const routes: Routes = [
   {path: 'register', component: RegisterComponent},
-  {path: 'authenticate', component: AuthenticateComponent},
+  {path: '', component: AuthenticateComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'reset-password', component: ResetPasswordComponent}
 ];

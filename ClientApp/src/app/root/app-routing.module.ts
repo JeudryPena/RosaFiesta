@@ -10,7 +10,7 @@ const sharedModule = () => import('@core/shared/shared.module').then(x => x.Shar
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'main-page/home',
+    redirectTo: 'main-page',
     pathMatch: 'full'
   },
   {path: '', loadChildren: publicModule},
@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'auth', loadChildren: authModule},
   {path: 'privy', loadChildren: intranetModule},
   {path: 'shared', loadChildren: sharedModule},
-  {path: '**', redirectTo: 'main-page/home'}
+  {path: '**', redirectTo: 'main-page'}
 ];
 
 @NgModule({

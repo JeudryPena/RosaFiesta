@@ -162,8 +162,7 @@ import {AvatarModule} from "ngx-avatars";
     AvatarModule
   ],
   providers: [
-    NgbRatingConfig,
-    DecimalPipe
+    NgbRatingConfig
   ],
   bootstrap: []
 })

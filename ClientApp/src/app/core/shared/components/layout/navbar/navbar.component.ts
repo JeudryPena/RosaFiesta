@@ -1,6 +1,6 @@
 import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {AuthenticateService} from '@auth/services/authenticate.service';
-import {CartsService} from '../../../../../intranet/services/carts.service';
+import {CartsService} from '@intranet/services/carts.service';
 import {SidenavService} from '../../../services/side-nav.service';
 import {SidenavComponent} from '../sidenav/sidenav.component';
 import {Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.sass']
 })
 export class NavbarComponent implements OnInit {
   @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
