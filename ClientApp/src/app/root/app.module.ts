@@ -26,7 +26,7 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     ForbiddenComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
   ],
   imports: [
     DecimalPipe,

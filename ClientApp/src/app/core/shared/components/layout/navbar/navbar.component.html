@@ -1,118 +1,102 @@
-<nav aria-label="Sixth navbar example" class="navbar fixed-top navbar-expand-xl navbar-dark bg-dark navbar-sm"
-     id="navbar">
-  <div class="container-fluid">
-    <ng-container *ngIf="main; else elseMain">
-      <a class="navbar-brand fw-semibold" routerLink="/main-page"><span class="logo-img"></span>RosaFiesta</a>
-    </ng-container>
-    <ng-template #elseMain>
-      <div (click)="ToggleCollapsed()" class="navbar-brand">
-        <i class="menu-bars-icon categories"></i>
-        <p class="m-0">Categorías</p>
+<header class="header fixed-top" id="navbar">
+  <div class="header-content">
+    <div class="header-top">
+      <div class="site-brand">
+        <button class="sidebar-open-btn--ms" type="button">
+          <img alt="" class="d-icon" src="./assets/icons/menu-bars.svg"/>
+        </button>
+        <a class="site-brand-wrapper">
+          <img alt="" class="brand-icon" src="./assets/img/logo.png"/>
+          <span class="brand-text">Rosa<span class="brand-text-second">Fiesta</span></span>
+        </a>
       </div>
-    </ng-template>
 
-    <button aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-            data-bs-target="#navbarsExample06" data-bs-toggle="collapse" type="button">
-      <i class="caret-down-fil-icon"></i>
-    </button>
+      <form class="hdr-search-bar">
+        <div class="select-wrapper">
+          <select>
+            <option>Categoria</option>
+            <option>Accessories</option>
+            <option>Gadgets</option>
+            <option>Clothing</option>
+          </select>
+        </div>
+        <input placeholder="Search" type="text"/>
+        <button class="searchbar-btn"
+                type="submit">Search
+        </button>
+      </form>
 
-    <div class="collapse navbar-collapse " id="navbarsExample06">
-      <ul class="navbar-nav me-auto">
-        <nav class="nav row nav-masthead">
-          <div class="col-md-auto left-side">
-            <div class="nav-item d-inline-flex">
-              <a class="nav-link" routerLink="/products/search">
-                <div class="d-inline-flex">
-                  <i class="products-icon me-1"></i>
-                  <p class="m-0">Productos</p>
-                </div>
-              </a>
-              <a class="nav-link" routerLink="/main-page/about-us">
-                <div class="d-inline-flex">
-                  <i class="info-circle-icon me-1"></i>
-                  <p class="m-0">Nosotros</p>
-                </div>
-              </a>
-              <div display="dynamic" ngbDropdown placement="bottom-end">
-                <a aria-labelledby="navbarDropdown3" class="nav-link" id="adminMenu"
-                   ngbDropdownToggle>
-                  <div class="d-inline-flex">
-                    <i class="admin-icon me-1"></i>
-                    <p class="m-0">Admin</p>
-                  </div>
-                </a>
-                <div aria-labelledby="adminMenu" ngbDropdownMenu>
-                  <div class="admin-dropdown">
-                    <a class="dropdown-item" routerLink="/admin/inventory"><i
-                      class="inventory-icon me-1"></i>Inventario</a>
-                    <a class="dropdown-item" routerLink="/admin/dashboard"><i
-                      class="dashboard-icon me-1"></i>Panel
-                      de
-                      Admin</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="hdr-navigation-bar--ms">
+        <a class="hdr-nav-item--ms" href="#"><img alt="" class="h-icon" src="./assets/icons/shopping-cart.svg"/></a>
+        <a class="hdr-nav-item--ms" href="#"><img alt="" class="h-icon" src="./assets/icons/profile.svg"/></a>
+      </div>
+
+      <ul class="hdr-navigation-bar">
+        <li class="hdr-nav-item">
+          <div class="hdr-nav-icon">
+            <img alt="" class="h-icon" src="./assets/icons/profile.svg"/>
           </div>
-          <div class="col-md-auto right-side">
-            <div class="input-group input-group-sm flex-nowrap">
-              <input aria-label="Buscar" class="input-search" focus
-                     placeholder="Buscar..."
-                     type="search">
-              <div class="input-group-text">
-                <i class="search-icon"></i>
-              </div>
-            </div>
-            <ng-container *ngIf="isAuthenticated; else elseBlock">
-              <div class="d-inline-block ps-0 pe-0" display="dynamic" ngbDropdown placement="bottom-end">
-                <div aria-labelledby="navbarDropdown3" class="navbar-cart" id="dropdownForm1"
-                     ngbDropdownToggle>
-                  <div class="navbar-cart-items">
-                    <p>{{totalItems | number}}</p>
-                  </div>
-                  <i class="shopping-cart-icon"></i>
-                </div>
-                <div aria-labelledby="dropdownForm1" ngbDropdownMenu>
-                  <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
-                </div>
-              </div>
-              <div #myDrop="ngbDropdown" [ngbPopover]="dropdown" class="d-flex ps-0 pe-0" display="dynamic"
-                   ngbDropdown placement="bottom-end">
-                <div class="d-flex navbar-user">
-                  <ngx-avatars (click)="myDrop.toggle();" [name]="userName" size="30"></ngx-avatars>
-                </div>
-                <ng-template #dropdown>
-                  <div class="user-dropdown">
-                    <a routerLink="/profile">{{userName}}</a>
-                    <hr class="mt-2 mb-2">
-                    <a routerLink="/config"><i
-                      class="settings-icon"></i>&nbsp;&nbsp;Configuración</a>
-                    <a routerLink="/my-wish-lists"><i
-                      class="favorite-icon"></i>&nbsp;&nbsp;Lista de
-                      deseos</a>
-                    <a routerLink="/my-orders"><i
-                      class="orders-icon"></i>&nbsp;&nbsp;Mis
-                      ordenes</a>
-                    <hr class="mt-2 mb-2">
-                    <a (click)="Logout()"><i
-                      class="logout-icon"></i>&nbsp;&nbsp;Salir</a>
-                  </div>
-                </ng-template>
-              </div>
-            </ng-container>
-            <ng-template #elseBlock>
-              <button class="btn btn-primary login-button" routerLink="/auth"
-                      type="button">
-                <div class="d-inline-flex">
-                  <i class="login-icon me-1"></i>
-                  <p class="m-0">Iniciar Sesión
-                  </p>
-                </div>
-              </button>
-            </ng-template>
+          <span class="hdr-nav-text">Profile</span>
+        </li>
+        <li class="hdr-nav-item">
+          <div class="hdr-nav-icon">
+            <img alt="" class="h-icon" src="./assets/icons/message.svg"/>
           </div>
-        </nav>
+          <span class="hdr-nav-text">Message</span>
+        </li>
+        <li class="hdr-nav-item">
+          <div class="hdr-nav-icon">
+            <img alt="" class="h-icon" src="./assets/icons/orders.svg"/>
+          </div>
+          <span class="hdr-nav-text">Orders</span>
+        </li>
+        <li class="hdr-nav-item">
+          <div class="hdr-nav-icon">
+            <img alt="" class="h-icon" src="./assets/icons/shopping-cart.svg"/>
+          </div>
+          <span class="hdr-nav-text">My Cart</span>
+        </li>
       </ul>
     </div>
   </div>
-</nav>
+
+  <div class="navigation">
+    <div class="navigation-content">
+      <div class="navigation-left">
+        <button class="sidenav-show-btn" type="button">
+          <img alt="" class="d-icon" src="./assets/icons/menu-bars.svg"/>
+        </button>
+        <ul class="navigation-menu">
+          <li class="menu-item"><a class="menu-link" href="#">All category</a></li>
+          <li class="menu-item"><a class="menu-link" href="#">Hot offers</a></li>
+          <li class="menu-item"><a class="menu-link" href="#">Gift boxes</a></li>
+          <li class="menu-item"><a class="menu-link" href="#">Discounts</a></li>
+          <li class="menu-item"><a class="menu-link" href="#">Watchlist</a></li>
+          <li class="menu-item"><a class="menu-link">Help</a></li>
+        </ul>
+      </div>
+      <div class="navigation-right">
+        <div class="currency-options">
+          <div class="selected">
+            <div class="option-text">English, USD</div>
+            <span><img alt="" class="h-icon" src="./assets/icons/caret-down-fil.svg"/></span>
+          </div>
+          <div class="currency-options-list">
+            <div class="currency-option">
+              <div class="option-text">India, INR</div>
+            </div>
+            <div class="currency-option">
+              <div class="option-text">Nepal, NPR</div>
+            </div>
+            <div class="currency-option">
+              <div class="option-text">France, FRANC</div>
+            </div>
+            <div class="currency-option">
+              <div class="option-text">Canada, Canadian Dollar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

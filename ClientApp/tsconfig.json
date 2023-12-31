@@ -31,6 +31,9 @@
       ],
       "@shared/*": [
         "app/shared/*"
+      ],
+      "@sass/*": [
+        "assets/sass/*"
       ]
     },
     "baseUrl": "./src/",

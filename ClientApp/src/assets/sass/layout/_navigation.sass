@@ -1,0 +1,109 @@
+@use '../abstracts' as a
+
+.navigation
+  padding: 0.25rem 0 0.1rem 0
+  border-top: 1px solid a.$gray-150
+  border-bottom: 1px solid a.$gray-150
+
+  @include a.breakpoint-down(lg)
+    display: none
+
+  &-content
+    @include a.c-container()
+    @include a.flexbox($align: center, $justify: space-between)
+
+    @include a.breakpoint-down(xl)
+
+    .navigation-left
+      @include a.v-flex($align: center)
+      overflow-x: scroll
+      width: calc(100% - 290px)
+
+      &::-webkit-scrollbar
+        height: 5px
+
+      &::-webkit-scrollbar-track
+        border-radius: 10px
+
+      &::-webkit-scrollbar-thumb
+        border-radius: 10px
+        background-color: a.$gray-400
+
+    .navigation-right
+      width: 260px
+      justify-content: flex-end
+      column-gap: 16px !important
+      @include a.v-flex($align: center)
+
+  &-menu
+    @include a.v-flex($align: center)
+    width: 1200px
+
+    .menu-item
+      margin-right: 24px
+
+    .menu-link
+      @include a.text($weight: 600)
+      white-space: nowrap
+      color: a.$dark !important
+
+      &:hover
+        color: a.$blue
+
+    .menu-dropdown-icon
+      margin-left: 2px
+
+  .sidenav-show-btn
+    margin-right: 10px
+    margin-bottom: 2px
+
+    @include a.breakpoint-down(xl)
+      display: none
+
+  .navigation-right
+    column-gap: 32px
+
+.currency-options
+  position: relative
+  cursor: pointer
+
+  .selected
+    @include a.v-flex()
+
+    .option-text
+      font-size: a.$text-sm
+      color: a.$dark
+      margin-right: 8px
+      font-weight: 500
+      white-space: nowrap
+
+  &-list
+    display: none
+    position: absolute
+    top: calc(100% + 5px)
+    right: 0
+    width: auto
+    box-shadow: rgba(0, 0, 0, 0.15) 0 5px 15px 0
+    padding: 6px 10px
+    z-index: 10
+    min-height: 200px
+    max-height: 400px
+    background-color: a.$white
+    border: 1px solid a.$gray-200
+    border-radius: 6px
+    overflow-y: scroll
+
+    .currency-option
+      cursor: pointer
+      transition: a.$default-transition
+      padding: 2px 0
+      @include a.v-flex($align: center)
+
+      .option-text
+        font-size: a.$text-sm
+        color: a.$dark
+        font-weight: 500
+        white-space: nowrap
+
+      &:hover
+        opacity: 0.9

@@ -1,0 +1,46 @@
+@mixin c-container
+  max-width: 1280px
+  margin: 0 auto
+  width: 100%
+  padding: 0 16px
+
+.select-wrapper
+  position: relative
+  overflow: hidden
+
+  select
+    -webkit-appearance: none
+    appearance: none
+
+  &::after
+    content: ""
+    background: url('../../icons/caret-down-fil.svg') center/cover no-repeat
+    width: 24px
+    height: 24px
+    font-size: 1rem
+    top: 50%
+    transform: translateY(-50%)
+    right: 8px
+    position: absolute
+    pointer-events: none
+    filter: invert(64%) sepia(29%) saturate(167%) hue-rotate(175deg) brightness(88%) contrast(88%)
+
+@mixin flexbox($align: flex-start,  $justify: flex-start, $direction: row)
+  display: flex
+  flex-direction: $direction
+  justify-content: $justify
+  align-items: $align
+
+@mixin v-flex($align: center)
+  display: flex
+  align-items: $align
+
+@mixin h-flex($justify: center)
+  display: flex
+  justify-content: $justify
+
+@mixin text($weight: 400)
+  font-weight: $weight
+  font-size: 16px
+  font-family: "Inter", sans-serif
+  letter-spacing: -0.2px

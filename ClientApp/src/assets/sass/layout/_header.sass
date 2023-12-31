@@ -1,0 +1,148 @@
+@use '../abstracts' as a
+
+.site-brand
+  @include a.v-flex()
+
+  &-wrapper
+    max-width: 150px
+    margin-right: 32px
+    @include a.v-flex()
+
+    @include a.breakpoint-down(lg)
+      margin-right: 0
+
+    @include a.breakpoint-down(xs)
+      display: none
+
+    .brand-icon
+      margin-right: 6px
+      width: 44px
+
+      @include a.breakpoint-down(lg)
+        width: 36px
+
+    .brand-text
+      font-weight: 700
+      font-size: 24px
+
+      &-second
+        color: a.$blue
+
+      @include a.breakpoint-down(lg)
+        font-size: 20px
+
+.header
+  &-content
+    padding: .25rem 0
+
+    .hdr-navigation-bar
+      margin: 0 0 0 auto
+      padding: 0
+      column-gap: 32px
+      @include a.v-flex($align: end)
+      @include a.breakpoint-down(xl)
+        column-gap: 16px
+      @include a.breakpoint-down(lg)
+        display: none
+
+    .hdr-nav-item
+      @include a.flexbox($align: center, $justify: center, $direction: column)
+
+      &:nth-child(2)
+        .hdr-nav-icon
+          @include a.breakpoint-down(xl)
+            margin-bottom: 0
+
+    .hdr-nav-icon
+      width: 32px
+      height: 32px
+      border-radius: 50%
+      padding: 6px
+      @include a.flexbox($align: center, $justify: center)
+      @include a.breakpoint-down(xl)
+        margin-bottom: 0
+
+    .sidebar-open-btn--ms
+      display: none
+      border: none
+      background: transparent
+      cursor: pointer
+      @include a.breakpoint-down(xl)
+        display: block
+        margin-right: 16px
+        width: 24px
+
+      @include a.breakpoint-down(sm)
+        margin-right: 10px
+
+      img
+        width: 100%
+        max-width: 100%
+
+    .hdr-nav-text
+      font-size: 12px
+      color: a.$gray-500
+      text-align: center
+      @include a.breakpoint-down(xl)
+        display: none
+
+  &-top
+    @include a.v-flex()
+    @include a.c-container()
+    column-gap: 24px
+
+    @include a.breakpoint-down(lg)
+      column-gap: 16px
+
+  .hdr-search-bar
+    border: 2px solid a.$blue
+    width: auto
+    max-width: 665px
+    border-radius: 6px
+    overflow: hidden
+    @include a.v-flex($align: stretch)
+
+    input[type="text"]
+      height: 40px
+      padding: 10px
+      width: 420px
+
+      &::placeholder
+        color: a.$gray-500
+
+    select
+      color: a.$dark
+      width: 145px
+      padding-left: 10px
+      padding-right: 10px
+
+    button
+      background-color: a.$blue
+      max-width: 100px
+      color: a.$white
+      width: 100%
+      @include a.flexbox($align: center, $justify: center)
+
+    .select-wrapper
+      border-right: 2px solid a.$blue
+      min-width: 152px
+      @include a.v-flex()
+      @include a.breakpoint-down(lg)
+        display: none
+
+  .hdr-navigation-bar--ms
+    margin-left: auto
+    display: none
+    align-items: center
+
+    @include a.breakpoint-down(lg)
+      display: flex
+
+    @include a.breakpoint-down(md)
+      display: none !important
+
+    .hdr-nav-item--ms
+      margin-left: 20px
+
+      &:first-child
+        margin-left: 0
