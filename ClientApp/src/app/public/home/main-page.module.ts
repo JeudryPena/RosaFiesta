@@ -16,7 +16,7 @@ import {MainPageComponent} from "@public/home/main-page.component";
     FeaturesComponent,
     HeroesComponent,
     AboutUsComponent,
-    MainPageComponent
+    MainPageComponent,
   ],
   imports: [
     mainPageRouter,

@@ -1,14 +1,3 @@
-.nav-masthead
-  width: 100%
-  display: flex
-  flex-wrap: wrap
-  margin: 0
-  justify-content: space-between
-  padding: 0
-
-.dropdown-menu
-  padding: 0
-
 .admin-dropdown
   display: flex
   flex-direction: column
@@ -19,19 +8,15 @@
     align-items: center
     padding: 2px 6px
 
-.container-fluid
-  padding: 2px 0
-
-.nav-masthead .nav-link
+.nav-link
   color: rgba(255, 255, 255, .5)
   border-bottom: .25rem solid transparent
 
-.nav-masthead .nav-link:hover,
-.nav-masthead .nav-link:focus
+.nav-link:hover, .nav-link:focus
   color: rgba(255, 255, 255, 0.898)
   border-bottom-color: rgba(255, 255, 255, .25)
 
-.nav-masthead .active
+.active
   color: #fff
   border-bottom-color: #fff
 
@@ -66,9 +51,6 @@
       background-color: #e6edef
       border-radius: 5px
 
-.navbar-nav
-  width: 100%
-
 .navbar-user
   position: relative
   color: white
@@ -78,27 +60,18 @@
   font-size: 95%
   cursor: pointer
 
-.navbar-cart
-  position: relative
+.cart-items
   color: white
-  padding: 2px 1.2rem 2px 6px
-  border-radius: 10px
-  transition: 0.2s
+  border: 1px solid rgba(255, 255, 255, 0.1)
+  border-radius: 50%
+  background-color: rgb(172, 14, 14)
+  padding: 0 6px
+  height: 100%
 
-  &-items
-    position: absolute
-    left: 27px
-    top: 6px
-    color: white
-    border: 1px solid rgba(255, 255, 255, 0.1)
-    border-radius: 50%
-    background-color: rgb(172, 14, 14)
-    height: 50%
-    width: 37%
-
-    p
-      font-size: 60%
-      text-align: center
+  p
+    margin: 0
+    font-size: 70%
+    text-align: center
 
   i
     font-size: 1.25rem
@@ -114,55 +87,6 @@
   background-color: #0D6EFD
   text-decoration: none
 
-.navbar-brand
-  margin: 0 6px
-  padding: 0
-  display: inline-flex
-
-.categories
-  color: #fff
-  font-size: 25px
-  align-self: center
-  margin-right: 6px
-
-  &-box
-    color: #fff
-
-.logo-img
-  margin: 0 6px !important
-  cursor: pointer
-  height: 30px
-  width: 40px
-
-.navbar-toggler
-  color: rgba(255, 255, 255, .5)
-  border: 1.5px rgba(255, 255, 255, .5) solid
-
-.container-fluid a
-  padding-top: 0px
-  padding-bottom: 0px
-
-.navbar-toggler-icon
-  height: 25px
-  max-height: 25px
-  font-size: 0.7rem
-
-nav
-  transition: 0.5s
-  padding: 2px
-
-.navbar
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2)
-
-.right-side
-  justify-content: end
-  padding: 0 .5rem
-  display: inline-flex
-  gap: .5rem
-
-#dropdownForm1:after
-  display: none
-
 .login-button
   width: 100%
   height: 28px
@@ -170,11 +94,9 @@ nav
   margin-top: 2px
   padding: 0 8px 0 5px
 
-input.middle:focus
-  outline-width: 0
+#dropdownForm1:after
+  display: none
 
-input:focus, select:focus, textarea:focus, button:focus
-  outline: none
 
 .input-search
   width: 150px !important
@@ -193,78 +115,3 @@ input:focus, select:focus, textarea:focus, button:focus
 
   &.focus
     width: 225px !important
-
-.bd-placeholder-img
-  font-size: 1.125rem
-  text-anchor: middle
-  -webkit-user-select: none
-  -moz-user-select: none
-  user-select: none
-
-@media (max-width: 940px)
-
-.nav-link
-  padding: 10px
-
-.input-group-sm
-  height: 30px
-  padding-top: 2px
-
-@media (min-width: 768px)
-
-.bd-placeholder-img-lg
-  font-size: 3.5rem
-
-.bi
-  vertical-align: -.125em
-  fill: currentColor
-
-.nav-scroller
-  position: relative
-  z-index: 2
-  height: 2.75rem
-  overflow-y: hidden
-
-  & .nav
-    display: flex
-    flex-wrap: nowrap
-    margin-top: -1px
-    overflow-x: auto
-    text-align: center
-    white-space: nowrap
-    -webkit-overflow-scrolling: touch
-
-.btn-bd-primary
-  --bd-violet-bg: #712cf9
-  --bd-violet-rgb: 112.520718, 44.062154, 249.437846
-
-  --bs-btn-font-weight: 600
-  --bs-btn-color: var(--bs-white)
-  --bs-btn-bg: var(--bd-violet-bg)
-  --bs-btn-border-color: var(--bd-violet-bg)
-  --bs-btn-hover-color: var(--bs-white)
-  --bs-btn-hover-bg: #6528e0
-  --bs-btn-hover-border-color: #6528e0
-  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb)
-  --bs-btn-active-color: var(--bs-btn-hover-color)
-  --bs-btn-active-bg: #5a23c8
-  --bs-btn-active-border-color: #5a23c8
-
-.bd-mode-toggle
-  z-index: 1500
-
-.form-control-dark
-  border-color: var(--bs-gray)
-
-  &:focus
-    border-color: #fff
-    box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25)
-
-.text-small
-  font-size: 85%
-
-.dropdown-toggle:not(:focus)
-  outline: 0
-
-.dropdown-toggle:after
-  vertical-align: 0

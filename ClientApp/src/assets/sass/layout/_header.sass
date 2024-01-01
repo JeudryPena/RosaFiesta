@@ -32,6 +32,9 @@
         font-size: 20px
 
 .header
+  transition: .5s ease
+  background-color: a.$white
+
   &-content
     padding: .25rem 0
 
@@ -54,7 +57,7 @@
             margin-bottom: 0
 
     .hdr-nav-icon
-      width: 32px
+      width: 100%
       height: 32px
       border-radius: 50%
       padding: 6px
@@ -111,6 +114,7 @@
         color: a.$gray-500
 
     select
+      height: 100%
       color: a.$dark
       width: 145px
       padding-left: 10px
@@ -122,6 +126,9 @@
       color: a.$white
       width: 100%
       @include a.flexbox($align: center, $justify: center)
+
+      span
+        filter: invert(100%) sepia(3%) saturate(12%) hue-rotate(62deg) brightness(102%) contrast(108%)
 
     .select-wrapper
       border-right: 2px solid a.$blue

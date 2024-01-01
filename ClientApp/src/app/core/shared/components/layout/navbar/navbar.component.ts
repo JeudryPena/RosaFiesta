@@ -34,6 +34,11 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  ngOnInit() {
+
+  }
+
+
   onFocus() {
     this.isFocused = true;
   }
@@ -73,8 +78,9 @@ export class NavbarComponent implements OnInit {
   onWindowScroll(event: any) {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.navbar = document.getElementById("navbar");
+
     if (scrollTop > this.lastScrollTop) {
-      this.navbar.style.top = "-50px";
+      this.navbar.style.top = "-58px";
     } else {
       this.navbar.style.top = "0";
     }
@@ -88,7 +94,4 @@ export class NavbarComponent implements OnInit {
     window.location.reload();
   }
 
-  ngOnInit() {
-
-  }
 }

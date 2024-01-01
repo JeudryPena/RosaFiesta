@@ -1,13 +1,13 @@
-<header class="header fixed-top" id="navbar">
+<nav class="header fixed-top" id="navbar">
   <div class="header-content">
     <div class="header-top">
       <div class="site-brand">
-        <button class="sidebar-open-btn--ms" type="button">
+        <button (click)="ToggleCollapsed()" class="sidebar-open-btn--ms" type="button">
           <img alt="" class="d-icon" src="./assets/icons/menu-bars.svg"/>
         </button>
         <a class="site-brand-wrapper">
           <img alt="" class="brand-icon" src="./assets/img/logo.png"/>
-          <span class="brand-text">Rosa<span class="brand-text-second">Fiesta</span></span>
+          <span class="brand-text" routerLink="/main-page">Rosa<span class="brand-text-second">Fiesta</span></span>
         </a>
       </div>
 
@@ -21,8 +21,8 @@
           </select>
         </div>
         <input placeholder="Search" type="text"/>
-        <button class="searchbar-btn"
-                type="submit">Search
+        <button type="submit">
+          <span class="search-icon"></span>
         </button>
       </form>
 
@@ -31,31 +31,53 @@
         <a class="hdr-nav-item--ms" href="#"><img alt="" class="h-icon" src="./assets/icons/profile.svg"/></a>
       </div>
 
+
       <ul class="hdr-navigation-bar">
-        <li class="hdr-nav-item">
-          <div class="hdr-nav-icon">
-            <img alt="" class="h-icon" src="./assets/icons/profile.svg"/>
-          </div>
-          <span class="hdr-nav-text">Profile</span>
-        </li>
         <li class="hdr-nav-item">
           <div class="hdr-nav-icon">
             <img alt="" class="h-icon" src="./assets/icons/message.svg"/>
           </div>
-          <span class="hdr-nav-text">Message</span>
+          <span class="hdr-nav-text">Escribenos</span>
         </li>
-        <li class="hdr-nav-item">
-          <div class="hdr-nav-icon">
-            <img alt="" class="h-icon" src="./assets/icons/orders.svg"/>
+        <ng-container *ngIf="isAuthenticated; else elseBlock">
+          <li class="hdr-nav-item">
+            <div class="hdr-nav-icon">
+              <img alt="" class="h-icon" src="./assets/icons/orders.svg"/>
+            </div>
+            <span class="hdr-nav-text">Ordenes</span>
+          </li>
+          <div display="dynamic" ngbDropdown placement="bottom-end">
+            <li class="hdr-nav-item align-items-start" id="dropdownForm1"
+                ngbDropdownToggle>
+              <div class="hdr-nav-icon px-0">
+                <img alt="" class="h-icon" src="./assets/icons/shopping-cart.svg"/>
+                <div class="cart-items">
+                  <p>{{ totalItems | number }}</p>
+                </div>
+              </div>
+              <span class="hdr-nav-text">Carrito</span>
+            </li>
+            <div aria-labelledby="dropdownForm1" ngbDropdownMenu>
+              <app-cart (total)="total($event)" [totalItems]="totalItems"></app-cart>
+            </div>
           </div>
-          <span class="hdr-nav-text">Orders</span>
-        </li>
-        <li class="hdr-nav-item">
-          <div class="hdr-nav-icon">
-            <img alt="" class="h-icon" src="./assets/icons/shopping-cart.svg"/>
-          </div>
-          <span class="hdr-nav-text">My Cart</span>
-        </li>
+          <li class="hdr-nav-item">
+            <div class="hdr-nav-icon">
+              <ngx-avatars [name]="userName" size="30"></ngx-avatars>
+            </div>
+            <span class="hdr-nav-text">{{ userName }}</span>
+          </li>
+        </ng-container>
+        <ng-template #elseBlock>
+          <button class="btn btn-primary login-button" routerLink="/auth"
+                  type="button">
+            <div class="d-inline-flex">
+              <i class="login-icon me-1"></i>
+              <p class="m-0">Iniciar Sesión
+              </p>
+            </div>
+          </button>
+        </ng-template>
       </ul>
     </div>
   </div>
@@ -63,7 +85,7 @@
   <div class="navigation">
     <div class="navigation-content">
       <div class="navigation-left">
-        <button class="sidenav-show-btn" type="button">
+        <button (click)="ToggleCollapsed()" class="sidenav-show-btn" type="button">
           <img alt="" class="d-icon" src="./assets/icons/menu-bars.svg"/>
         </button>
         <ul class="navigation-menu">
@@ -73,6 +95,44 @@
           <li class="menu-item"><a class="menu-link" href="#">Discounts</a></li>
           <li class="menu-item"><a class="menu-link" href="#">Watchlist</a></li>
           <li class="menu-item"><a class="menu-link">Help</a></li>
+
+
+          <div class="col-md-auto left-side">
+            <div class="nav-item d-inline-flex">
+              <a class="nav-link" routerLink="/products/search">
+                <div class="d-inline-flex">
+                  <i class="products-icon me-1"></i>
+                  <p class="m-0">Productos</p>
+                </div>
+              </a>
+              <a class="nav-link" routerLink="/main-page/about-us">
+                <div class="d-inline-flex">
+                  <i class="info-circle-icon me-1"></i>
+                  <p class="m-0">Nosotros</p>
+                </div>
+              </a>
+              <div display="dynamic" ngbDropdown placement="bottom-end">
+                <a aria-labelledby="navbarDropdown3" class="nav-link" id="adminMenu"
+                   ngbDropdownToggle>
+                  <div class="d-inline-flex">
+                    <i class="admin-icon me-1"></i>
+                    <p class="m-0">Admin</p>
+                  </div>
+                </a>
+                <div aria-labelledby="adminMenu" ngbDropdownMenu>
+                  <div class="admin-dropdown">
+                    <a class="dropdown-item" routerLink="/admin/inventory"><i
+                      class="inventory-icon me-1"></i>Inventario</a>
+                    <a class="dropdown-item" routerLink="/admin/dashboard"><i
+                      class="dashboard-icon me-1"></i>Panel
+                      de
+                      Admin</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </ul>
       </div>
       <div class="navigation-right">
@@ -99,4 +159,4 @@
       </div>
     </div>
   </div>
-</header>
+</nav>

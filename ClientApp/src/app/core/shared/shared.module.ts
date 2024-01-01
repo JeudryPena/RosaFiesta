@@ -105,7 +105,8 @@ import {AvatarModule} from "ngx-avatars";
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
-    AvatarModule
+    AvatarModule,
+
   ],
   exports: [
     AdminLayoutComponent,
