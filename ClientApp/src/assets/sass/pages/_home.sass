@@ -306,9 +306,10 @@
           border-right: 1px solid a.$gray-200
 
     .product-item
+      overflow: hidden
+      border-radius: 6px
+      border: 1px solid a.$gray-200
       padding: 16px 6px 6px 20px
-      border-right: 1px solid a.$gray-200
-      border-bottom: 1px solid a.$gray-200
       transition: a.$default-transition
       min-width: 212px
 
@@ -403,6 +404,7 @@
     padding-bottom: 15px
 
     .recommend-products-list
+      display: grid
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
       gap: 20px
 
@@ -411,6 +413,7 @@
     padding-bottom: 15px
 
     .services-content
+      display: grid
       grid-template-columns: repeat(4, 1fr)
       gap: 20px
 

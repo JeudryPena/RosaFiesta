@@ -55,6 +55,7 @@ import {CarouselMultipleComponent} from "@core/shared/components/carousel-multip
 import {SwiperDirective} from "@core/shared/directives/swiper.directive";
 import {CarouselThumbnailsComponent} from "@core/shared/components/carousel-thumbnails/carousel-thumbnails.component";
 import {CarouselComponent} from "@core/shared/components/carousel/carousel.component";
+import {RecommendProductsComponent} from "@core/shared/components/recommend-products/recommend-products.component";
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import {CarouselComponent} from "@core/shared/components/carousel/carousel.compo
     CarouselMultipleComponent,
     SwiperDirective,
     CarouselThumbnailsComponent,
-    CarouselComponent
+    CarouselComponent,
+    RecommendProductsComponent
   ],
   imports: [
     RouterModule,
@@ -177,7 +179,8 @@ import {CarouselComponent} from "@core/shared/components/carousel/carousel.compo
     CarouselMultipleComponent,
     SwiperDirective,
     CarouselThumbnailsComponent,
-    CarouselComponent
+    CarouselComponent,
+    RecommendProductsComponent
   ],
   providers: [
     NgbRatingConfig

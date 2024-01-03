@@ -1,13 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {SharedModule} from "@core/shared/shared.module";
 import {Card} from "@core/interfaces/card";
 
 @Component({
   selector: 'app-products-source',
-  standalone: true,
-  imports: [
-    SharedModule
-  ],
   templateUrl: './products-source.component.html',
   styleUrl: './products-source.component.sass'
 })

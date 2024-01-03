@@ -1,0 +1,49 @@
+@use "../abstracts" as a
+
+.product-item
+  overflow: hidden
+  padding: 8px 16px
+  border-radius: 6px
+  border: 1px solid a.$gray-200
+
+  .item-img
+    width: 200px
+    height: 200px
+    padding: 12px 8px
+    justify-content: center
+    display: flex
+    overflow: hidden
+    align-items: center
+
+  .item-info
+    margin-top: 14px
+
+    span, p
+      @include a.text()
+
+    p
+      color: a.$gray-500
+      margin-bottom: 0
+
+    span
+      color: a.$dark
+      font-weight: 500
+
+  &.product-item-sm
+    display: grid
+    grid-template-columns: 80px auto
+    column-gap: 10px
+    padding: 0
+    border: none
+
+    .item-img
+      width: 80px
+      height: auto
+      padding: 5px 8px
+      border: 1px solid a.$gray-200
+      border-radius: 6px
+      overflow: hidden
+      @include a.flexbox($align: center, $justify: center)
+
+    .item-info
+      margin-top: 0

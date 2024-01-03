@@ -9,6 +9,8 @@ import {mainPageRouter} from "@public/home/main-page-routing.module";
 import {MainPageComponent} from "@public/home/main-page.component";
 import {TopMainComponent} from "@public/home/components/top-main/top-main.component";
 import {OffersComponent} from "@public/home/components/offers/offers.component";
+import {ProductsSourceComponent} from "@public/home/components/products-source/products-source.component";
+import {InquiryComponent} from "@public/home/components/inquiry/inquiry.component";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import {OffersComponent} from "@public/home/components/offers/offers.component";
     AboutUsComponent,
     MainPageComponent,
     TopMainComponent,
-    OffersComponent
+    OffersComponent,
+    ProductsSourceComponent,
+    InquiryComponent
   ],
   imports: [
     mainPageRouter,
