@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {Card} from "@core/interfaces/card";
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrl: './test.component.sass'
+  selector: 'app-offers',
+  templateUrl: './offers.component.html',
+  styleUrl: './offers.component.sass'
 })
-export class TestComponent implements OnInit {
+export class OffersComponent implements OnInit {
+
   images: Card[] = [];
 
   constructor() {
@@ -61,4 +62,5 @@ export class TestComponent implements OnInit {
       }
     ]
   }
+
 }

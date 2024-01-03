@@ -1,1 +1,32 @@
 @use '../abstracts' as a
+
+.inquiry-form
+  .form-elem
+    margin-bottom: 20px
+
+    &-control
+      height: 40px
+      border-radius: 6px
+      border: 1px solid a.$gray-300
+      padding: 10px
+      width: 100%
+
+      &::placeholder
+        color: a.$dark
+
+      &:focus
+        border-color: a.$gray-400
+
+    textarea
+      height: 72px
+      min-height: 40px
+      max-height: 150px
+
+      &::placeholder
+        color: a.$gray-500
+        font-size: 15px
+
+  .form-elems
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    column-gap: 8px

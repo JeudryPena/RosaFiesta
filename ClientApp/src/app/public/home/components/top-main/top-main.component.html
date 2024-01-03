@@ -1,0 +1,48 @@
+<section class="top-main">
+  <div class="c-container">
+    <div class="top-main-content">
+      <div class="categories-list">
+        <a class="category-item active" href="#">Automobiles</a>
+        <a class="category-item" href="#">Clothes and wear</a>
+        <a class="category-item" href="#">Home interiors</a>
+        <a class="category-item" href="#">Computer and tech</a>
+        <a class="category-item" href="#">Tools & equipments</a>
+        <a class="category-item" href="#">Sports and outdoor</a>
+        <a class="category-item" href="#">Animal and pets</a>
+        <a class="category-item" href="#">Machinery tools</a>
+        <a class="category-item" href="#">More category</a>
+      </div>
+
+      <div class="banner-slider">
+        @if (images) {
+          <app-carousel [slidesPerView]="3" [images]="images"></app-carousel>
+        }
+      </div>
+
+      <div class="offers">
+        <div class="offers-block-join">
+          <div class="join-user">
+            <div class="avatar"><img alt="" src="./assets/icons/avatar.svg"/></div>
+            <div>
+              <p class="join-user-text">
+                Hola usuario</p>
+              <p class="join-user-text">
+                ¡Vamos a empezar!
+              </p>
+            </div>
+          </div>
+          <div class="btn-group">
+            <a class="btn btn-sm btn-warning" href="#">Unirse</a>
+            <a class="btn btn-sm btn-primary" href="#">Acceder</a>
+          </div>
+        </div>
+        <div class="offers-block-off">
+          Obten un de descuento de 10 dolares en tu primera compra
+        </div>
+        <div class="offers-block-quote">
+          Puedes solicitar una cotizacion de cualquier producto
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

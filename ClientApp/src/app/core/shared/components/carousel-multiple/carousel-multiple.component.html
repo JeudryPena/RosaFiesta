@@ -1,0 +1,9 @@
+<swiper-container autoplay-delay="2500" autoplay-disable-on-interaction="false" class="mySwiper"
+                  grab-cursor="true"
+                  navigation="true" slides-per-view="4">
+  @for (img of images; track img; let i = $index) {
+    <swiper-slide>
+      <img src="{{img.url}}" alt="">
+    </swiper-slide>
+  }
+</swiper-container>

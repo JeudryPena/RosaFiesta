@@ -1,0 +1,73 @@
+@use '../abstracts' as a
+
+.offers-slider,
+.display-slider,
+.related-slider,
+.saved-slider
+  .slick-prev
+    left: 8px
+    position: absolute
+    z-index: 5
+    width: 20px
+    height: 20px
+    background-color: a.$gray-300
+    border-radius: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+
+    .slick-icon
+      padding-right: 1px
+
+    &::before
+      color: a.$dark
+      content: ""
+
+  .slick-next
+    right: 8px
+    position: absolute
+    z-index: 5
+    width: 20px
+    height: 20px
+    background-color: a.$gray-300
+    border-radius: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+
+    &:hover
+      background-color: a.$gray-400
+
+    .slick-icon
+      padding-left: 1px
+
+    &::before
+      color: a.$dark
+      content: ""
+
+  .slick-icon
+    width: 14px
+    opacity: 0.4
+    transition: a.$default-transition
+
+    &:hover
+      opacity: 1
+
+.display-slider
+  .slick-track,
+  .slick-list
+    height: 100%
+
+  &
+    overflow: hidden
+
+.banner-slider
+  margin-bottom: 0 !important
+
+  .slick-dots
+    bottom: 16px
+
+    li
+      button
+        &::before
+          font-size: 15px

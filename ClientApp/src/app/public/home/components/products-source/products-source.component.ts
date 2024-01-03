@@ -1,12 +1,17 @@
 import {Component, OnInit} from '@angular/core';
+import {SharedModule} from "@core/shared/shared.module";
 import {Card} from "@core/interfaces/card";
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrl: './test.component.sass'
+  selector: 'app-products-source',
+  standalone: true,
+  imports: [
+    SharedModule
+  ],
+  templateUrl: './products-source.component.html',
+  styleUrl: './products-source.component.sass'
 })
-export class TestComponent implements OnInit {
+export class ProductsSourceComponent implements OnInit {
   images: Card[] = [];
 
   constructor() {

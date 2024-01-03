@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8 px-0">
+      <!-- image -->
+      <swiper-container #swiper (slidechange)="slideChange($event)" [config]="swiperConfig" appSwiper
+                        thumbs-swiper=".mySwiper2">
+        <swiper-slide *ngFor="let item of contents">
+          <div [ngStyle]="{background: 'url(' + item.url +') no-repeat top center / contain'}"
+               class="ratio ratio-4x3"></div>
+        </swiper-slide>
+      </swiper-container>
+      <!-- /image -->
+
+      <!-- thumbnails -->
+      <swiper-container #swiperThumbs *ngIf="contents.length > 1" [config]="swiperThumbsConfig" appSwiper
+                        class="mySwiper2">
+        <swiper-slide *ngFor="let item of contents">
+          <div [ngStyle]="{background: 'url(' + item.url +') center / cover'}" class="ratio ratio-4x3"
+               role="button"></div>
+        </swiper-slide>
+      </swiper-container>
+      <!-- /thumbnails -->
+
+    </div>
+
+    <!-- description -->
+    <aside class="col-4 p-4">
+      <h3 [textContent]="contents[index].title"></h3>
+      <p [textContent]="contents[index].description"></p>
+    </aside>
+    <!-- /description -->
+  </div>
+</div>

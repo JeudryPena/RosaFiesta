@@ -1,0 +1,18 @@
+@if (images) {
+  <div class="products-display-grid display-grid-one">
+    <div class="c-container">
+      <div class="display-grid-content">
+        <div class="products-source">
+          <img alt="" class="object-fit-cover" src="./assets/img/display-grid-one-img.jpg">
+          <div class="products-source-info">
+            <p class="source-info-title">Home and outdoor</p>
+            <a class="btn btn-light" href="#">Source now</a>
+          </div>
+        </div>
+        <div class="products-list display-slider">
+          <app-carousel-multiple [images]="images"></app-carousel-multiple>
+        </div>
+      </div>
+    </div>
+  </div>
+}

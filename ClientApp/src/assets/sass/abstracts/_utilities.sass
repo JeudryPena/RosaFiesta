@@ -4,6 +4,9 @@
   width: 100%
   padding: 0 16px
 
+.c-container
+  @include c-container
+
 .select-wrapper
   position: relative
   overflow: hidden
@@ -18,10 +21,6 @@
     width: 24px
     height: 24px
     font-size: 1rem
-    top: 50%
-    transform: translateY(-50%)
-    right: 8px
-    position: absolute
     pointer-events: none
     filter: invert(64%) sepia(29%) saturate(167%) hue-rotate(175deg) brightness(88%) contrast(88%)
 
@@ -44,3 +43,6 @@
   font-size: 16px
   font-family: "Inter", sans-serif
   letter-spacing: -0.2px
+
+.text
+  @include text

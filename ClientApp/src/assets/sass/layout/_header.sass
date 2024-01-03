@@ -32,7 +32,7 @@
         font-size: 20px
 
 .header
-  transition: .5s ease
+  transition: .3s ease-in-out
   background-color: a.$white
 
   &-content
@@ -116,15 +116,15 @@
     select
       height: 100%
       color: a.$dark
-      width: 145px
+      width: auto
       padding-left: 10px
-      padding-right: 10px
+      padding-right: 5px
 
     button
       background-color: a.$blue
-      max-width: 100px
       color: a.$white
-      width: 100%
+      width: auto
+      padding: 0 .5rem
       @include a.flexbox($align: center, $justify: center)
 
       span
@@ -132,7 +132,8 @@
 
     .select-wrapper
       border-right: 2px solid a.$blue
-      min-width: 152px
+      padding-right: .5rem
+      width: auto
       @include a.v-flex()
       @include a.breakpoint-down(lg)
         display: none
@@ -153,3 +154,123 @@
 
       &:first-child
         margin-left: 0
+
+.admin-dropdown
+  display: flex
+  flex-direction: column
+  padding: 2px
+
+  a
+    display: flex
+    align-items: center
+    padding: 2px 6px
+
+.nav-link
+  color: rgba(255, 255, 255, .5)
+  border-bottom: .25rem solid transparent
+
+.nav-link:hover, .nav-link:focus
+  color: rgba(255, 255, 255, 0.898)
+  border-bottom-color: rgba(255, 255, 255, .25)
+
+.active
+  color: #fff
+  border-bottom-color: #fff
+
+.nav-link
+  display: flex !important
+  align-items: center
+  height: 30px
+  font-weight: 500 !important
+
+.left-side
+  display: flex
+  padding: 0
+  justify-content: center
+
+.nav-item
+  gap: 15px
+
+.d-icon
+  margin-right: .1rem !important
+
+.user-dropdown
+  display: flex
+  flex-direction: column
+
+  a
+    display: flex
+    color: #000
+    text-decoration: none
+    transition: 0.2s
+    padding: 2px 6px 2px 6px
+    align-items: center
+
+    &:hover
+      background-color: #e6edef
+      border-radius: 5px
+
+.navbar-user
+  position: relative
+  color: white
+  padding: 1.5px 6px
+  border-radius: 10px
+  transition: 0.2s
+  font-size: 95%
+  cursor: pointer
+
+.cart-items
+  color: white
+  border: 1px solid rgba(255, 255, 255, 0.1)
+  border-radius: 50%
+  background-color: rgb(172, 14, 14)
+  padding: 0 6px
+  height: 100%
+
+  p
+    margin: 0
+    font-size: 70%
+    text-align: center
+
+  i
+    font-size: 1.25rem
+    margin-top: 2px
+
+  &:hover
+    color: white
+    background-color: #0D6EFD
+    text-decoration: none
+
+.navbar-user:hover
+  color: white
+  background-color: #0D6EFD
+  text-decoration: none
+
+.login-button
+  width: 100%
+  height: auto
+  margin-top: 2px
+  padding: 5px 8px 0 5px !important
+  align-self: center
+
+#dropdownForm1:after
+  display: none
+
+
+.input-search
+  width: 150px !important
+  transition: width 0.3s ease-in-out
+  display: block
+  padding: 0.375rem 0.75rem
+  font-size: 1rem
+  font-weight: 400
+  line-height: 1.5
+  color: var(--bs-body-color)
+  appearance: none
+  background-color: var(--bs-body-bg)
+  background-clip: padding-box
+  border: var(--bs-border-width) solid var(--bs-border-color)
+  border-radius: var(--bs-border-radius)
+
+  &.focus
+    width: 225px !important

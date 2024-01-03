@@ -1,0 +1,11 @@
+@use '../abstracts' as a
+
+.theme-p
+  padding: 20px 16px
+
+  @include a.breakpoint-down(lg)
+    padding: 16px 12px
+
+
+  @include a.breakpoint-down(sm)
+    padding: 12px

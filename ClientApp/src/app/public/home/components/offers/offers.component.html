@@ -1,0 +1,41 @@
+@if (images) {
+  <section class="sc-deals">
+    <div class="c-container">
+
+      <div class="deals-content">
+        <div class="deals-countdown theme-p">
+          <div class="deals-title">
+            <h4 class="deals-countdown-title">Ofertas</h4>
+            <p class="text">Equipos desplegables</p>
+          </div>
+          <div class="countdown-elems">
+            <div
+              class="countdown-elem">
+              <span class="countdown-elem-value">04</span>
+              <span class="countdown-elem-unit">Days</span>
+            </div>
+            <div
+              class="countdown-elem">
+              <span class="countdown-elem-value">13</span>
+              <span class="countdown-elem-unit">Hour</span>
+            </div>
+            <div
+              class="countdown-elem">
+              <span class="countdown-elem-value">34</span>
+              <span class="countdown-elem-unit">Min</span>
+            </div>
+            <div
+              class="countdown-elem">
+              <span class="countdown-elem-value">56</span>
+              <span class="countdown-elem-unit">Sec</span>
+            </div>
+          </div>
+        </div>
+        <div class="deals-products">
+
+          <app-carousel-multiple [images]="images" [slidesPerView]="3"></app-carousel-multiple>
+        </div>
+      </div>
+    </div>
+  </section>
+}

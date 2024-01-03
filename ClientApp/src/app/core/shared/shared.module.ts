@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {CommonModule, CurrencyPipe, DatePipe, DecimalPipe, NgTemplateOutlet} from '@angular/common';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule, CurrencyPipe, DatePipe, DecimalPipe, NgOptimizedImage, NgTemplateOutlet} from '@angular/common';
 import {ActionDropdownComponent} from "@core/shared/components/action-dropdown/action-dropdown.component";
 import {BreadcrumbComponent} from "@core/shared/components/breadcrumb/breadcrumb.component";
 import {CheckboxComponent} from "@core/shared/components/checkbox/checkbox.component";
@@ -32,6 +32,7 @@ import {FooterComponent} from "@core/shared/components/layout/footer/footer.comp
 import {NavbarComponent} from "@core/shared/components/layout/navbar/navbar.component";
 import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
 import {
+  NgbCarouselModule,
   NgbDatepickerModule,
   NgbDropdownModule,
   NgbModalModule,
@@ -49,10 +50,15 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {NgxFileDropModule} from "ngx-file-drop";
 import {CartComponent} from "@core/shared/components/layout/cart/cart.component";
 import {AvatarModule} from "ngx-avatars";
-
+import {TestComponent} from "@root/test/test.component";
+import {CarouselMultipleComponent} from "@core/shared/components/carousel-multiple/carousel-multiple.component";
+import {SwiperDirective} from "@core/shared/directives/swiper.directive";
+import {CarouselThumbnailsComponent} from "@core/shared/components/carousel-thumbnails/carousel-thumbnails.component";
+import {CarouselComponent} from "@core/shared/components/carousel/carousel.component";
 
 @NgModule({
   declarations: [
+    TestComponent,
     AdminLayoutComponent,
     InventoryLayoutComponent,
     BodyComponent,
@@ -83,7 +89,11 @@ import {AvatarModule} from "ngx-avatars";
     IsFocusDirective,
     RatingDirective,
     ImgPathPipe,
-    TruncatePipe
+    TruncatePipe,
+    CarouselMultipleComponent,
+    SwiperDirective,
+    CarouselThumbnailsComponent,
+    CarouselComponent
   ],
   imports: [
     RouterModule,
@@ -106,9 +116,11 @@ import {AvatarModule} from "ngx-avatars";
     DatePipe,
     DecimalPipe,
     AvatarModule,
-
+    NgbCarouselModule,
+    NgOptimizedImage
   ],
   exports: [
+    TestComponent,
     AdminLayoutComponent,
     InventoryLayoutComponent,
     BodyComponent,
@@ -160,12 +172,19 @@ import {AvatarModule} from "ngx-avatars";
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
-    AvatarModule
+    AvatarModule,
+    NgbCarouselModule,
+    CarouselMultipleComponent,
+    SwiperDirective,
+    CarouselThumbnailsComponent,
+    CarouselComponent
   ],
   providers: [
     NgbRatingConfig
+
   ],
-  bootstrap: []
+  bootstrap: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {
 }

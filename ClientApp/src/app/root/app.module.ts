@@ -17,16 +17,20 @@ import {config} from "@env/config.dev";
 import {ToastContainerComponent} from "@root/toast-container/toast-container.component";
 import {NgbToastModule} from "@ng-bootstrap/ng-bootstrap";
 import {RouterModule} from "@angular/router";
+import {register} from "swiper/element/bundle";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
 }
 
+register();
+
 @NgModule({
   declarations: [
     AppComponent,
     ForbiddenComponent,
-    ToastContainerComponent,
+    ToastContainerComponent
+
   ],
   imports: [
     DecimalPipe,
@@ -78,6 +82,7 @@ export function tokenGetter() {
     }
   ],
   bootstrap: [AppComponent],
+  exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
