@@ -424,10 +424,15 @@
         grid-template-columns: 100%
 
     .services-item
+      overflow: hidden
+      border: 1px solid a.$gray-200
+      border-radius: 6px
+
       &-info
         position: relative
 
       &-icon
+        @include a.flexbox($align: center, $justify: center)
         position: absolute
         right: 20px
         top: -22.5px
@@ -441,6 +446,8 @@
           width: 24px
 
       &-title
+        @include a.text(600)
+        color: a.$dark
         max-width: 175px
 
   .sc-suppliers

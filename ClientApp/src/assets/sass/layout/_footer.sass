@@ -1,17 +1,10 @@
 @use '../abstracts' as a
 
-.footer-container
-  flex: 0 0 auto
-  width: auto
-
-.information-container
-  flex: 1 0 0
-  display: flex
-  flex-direction: column
-  justify-content: space-between
-
 .footer
+  background-color: a.$white
+
   .site-brand
+    @include a.v-flex()
     margin-right: auto
 
     @include a.breakpoint-down(sm)
@@ -19,10 +12,12 @@
       justify-content: center
 
   &-content
-    grid-template-columns: 276px repeat(4, 2fr) 1fr
+    display: grid
+    grid-template-columns: 276px repeat(3, 2fr) 1fr
     column-gap: 32px
-    padding-top: 48px
-    padding-bottom: 48px
+    padding-top: 36px
+    padding-bottom: 36px
+    grid-template-rows: 150px repeat(3, 2fr) 1fr
 
     @include a.breakpoint-down(md)
       grid-template-columns: 2fr repeat(2, 1fr)
@@ -41,8 +36,12 @@
       padding-bottom: 28px
 
     .brand-intro
-      padding: 15px 0
+      @include a.text()
+      color: a.$gray-600
+      padding: 12px 0 15px 0
       max-width: 300px
+      font-size: a.$text-base
+      margin-bottom: 0
 
       @include a.breakpoint-down(sm)
         margin-left: auto
@@ -50,6 +49,8 @@
 
   .social-links
     column-gap: 8px
+    display: flex
+    padding-left: 0 !important
 
     @include a.breakpoint-down(sm)
       justify-content: center
@@ -58,14 +59,19 @@
     a
       display: block
       margin-bottom: 3px
+      @include a.text()
+      color: a.$gray-500
 
   .footer-item-title
     font-size: 17px
     margin-bottom: 8px
     font-weight: 600
+    color: a.$dark
 
   .store-links
     row-gap: 8px
+    display: flex
+    flex-direction: column
 
     a
       width: 124px
@@ -79,7 +85,11 @@
     background-color: #eff2f4
     padding-top: 20px
     padding-bottom: 20px
+    text-align: center
 
-  &
-    padding-top: 16px
-    padding-bottom: 16px
+    @include a.breakpoint-down(sm)
+      padding-top: 16px
+      padding-bottom: 16px
+
+  &-text
+    color: a.$gray-800

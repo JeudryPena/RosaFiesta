@@ -1,0 +1,28 @@
+@use '../abstracts' as a
+
+.breadcrumb
+  padding-bottom: 20px
+  padding-top: 20px
+
+  &-item
+    color: a.$gray-500
+
+    a
+      @include a.text()
+      font-size: a.$text-base
+
+      &:hover
+        color: a.$dark
+
+  &-separator
+    width: 18px
+    padding: 3px
+    opacity: 0.6
+    margin-right: 6px
+
+    @include a.breakpoint-down(xs)
+      margin-right: 0
+
+  &-list
+    @include a.v-flex()
+    flex-wrap: nowrap

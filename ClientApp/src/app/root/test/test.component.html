@@ -1,55 +1,64 @@
 @if (images) {
-  <section class="sc-services">
-    <div class="c-container">
-      <h3 class="title">Our extra services</h3>
-      <div class="services-content">
-        <div class="services-item overflow-hidden border-gray-200 border-radius-6">
-          <div class="services-item-img">
-            <img src="./assets/images/service-1.png" alt=""/>
-          </div>
-          <div class="services-item-info theme-p">
-            <div class="services-item-icon flex items-center justify-center">
-              <img src="./assets/icons/search.svg"/>
-            </div>
-            <p class="services-item-title font-medium text text-dark">Source from Industry Hubs</p>
-          </div>
+  <nav class="sidenav bg-white">
+    <button type="button" class="sidenav-hide-btn">
+      <i class="fas fa-close"></i>
+    </button>
+    <div class="sidenav-wrapper">
+      <div class="sidenav-top grid">
+        <div class="avatar">
+          <img src="./assets/icons/profile.svg" alt=""/>
         </div>
-        <div class="services-item overflow-hidden border-gray-200 border-radius-6">
-          <div class="services-item-img">
-            <img src="./assets/images/service-2.png" alt=""/>
-          </div>
-          <div class="services-item-info theme-p">
-            <div class="services-item-icon flex items-center justify-center">
-              <img src="./assets/icons/inventory.svg"/>
-            </div>
-            <p class="services-item-title font-medium text text-dark">Customize Your Products</p>
-          </div>
-        </div>
-        <div class="services-item overflow-hidden border-gray-200 border-radius-6">
-          <div class="services-item-img">
-            <img src="./assets/images/service-3.png" alt=""/>
-          </div>
-          <div class="services-item-info theme-p">
-            <div class="services-item-icon flex items-center justify-center">
-              <img src="./assets/icons/send.svg"/>
-            </div>
-            <p class="services-item-title font-medium text text-dark">Fast, reliable shipping by
-              ocean or air</p>
-          </div>
-        </div>
-        <div class="services-item overflow-hidden border-gray-200 border-radius-6">
-          <div class="services-item-img">
-            <img src="./assets/images/service-4.png" alt=""/>
-          </div>
-          <div class="services-item-info theme-p">
-            <div class="services-item-icon flex items-center justify-center">
-              <img src="./assets/icons/security.svg"/>
-            </div>
-            <p class="services-item-title font-medium text text-dark">Product monitoring and
-              inspection</p>
-          </div>
+        <div class="links-group">
+          <a href="#" class="text-dark text text-base">Sign in</a>
+          <span>|</span>
+          <a href="#" class="text-dark text text-base">Register</a>
         </div>
       </div>
+
+      <div class="sidenav-main">
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fas fa-list"></i></span>
+          <span class="text text-base text-dark">Home</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fas fa-home"></i></span>
+          <span class="text text-base text-dark">Categories</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fa-regular fa-heart"></i></span>
+          <span class="text text-base text-dark">Favorites</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fas fa-box"></i></span>
+          <span class="text text-base text-dark">My orders</span>
+        </a>
+        <div class="sidenav-item-separator"></div>
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fas fa-globe"></i></span>
+          <span class="text text-base text-dark">English | USD</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fas fa-headphones"></i></span>
+          <span class="text text-base text-dark">Contact us</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span class="sidenav-item-icon"><i class="fas fa-building"></i></span>
+          <span class="text text-base text-dark">About</span>
+        </a>
+        <div class="sidenav-item-separator"></div>
+        <a href="#" class="sidenav-item grid">
+          <span></span>
+          <span class="text text-base text-dark">User agreement</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span></span>
+          <span class="text text-base text-dark">Partnership</span>
+        </a>
+        <a href="#" class="sidenav-item grid">
+          <span></span>
+          <span class="text text-base text-dark">Privacy policy</span>
+        </a>
+      </div>
     </div>
-  </section>
+  </nav>
 }

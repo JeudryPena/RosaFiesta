@@ -11,6 +11,8 @@ import {TopMainComponent} from "@public/home/components/top-main/top-main.compon
 import {OffersComponent} from "@public/home/components/offers/offers.component";
 import {ProductsSourceComponent} from "@public/home/components/products-source/products-source.component";
 import {InquiryComponent} from "@public/home/components/inquiry/inquiry.component";
+import {ServicesComponent} from "@public/home/components/services/services.component";
+import {NewsletterComponent} from "@public/home/components/newsletter/newsletter.component";
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import {InquiryComponent} from "@public/home/components/inquiry/inquiry.componen
     TopMainComponent,
     OffersComponent,
     ProductsSourceComponent,
-    InquiryComponent
+    InquiryComponent,
+    ServicesComponent,
+    NewsletterComponent
   ],
   imports: [
     mainPageRouter,

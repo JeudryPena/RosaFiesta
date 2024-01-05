@@ -1,0 +1,30 @@
+@use '../abstracts' as a
+
+.filter-tags
+  @include a.v-flex()
+  flex-wrap: wrap
+
+  &-list
+    margin: 12px 0 !important
+    padding: 0 !important
+    gap: 6px
+    @include a.v-flex()
+    flex-wrap: wrap
+
+    .tag-item
+      background-color: a.$white
+      @include a.v-flex()
+      @include a.text()
+      font-size: a.$text-sm
+      display: flex
+      align-items: center
+      justify-content: center
+      border: 1px solid a.$gray-300
+      border-radius: 5px
+      height: 28px
+      padding-left: 6px
+      padding-right: 6px
+      column-gap: 6px
+
+      button
+        color: a.$blue

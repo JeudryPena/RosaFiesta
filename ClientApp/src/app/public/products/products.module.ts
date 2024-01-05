@@ -6,6 +6,13 @@ import {ModalQuoteComponent} from "@public/products/components/modal-quote/modal
 import {ProductCardComponent} from "@public/products/components/product-card/product-card.component";
 import {ProductDetailComponent} from "@public/products/containers/product-detail/product-detail.component";
 import {PublicModule} from "@public/public.module";
+import {FilterNavComponent} from "@public/products/components/filter-nav/filter-nav.component";
+import {FilterTagsComponent} from "@public/products/components/filter-tags/filter-tags.component";
+import {ProductsBlocksComponent} from "@public/products/components/products-blocks/products-blocks.component";
+import {ProductsHeadComponent} from "@public/products/components/products-head/products-head.component";
+import {
+  ProductsPaginationComponent
+} from "@public/products/components/products-pagination/products-pagination.component";
 
 @NgModule({
   declarations: [
@@ -13,7 +20,12 @@ import {PublicModule} from "@public/public.module";
     CardsComponent,
     ModalQuoteComponent,
     ProductCardComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    FilterNavComponent,
+    FilterTagsComponent,
+    ProductsBlocksComponent,
+    ProductsHeadComponent,
+    ProductsPaginationComponent
   ],
   imports: [
     productsRouter,

@@ -1,0 +1,274 @@
+@use '../abstracts' as a
+
+.products-page
+  padding-top: 3rem
+
+  .top-main
+    &-content
+      display: flex
+      grid-template-columns: 230px auto
+      column-gap: 28px
+
+      @include a.breakpoint-down(xl)
+        grid-template-columns: 100%
+        row-gap: 24px
+
+  .products-block-head
+    padding: 8px 18px
+    margin-bottom: 20px
+    @include a.flexbox($align: center, $justify: space-between)
+    border: 1px solid a.$gray-300
+    border-radius: 6px
+    background-color: a.$white
+
+    p
+      margin: 0 !important
+
+    @include a.breakpoint-down(md)
+      flex-direction: column
+      row-gap: 10px
+      align-items: flex-start
+
+    @include a.breakpoint-down(xs)
+      padding-left: 10px
+      padding-right: 10px
+
+    p
+      @include a.text()
+      color: a.$dark
+
+      span
+        font-weight: 600
+
+  .products-view-options
+    column-gap: 10px
+    @include a.v-flex()
+
+    @include a.breakpoint-down(xs)
+      flex-direction: column
+      align-items: stretch
+      width: 100%
+      row-gap: 6px
+
+    .view-options-check
+      padding-right: 6px
+      padding-left: 6px
+      display: flex
+
+      input
+        scale: 1.2
+        margin-right: 6px
+
+      @include a.breakpoint-down(xs)
+        padding-left: 0
+
+      span
+        @include a.text()
+        color: a.$dark
+        font-weight: 500
+        white-space: nowrap
+
+    .view-options-select
+      @include a.h-flex()
+      border-radius: 6px
+      border: 1px solid a.$gray-300
+      max-width: 172px
+
+      @include a.breakpoint-down(xs)
+        max-width: 100%
+
+      select
+        @include a.text()
+
+    select
+      padding: 6px 8px
+      width: 160px
+
+  &
+    width: 100%
+
+    .view-options-btns
+      @include a.v-flex()
+      border-radius: 6px
+      border: 1px solid a.$gray-300
+      overflow: hidden
+
+      &-grid
+        @include a.flexbox($align: center, $justify: center)
+
+      .btn-listview
+        @include a.flexbox($align: center, $justify: center)
+
+      button
+        width: 38px
+        height: 40px
+
+        img
+          width: 24px
+
+        &:first-child
+          border-right: 1px solid a.$gray-300
+
+        &.active
+          background-color: a.$gray-100
+
+      @include a.breakpoint-down(xs)
+        button
+          width: 50%
+
+  .products-list-item
+
+    grid-template-columns: 210px auto
+
+    @include a.breakpoint-down(lg)
+      grid-template-columns: 160px auto
+
+    @include a.breakpoint-down(sm)
+      grid-template-columns: 100%
+
+    .item-img
+      padding: 20px
+
+      @include a.breakpoint-down(lg)
+        padding: 12px
+
+      @include a.breakpoint-down(sm)
+        justify-content: flex-start
+        img
+          max-width: 160px
+
+    .item-details
+      padding: 20px 20px 20px 12px
+      grid-template-columns: auto 80px
+      column-gap: 16px
+
+      @include a.breakpoint-down(md)
+        grid-template-columns: auto auto
+        column-gap: 10px
+        padding-right: 12px
+
+    .item-title
+      margin-bottom: 14px
+      @include a.text($weight: 600)
+
+      @include a.breakpoint-down(md)
+        margin-bottom: 8px
+
+    .item-price
+      @include a.v-flex()
+      flex-wrap: wrap
+
+      .price-old
+        @include a.text($weight: 600)
+        color: a.$gray-500
+        text-decoration: line-through
+        margin-left: 8px
+
+      .price-new
+        color: a.$dark
+        font-size: a.$text-lg
+        font-weight: 600
+
+    .info-separator
+      width: 6px
+      height: 6px
+      border-radius: 50%
+      display: inline-block
+      background-color: a.$gray-300
+      margin-right: 9px
+      margin-left: 9px
+
+    .info-shipping
+      color: a.$pastel-green
+
+    .item-description
+      margin: 12px 0 8px 0
+      line-height: 1.5
+
+    .item-wish
+      border-radius: 6px
+      @include a.flexbox($align: center, $justify: center)
+      width: 40px
+      height: 40px
+      border: 1px solid a.$gray-300
+      box-shadow: 0 1px 2px 0 rgba(56, 56, 56, 0.08)
+      margin-left: auto
+      color: a.$blue
+
+      .favorite-icon
+        filter: invert(30%) sepia(86%) saturate(3983%) hue-rotate(211deg) brightness(104%) contrast(96%)
+
+      @include a.breakpoint-down(md)
+        width: 28px
+        height: 28px
+
+  .products-block-list
+    display: grid
+    row-gap: 10px
+
+    &.products-gridview
+      display: grid
+      grid-template-columns: repeat(3, 1fr)
+      gap: 20px
+
+      @include a.breakpoint-down(lg)
+        grid-template-columns: repeat(2, 1fr)
+
+      @include a.breakpoint-down(sm)
+        grid-template-columns: 100%
+
+      .products-list-item
+        background: a.$white
+        display: grid
+        border: 1px solid a.$gray-300
+        border-radius: 6px
+        grid-template-columns: 100%
+        padding: 20px
+        row-gap: 18px
+
+        .item-img
+          @include a.flexbox($align: center, $justify: center)
+          width: auto
+          height: 200px
+          padding: 15px
+          margin-right: auto
+          margin-left: auto
+
+          img
+            width: auto
+            height: 100%
+
+        .item-details
+          display: grid
+          padding: 0
+          grid-template-columns: auto auto
+
+          .item-container
+            .btn-link
+              @include a.text(500)
+
+        .info-orders,
+        .info-shipping,
+        .item-description,
+        .info-separator
+          display: none
+
+        .info-description
+          @include a.text($weight: 600)
+
+        .info-shipping
+          @include a.text()
+
+        .info-orders
+          @include a.text($weight: 500)
+
+        .btn-link
+          display: inline-block
+          margin-top: 10px
+
+  .btn-clear-filters
+    @include a.text()
+    font-size: a.$text-sm
+
+.products-blocks
+  background-color: a.$bg-gray

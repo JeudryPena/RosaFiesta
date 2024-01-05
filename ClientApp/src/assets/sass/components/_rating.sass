@@ -1,0 +1,21 @@
+@use '../abstracts' as a
+
+.rating
+  @include a.v-flex()
+  column-gap: 1px
+
+  li
+    color: a.$princeton-orange
+
+
+  &-value
+    margin-left: 5px
+
+.separator
+  width: 6px
+  height: 6px
+  border-radius: 50%
+  display: inline-block
+  background-color: a.$gray-300
+  margin-right: 9px
+  margin-left: 9px
