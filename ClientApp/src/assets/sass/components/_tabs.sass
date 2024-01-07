@@ -1,0 +1,27 @@
+@use "../abstracts" as a
+
+.details-tabs
+  @include a.border
+  padding: .5rem 1rem
+  border-bottom: 1px solid a.$gray-300
+  background-color: a.$white
+
+  .tabs-btn
+    padding: 10px 20px
+    @include a.text($weight: 600)
+    color: a.$gray-500
+
+    &:hover
+      background-color: a.$gray-100
+
+
+    &.active
+      border-bottom: 2px solid a.$blue
+      color: a.$blue
+
+    @include a.breakpoint-down(sm)
+      padding: 12px
+
+  @include a.breakpoint-down(sm)
+    padding-top: 12px
+    padding-bottom: 12px

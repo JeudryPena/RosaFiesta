@@ -29,7 +29,7 @@ register();
   declarations: [
     AppComponent,
     ForbiddenComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
 
   ],
   imports: [

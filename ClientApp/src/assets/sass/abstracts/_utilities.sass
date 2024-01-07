@@ -40,11 +40,20 @@
   display: flex
   justify-content: $justify
 
-@mixin text($weight: 400)
+@mixin text($weight: 400, $size: $text-base)
   font-weight: $weight
-  font-size: $text-base
+  font-size: $size
   font-family: "Inter", sans-serif
   letter-spacing: -0.2px
+
+@mixin text-overflow()
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+@mixin border()
+  border: 1px solid $gray-200
+  border-radius: 6px
 
 .text
   @include text

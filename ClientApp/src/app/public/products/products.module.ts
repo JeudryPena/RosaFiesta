@@ -13,6 +13,24 @@ import {ProductsHeadComponent} from "@public/products/components/products-head/p
 import {
   ProductsPaginationComponent
 } from "@public/products/components/products-pagination/products-pagination.component";
+import {DiscountBannerComponent} from "@public/products/components/discount-banner/discount-banner.component";
+import {
+  ProductDetailsTopComponent
+} from "@public/products/components/product-details-top/product-details-top.component";
+import {
+  ProductDetailsBottomComponent
+} from "@public/products/components/product-details-bottom/product-details-bottom.component";
+import {DetailsSuggestComponent} from "@public/products/components/details-suggest/details-suggest.component";
+import {DetailTabsComponent} from "@public/products/components/detail-tabs/detail-tabs.component";
+import {
+  DetailDescriptionTabComponent
+} from "@public/products/components/detail-tabs/detail-description-tab/detail-description-tab.component";
+import {
+  DetailReviewTabComponent
+} from "@public/products/components/detail-tabs/detail-review-tab/detail-review-tab.component";
+import {
+  DetailShippingTabComponent
+} from "@public/products/components/detail-tabs/detail-shipping-tab/detail-shipping-tab.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +43,15 @@ import {
     FilterTagsComponent,
     ProductsBlocksComponent,
     ProductsHeadComponent,
-    ProductsPaginationComponent
+    ProductsPaginationComponent,
+    DiscountBannerComponent,
+    ProductDetailsTopComponent,
+    ProductDetailsBottomComponent,
+    DetailsSuggestComponent,
+    DetailTabsComponent,
+    DetailDescriptionTabComponent,
+    DetailReviewTabComponent,
+    DetailShippingTabComponent
   ],
   imports: [
     productsRouter,

@@ -1,14 +1,26 @@
 @use "../abstracts" as a
 
 .details-page
-  .top-main-content
-    row-gap: 20px
+  justify-content: center
+  padding-top: 3rem
+
+  .top-main
+    width: 100%
+
+    &-content
+      display: grid
+      row-gap: 20px
 
   .details-top
-    grid-template-columns: 30% auto
-    padding: 20px 20px 40px 20px
+    background-color: a.$white
+    display: grid
+    border: 1px solid a.$gray-200
+    border-radius: 6px
+    grid-template-columns: 40% 55%
+    padding: 20px 20px 20px 20px
     gap: 24px
     align-items: flex-start
+    justify-content: center
 
     @include a.breakpoint-down(xl)
       grid-template-columns: 40% auto
@@ -20,36 +32,57 @@
       padding: 12px
 
   .details-top-r
-    grid-template-columns: 60% auto
+    display: grid
+    grid-template-columns: 70% auto
     gap: 24px
 
     @include a.breakpoint-down(xl)
       grid-template-columns: 100%
 
-  .preview-large
-    height: 450px
-    @include a.breakpoint-down(lg)
-      border: none
+    .details-product
+      .details-info
+        @include a.flexbox($align: center)
+        flex-wrap: wrap
+
+        .rating
+          @include a.v-flex()
 
   .details-preview
-    row-gap: 20px
+    display: grid
+    grid-template-columns: 100%
+    grid-template-rows: 300px 100px
+    width: 100%
+    overflow: hidden
+    row-gap: 1rem
 
     @include a.breakpoint-down(md)
       max-width: 400px
       margin-right: auto
       margin-left: auto
 
+  .preview-large
+    border-radius: 6px
+    border: 1px solid a.$gray-200
+    @include a.flexbox($align: center, $justify: center)
+    overflow: hidden
+    height: 300px
+    @include a.breakpoint-down(lg)
+      border: none
+
   .preview-thumbnail
-    justify-content: space-between
+    overflow-y: hidden
+    overflow-x: auto
+    gap: 4px
+    @include a.flexbox($align: center, $justify: space-between)
 
     .thumbnail-item
+      border: 1px solid a.$gray-200
+      border-radius: 6px
+      overflow: hidden
       min-width: 68px
       width: 68px
       height: 68px
       cursor: pointer
-      padding: 2px
-      margin-right: 2px
-      margin-left: 2px
 
       &.active
         border-color: a.$gray-600
@@ -58,35 +91,29 @@
         border-color: a.$gray-500
 
   .stock-status
+    @include a.text()
     color: a.$pastel-green
 
   .details-title
+    @include a.text($weight: 700, $size: a.$text-lg)
     margin: 5px 0 12px 0
     line-height: 1.3
 
   .details-review
+    @include a.text()
+    color: a.$gray-500
+    @include a.v-flex()
     column-gap: 10px
 
-  .details-pcs
-    background-color: #fff0df
-    grid-template-columns: repeat(3, 1fr)
-    column-gap: 10px
-    margin-top: 14px
-
-    .psc-item
-      border-right: 1px solid a.$gray-400
-
-      &-price
-        font-size: 18px
-
-      &:last-child
-        border-right: 0
+    span
+      @include a.text()
 
   .details-data
     .data-row
       margin: 8px 0
       grid-template-columns: 120px auto
       gap: 20px
+      display: grid
 
       @include a.breakpoint-down(sm)
         margin: 4px 0
@@ -111,6 +138,9 @@
             .data-row
               grid-template-columns: 120px auto
 
+      &-h, &-d
+        @include a.text()
+
       &-h
         color: a.$gray-500
 
@@ -119,46 +149,16 @@
 
   .details-supplier
     &-wrapper
+      border-radius: 6px
+      border: 1px solid a.$gray-200
       padding: 20px 16px
 
       @include a.breakpoint-down(sm)
         padding: 12px
 
-    .supplier-intro
-      border-bottom: 1px solid a.$gray-200
-      padding-bottom: 20px
-      grid-template-columns: 48px auto
-      align-items: center
-      column-gap: 10px
-
-      @include a.breakpoint-down(xl)
-        padding-bottom: 16px
-
-      .supplier-avatar
-        width: 48px
-        height: 48px
-        border-radius: 4px
-        background: #c6f3f1
-        color: rgba(76, 167, 167, 0.6)
-        font-size: 28px
-
     .supplier-service
       padding: 14px 0
 
-      li
-        grid-template-columns: 22px auto
-        align-items: center
-        column-gap: 10px
-        margin: 4px 0
-
-        @include a.breakpoint-down(xl)
-          column-gap: 6px
-
-      &-icon
-        width: 20px
-        height: 20px
-
-      ul
 
   &
     display: flex
@@ -169,6 +169,9 @@
       padding: 10px 0
 
     .btn-group
+      display: flex
+      flex-direction: column
+
       .btn-white
         color: a.$blue
 
@@ -182,10 +185,15 @@
           width: 50%
 
     .btn-wishlist
+      width: auto
+      @include a.flexbox($align: center, $justify: center)
       margin: 20px 0
 
       span
         margin-right: 6px
+        @include a.text()
+        @include a.v-flex()
+        text-align: center
 
   .sc-related
     padding: 20px 0
@@ -206,30 +214,67 @@
   .details-bottom
     grid-template-columns: 72% auto
     gap: 20px
+    display: grid
 
     @include a.breakpoint-down(lg)
       grid-template-columns: 100%
 
   .details-suggest
+    background-color: a.$white
+    @include a.border()
+
+    .suggest-title
+      @include a.text($weight: 600)
+      color: a.$dark
+
     .suggest-products-list
+      display: grid
       padding: 20px 0
       gap: 16px
 
       @include a.breakpoint-down(lg)
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))
 
+      .product-item
+        @include a.border()
+        overflow: hidden
+
+        .item-img
+          overflow: hidden
+          @include a.flexbox($align: center, $justify: center)
+
+        .item-info
+          span
+            @include a.text($weight: 600)
+            color: a.$dark
+
+          p
+            @include a.text()
+            color: a.$gray-500
+
 .wide-banner
   background: url("../../../assets/img/blue-bg.png") center/cover no-repeat
   padding: 28px 30px
+  color: a.$white
 
   &-text
     opacity: 0.7
 
   &-content
+    @include a.flexbox($align: center, $justify: space-between)
     @include a.breakpoint-down(md)
       flex-direction: column
       row-gap: 16px
       text-align: center
+
+      .wide-banner-container
+        h4
+          @include a.text(600, a.$text-xl)
+          color: a.$white
+
+        .wide-banner-text
+          @include a.text(400, a.$text-base)
+          color: a.$white
 
   @include a.breakpoint-down(lg)
     padding: 20px 22px

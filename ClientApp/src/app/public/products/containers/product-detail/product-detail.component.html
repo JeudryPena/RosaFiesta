@@ -1,102 +1,12 @@
-<div class="container ">
-  <ng-container *ngIf="product$ | async as product; else loadOrError">
-    <div class="product-div">
-      <div class="product-div-left">
-        <div class="img-container">
-          <a class="share"><i class="fas fa-share-alt"></i></a>
-          <img height="480" src="{{product.option.image | imgPath}}" width="400">
+<div class="page-wrapper">
+  <div class="details-page">
+    <div class="top-main">
+      <div class="c-container">
+        <div class="top-main-content">
+          <app-product-details-top></app-product-details-top>
+          <app-product-details-bottom></app-product-details-bottom>
         </div>
-        <div *ngFor="let image of product.option.images" class="img-select">
-          <div class="img-item">
-            <a>
-              <img height="128" src="{{image | imgPath}}" width="128">
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="product-div-right">
-
-        <!-- <div class="social-links">
-                <p>Share At: </p>
-                <a href="#">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="#">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="#">
-                    <i class="fab fa-pinterest"></i>
-                </a>
-            </div> -->
-        <span class="product-name"><a class="product-link" href="#">{{product.option.condition}}</a>
-          {{product.option.title}}</span>
-        <div class="row price-rating">
-          <div class="product-price col">
-                        <span *ngIf="product.option.discount" class="last-price me-1">{{product.option.offerPrice |
-                          currency }}</span>
-            <span class="new-price">{{product.option.price | currency}}<span *ngIf="product.option.discount"
-                                                                             class="ms-1">({{product.option.discount.value}}
-              %)</span></span>
-          </div>
-          <div class="col product-rating">
-            <app-rating [rating]="product.option.averageRating"></app-rating>
-            <span class="review-quantity">{{(product.option.reviews)?.length}}</span>
-          </div>
-        </div>
-
-        <p class="product-description">{{product.option.description}}</p>
-        <div class="product-detail">
-          <ul>
-            <li *ngIf="product.option.stock != 'OutOfStock'">Disponibilidad:
-              <span>{{product.option.stock}}</span></li>
-            <li>Shipping Area: <span>Republica Dominicana</span></li>
-            <li>Shipping Fee: <span>Gratis</span></li>
-          </ul>
-        </div>
-        <div class="color-price">
-          <div class="color-option">
-            <span class="color">Color:</span>
-            <div *ngFor="let color of product.options" class="circles">
-                            <span [ngClass]="{'focus': isActive}"
-                                  [ngStyle]="{'background': colorCode, 'box-shadow': isActive ? '0 0 0 2px #fff, 0 0 0 4px ' + colorCode : 'none'}"
-                                  class="circle"></span>
-            </div>
-          </div>
-        </div>
-        <form [formGroup]="cartForm" action="">
-          <div class="btn-groups d-flex">
-
-            <input formControlName="quantity" min="0" step="1" type="number" value="1">
-
-            <div class="button ms-1 p-0">
-              <div class="button-layer"></div>
-              <button (click)="AddToCart(cartForm.value)"><i class="fa-solid fa-cart-shopping me-1"></i>Añadir al
-                carrito
-              </button>
-              <!-- <button type="button" class="add-cart-btn"><i class="fas fa-shopping-cart"></i>Añadir al
-              carrito</button> -->
-            </div>
-            <button class="buy-now-btn ms-2" type="button"><i class="fas fa-wallet"></i>COMPRAR</button>
-          </div>
-        </form>
       </div>
     </div>
-  </ng-container>
-  <ng-template #loadOrError>
-    <section *ngIf="hasError; else loading">
-      Ha ocurrido un error, por favor intente más tarde
-    </section>
-    <ng-template #loading>
-      <div class="loading-container">
-
-        <h3>Cargando...</h3>
-      </div>
-    </ng-template>
-  </ng-template>
+  </div>
 </div>

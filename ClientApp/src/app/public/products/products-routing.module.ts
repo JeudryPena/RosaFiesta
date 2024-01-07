@@ -5,7 +5,7 @@ import {ProductDetailComponent} from "@public/products/containers/product-detail
 
 const routes: Routes = [
   {path: 'search', component: ProductsComponent},
-  {path: 'product-detail', component: ProductDetailComponent}
+  {path: 'detail', component: ProductDetailComponent}
 ];
 
 export const productsRouter: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

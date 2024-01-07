@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {SwiperContainer} from "swiper/swiper-element";
 import {Card} from "@core/interfaces/card";
 import {SwiperOptions} from "swiper/types";
@@ -8,34 +8,11 @@ import {SwiperOptions} from "swiper/types";
   templateUrl: './carousel-thumbnails.component.html',
   styleUrl: './carousel-thumbnails.component.sass'
 })
-export class CarouselThumbnailsComponent implements AfterViewInit {
+export class CarouselThumbnailsComponent implements OnInit, AfterViewInit {
   @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
   @ViewChild('swiperThumbs') swiperThumbs!: ElementRef<SwiperContainer>;
 
-  contents: Card[] = [
-    {
-      title: 'Computer',
-      description: 'Description about computer...',
-      url: 'https://picsum.photos/id/1/640/480',
-    },
-    {
-      title: 'Building',
-      description: 'Building description...',
-      url: 'https://picsum.photos/id/101/640/480',
-    }, {
-      title: 'Glass over a computer',
-      description: 'Description of a glass over a computer',
-      url: 'https://picsum.photos/id/201/640/480',
-    }, {
-      title: 'Autumn',
-      description: 'Description about autumn leaves',
-      url: 'https://picsum.photos/id/301/640/480',
-    }, {
-      title: 'Balloon',
-      description: 'Coloured balloon',
-      url: 'https://picsum.photos/id/401/640/480',
-    },
-  ];
+  @Input() images: Card[] = [];
 
   index = 0;
 
@@ -50,6 +27,10 @@ export class CarouselThumbnailsComponent implements AfterViewInit {
     slidesPerView: 4,
     freeMode: true,
     watchSlidesProgress: true,
+  }
+
+  ngOnInit() {
+
   }
 
   ngAfterViewInit() {

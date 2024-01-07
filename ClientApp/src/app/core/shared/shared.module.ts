@@ -31,21 +31,10 @@ import {SidenavComponent} from "@core/shared/components/layout/sidenav/sidenav.c
 import {FooterComponent} from "@core/shared/components/layout/footer/footer.component";
 import {NavbarComponent} from "@core/shared/components/layout/navbar/navbar.component";
 import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
-import {
-  NgbCarouselModule,
-  NgbDatepickerModule,
-  NgbDropdownModule,
-  NgbModalModule,
-  NgbModule,
-  NgbPaginationModule,
-  NgbRatingConfig,
-  NgbTooltipModule,
-  NgbTypeaheadModule
-} from "@ng-bootstrap/ng-bootstrap";
+import {NgbRatingConfig} from "@ng-bootstrap/ng-bootstrap";
 import {NgxPayPalModule} from "ngx-paypal";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarsModule} from "ngx-stars";
-import {NgbdSortableHeader} from "@core/shared/directives/sortable.directive";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {NgxFileDropModule} from "ngx-file-drop";
 import {CartComponent} from "@core/shared/components/layout/cart/cart.component";
@@ -55,7 +44,11 @@ import {CarouselMultipleComponent} from "@core/shared/components/carousel-multip
 import {SwiperDirective} from "@core/shared/directives/swiper.directive";
 import {CarouselThumbnailsComponent} from "@core/shared/components/carousel-thumbnails/carousel-thumbnails.component";
 import {CarouselComponent} from "@core/shared/components/carousel/carousel.component";
-import {RecommendProductsComponent} from "@core/shared/components/recommend-products/recommend-products.component";
+import {
+  RecommendProductsComponent
+} from "@core/shared/components/products/recommend-products/recommend-products.component";
+import {NgBootstrapModule} from "@core/shared/components/bootstrap/ng-bootstrap.module";
+import {MaterialModule} from "@core/shared/components/material/material.module";
 
 @NgModule({
   declarations: [
@@ -101,25 +94,18 @@ import {RecommendProductsComponent} from "@core/shared/components/recommend-prod
     RouterModule,
     CommonModule,
     FormsModule,
-    NgbDropdownModule,
+    NgBootstrapModule,
+    MaterialModule,
     NgxStarsModule,
-    NgbPaginationModule,
-    NgbModule,
-    NgbdSortableHeader,
-    NgbTypeaheadModule,
-    NgbModalModule,
-    NgbDatepickerModule,
     NgxChartsModule,
-    NgbTooltipModule,
     NgTemplateOutlet,
     NgxFileDropModule,
     NgxPayPalModule,
+    NgOptimizedImage,
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
-    AvatarModule,
-    NgbCarouselModule,
-    NgOptimizedImage
+    AvatarModule
   ],
   exports: [
     TestComponent,
@@ -157,17 +143,11 @@ import {RecommendProductsComponent} from "@core/shared/components/recommend-prod
     CommonModule,
     RouterModule,
     FormsModule,
+    MaterialModule,
     ReactiveFormsModule,
-    NgbDropdownModule,
+    NgBootstrapModule,
     NgxStarsModule,
-    NgbPaginationModule,
-    NgbModule,
-    NgbdSortableHeader,
-    NgbTypeaheadModule,
-    NgbModalModule,
-    NgbDatepickerModule,
     NgxChartsModule,
-    NgbTooltipModule,
     NgTemplateOutlet,
     NgxFileDropModule,
     NgxPayPalModule,
@@ -175,7 +155,6 @@ import {RecommendProductsComponent} from "@core/shared/components/recommend-prod
     DatePipe,
     DecimalPipe,
     AvatarModule,
-    NgbCarouselModule,
     CarouselMultipleComponent,
     SwiperDirective,
     CarouselThumbnailsComponent,
