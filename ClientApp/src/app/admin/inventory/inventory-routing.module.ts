@@ -1,6 +1,5 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {InventoryLayoutComponent} from "@core/shared/components/layout/inventory-layout/inventory-layout.component";
 import {InventoryComponent} from "@admin/inventory/inventory.component";
 import {
   ManagementWarrantiesComponent
@@ -20,17 +19,13 @@ import {
 } from "@admin/inventory/containers/management-suppliers/management-suppliers.component";
 
 const routes: Routes = [
-  {
-    path: '', component: InventoryLayoutComponent, children: [
-      {path: '', component: InventoryComponent},
-      {path: 'management-warranties', component: ManagementWarrantiesComponent},
-      {path: 'management-categories', component: ManagementCategoriesComponent},
-      {path: 'management-products', component: ManagementProductsComponent},
-      {path: 'management-discounts', component: ManagementDiscountsComponent},
-      {path: 'management-users', component: ManagementUsersComponent},
-      {path: 'management-suppliers', component: ManagementSuppliersComponent}
-    ]
-  }
+  {path: '', component: InventoryComponent},
+  {path: 'management-warranties', component: ManagementWarrantiesComponent},
+  {path: 'management-categories', component: ManagementCategoriesComponent},
+  {path: 'management-products', component: ManagementProductsComponent},
+  {path: 'management-discounts', component: ManagementDiscountsComponent},
+  {path: 'management-users', component: ManagementUsersComponent},
+  {path: 'management-suppliers', component: ManagementSuppliersComponent}
 ];
 
 export const inventoryRouter: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

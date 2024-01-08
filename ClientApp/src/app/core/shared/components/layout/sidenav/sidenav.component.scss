@@ -2,22 +2,22 @@
   background: linear-gradient(45deg, #47cebe, #ef4a82);
   transition: all .5s ease;
   position: fixed;
-  z-index: 1;
+  z-index: 2000;
   width: 3.5rem;
   height: 100vh;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  
+
   .logo-container {
     display: flex;
     align-items: center;
     padding: 2.7rem 0.938rem 0rem 0.25rem;
-    
+
     .logo-text {
       margin-left: 1.5rem;
       font-size: 24px;
       font-weight: 700;
       color: #fff;
-      
+
     }
 
     .close {
@@ -44,7 +44,7 @@
 }
 
 .sidenav-nav {
-  
+
   list-style: none;
   padding: 0.25rem;
   margin: 0;
@@ -55,7 +55,7 @@
   cursor: pointer;
 
   .sidenav-nav-item {
-    
+
     width: 100%;
     margin-bottom: 0.625rem;
 
@@ -63,7 +63,7 @@
       display: flex;
       align-items: center;
       height: 2rem;
-      color: #f3f3f3; 
+      color: #f3f3f3;
       text-decoration: none;
       border-radius: 0.625rem;
       transition: all .3s ease;
@@ -74,6 +74,7 @@
         min-width: 2rem;
         margin: 0 0.5rem;
         text-align: center;
+        transition: all .3s ease
       }
 
       .sidenav-link-text {
@@ -81,18 +82,22 @@
       }
     }
 
-    .sidenav-nav-link:hover{
+    .sidenav-nav-link:hover {
       background-color: #fff;
       color: #000;
 
-      .menu-collapse-icon{
+      .sidenav-link-icon {
+        filter: invert(7%) sepia(16%) saturate(191%) hue-rotate(316deg) brightness(95%) contrast(91%)
+      }
+
+      .menu-collapse-icon {
         color: #000;
       }
     }
   }
 }
 
-.active{
+.active {
   background-color: #fff;
 
   .menu-collapse-icon,
@@ -102,17 +107,18 @@
   }
 }
 
-.menu-collapse-icon{
+.menu-collapse-icon {
   font-size: 26px;
   margin: auto 1.7rem auto auto;
   text-align: end;
   color: #f3f3f3;
 }
 
-.sublevel-nav{
+.sublevel-nav {
   list-style: none;
-  .sublevel-nav-item{
-    .sublevel-nav-link{
+
+  .sublevel-nav-item {
+    .sublevel-nav-link {
       display: flex;
       align-items: center;
       height: 2rem;
@@ -121,7 +127,7 @@
       border-radius: 0.625rem;
       transition: all .3s ease;
 
-      .sublevel-link-icon{
+      .sublevel-link-icon {
         font-size: 4px;
         width: 2rem;
         min-width: 2rem;
@@ -129,12 +135,12 @@
         text-align: center;
       }
 
-      .sublevel-link-text{
+      .sublevel-link-text {
         margin-left: 0.8rem;
       }
     }
 
-    .sublevel-nav-link:hover{
+    .sublevel-nav-link:hover {
       background-color: #f3f3f3;
     }
   }

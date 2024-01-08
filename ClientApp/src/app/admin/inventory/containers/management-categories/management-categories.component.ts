@@ -4,7 +4,7 @@ import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {CategoryManagementResponse} from '../../../../core/interfaces/Product/Response/categoryManagementResponse';
+import {Category} from '@core/interfaces/Product/category';
 import {NgbdSortableHeader, SortEvent} from '@core/shared/directives/sortable.directive';
 import {CategoriesService} from '../../services/categories.service';
 import {ProductsService} from '../../services/products.service';
@@ -17,7 +17,7 @@ import {ModalCategoryComponent} from '../../components/modal-category/modal-cate
   providers: [ProductsService, DecimalPipe],
 })
 export class ManagementCategoriesComponent {
-  categories$: Observable<CategoryManagementResponse[]> = new Observable<CategoryManagementResponse[]>();
+  categories$: Observable<Category[]> = new Observable<Category[]>();
   total$: Observable<number> = new Observable<number>();
 
   collectionSize = 0;

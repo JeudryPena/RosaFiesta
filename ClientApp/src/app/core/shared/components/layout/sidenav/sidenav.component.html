@@ -1,29 +1,30 @@
 <div>
-  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+  <div [ngClass]="collapsed ? 'sidenav-collapsed' : ''" class="sidenav">
     <div class="logo-container">
+      <div *ngIf="collapsed" @fadeInOut class="logo-text">
+        Menu
+      </div>
 
-      <div class="logo-text" @fadeInOut *ngIf="collapsed"></div>
-
-      <button class="close" @rotate *ngIf="collapsed" (click)="closeSidenav()">
-        <i class="fal fa-times close-icon"></i>
+      <button (click)="closeSidenav()" *ngIf="collapsed" @rotate class="close">
+        <i class="close-icon"></i>
       </button>
 
     </div>
 
     <ul class="sidenav-nav">
 
-      <li class="sidenav-nav-item" *ngFor="let data of navData">
-        <a class="sidenav-nav-link" (click)="handleClick(data)"
-          *ngIf="data.subCategories && data.subCategories.length > 0">
-          <i class="sidenav-link-icon" [class]="data.icon"></i>
-          <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{data.name}}</span>
+      <li *ngFor="let data of navData" class="sidenav-nav-item">
+        <a (click)="handleClick(data)" *ngIf="data.subCategories && data.subCategories.length > 0"
+           class="sidenav-nav-link">
+          <i [class]="data.icon" class="sidenav-link-icon w-icon"></i>
+          <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">{{ data.name }}</span>
         </a>
 
-        <a class="sidenav-nav-link"
-          *ngIf="!data.subCategories || (data.subCategories && data.subCategories.length === 0)"
-          (click)="Navigate(data.id)">
-          <i class="sidenav-link-icon" [class]="data.icon"></i>
-          <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{data.name}}</span>
+        <a (click)="Navigate(data.id)"
+           *ngIf="!data.subCategories || (data.subCategories && data.subCategories.length === 0)"
+           class="sidenav-nav-link">
+          <i [class]="data.icon" class="sidenav-link-icon w-icon"></i>
+          <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">{{ data.name }}</span>
         </a>
       </li>
     </ul>

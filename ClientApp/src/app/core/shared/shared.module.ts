@@ -49,6 +49,7 @@ import {
 } from "@core/shared/components/products/recommend-products/recommend-products.component";
 import {NgBootstrapModule} from "@core/shared/components/bootstrap/ng-bootstrap.module";
 import {MaterialModule} from "@core/shared/components/material/material.module";
+import {RelatedProductsComponent} from "@core/shared/components/products/related-products/related-products.component";
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import {MaterialModule} from "@core/shared/components/material/material.module";
     SwiperDirective,
     CarouselThumbnailsComponent,
     CarouselComponent,
-    RecommendProductsComponent
+    RecommendProductsComponent,
+    RelatedProductsComponent
   ],
   imports: [
     RouterModule,
@@ -159,7 +161,8 @@ import {MaterialModule} from "@core/shared/components/material/material.module";
     SwiperDirective,
     CarouselThumbnailsComponent,
     CarouselComponent,
-    RecommendProductsComponent
+    RecommendProductsComponent,
+    RelatedProductsComponent
   ],
   providers: [
     NgbRatingConfig

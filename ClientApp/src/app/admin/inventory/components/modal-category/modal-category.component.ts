@@ -3,10 +3,10 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {CategoryDto} from '../../../../core/interfaces/Product/categoryDto';
 import {CategoriesService} from '../../services/categories.service';
 import {BehaviorSubject, lastValueFrom} from "rxjs";
 import {DatePipe} from "@angular/common";
+import {CategoryDto} from "@core/interfaces/Product/category";
 
 @Component({
   selector: 'app-modal-category',

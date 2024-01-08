@@ -6,7 +6,6 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, lastValueFrom} from 'rxjs';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {CategoriesListResponse} from '@core/interfaces/Product/Response/categoriesListResponse';
 import {ProductResponse} from '@core/interfaces/Product/Response/productResponse';
 import {SuppliersListResponse} from '@core/interfaces/Product/Response/suppliersListResponse';
 import {WarrantiesListResponse} from '@core/interfaces/Product/Response/warrantiesListResponse';
@@ -17,6 +16,7 @@ import {FilesService} from '@core/shared/services/files.service';
 import {ProductsService} from '../../services/products.service';
 import {SuppliersService} from '../../services/suppliers.service';
 import {WarrantiesService} from '../../services/warranties.service';
+import {CategoriesListResponse} from "@core/interfaces/Product/category";
 
 @Component({
   selector: 'app-modal-product',

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {catchError, map, Observable} from 'rxjs';
-import {CategoryResponse} from '@core/interfaces/Product/Response/categoryResponse';
 import {CategoriesService} from '@admin/inventory/services/categories.service';
 import {DiscountsService} from '@admin/inventory/services/discounts.service';
 import {ReviewsService} from '@intranet/services/reviews.service';
 import {decrypt, encrypt} from '@core/shared/util/util-encrypt';
 import {ProductsService} from '@admin/inventory/services/products.service';
+import {CategoryResponse} from "@core/interfaces/Product/category";
 
 @Component({
   selector: 'app-products',

@@ -2,13 +2,13 @@ import {animate, keyframes, style, transition, trigger} from '@angular/animation
 import {Component, EventEmitter, HostListener, Input, OnDestroy, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {CategoryPreviewResponse} from '@core/interfaces/Product/Response/categoryPreviewResponse';
 import {CategoriesService} from '@admin/inventory/services/categories.service';
 import {SidenavService} from '../../../services/side-nav.service';
 import {encrypt} from '../../../util/util-encrypt';
 import {dashboardData} from './dashboard-data';
 import {inventoryData} from './inventory-data';
 import {Layout} from './layout';
+import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
 
 interface SidenavToggle {
   screenWidth: number;
@@ -90,11 +90,11 @@ export class SidenavComponent implements OnDestroy {
   Navigate(id: any): void {
     if (this.layout === Layout.Normal) {
       const categoryId = encrypt(id.toString());
-      this.router.navigate([`/products/`], {queryParams: {categoryId}});
+      this.router.navigate([`/products/search`], {queryParams: {categoryId}});
     } else if (this.layout === Layout.Dashboard) {
-      this.router.navigate([`dashboard/${id}`]);
+      this.router.navigate([`admin/dashboard/${id}`]);
     } else if (this.layout === Layout.Inventory) {
-      this.router.navigate([`inventory/management-${id}`]);
+      this.router.navigate([`admin/inventory/management-${id}`]);
     }
   }
 

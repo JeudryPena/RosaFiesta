@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Card} from "@core/interfaces/card";
+import {CategoriesService} from "@admin/inventory/services/categories.service";
+import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
+import {Observable} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-top-main',
@@ -8,28 +11,27 @@ import {Card} from "@core/interfaces/card";
 })
 export class TopMainComponent implements OnInit {
 
-  images: Card[] = [];
-  thumbImages: Card[] = [];
+  categories$: Observable<CategoryPreviewResponse[]> = new Observable<CategoryPreviewResponse[]>();
+  total$: Observable<number> = new Observable<number>();
 
-  ngOnInit() {
-    this.images = [
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      }
-    ]
+  constructor(
+    private readonly categoryService: CategoriesService,
+    private readonly router: Router
+  ) {
+    this.retrieveCategories();
   }
 
+  ngOnInit() {
 
+  }
+
+  retrieveCategories() {
+    this.categoryService.RetrieveData();
+    this.categories$ = this.categoryService.categories$;
+    this.total$ = this.categoryService.total$;
+  }
+
+  selectCategory(categoryId: number) {
+    this.router.navigate([`/products/search`], {state: {data: categoryId}});
+  }
 }
