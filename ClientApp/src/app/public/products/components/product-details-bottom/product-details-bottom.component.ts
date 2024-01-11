@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {ProductDetailResponse} from "@core/interfaces/Product/Response/productDetailResponse";
 
 @Component({
   selector: 'app-product-details-bottom',
@@ -6,5 +7,8 @@ import {Component} from '@angular/core';
   styleUrl: './product-details-bottom.component.sass'
 })
 export class ProductDetailsBottomComponent {
+
+  @Input() product: ProductDetailResponse;
+  
 
 }

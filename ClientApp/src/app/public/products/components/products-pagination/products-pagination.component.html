@@ -1,0 +1,12 @@
+<mat-paginator #paginator
+               (page)="handlePage($event)"
+               [disabled]="disabled"
+               [hidePageSize]="hidePageSize"
+               [length]="length"
+               [pageIndex]="pageIndex"
+               [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+               [pageSize]="pageSize"
+               [showFirstLastButtons]="showFirstLastButtons"
+               aria-label="Select page"
+               class="paginator">
+</mat-paginator>

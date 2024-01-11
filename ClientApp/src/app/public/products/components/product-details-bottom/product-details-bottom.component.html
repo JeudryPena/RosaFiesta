@@ -1,16 +1,16 @@
 <div class="details-bottom">
   <div class="details-tabs">
     <mat-tab-group>
-      <mat-tab label="Description">
-        <app-detail-description-tab></app-detail-description-tab>
+      <mat-tab label="Descripción">
+        <app-detail-description-tab [description]="product.option.description"></app-detail-description-tab>
       </mat-tab>
-      <mat-tab label="Reviews">
-        <app-detail-review-tab></app-detail-review-tab>
+      <mat-tab label="Reseñas">
+        <app-detail-review-tab [options]="product.options"></app-detail-review-tab>
       </mat-tab>
-      <mat-tab label="Shipping">
-        <app-detail-shipping-tab></app-detail-shipping-tab>
+      <mat-tab label="Garantía">
+        <app-detail-warranty-tab [warranty]="product.warranty"></app-detail-warranty-tab>
       </mat-tab>
     </mat-tab-group>
   </div>
-  <app-details-suggest></app-details-suggest>
+  <app-details-suggest [categoryId]="product.categoryId"></app-details-suggest>
 </div>

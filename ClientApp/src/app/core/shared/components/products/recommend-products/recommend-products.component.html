@@ -1,54 +1,10 @@
-<section class="sc-recommend">
-  <div class="c-container">
-    <div class="recommend-content">
-      <h3 class="title">Recommended Products</h3>
-      <div class="recommend-products-list">
-        <div class="product-item">
-          <div class="item-img">
-            <img alt="" src="assets/img/products/recommend-1.png"/>
-          </div>
-          <div class="item-info">
-            <span>$10.30</span>
-            <p>T-shirts with multiple colors, for men</p>
-          </div>
-        </div>
-        <div class="product-item">
-          <div class="item-img">
-            <img alt="" src="assets/img/products/recommend-2.jpg"/>
-          </div>
-          <div class="item-info">
-            <span>$10.30</span>
-            <p>Jeans shorts for men blue color</p>
-          </div>
-        </div>
-        <div class="product-item">
-          <div class="item-img">
-            <img alt="" src="assets/img/products/recommend-3.png"/>
-          </div>
-          <div class="item-info">
-            <span>$10.30</span>
-            <p>Brown winter coatmedium size</p>
-          </div>
-        </div>
-        <div class="product-item">
-          <div class="item-img">
-            <img alt="" src="assets/img/products/recommend-4.png"/>
-          </div>
-          <div class="item-info">
-            <span>$10.30</span>
-            <p>T-shirts with multiple colors, for men</p>
-          </div>
-        </div>
-        <div class="product-item">
-          <div class="item-img">
-            <img alt="" src="assets/img/products/recommend-5.png"/>
-          </div>
-          <div class="item-info">
-            <span>$10.30</span>
-            <p>T-shirts with multiple colors, for men</p>
-          </div>
-        </div>
+@if (products$ | async; as products) {
+  <section class="sc-recommend">
+    <div class="c-container">
+      <div class="recommend-content">
+        <h3 class="title">Productos Recomendados</h3>
+        <app-product-cards [products]="products"></app-product-cards>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+}

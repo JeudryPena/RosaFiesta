@@ -21,4 +21,36 @@ public interface IProductService
 	Task<IList<string>> GetOptionImages(Guid optionId, CancellationToken cancellationToken);
 	Task<ICollection<ProductsListResponse>> GetProductsList(CancellationToken cancellationToken = default);
 	Task<ICollection<OptionsListResponse>> GetOptionsList(CancellationToken cancellationToken = default);
+	
+	/// <summary>
+	/// Increase view count
+	/// </summary>
+	/// <param name="productId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task ViewAsync(Guid productId, CancellationToken cancellationToken);
+	
+	/// <summary>
+	/// Get recommended products
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<ICollection<ProductPreviewResponse>> GetRecommendedProducts(CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Search products
+	/// </summary>
+	/// <param name="search"></param>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<ICollection<ProductPreviewResponse>> SearchProductAsyncPreview(string search, FilteredSearchDto filter, CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Retrieves related products
+	/// </summary>
+	/// <param name="categoryId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<ICollection<ProductPreviewResponse>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken);
 }

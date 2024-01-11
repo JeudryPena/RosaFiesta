@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-products-head',
@@ -6,5 +6,7 @@ import {Component} from '@angular/core';
   styleUrl: './products-head.component.sass'
 })
 export class ProductsHeadComponent {
+  @Input() total = 0;
 
+  @Input() categoryName: string;
 }

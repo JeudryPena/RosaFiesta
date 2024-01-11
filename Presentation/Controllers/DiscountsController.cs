@@ -13,7 +13,6 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
 public class DiscountsController : ControllerBase
 {
 	private readonly IServiceManager _serviceManager;
@@ -24,6 +23,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpGet("management")]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> RetrieveManagementAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<ManagementDiscountsResponse> discounts = await _serviceManager.DiscountService.ManagementGetAllAsync(cancellationToken);
@@ -31,6 +31,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpGet("{discountId:guid}/management")]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> RetrieveManagementByIdAsync(Guid discountId, CancellationToken cancellationToken)
 	{
 		ManagementDiscountsResponse discount = await _serviceManager.DiscountService.GetManagementDiscountAsync(discountId, cancellationToken);
@@ -45,6 +46,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpPost]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> PersistAsync([FromBody] DiscountDto discount, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -55,6 +57,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpPut("{discountId:guid}")]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> UpdateAsync(Guid discountId, [FromBody] DiscountDto discountDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -65,6 +68,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpDelete("{discountId:guid}")]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteAsync(Guid discountId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -75,6 +79,7 @@ public class DiscountsController : ControllerBase
 	}
 
 	[HttpDelete("{discountId:guid}/options/{optionId:Guid?}")]
+	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteDiscountProductsAsync(Guid discountId, CancellationToken cancellationToken, Guid? optionId = null)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

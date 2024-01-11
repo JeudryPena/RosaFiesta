@@ -62,8 +62,24 @@
             </div>
           </div>
           <li class="hdr-nav-item">
-            <div class="hdr-nav-icon">
+            <div [ngbPopover]="dropdown" class="hdr-nav-icon" display="dynamic"
+                 ngbDropdown placement="bottom-end">
               <ngx-avatars [name]="userName" size="30"></ngx-avatars>
+              <ng-template #dropdown>
+                <div class="user-drop">
+                  <a class="item" routerLink="/intranet/settings"><i
+                    class="settings-icon"></i>Configuración</a>
+                  <a class="item" routerLink="/intranet/wishlist"><i
+                    class="favorite-icon"></i>Lista de
+                    deseos</a>
+                  <a class="item" routerLink="/intranet/my-orders"><i
+                    class="orders-icon"></i>Mis
+                    ordenes</a>
+                  <hr class="mt-2 mb-2">
+                  <a (click)="Logout()" class="item"><i
+                    class="logout-icon"></i>Salir</a>
+                </div>
+              </ng-template>
             </div>
             <span class="hdr-nav-text">{{ userName }}</span>
           </li>

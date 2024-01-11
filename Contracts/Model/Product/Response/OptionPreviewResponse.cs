@@ -10,6 +10,8 @@ public class OptionPreviewResponse : BaseResponse
 	public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.Rating);
 	public int? TotalReviews => Reviews == null || Reviews.Count == 0 ? null : Reviews.Count;
 	public ICollection<ReviewPreviewResponse>? Reviews { get; set; }
+	public string Color { get; set; }
 	public string GenderFor { get; set; }
 	public ICollection<ProductsDiscountPreviewResponse>? ProductsDiscount { get; set; }
+	public Guid ProductId { get; set; }
 }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-detail-description-tab',
@@ -6,5 +6,5 @@ import {Component} from '@angular/core';
   styleUrl: './detail-description-tab.component.sass'
 })
 export class DetailDescriptionTabComponent {
-
+  @Input() description: string;
 }

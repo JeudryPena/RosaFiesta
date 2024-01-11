@@ -28,4 +28,29 @@ public interface IProductRepository
 	Task<ProductEntity> GetDetailAsync(Guid id, CancellationToken cancellationToken = default);
 	Task<double> CartItemPrice(Guid optionId, int quantity, CancellationToken cancellationToken = default);
 	Task CheckOptionAviabilityAsync(Guid optionId, int quantity, CancellationToken cancellationToken = default);
+	
+	/// <summary>
+	/// Get all recommended products
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<IEnumerable<ProductEntity>> GetAllRecommendedAsync(CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Search products
+	/// </summary>
+	/// <param name="search"></param>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<IEnumerable<ProductEntity>> SearchProductsAsync(string search, SearchFilter filter,
+		CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Retrieves related products
+	/// </summary>
+	/// <param name="categoryId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<IEnumerable<ProductEntity>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken);
 }

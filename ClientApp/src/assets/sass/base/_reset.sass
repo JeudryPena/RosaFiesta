@@ -3,9 +3,18 @@ input, button, textarea, select
   font: inherit
   border: none
 
+.form-floating label
+  &:after
+    background: inherit !important
+
 a
   text-decoration: none !important
   color: unset !important
+  transition: all 300ms ease-in-out
+
+.a-link
+  text-decoration: underline !important
+  color: blue !important
   transition: all 300ms ease-in-out
 
 ul, ol

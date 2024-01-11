@@ -3,17 +3,17 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable, PipeTransform} from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
-import {config} from "../../../../env/config.prod";
-import {ManagementProductsResponse} from '../../../core/interfaces/Product/Response/managementProductsResponse';
-import {OptionsListResponse} from '../../../core/interfaces/Product/Response/optionsListResponse';
-import {ProductResponse} from '../../../core/interfaces/Product/Response/productResponse';
-import {ProductsListResponse} from '../../../core/interfaces/Product/Response/productsListResponse';
-import {ProductDto} from '../../../core/interfaces/Product/productDto';
+import {config} from "@env/config.prod";
+import {ManagementProductsResponse} from '@core/interfaces/Product/Response/managementProductsResponse';
+import {OptionsListResponse} from '@core/interfaces/Product/Response/optionsListResponse';
+import {ProductResponse} from '@core/interfaces/Product/Response/productResponse';
+import {ProductsListResponse} from '@core/interfaces/Product/Response/productsListResponse';
+import {ProductDto} from '@core/interfaces/Product/productDto';
 import {SortColumn, SortDirection} from '@core/shared/directives/sortable.directive';
-import {SearchResult} from '../../../core/interfaces/search-result';
-import {State} from '../../../core/interfaces/state';
-import {ProductDetailResponse} from '../../../core/interfaces/Product/Response/productDetailResponse';
-import {ProductPreviewResponse} from '../../../core/interfaces/Product/Response/productPreviewResponse';
+import {SearchResult} from '@core/interfaces/search-result';
+import {State} from '@core/interfaces/state';
+import {ProductDetailResponse} from '@core/interfaces/Product/Response/productDetailResponse';
+import {ProductPreviewResponse} from '@core/interfaces/Product/Response/productPreviewResponse';
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -39,6 +39,7 @@ function matches(product: ManagementProductsResponse, term: string, pipe: PipeTr
   providedIn: 'root'
 })
 export class ProductsService {
+
   private apiUrl = `${config.apiURL}products/`
   private _search$ = new Subject<void>();
   private _managementProducts$: ManagementProductsResponse[] = [];
@@ -130,6 +131,14 @@ export class ProductsService {
     return this.http.get<ProductPreviewResponse[]>(`${this.apiUrl}options`);
   }
 
+  GetRelatedProducts(categoryId: number) {
+    return this.http.get<ProductPreviewResponse[]>(`${this.apiUrl}related-products/${categoryId}`);
+  }
+
+  GetRecommendProducts(): Observable<ProductPreviewResponse[]> {
+    return this.http.get<ProductPreviewResponse[]>(`${this.apiUrl}recommended-products`);
+  }
+
   GetOptions(): Observable<OptionsListResponse[]> {
     return this.http.get<OptionsListResponse[]>(`${this.apiUrl}options-list`);
   }
@@ -163,6 +172,11 @@ export class ProductsService {
     if (optionId === null)
       optionId = '';
     return this.http.delete(`${this.apiUrl}${id}/option/${optionId}`);
+  }
+
+
+  increaseView(id: string) {
+    return this.http.get(`${this.apiUrl}${id}/view`);
   }
 
   private _set(patch: Partial<State>) {

@@ -17,7 +17,7 @@ const routes: Routes = [
   {path: '', loadChildren: publicModule},
   {path: 'admin', loadChildren: adminModule},
   {path: 'auth', loadChildren: authModule},
-  {path: 'privy', loadChildren: intranetModule},
+  {path: 'intranet', loadChildren: intranetModule},
   {path: 'shared', loadChildren: sharedModule},
   {path: 'test', component: TestComponent},
   {path: '**', redirectTo: 'main-page'}

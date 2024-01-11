@@ -13,11 +13,11 @@ const routes: Routes = [
   {
     path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
       {path: 'settings', component: SettingsComponent},
-      {path: 'purchase', loadChildren: purchaseModule},
       {path: 'my-orders', component: MyOrdersComponent},
       {path: 'wishlist', component: WishListsComponent}
     ]
-  }
+  },
+  {path: 'purchase', loadChildren: purchaseModule, canActivate: [AuthGuard], component: LayoutComponent}
 ];
 
 export const intranetRouter: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

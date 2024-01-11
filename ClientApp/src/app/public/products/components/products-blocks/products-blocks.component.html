@@ -1,9 +1,18 @@
 <div class="products-blocks">
-  <app-products-head></app-products-head>
-
-  <div>
-    <app-filter-tags></app-filter-tags>
-    <app-cards></app-cards>
+  <app-products-head [categoryName]="selectedCategory?.name" [total]="products.length"></app-products-head>
+  <div class="products-section">
+    <app-filter-tags (removeCondition)="removeCondition.emit()" (removeEndValue)="removeEndValue.emit()"
+                     (removeRating)="removeRating.emit()" (removeStartValue)="removeStartValue.emit()"
+                     [categoryName]="selectedCategory?.name" [endValue]="endValue"
+                     [selectedCondition]="selectedCondition"
+                     [selectedRating]="selectedRating"
+                     [startValue]="startValue"></app-filter-tags>
+    @if (paginatedProducts$ | async; as paginatedProducts) {
+      <app-product-cards [products]="paginatedProducts"></app-product-cards>
+    }
   </div>
-  <app-products-pagination></app-products-pagination>
+  <app-products-pagination (handlePageEvent)="handlePageEvent($event)"
+                           (initializePaginator)="initializePaginator($event)"
+                           [length]="length" [pageEvent]="pageEvent" [pageIndex]="pageIndex"
+                           [pageSize]="pageSize"></app-products-pagination>
 </div>

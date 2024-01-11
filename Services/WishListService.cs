@@ -22,7 +22,7 @@ internal sealed class WishListService : IWishListService
 	public async Task<WishListResponse> GetWishListAsync(string userId, CancellationToken cancellationToken = default)
 	{
 		WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishWithProducts(userId, cancellationToken);
-		WishListResponse wishListResponse = wishListEntity.Adapt<WishListResponse>();
+		var wishListResponse = wishListEntity.Adapt<WishListResponse>();
 		return wishListResponse;
 	}
 
@@ -46,7 +46,7 @@ internal sealed class WishListService : IWishListService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 
-	public async Task AddProductToWishListAsync(string userId,
+	public async Task AddProductsToWishListAsync(string userId,
 		List<ProductsWishListDto> wishListDto, CancellationToken cancellationToken = default)
 	{
 		WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListByIdAsync(userId, cancellationToken);
@@ -62,6 +62,28 @@ internal sealed class WishListService : IWishListService
 				OptionId = i.OptionId,
 			});
 		}
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
+	}
+
+	/// <summary>
+	/// Add product to wish list
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="optionId"></param>
+	/// <param name="cancellationToken"></param>
+	public async Task AddProductsToWishListAsync(string userId, Guid optionId, CancellationToken cancellationToken = default)
+	{
+		WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListByIdAsync(userId, cancellationToken);
+		if (wishListEntity.ProductsWish == null)
+			wishListEntity.ProductsWish = new List<WishListProductsEntity>();
+		if (wishListEntity.ProductsWish.Any(x => x.OptionId == optionId))
+			throw new Exception("Product already exists in wish list");
+		wishListEntity.ProductsWish.Add(new()
+		{
+			WishListId = wishListEntity.Id,
+			OptionId = optionId
+		});
+		_repositoryManager.WishListRepository.Update(wishListEntity);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 

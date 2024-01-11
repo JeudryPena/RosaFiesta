@@ -1,20 +1,25 @@
 <div class="details-preview">
   <div class="preview-large">
     <swiper-container #swiper (slidechange)="slideChange($event)" [config]="swiperConfig"
-                      appSwiper autoplay-delay="2500" autoplay-disable-on-interaction="false" centered-slides="true" grab-cursor="true"
+                      appSwiper autoplay-delay="2500" autoplay-disable-on-interaction="false" centered-slides="true"
+                      grab-cursor="true"
                       pagination="true" pagination-clickable="true" slides-per-view="1"
                       thumbs-swiper=".mySwiper2">
-      <swiper-slide *ngFor="let item of images">
-        <img alt="" src="{{item.url}}">
-      </swiper-slide>
+      @for (item of images; track item) {
+        <swiper-slide>
+          <img alt="" [src]="item | imgPath">
+        </swiper-slide>
+      }
     </swiper-container>
   </div>
   <div class="preview-thumbnail">
-    <swiper-container #swiperThumbs *ngIf="images.length > 1" [config]="swiperThumbsConfig" appSwiper
+    <swiper-container #swiperThumbs [config]="swiperThumbsConfig" appSwiper
                       class="mySwiper2">
-      <swiper-slide *ngFor="let item of images">
-        <img [src]="item.url" alt="" class="thumbnail-item"/>
-      </swiper-slide>
+      @for (item of images; track item) {
+        <swiper-slide>
+          <img [src]="item | imgPath" alt="" class="thumbnail-item"/>
+        </swiper-slide>
+      }
     </swiper-container>
   </div>
 </div>

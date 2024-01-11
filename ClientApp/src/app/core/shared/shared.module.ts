@@ -50,6 +50,7 @@ import {
 import {NgBootstrapModule} from "@core/shared/components/bootstrap/ng-bootstrap.module";
 import {MaterialModule} from "@core/shared/components/material/material.module";
 import {RelatedProductsComponent} from "@core/shared/components/products/related-products/related-products.component";
+import {ProductCardsComponent} from "@core/shared/components/products/product-cards/product-cards.component";
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import {RelatedProductsComponent} from "@core/shared/components/products/related
     CarouselThumbnailsComponent,
     CarouselComponent,
     RecommendProductsComponent,
-    RelatedProductsComponent
+    RelatedProductsComponent,
+    ProductCardsComponent
   ],
   imports: [
     RouterModule,
@@ -162,7 +164,8 @@ import {RelatedProductsComponent} from "@core/shared/components/products/related
     CarouselThumbnailsComponent,
     CarouselComponent,
     RecommendProductsComponent,
-    RelatedProductsComponent
+    RelatedProductsComponent,
+    ProductCardsComponent
   ],
   providers: [
     NgbRatingConfig

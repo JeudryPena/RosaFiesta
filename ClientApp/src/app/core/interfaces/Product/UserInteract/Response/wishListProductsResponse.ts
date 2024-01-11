@@ -1,6 +1,5 @@
-import { ProductsWishListDto } from "../productsWishListDto";
+import {OptionPreviewResponse} from "@core/interfaces/Product/Response/optionPreviewResponse";
 
 export interface WishListProductsResponse {
-    wishListId: number;
-    productsWish: ProductsWishListDto[];
+  option: OptionPreviewResponse;
 }

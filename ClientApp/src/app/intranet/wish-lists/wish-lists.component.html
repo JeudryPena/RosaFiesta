@@ -1,25 +1,68 @@
-<div class="contenedor pt-5">
-    <div class="cabecera">
-        <h3 class="dasdsa">Mi lista</h3>
-        <div class="input-group input-group-sm flex-nowrap search-bar">
-            <input aria-label="Buscar" class="form-control input-search" focus id="search" placeholder="Buscar..."
-                role="search" type="search">
-            <div class="input-group-text">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </div>
+@if (productsWish$ | async; as products) {
+  <div class="f-container">
+    <div class="wishlist-header">
+      <h3>Mi lista de deseos <i class="list-icon"></i></h3>
+      <!--      <div class="input-group input-group-sm flex-nowrap search-bar">-->
+      <!--        <input aria-label="Buscar" class="form-control input-search" focus id="search" placeholder="Buscar..."-->
+      <!--               type="search">-->
+      <!--        <div class="input-group-text">-->
+      <!--          <i class="search-icon"></i>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
-    <div class="contenido">
-        <div class="row">
-            <div class="col">
-                <img alt="" class="imagen" src="../../../assets/img/shoes_images/shoe_1.jpg">
+    <div class="wishlist-items">
+      @for (product of products; track product) {
+        <div class="row items-container">
+
+          <div class="col-3">
+            <img alt="" class="wishlist-items-img" [src]="product.option.image | imgPath">
+          </div>
+          <div class="col-6 product-item border-0">
+            <p class="wishlist-items-name">{{ product.option.title }}</p>
+            <div class="item-info p-0 d-flex gap-3 align-item-center pb-3">
+              <div class="product-price pb-0">
+                    <span *ngIf="product.option.discount"
+                          class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
+                <span class="new-price">{{ product.option.price | currency }}
+                  <span class="ms-1" *ngIf="product.option.discount">({{ product.option.discount.value }}
+                    %)</span></span>
+              </div>
+              <div class="rating">
+                <app-rating [rating]="product.option.averageRating"></app-rating>
+                <span class="review-quantity">{{ (product.option.reviews)?.length }}</span>
+              </div>
             </div>
-            <div class="col">
-                <p class="nombre">Tenis nike rojos</p>
-            </div>
-            <div class="col">
-                <button class="btn agregar">Agregar al carrito</button>
-            </div>
+            <button (click)="deleteItem(product.option.id)" class="btn btn-sm btn-thrash"><i
+              class="delete-icon"></i>
+              Remover
+            </button>
+          </div>
+          <div class="col-3">
+            <form [formGroup]="cartForm" action="">
+              <div class="supplier-service d-flex gap-3 align-items-center pb-1">
+                <span>Cantidad</span>
+                <input class="form-control quantity" formControlName="quantity" max="100" min="1" step="1" type="number"
+                       value="1"/>
+              </div>
+              <button (click)="AddToCart(cartForm.value, product.option.productId, product.option.id)"
+                      class="btn add-cart-btn mb-1" type="button"><i
+                class="shopping-cart-icon"></i>Al Carrito
+              </button>
+
+              <button class="btn buy-now-btn" type="button"><i class="wallet-icon"></i>Comprar</button>
+            </form>
+          </div>
+
         </div>
+      }
+      <div class="btn-groups d-flex justify-content-between">
+        <button (click)="return()" class="btn return-btn w-auto" type="button"><i
+          class="return-icon"></i>Volver a Home
+        </button>
+        <button (click)="cleanList()" class="btn add-cart-btn w-auto" type="button"><i
+          class="delete-all-icon"></i>Limpiar lista
+        </button>
+      </div>
     </div>
-</div>
+  </div>
+}

@@ -52,7 +52,6 @@ public class ProductsController : ControllerBase
 	}
 
 	[HttpGet("{productId:guid}/detail")]
-	[Authorize]
 	public async Task<IActionResult> RetrieveProductDetailAsync(Guid productId, CancellationToken cancellationToken)
 	{
 		ProductDetailResponse productAndOption = await _serviceManager.ProductService.GetProductDetail(productId, cancellationToken);
@@ -65,6 +64,46 @@ public class ProductsController : ControllerBase
 	{
 		ProductResponse productAndOption = await _serviceManager.ProductService.GetByIdAsync(productId, cancellationToken);
 		return Ok(productAndOption);
+	}
+	
+	/// <summary>
+	/// This endpoint is used to increase the view count of a product.
+	/// </summary>
+	/// <param name="productId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	[HttpGet("{productId:guid}/view")]
+	public async Task<IActionResult> ViewAsync(Guid productId, CancellationToken cancellationToken)
+	{
+		await _serviceManager.ProductService.ViewAsync(productId, cancellationToken);
+		return Ok();
+	}
+	
+	/// <summary>
+	/// This endpoint is used to retrieve the recommended products.
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	[HttpGet("recommended-products")]
+	public async Task<IActionResult> RetrieveRecommendedProductsAsync(CancellationToken cancellationToken)
+	{
+		ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.GetRecommendedProducts(cancellationToken);
+		return Ok(products);
+	}
+	
+	[HttpGet("related-products/{categoryId:int}")]
+	public async Task<IActionResult> RetrieveRelatedProductsAsync(CancellationToken cancellationToken,
+		int categoryId)
+	{
+		ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.GetRelatedProducts(categoryId, cancellationToken);
+		return Ok(products);
+	}
+	
+	[HttpPost("{search}/filtered")]
+	public async Task<IActionResult> RetrieveFilteredAsync(string search, FilteredSearchDto filter, CancellationToken cancellationToken)
+	{
+		ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.SearchProductAsyncPreview(search, filter, cancellationToken);
+		return Ok(products);
 	}
 
 	[HttpPost]

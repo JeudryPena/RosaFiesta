@@ -16,7 +16,6 @@ public sealed class RepositoryManager : IRepositoryManager
 	private readonly Lazy<IWishListRepository> _lazyWishRepository;
 	private readonly Lazy<IReviewRepository> _lazyReviewRepository;
 	private readonly Lazy<IOrderRepository> _lazyBillRepository;
-	private readonly Lazy<IPayMethodRepository> _lazyPayMethodRepository;
 	private readonly Lazy<IQuoteRepository> _lazyQuoteRepository;
 
 	public RepositoryManager(RosaFiestaContext dbContext)
@@ -33,7 +32,6 @@ public sealed class RepositoryManager : IRepositoryManager
 		_lazyWishRepository = new Lazy<IWishListRepository>(() => new WishListRepository(dbContext));
 		_lazyReviewRepository = new Lazy<IReviewRepository>(() => new ReviewRepository(dbContext));
 		_lazyBillRepository = new Lazy<IOrderRepository>(() => new OrderRepository(dbContext));
-		_lazyPayMethodRepository = new Lazy<IPayMethodRepository>(() => new PayMethodRepository(dbContext));
 		_lazyQuoteRepository = new Lazy<IQuoteRepository>(() => new QuoteRepository(dbContext));
 	}
 
@@ -49,6 +47,5 @@ public sealed class RepositoryManager : IRepositoryManager
 	public IWishListRepository WishListRepository => _lazyWishRepository.Value;
 	public IReviewRepository ReviewRepository => _lazyReviewRepository.Value;
 	public IOrderRepository OrderRepository => _lazyBillRepository.Value;
-	public IPayMethodRepository PayMethodRepository => _lazyPayMethodRepository.Value;
 	public IQuoteRepository QuoteRepository => _lazyQuoteRepository.Value;
 }

@@ -114,6 +114,12 @@ internal sealed class ProductService : IProductService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
+	/// <summary>
+	/// Retrieve product detail
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
 	public async Task<ProductDetailResponse> GetProductDetail(Guid id,
 		CancellationToken cancellationToken = default)
 	{
@@ -142,5 +148,59 @@ internal sealed class ProductService : IProductService
 		IEnumerable<OptionEntity> options = await _repositoryManager.ProductRepository.GetOptionsList(cancellationToken);
 		ICollection<OptionsListResponse> optionsListResponse = options.Adapt<ICollection<OptionsListResponse>>();
 		return optionsListResponse;
+	}
+
+	/// <summary>
+	/// Increase the view count of a product
+	/// </summary>
+	/// <param name="productId"></param>
+	/// <param name="cancellationToken"></param>
+	public async Task ViewAsync(Guid productId, CancellationToken cancellationToken)
+	{
+		ProductEntity product = await _repositoryManager.ProductRepository.GetProductById(productId, cancellationToken);
+		product.Views++;
+		_repositoryManager.ProductRepository.Update(product);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
+	}
+
+	/// <summary>
+	/// Get recommended products
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<ICollection<ProductPreviewResponse>> GetRecommendedProducts(CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetAllRecommendedAsync(cancellationToken);
+		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
+		return productPreviewResponse;
+	}
+
+	/// <summary>
+	/// Search products
+	/// </summary>
+	/// <param name="search"></param>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<ICollection<ProductPreviewResponse>> SearchProductAsyncPreview(string search,
+		FilteredSearchDto filter, CancellationToken cancellationToken)
+	{
+		SearchFilter searchFilter = filter.Adapt<SearchFilter>(); 
+		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.SearchProductsAsync(search, searchFilter, cancellationToken);
+		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
+		return productPreviewResponse;
+	}
+
+	/// <summary>
+	/// Retrieves related products
+	/// </summary>
+	/// <param name="categoryId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<ICollection<ProductPreviewResponse>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetRelatedProducts(categoryId, cancellationToken);
+		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
+		return productPreviewResponse;
 	}
 }

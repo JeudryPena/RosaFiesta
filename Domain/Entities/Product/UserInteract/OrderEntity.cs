@@ -13,7 +13,6 @@ public class OrderEntity : BaseEntity, IAutoUpdate
 	public Guid PayMethodId { get; set; }
 	public OrderStatusType Status { get; set; }
 	public ICollection<PurchaseDetailEntity>? Details { get; set; }
-	public PayMethodEntity? PayMethod { get; set; }
 	public Guid AddressId { get; set; }
 	public AddressEntity? Address { get; set; }
 	[Range(0.01, 9999.99)]

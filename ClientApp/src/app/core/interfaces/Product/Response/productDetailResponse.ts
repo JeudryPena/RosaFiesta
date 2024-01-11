@@ -1,13 +1,13 @@
-import { BaseResponse } from "../../baseResponse";
-import { OptionDetailResponse } from "./optionDetailResponse";
-import { OptionPreviewResponse } from "./optionPreviewResponse";
-import { WarrantiesListResponse } from "./warrantiesListResponse";
+import {BaseResponse} from "../../baseResponse";
+import {OptionDetailResponse} from "./optionDetailResponse";
+import {OptionPreviewResponse} from "./optionPreviewResponse";
+import {WarrantyResponse} from "@core/interfaces/Product/Response/warrantyResponse";
 
 export interface ProductDetailResponse extends BaseResponse {
-	id: string;
-	categoryId: number | null;
-	optionId: string | null;
-	warranty: WarrantiesListResponse;
-	option: OptionDetailResponse;
-	options: OptionPreviewResponse[];
+  id: string;
+  categoryId: number | null;
+  optionId: string | null;
+  warranty: WarrantyResponse;
+  option: OptionDetailResponse;
+  options: OptionPreviewResponse[];
 }

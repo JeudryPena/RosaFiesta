@@ -5,7 +5,6 @@ namespace Contracts.Model.Product.UserInteract.Response;
 public class OrderResponse : BaseResponse
 {
 	public Guid Id { get; set; }
-	public Guid PayMethodId { get; set; }
 	public int State { get; set; }
 	public string UserId { get; set; }
 	public double ShippingCost { get; set; }

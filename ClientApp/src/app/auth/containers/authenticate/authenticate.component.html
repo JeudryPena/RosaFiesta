@@ -5,18 +5,8 @@
       <div class="col bg-white p-4 rounded-end">
         <h2 class="fw-bold text-center py-3">Ingresa con un click!</h2>
         <form [formGroup]="loginForm">
-          <div class="container w-100 my-3">
-            <div (click)="loginFacebook()" class="btn btn-outline-primary w-100 my-1">
-              <div class="row align-items-center">
-                <div class="col-2 d-none d-md-block">
-                  <img alt="" src="../../../assets/icons/facebook.png" width="32"/>
-                </div>
-                <div class="col-12 col-md-10 text-center">Facebook</div>
-              </div>
-            </div>
-            <div (click)="logoutFacebook()" class="btn btn-primary"></div>
-            <!-- <div class="fb-login-button" data-width="" data-size="" data-button-type="" data-layout="" data-auto-logout-link="false"
-              data-use-continue-as="true"></div> -->
+          <div class="container w-100 my-3 d-flex justify-content-center">
+            <!--            <div (click)="logoutFacebook()" class="btn btn-primary"></div>-->
             <asl-google-signin-button [width]="400" id="google-button" shape="rectangular" size="large"
                                       type="standard"></asl-google-signin-button>
           </div>
@@ -57,14 +47,14 @@
               <label class="form-check-label" for="connected">&nbsp;&nbsp;Recordarme</label>
             </div>
             <div class="col-7 text-end">
-              <a href="forgot-password">Olvidaste la contraseña?</a>
+              <a routerLink="/auth/forgot-password">Olvidaste la contraseña?</a>
             </div>
           </div>
 
           <div class="row">
             <div class="col">
               <div class="d-grid">
-                <button class="btn btn-success" routerLink="/register">Registrarse</button>
+                <button class="btn btn-success" routerLink="/auth/register">Registrarse</button>
               </div>
             </div>
             <div class="col">

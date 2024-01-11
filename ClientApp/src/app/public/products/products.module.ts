@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {productsRouter} from "@public/products/products-routing.module";
 import {ProductsComponent} from "@public/products/products.component";
-import {CardsComponent} from "@public/products/components/cards/cards.component";
 import {ModalQuoteComponent} from "@public/products/components/modal-quote/modal-quote.component";
 import {ProductCardComponent} from "@public/products/components/product-card/product-card.component";
 import {ProductDetailComponent} from "@public/products/containers/product-detail/product-detail.component";
@@ -29,13 +28,12 @@ import {
   DetailReviewTabComponent
 } from "@public/products/components/detail-tabs/detail-review-tab/detail-review-tab.component";
 import {
-  DetailShippingTabComponent
-} from "@public/products/components/detail-tabs/detail-shipping-tab/detail-shipping-tab.component";
+  DetailWarrantyTabComponent
+} from "@public/products/components/detail-tabs/detail-warranty-tab/detail-warranty-tab.component";
 
 @NgModule({
   declarations: [
     ProductsComponent,
-    CardsComponent,
     ModalQuoteComponent,
     ProductCardComponent,
     ProductDetailComponent,
@@ -51,15 +49,13 @@ import {
     DetailTabsComponent,
     DetailDescriptionTabComponent,
     DetailReviewTabComponent,
-    DetailShippingTabComponent
+    DetailWarrantyTabComponent
   ],
   imports: [
     productsRouter,
     PublicModule
   ],
-  exports: [
-    CardsComponent
-  ],
+  exports: [],
   providers: []
 })
 export class ProductsModule {

@@ -20,8 +20,6 @@ public interface IServiceManager
 
 	ICartService CartService { get; }
 
-	IPayMethodService PayMethodService { get; }
-
 	IReviewService ReviewService { get; }
 
 	IWishListService WishListService { get; }

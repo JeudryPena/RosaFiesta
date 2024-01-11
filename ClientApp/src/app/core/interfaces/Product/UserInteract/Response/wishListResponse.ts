@@ -1,7 +1,7 @@
-import { BaseResponse } from "../../../baseResponse";
-import { ProductPreviewResponse } from "../../Response/productPreviewResponse";
+import {BaseResponse} from "../../../baseResponse";
+import {WishListProductsResponse} from "@core/interfaces/Product/UserInteract/Response/wishListProductsResponse";
 
 export interface WishListResponse extends BaseResponse {
-	id: number;
-	products: ProductPreviewResponse[] | null;
+  id: string;
+  productsWish: WishListProductsResponse[] | null;
 }

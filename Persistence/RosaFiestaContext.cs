@@ -26,7 +26,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 		PurchaseDetails = Set<PurchaseDetailEntity>();
 		PurchaseDetailsOptions = Set<PurchaseDetailOptions>();
 		Categories = Set<CategoryEntity>();
-		PayMethods = Set<PayMethodEntity>();
 		Reviews = Set<ReviewEntity>();
 		Suppliers = Set<SupplierEntity>();
 		Warranties = Set<WarrantyEntity>();
@@ -66,7 +65,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 	public DbSet<WarrantyEntity> Warranties { get; set; }
 	public DbSet<SupplierEntity> Suppliers { get; set; }
 	public DbSet<ReviewEntity> Reviews { get; set; }
-	public DbSet<PayMethodEntity> PayMethods { get; set; }
 	public DbSet<CategoryEntity> Categories { get; set; }
 	public DbSet<PurchaseDetailEntity> PurchaseDetails { get; set; }
 	public DbSet<PurchaseDetailOptions> PurchaseDetailsOptions { get; set; }

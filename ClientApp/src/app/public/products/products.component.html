@@ -1,15 +1,29 @@
-<div class="products-page">
-  <app-breadcrumb></app-breadcrumb>
-  <div class="top-main">
-    <div class="c-container">
-      <div class="top-main-content">
-        <app-filter-nav></app-filter-nav>
-        <app-products-blocks></app-products-blocks>
+@if (products$ | async; as products) {
+  @if (categories$ | async; as categories) {
+    <div class="products-page">
+      <!--  <app-breadcrumb></app-breadcrumb>-->
+      <div class="top-main">
+        <div class="c-container">
+          <div class="top-main-content">
+            <app-filter-nav [selectedCondition]="selectedCondition" [selectedRating]="selectedRating"
+                            [selectedCategory]="selectedCategory"
+                            [startValue]="startValue" [endValue]="endValue" [categories]="categories"
+                            (selectRatingEvent)="selectRating($event)"
+                            (selectStartPriceEvent)="selectStartPrice($event)"
+                            (selectEndPriceEvent)="selectEndPrice($event)"
+                            (selectConditionEvent)="selectCondition($event)"></app-filter-nav>
+            <app-products-blocks [selectedCategory]="selectedCategory" [selectedCondition]="selectedCondition"
+                                 [selectedRating]="selectedRating" [startValue]="startValue" [endValue]="endValue"
+                                 (removeCondition)="removeCondition()" (removeEndValue)="removeEndValue()"
+                                 (removeRating)="removeRating()" (removeStartValue)="removeStartValue()"
+                                 [products]="products"></app-products-blocks>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
+    <app-footer></app-footer>
+  }
+}
 <!--<section class="bg-color">-->
 <!--  <div class="containers">-->
 <!--    <ng-container *ngIf="category$ | async as category; else loadOrError">-->
@@ -40,7 +54,7 @@
 <!--                <ul>-->
 <!--                  <li><i class="fas fa-share-alt"></i></li>-->
 <!--                  <li><i class="fa fa-heart"></i></li>-->
-<!--                  <li><i class="fa fa-search" (click)="ProductDetail(product.id)"></i></li>-->
+<!--                  <li><i class="fa fa-search"></i></li>-->
 <!--                </ul>-->
 <!--              </div>-->
 <!--            </div>-->

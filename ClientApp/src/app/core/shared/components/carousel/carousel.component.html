@@ -3,6 +3,11 @@
                   navigation="true" pagination="true" pagination-clickable="true" slides-per-view="1">
   @for (img of images; track img; let i = $index) {
     <swiper-slide>
+      <div class="image-info-container">
+        <span class="image-description">
+          {{ img.description }}
+        </span>
+      </div>
       <img src="{{img.url}}" alt="">
     </swiper-slide>
   }

@@ -2,11 +2,12 @@
 
 .products-page
   padding-top: 3rem
+  padding-bottom: 1.5rem
 
   .top-main
     &-content
-      display: flex
-      grid-template-columns: 230px auto
+      display: grid
+      grid-template-columns: 250px auto
       column-gap: 28px
 
       @include a.breakpoint-down(xl)
@@ -15,7 +16,6 @@
 
   .products-block-head
     padding: 8px 18px
-    margin-bottom: 20px
     @include a.flexbox($align: center, $justify: space-between)
     border: 1px solid a.$gray-300
     border-radius: 6px
@@ -272,3 +272,56 @@
 
 .products-blocks
   background-color: a.$bg-gray
+
+  .products-section
+    margin-bottom: 1rem
+
+.card-main
+  position: relative
+
+.recommend-products-list
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
+  gap: 20px
+
+.product-condition
+  background: rgb(94, 220, 74)
+  z-index: 3
+  position: absolute
+  font-weight: 700
+  font-size: 20px
+  color: #fff
+  text-align: center
+  display: block
+  text-transform: uppercase
+  height: 30px
+  border-radius: 0 15px 15px 0
+  line-height: 30px
+  left: -9px
+  top: 30px
+  border: 1px solid rgb(21, 200, 42)
+  width: auto
+  padding: 0 5px
+
+  &::after
+    border-top: 6px solid rgb(21, 200, 42)
+    content: ''
+    position: absolute
+    left: 0
+    bottom: -6px
+    border-left: 8px solid transparent
+    border-right: 0 solid transparent
+
+.used-condition
+  color: #fff
+  background: #fa0
+  border: 1px solid #d99204
+
+  &::after
+    border-top: 6px solid #d99204
+    content: ''
+    position: absolute
+    left: 0
+    bottom: -6px
+    border-left: 8px solid transparent
+    border-right: 0 solid transparent

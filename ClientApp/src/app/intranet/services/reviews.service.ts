@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { config } from "../../../env/config.prod";
-import { ReviewResponse } from '../../core/interfaces/Product/UserInteract/Response/reviewResponse';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {config} from "@env/config.prod";
+import {ReviewResponse} from '@core/interfaces/Product/UserInteract/Response/reviewResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,8 @@ export class ReviewsService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   GetReviewsPreview(optionId: string) {
     return this.http.get(`${this.apiUrl}options/${optionId}`);

@@ -1,13 +1,14 @@
-<div class="page-wrapper">
-  <div class="details-page">
-    <div class="top-main">
-      <div class="c-container">
-        <div class="top-main-content">
-          <app-product-details-top></app-product-details-top>
-          <app-product-details-bottom></app-product-details-bottom>
-          <app-related-products></app-related-products>
+@if (product$ | async; as product) {
+  <div class="page-wrapper">
+    <div class="details-page">
+      <div class="top-main">
+        <div class="c-container">
+          <div class="top-main-content">
+            <app-product-details-top [product]="product"></app-product-details-top>
+            <app-product-details-bottom [product]="product"></app-product-details-bottom>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+}

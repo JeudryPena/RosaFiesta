@@ -42,6 +42,16 @@ public class WishListController : ControllerBase
 		await _serviceManager.WishListService.CreateWishListAsync(wishList, userId, cancellationToken);
 		return Ok();
 	}
+	
+	[HttpGet("add/{optionId:guid}")]
+	public async Task<IActionResult> AddProductToWishListAsync(Guid optionId, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		await _serviceManager.WishListService.AddProductsToWishListAsync(userId, optionId, cancellationToken);
+		return Ok();
+	}
 
 	[HttpPost("products")]
 	public async Task<IActionResult> AddProductsToWishListAsync(List<ProductsWishListDto> productsWishListDto, CancellationToken cancellationToken)
@@ -49,7 +59,7 @@ public class WishListController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.WishListService.AddProductToWishListAsync(userId, productsWishListDto, cancellationToken);
+		await _serviceManager.WishListService.AddProductsToWishListAsync(userId, productsWishListDto, cancellationToken);
 		return Ok();
 	}
 

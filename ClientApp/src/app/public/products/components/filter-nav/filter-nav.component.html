@@ -1,153 +1,121 @@
 <div class="filters-blocks">
-  <div class="filt-block">
-    <div class="filt-head">
-      <span class="filt-head-text">Category</span>
-      <span class="filt-head-icon">
-        <img alt="" src="./assets/icons/chevron_down.svg"/>
-      </span>
-    </div>
-    <div class="filt-body">
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="filt-head-text">
+        Categorías
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="filt-body filt-category">
       <div class="filt-list">
-        <div class="filt-item">Mobile accessories</div>
-        <div class="filt-item">Electronics</div>
-        <div class="filt-item">Smartphones</div>
-        <div class="filt-item">Modern tech</div>
+        @for (category of categories; track category) {
+          <div [ngClass]="{'active': category.id === selectedCategory?.id }" (click)="selectCategory(category.id)"
+               class="filt-item">{{ category.name }}
+          </div>
+        }
       </div>
-      <button class="btn-link">See all</button>
     </div>
-  </div>
+  </mat-expansion-panel>
 
-  <div class="filt-features filt-block">
-    <div class="filt-head">
-      <span class="filt-head-text">Features</span>
-      <span class="filt-head-icon">
-        <img alt="" src="./assets/icons/chevron_down.svg"/>
-      </span>
-    </div>
-    <div class="filt-body">
-      <div class="filt-list">
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">Metallic
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">Plastic cover
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">8GB RAM
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">Super power
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">Large Memory
-        </div>
-      </div>
-      <button class="btn-link btn-link-primary text" type="">See all</button>
-    </div>
-  </div>
+  <!--  <div class="filt-features filt-block">-->
+  <!--    <div class="filt-head">-->
+  <!--      <span class="filt-head-text">Features</span>-->
+  <!--      <span class="filt-head-icon">-->
+  <!--        <img alt="" src="./assets/icons/chevron_down.svg"/>-->
+  <!--      </span>-->
+  <!--    </div>-->
+  <!--    <div class="filt-body">-->
+  <!--      <div class="filt-list">-->
+  <!--        <div class="filt-item">-->
+  <!--          <input class="filt-item-check" type="checkbox">Metallic-->
+  <!--        </div>-->
+  <!--        <div class="filt-item">-->
+  <!--          <input class="filt-item-check" type="checkbox">Plastic cover-->
+  <!--        </div>-->
+  <!--        <div class="filt-item">-->
+  <!--          <input class="filt-item-check" type="checkbox">8GB RAM-->
+  <!--        </div>-->
+  <!--        <div class="filt-item">-->
+  <!--          <input class="filt-item-check" type="checkbox">Super power-->
+  <!--        </div>-->
+  <!--        <div class="filt-item">-->
+  <!--          <input class="filt-item-check" type="checkbox">Large Memory-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--      <button class="btn-link btn-link-primary text" type="">See all</button>-->
+  <!--    </div>-->
+  <!--  </div>-->
 
-  <div class="filt-block">
-    <div class="filt-head">
-      <span class="filt-head-text">Price range</span>
-      <span class="filt-head-icon">
-        <img alt="" src="./assets/icons/chevron_down.svg"/>
-      </span>
-    </div>
-    <div class="slider">
-      <div class="progress"></div>
-    </div>
+
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="filt-head-text">
+        Rango de Precio
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <div class="range-input">
-      <input class="range-min" max="10000" min="0" step="100" type="range" value="2500">
-      <input class="range-max" max="10000" min="0" step="100" type="range" value="5000">
+      <mat-slider [max]="max" [min]="min" [step]="step" class="price-range"
+                  discrete="false">
+        <input (dragEnd)="selectStartPrice($event.value)" [(ngModel)]="startValue" matSliderStartThumb>
+        <input (dragEnd)="selectEndPrice($event.value)" [(ngModel)]="endValue" matSliderEndThumb>
+      </mat-slider>
     </div>
     <div class="price-input">
       <div class="field">
-        <span>Min</span>
-        <input class="input-min" type="number" value="2500">
+        <span>Minimo</span>
+        <input [value]="startValue" class="input-min" type="number">
       </div>
       <div class="field">
-        <span class="text-sm">Max</span>
-        <input class="input-max" type="number" value="5000">
+        <span class="text-sm">Maximo</span>
+        <input [value]="endValue" class="input-max" type="number">
       </div>
     </div>
-    <button class="btn btn-primary" type="button">Apply</button>
-  </div>
+    <button class="btn btn-primary mt-3" type="button">Aplicar</button>
+  </mat-expansion-panel>
 
-  <div class="filt-features filt-block">
-    <div class="filt-head">
-      <span class="filt-head-text">Condition</span>
-      <span class="filt-head-icon">
-        <img alt="" src="./assets/icons/chevron_down.svg"/>
-      </span>
-    </div>
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="filt-head-text">
+        Condición
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <div class="filt-body">
       <div class="filt-list">
-        <div class="filt-item">
-          <input checked class="filt-item-check" type="radio">Any
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="radio">Refurbished
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="radio">Brand new
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="radio">Old items
-        </div>
+        <mat-radio-group
+          (change)="selectCondition($event.value)"
+          [(ngModel)]="selectedCondition"
+          aria-labelledby="example-radio-group-label"
+          class="conditions-radio-group">
+          @for (condition of conditions; track condition) {
+            <mat-radio-button [value]="condition">{{ condition }}</mat-radio-button>
+          }
+        </mat-radio-group>
       </div>
     </div>
-  </div>
+  </mat-expansion-panel>
 
-  <div class="filt-ratings filt-block">
-    <div class="filt-head">
-      <span class="filt-head-text">Ratings</span>
-      <span class="filt-head-icon">
-        <img alt="" src="./assets/icons/chevron_down.svg"/>
-      </span>
-    </div>
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="filt-head-text">
+        Puntuación
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <div class="filt-body">
       <div class="filt-list">
-        <div class="filt-item text">
-          <input class="filt-item-check" type="checkbox">
-          <ul class="filt-rating">
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fa-regular fa-star"></i></li>
-          </ul>
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">
-          <ul class="filt-rating">
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fa-regular fa-star"></i></li>
-          </ul>
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">
-          <ul class="filt-rating">
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fa-regular fa-star"></i></li>
-          </ul>
-        </div>
-        <div class="filt-item">
-          <input class="filt-item-check" type="checkbox">
-          <ul class="filt-rating">
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fas fa-star"></i></li>
-            <li><i class="fa-regular fa-star"></i></li>
-          </ul>
-        </div>
+        <mat-radio-group
+          (change)="selectRating($event.value)"
+          [(ngModel)]="selectedRating"
+          aria-labelledby="example-radio-group-label"
+          class="conditions-radio-group">
+          @for (rating of ratings; track rating) {
+            <mat-radio-button [value]="rating">
+              <div class="rating">
+                <app-rating [rating]="rating"></app-rating>
+                <span class="review-quantity">{{ rating }}</span>
+              </div>
+            </mat-radio-button>
+          }
+        </mat-radio-group>
       </div>
     </div>
-  </div>
+  </mat-expansion-panel>
 </div>

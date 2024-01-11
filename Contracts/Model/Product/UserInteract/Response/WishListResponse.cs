@@ -2,8 +2,8 @@
 
 namespace Contracts.Model.Product.UserInteract.Response;
 
-public class WishListResponse : BaseResponse
+public class WishListResponse 
 {
-	public int Id { get; set; }
-	public ICollection<ProductPreviewResponse>? Products { get; set; }
+	public Guid Id { get; set; }
+	public ICollection<WishListProductsResponse>? ProductsWish { get; set; }
 }

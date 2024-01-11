@@ -1,7 +1,8 @@
-﻿namespace Contracts.Model.Product.UserInteract.Response;
+﻿using Contracts.Model.Product.Response;
+
+namespace Contracts.Model.Product.UserInteract.Response;
 
 public class WishListProductsResponse
 {
-	public int WishListId { get; set; }
-	public List<ProductsWishListDto> ProductsWish { get; set; }
+	public OptionPreviewResponse Option { get; set; }
 }

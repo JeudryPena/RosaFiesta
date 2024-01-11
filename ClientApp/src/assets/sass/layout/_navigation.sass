@@ -66,3 +66,16 @@
 
   .navigation-right
     column-gap: 32px
+
+.user-drop
+  display: flex
+  flex-direction: column
+
+  .item
+    padding: 2px 0
+    @include a.v-flex()
+    gap: 4px
+    transition: 0.15s ease-in-out
+
+    &:hover
+      background-color: a.$alice-blue

@@ -41,12 +41,36 @@
       grid-template-columns: 100%
 
     .details-product
-      .details-info
-        @include a.flexbox($align: center)
-        flex-wrap: wrap
+      .details-header
+        margin-bottom: 1rem
+        @include a.v-flex()
+        gap: 6px
 
-        .rating
-          @include a.v-flex()
+        p
+          margin: 0
+
+        .condition
+          text-decoration: none
+          text-transform: uppercase
+          background: #2175f5
+          color: #fff
+          padding: 0 0.3rem
+          transition: all 0.5s ease
+          font-size: 18px
+          font-weight: 600
+          letter-spacing: 1px
+          border-radius: 3px
+
+        .condition:hover
+          opacity: 0.9
+
+
+    .details-info
+      @include a.flexbox($align: center)
+      flex-wrap: wrap
+
+      .rating
+        @include a.v-flex()
 
   .details-preview
     display: grid
@@ -80,9 +104,8 @@
       border: 1px solid a.$gray-200
       border-radius: 6px
       overflow: hidden
-      min-width: 68px
-      width: 68px
-      height: 68px
+      width: 100px
+      height: 100px
       cursor: pointer
 
       &.active
@@ -90,10 +113,6 @@
 
       &:hover
         border-color: a.$gray-500
-
-  .stock-status
-    @include a.text()
-    color: a.$pastel-green
 
   .details-title
     @include a.text($weight: 700, $size: a.$text-lg)
@@ -141,6 +160,7 @@
 
       &-h, &-d
         @include a.text()
+        @include a.v-flex()
 
       &-h
         color: a.$gray-500
@@ -153,13 +173,21 @@
       border-radius: 6px
       border: 1px solid a.$gray-200
       padding: 20px 16px
+      gap: 6px
+      display: flex
+      flex-direction: column
+      justify-content: center
 
       @include a.breakpoint-down(sm)
         padding: 12px
 
+      .stock-status
+        margin-bottom: 0
+        @include a.text()
+        color: a.$pastel-green
+
     .supplier-service
       padding: 14px 0
-
 
   &
     display: flex

@@ -44,10 +44,8 @@ internal sealed class OrderService : IOrderService
 	public async Task<OrderResponse> OrderPurchaseAsync(string userId, Guid payMethodId,
 		Guid addressId, CancellationToken cancellationToken = default)
 	{
-		PayMethodEntity payMethod = await _repositoryManager.PayMethodRepository.GetByIdAsync(payMethodId, cancellationToken);
 		OrderEntity order = new();
 		order.AddressId = addressId;
-		order.PayMethodId = payMethod.Id;
 		order.UserId = userId;
 		order.Details = await _repositoryManager.CartRepository.GetCartDetails(userId, cancellationToken);
 		foreach (PurchaseDetailEntity detail in order.Details)

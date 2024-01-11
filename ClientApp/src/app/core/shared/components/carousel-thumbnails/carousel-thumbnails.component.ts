@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {SwiperContainer} from "swiper/swiper-element";
-import {Card} from "@core/interfaces/card";
 import {SwiperOptions} from "swiper/types";
+import {MultipleImagesResponse} from "@core/interfaces/Product/Response/multipleImagesResponse";
 
 @Component({
   selector: 'app-carousel-thumbnails',
@@ -12,7 +12,7 @@ export class CarouselThumbnailsComponent implements OnInit, AfterViewInit {
   @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
   @ViewChild('swiperThumbs') swiperThumbs!: ElementRef<SwiperContainer>;
 
-  @Input() images: Card[] = [];
+  @Input() images: MultipleImagesResponse[] = [];
 
   index = 0;
 
@@ -30,7 +30,7 @@ export class CarouselThumbnailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
+    console.log(this.images)
   }
 
   ngAfterViewInit() {

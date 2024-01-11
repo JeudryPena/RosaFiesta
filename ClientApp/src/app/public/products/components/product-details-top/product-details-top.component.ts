@@ -1,5 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Card} from "@core/interfaces/card";
+import {Component, Input, OnInit} from '@angular/core';
+import {ProductDetailResponse} from "@core/interfaces/Product/Response/productDetailResponse";
+import {FormControl, FormGroup} from "@angular/forms";
+import {PurchaseDetailDto} from "@core/interfaces/Product/UserInteract/purchaseDetailDto";
+import {CartsService} from "@intranet/services/carts.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-product-details-top',
@@ -7,55 +11,40 @@ import {Card} from "@core/interfaces/card";
   styleUrl: './product-details-top.component.sass'
 })
 export class ProductDetailsTopComponent implements OnInit {
-  images: Card[] = [];
+  isActive = true;
+  cartForm!: FormGroup;
+
+  @Input() product: ProductDetailResponse;
+
+  constructor(
+    private readonly cartService: CartsService,
+    private readonly router: Router
+  ) {
+
+  }
 
   ngOnInit(): void {
-    this.images = [
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      },
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      },
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      }
-    ]
+    this.cartForm = new FormGroup({
+      quantity: new FormControl(1)
+    });
   }
+
+  AddToCart(cartFormValue: any) {
+    const cart = {...cartFormValue};
+
+    const cartDto: PurchaseDetailDto = {
+      productId: this.product.id,
+      quantity: cart.quantity,
+      optionId: this.product.optionId
+    }
+    console.log(cartDto)
+    this.cartService.AddProductToCart(cartDto).subscribe({
+      next: () => {
+        this.router.navigate(['']);
+      }, error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
 }

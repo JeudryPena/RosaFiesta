@@ -1,27 +1,41 @@
 <div class="filter-tags">
   <ul class="filter-tags-list">
-    <li class="tag-item">Samsung
-      <button type="button"><i class="fas fa-close"></i></button>
-    </li>
-    <li class="tag-item">Apple
-      <button type="button"><i class="fas fa-close"></i></button>
-    </li>
-    <li class="tag-item">Poco
-      <button type="button"><i class="fas fa-close"></i></button>
-    </li>
-    <li class="tag-item">Metallic
-      <button type="button"><i class="fas fa-close"></i></button>
-    </li>
-    <li class="tag-item">4 star
-      <button type="button"><i class="fas fa-close"></i></button>
-    </li>
-    <li class="tag-item">3 star
-      <button type="button"><i class="fas fa-close"></i></button>
-    </li>
-    <li>
-      <button class="btn-link btn-clear-filters" type="button">
-        Clear all filter
-      </button>
-    </li>
+    @if (categoryName) {
+      <span class="text"></span>
+      <li class="tag-item">{{ categoryName }}
+        <button type="button" (click)="removeFilter()"><i class="close-icon"></i></button>
+      </li>
+    }
+    @if (selectedCondition) {
+      <span class="text"></span>
+      <li class="tag-item">{{ selectedCondition }}
+        <button type="button" (click)="removeCondition.emit()"><i class="close-icon"></i></button>
+      </li>
+    }
+    @if (selectedRating) {
+      <span class="text"></span>
+      <li class="tag-item">{{ selectedRating }}
+        <button type="button" (click)="removeRating.emit()"><i class="close-icon"></i></button>
+      </li>
+    }
+    @if (startValue) {
+      <span class="text"></span>
+      <li class="tag-item">{{ startValue }}
+        <button type="button" (click)="removeStartValue.emit()"><i class="close-icon"></i></button>
+      </li>
+    }
+    @if (endValue) {
+      <span class="text"></span>
+      <li class="tag-item">{{ endValue }}
+        <button type="button" (click)="removeEndValue.emit()"><i class="close-icon"></i></button>
+      </li>
+    }
+    @if (categoryName || selectedCondition || selectedRating || startValue || endValue) {
+      <li class="tag-item">
+        <button (click)="cleanFilters()" class="btn-link btn-clear-filters" type="button">
+          Limpiar filtros
+        </button>
+      </li>
+    }
   </ul>
 </div>

@@ -27,9 +27,13 @@
         margin-top: 0
 
     .categories-list
+      background-color: a.$alice-blue
+      height: 100%
+      border-radius: 6px
+      gap: 2px
 
       .category-item
-        margin: 2px 0
+        cursor: pointer
         height: 40px
         padding: 2px 10px
         border: 1px solid transparent
@@ -405,12 +409,6 @@
     padding-top: 15px
     padding-bottom: 15px
 
-    .recommend-products-list
-      background: a.$white
-      display: grid
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
-      gap: 20px
-
   .sc-services
     padding-top: 15px
     padding-bottom: 15px
@@ -431,9 +429,14 @@
       border: 1px solid a.$gray-200
       border-radius: 6px
 
+      &-img
+        height: 200px
+
+
       &-info
         background-color: a.$white
         position: relative
+        height: 100%
 
       &-icon
         @include a.flexbox($align: center, $justify: center)

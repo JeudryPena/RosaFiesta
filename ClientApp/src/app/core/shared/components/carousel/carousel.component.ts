@@ -8,7 +8,6 @@ import {Card} from "@core/interfaces/card";
 })
 export class CarouselComponent implements AfterViewInit {
   @Input() images: Card[] = [];
-  @Input() slidesPerView = 3;
 
   constructor() {
   }

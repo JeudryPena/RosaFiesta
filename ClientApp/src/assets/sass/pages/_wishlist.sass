@@ -1,0 +1,53 @@
+@use '../abstracts' as a
+
+
+.search-bar
+  margin: 0 6px
+
+.f-container
+  height: calc(100vh - 3.5rem)
+  padding: 3.5rem
+  width: 70%
+  margin: 0 auto
+
+  .wishlist-header
+    display: flex
+    justify-content: space-between
+    padding: 1rem 2.5rem 0.5rem 2.5rem
+    align-items: center
+
+    .input-group-sm
+      width: auto
+      height: 30px
+
+    .input-search
+      width: 150px !important
+      transition: width 0.3s ease-in-out
+
+      &.focus
+        width: 225px !important
+
+
+  .wishlist-items
+    gap: .75rem
+    row-gap: 1.25rem
+    height: 100%
+    padding: 1rem 1rem 1rem 1rem
+    display: flex
+    flex-direction: column
+    border-radius: 6px
+    border: 1px solid a.$gray-200
+    background-color: a.$white
+
+    .items-container
+      padding: .5rem 1rem 1rem 1rem
+      border-bottom: 1px solid a.$gray-200
+
+    &-img
+      height: 125px
+      border-radius: 6px
+      border: 1px solid a.$gray-200
+
+    &-name
+      @include a.text(600)
+      font-size: a.$text-lg

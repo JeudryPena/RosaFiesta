@@ -1,0 +1,41 @@
+<div class="recommend-products-list">
+  @for (product of products; track product) {
+    <div>
+      <div class="card-main">
+        <div class="product-condition" [ngClass]="{'used-condition': product.option.condition !== 'Nuevo'}">
+          <p class="me-1">
+            {{ product.option.condition }}
+          </p>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="item-img" (click)="productDetail(product.id)">
+          <img alt="" [src]="product.option.image | imgPath"/>
+        </div>
+        <div class="card-main">
+          <div class="product-selector">
+            <ul>
+              <li><i class="share-icon w-icon"></i></li>
+              <li (click)="addToWishList(product.option.id)"><i class="favorite-icon w-icon"></i></li>
+              <li (click)="productDetail(product.id)"><i class="search-icon w-icon"></i></li>
+            </ul>
+          </div>
+        </div>
+        <div class="item-info">
+          <div class="rating">
+            <app-rating [rating]="product.option.averageRating"></app-rating>
+            <span class="review-quantity">{{ (product.option.reviews)?.length }}</span>
+          </div>
+          <div class="product-price">
+                    <span *ngIf="product.option.discount"
+                          class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
+            <span class="new-price">{{ product.option.price | currency }}
+              <span class="ms-1" *ngIf="product.option.discount">({{ product.option.discount.value }}
+                %)</span></span>
+          </div>
+          <span class="product-name">{{ product.option.title }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>

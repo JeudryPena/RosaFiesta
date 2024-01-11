@@ -14,6 +14,5 @@ public interface IRepositoryManager
 	IWishListRepository WishListRepository { get; }
 	IReviewRepository ReviewRepository { get; }
 	IOrderRepository OrderRepository { get; }
-	IPayMethodRepository PayMethodRepository { get; }
 	IQuoteRepository QuoteRepository { get; }
 }

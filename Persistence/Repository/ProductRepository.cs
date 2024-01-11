@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Product;
+using Domain.Entities.Product.Helpers;
 using Domain.IRepository;
 
 using Microsoft.EntityFrameworkCore;
@@ -157,4 +158,56 @@ public class ProductRepository : IProductRepository
 				throw new Exception($"You are adding {option. QuantityAvailable - option.QuantityAvailable} more items than the quantity available");
 	}
 
+	/// <summary>
+	/// Get all recommended products
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<IEnumerable<ProductEntity>> GetAllRecommendedAsync(CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Option).ThenInclude(x => x != null ? x.Image : null).Where(x => x.Views > 0).OrderByDescending(x => x.Views).Take(5).ToListAsync(cancellationToken);
+		return products;
+	}
+
+	/// <summary>
+	/// Search products
+	/// </summary>
+	/// <param name="search"></param>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<IEnumerable<ProductEntity>> SearchProductsAsync(string search, SearchFilter filter,
+		CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
+		if(!string.IsNullOrEmpty(search))
+			products = products.Where(x => x.Options.Any(o => o.Title.ToLower().Contains(search.ToLower())));
+		if(filter.Condition != null)
+			products = products.Where(x => x.Options.Any(o => o.Condition == (ConditionType)filter.Condition));
+		if(filter.CategoryId != null)
+			products = products.Where(x => x.CategoryId == filter.CategoryId);
+		if(filter.MinPrice != null)
+			products = products.Where(x => x.Options.Any(o => o.Price >= filter.MinPrice));
+		if(filter.MaxPrice != null)
+			products = products.Where(x => x.Options.Any(o => o.Price <= filter.MaxPrice));
+		if(filter.GenderFor != null)
+			products = products.Where(x => x.Options.Any(o => o.GenderFor == (GenderType)filter.GenderFor));
+		if (filter.RateAverage != null)
+			products = products.Where(x => x.Options.Any(o => o.Reviews != null && o.Reviews.Average(r => r.Rating) >= filter.RateAverage));
+			
+		return products;
+	}
+
+	/// <summary>
+	/// Retrieves related products
+	/// </summary>
+	/// <param name="categoryId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<IEnumerable<ProductEntity>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken)
+	{
+		Guid random = Guid.NewGuid();
+		ICollection<ProductEntity> products = await _dbContext.Products.Include(x => x.Option).ThenInclude(x => x.Image).Where(x => x.CategoryId == categoryId).OrderBy(r => random).Take(5).ToListAsync(cancellationToken);
+		return products;
+	}
 }
