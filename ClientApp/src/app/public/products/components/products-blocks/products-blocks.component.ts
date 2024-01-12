@@ -6,6 +6,9 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {WisheslistService} from "@intranet/services/wisheslist.service";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
+import {SearchFilter} from "@core/interfaces/searchFilter";
+import {encrypt} from "@core/shared/util/util-encrypt";
+import {Condition} from "@core/interfaces/conditions";
 
 @Component({
   selector: 'app-products-blocks',
@@ -19,7 +22,7 @@ export class ProductsBlocksComponent implements AfterViewInit, OnInit {
   pageIndex = 0;
   pageEvent: PageEvent;
 
-  @Input() selectedCondition: string;
+  @Input() selectedCondition: Condition;
   @Input() selectedRating: number;
   @Input() startValue = 0;
   @Input() endValue = 0;
@@ -35,13 +38,25 @@ export class ProductsBlocksComponent implements AfterViewInit, OnInit {
 
   @Output() removeCondition: EventEmitter<any> = new EventEmitter<any>();
   @Output() removeRating: EventEmitter<any> = new EventEmitter<any>();
-  @Output() removeStartValue: EventEmitter<any> = new EventEmitter<any>();
-  @Output() removeEndValue: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removeRangeValue: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private readonly wishlistService: WisheslistService,
     private readonly router: Router
   ) {
+  }
+
+  search(value: string) {
+    const searchFilter: SearchFilter = {
+      searchValue: value ? value : null,
+      categoryId: this.selectedCategory?.id ? null : this.selectedCategory.id,
+      condition: this.selectedCondition == null ? null : this.selectedCondition,
+      rating: this.selectedRating == null ? null : this.selectedRating,
+      startValue: this.startValue == null ? null : this.startValue,
+      endValue: this.endValue == null ? null : this.endValue
+    }
+    const encriptedSearch = encrypt(JSON.stringify(searchFilter));
+    this.router.navigate(['/products/search'], {queryParams: {search: encriptedSearch}});
   }
 
   handlePageEvent(e: PageEvent) {

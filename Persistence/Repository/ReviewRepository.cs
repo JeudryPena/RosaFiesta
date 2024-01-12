@@ -38,4 +38,14 @@ internal sealed class ReviewRepository : IReviewRepository
 	public void Insert(ReviewEntity review) => _context.Reviews.Add(review);
 
 	public void Update(ReviewEntity review) => _context.Reviews.Update(review);
+	public void Delete(ReviewEntity review) => _context.Reviews.Remove(review);
+
+	/// <summary>
+	/// Returns reviews with user info
+	/// </summary>
+	/// <param name="optionId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<IEnumerable<ReviewEntity>> GetAllDetailedAsync(Guid optionId, CancellationToken cancellationToken)
+	=> await _context.Reviews.Include(x => x.User).Where(x => x.OptionId == optionId).ToListAsync(cancellationToken);
 }

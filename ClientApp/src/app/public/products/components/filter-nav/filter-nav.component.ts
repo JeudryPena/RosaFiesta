@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
 import {encrypt} from "@core/shared/util/util-encrypt";
 import {Router} from "@angular/router";
+import {Condition} from "@core/interfaces/conditions";
 
 @Component({
   selector: 'app-filter-nav',
@@ -10,8 +11,21 @@ import {Router} from "@angular/router";
 })
 export class FilterNavComponent {
 
-  @Input() selectedCondition: string;
-  conditions: string[] = ['Nuevo', 'Usado', 'Restaurado'];
+  @Input() selectedCondition: number;
+  conditions: { value: Condition, text: string }[] = [
+    {
+      value: Condition.New,
+      text: 'Nuevo'
+    },
+    {
+      value: Condition.Used,
+      text: 'Usado'
+    },
+    {
+      value: Condition.Restored,
+      text: 'Restaurado'
+    }
+  ];
 
   @Input() selectedRating: number;
   ratings: number[] = [1, 2, 3, 4, 5];
@@ -28,7 +42,7 @@ export class FilterNavComponent {
   @Output() selectRatingEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() selectStartPriceEvent: EventEmitter<number> = new EventEmitter();
   @Output() selectEndPriceEvent: EventEmitter<number> = new EventEmitter();
-  @Output() selectConditionEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectConditionEvent: EventEmitter<Condition> = new EventEmitter<Condition>();
 
   constructor(
     private readonly router: Router
@@ -53,7 +67,7 @@ export class FilterNavComponent {
     this.selectEndPriceEvent.emit(end);
   }
 
-  selectCondition(condition: string) {
+  selectCondition(condition: Condition) {
     this.selectConditionEvent.emit(condition);
   }
 }

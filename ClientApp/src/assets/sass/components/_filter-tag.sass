@@ -3,6 +3,7 @@
 .filter-tags
   @include a.v-flex()
   flex-wrap: wrap
+  justify-content: space-between
 
   &-list
     margin: 12px 0 !important
@@ -25,6 +26,10 @@
       padding-left: 6px
       padding-right: 6px
       column-gap: 6px
+
+      .span
+        color: a.$dark
+        @include a.text(600)
 
       button
         color: a.$blue

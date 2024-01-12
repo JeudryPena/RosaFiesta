@@ -5,7 +5,9 @@
         <app-detail-description-tab [description]="product.option.description"></app-detail-description-tab>
       </mat-tab>
       <mat-tab label="Reseñas">
-        <app-detail-review-tab [options]="product.options"></app-detail-review-tab>
+        <app-detail-review-tab (refreshReviews)="refreshReviews.emit()" [isAuthenticated]="isAuthenticated"
+                               [optionId]="product.option.id" [reviews]="product.option.reviews"
+                               [userId]="userId"></app-detail-review-tab>
       </mat-tab>
       <mat-tab label="Garantía">
         <app-detail-warranty-tab [warranty]="product.warranty"></app-detail-warranty-tab>

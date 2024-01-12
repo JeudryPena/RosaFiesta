@@ -44,6 +44,15 @@ internal sealed class DiscountRepository : IDiscountRepository
 		return discount;
 	}
 
+	public async Task<DiscountEntity> GetHotOffersAsync(CancellationToken cancellationToken)
+	{
+		DiscountEntity discount = await _dbContext.Discounts.Include(x => x.ProductsDiscounts)
+			.ThenInclude(x => x.Option).ThenInclude(x => x.Image)
+			.Where(x => x.Start <= DateTime.Now && x.End >= DateTime.Now).OrderByDescending(x => x.Value)
+			.FirstOrDefaultAsync();
+		return discount;
+	}
+
 	public void Delete(DiscountEntity discount)
 	=> _dbContext.Discounts.Remove(discount);
 }

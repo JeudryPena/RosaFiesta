@@ -1,33 +1,27 @@
 <div class="filter-tags">
   <ul class="filter-tags-list">
     @if (categoryName) {
-      <span class="text"></span>
-      <li class="tag-item">{{ categoryName }}
+      <li class="tag-item">
+        <span>Categoria: </span>{{ categoryName }}
         <button type="button" (click)="removeFilter()"><i class="close-icon"></i></button>
       </li>
     }
     @if (selectedCondition) {
-      <span class="text"></span>
-      <li class="tag-item">{{ selectedCondition }}
+      <li class="tag-item">
+        <span>Condición: </span>{{ this.selectConditionValue() }}
         <button type="button" (click)="removeCondition.emit()"><i class="close-icon"></i></button>
       </li>
     }
+    @if (startValue || endValue) {
+      <li class="tag-item">
+        <span>Rango de Precio: </span>{{ startValue }} - {{ endValue }}
+        <button type="button" (click)="removeRangeValue.emit()"><i class="close-icon"></i></button>
+      </li>
+    }
     @if (selectedRating) {
-      <span class="text"></span>
-      <li class="tag-item">{{ selectedRating }}
+      <li class="tag-item">
+        <span>Puntuación: </span> {{ selectedRating }}
         <button type="button" (click)="removeRating.emit()"><i class="close-icon"></i></button>
-      </li>
-    }
-    @if (startValue) {
-      <span class="text"></span>
-      <li class="tag-item">{{ startValue }}
-        <button type="button" (click)="removeStartValue.emit()"><i class="close-icon"></i></button>
-      </li>
-    }
-    @if (endValue) {
-      <span class="text"></span>
-      <li class="tag-item">{{ endValue }}
-        <button type="button" (click)="removeEndValue.emit()"><i class="close-icon"></i></button>
       </li>
     }
     @if (categoryName || selectedCondition || selectedRating || startValue || endValue) {

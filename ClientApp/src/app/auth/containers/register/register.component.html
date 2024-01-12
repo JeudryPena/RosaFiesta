@@ -9,7 +9,7 @@
                    class="form-control contact-input" formControlName="userName"
                    id="userName" maxlength="256" minlength="5" placeholder="Usuario"
                    required type="username"/>
-            <label for="floatingInput">Usuario</label>
+            <label class="text" for="floatingInput">Usuario</label>
             <i class="icon fa-regular fa-id-card"></i>
             <h5 *ngIf="validate('userName', 'required', userFocused)">El Usuario es<strong>
               Requerido</strong></h5>
@@ -21,7 +21,7 @@
                    formControlName="email" id="email" maxlength="253"
                    minlength="5" placeholder="Correo" required
                    type="email"/>
-            <label for="floatingInput">Correo</label>
+            <label class="text" for="floatingInput">Correo</label>
             <i class="icon fa-solid fa-envelope"></i>
             <h5 *ngIf="validate('email', 'required', emailFocused)">El Email es<strong> Requerido</strong></h5>
             <h5 *ngIf="validate('email', 'minlength', emailFocused)">El Email es<strong> muy corto</strong></h5>
@@ -32,7 +32,7 @@
                    id="password" maxlength="256"
                    minlength="8" placeholder="Contraseña" required
                    type="password"/>
-            <label for="floatingInput">Contraseña</label>
+            <label class="text" for="floatingInput">Contraseña</label>
             <i class="icon fa-solid fa-lock"></i>
             <h5 *ngIf="validate('password', 'required', passwordFocused)">La Contraseña es<strong> Requerida</strong>
             </h5>
@@ -45,7 +45,7 @@
                    id="confirmPassword"
                    maxlength="256" minlength="8" placeholder="Confirmar Contraseña"
                    required type="password"/>
-            <label for="floatingInput">Confirmar Contraseña</label>
+            <label class="text" for="floatingInput">Confirmar Contraseña</label>
             <i class="icon fa-solid fa-lock"></i>
             <h5 *ngIf="validate('confirmPassword', 'required', confirmPasswordFocused)">La Contraseña es<strong>
               Requerida</strong></h5>
@@ -58,7 +58,7 @@
                    formControlName="birthDate" id="birthDate" ngbDatepicker placeholder="Fecha de Nacimiento"
                    required/>
             <i class="icon fa-solid fa-cake-candles"></i>
-            <label for="floatingInput">Fecha de Nacimiento</label>
+            <label class="text" for="floatingInput">Fecha de Nacimiento</label>
             <h5 *ngIf="validate('birthDate', 'required', confirmPasswordFocused)">La Fecha es<strong> Requerida</strong>
             </h5>
           </div>

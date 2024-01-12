@@ -14,8 +14,8 @@
                             (selectConditionEvent)="selectCondition($event)"></app-filter-nav>
             <app-products-blocks [selectedCategory]="selectedCategory" [selectedCondition]="selectedCondition"
                                  [selectedRating]="selectedRating" [startValue]="startValue" [endValue]="endValue"
-                                 (removeCondition)="removeCondition()" (removeEndValue)="removeEndValue()"
-                                 (removeRating)="removeRating()" (removeStartValue)="removeStartValue()"
+                                 (removeCondition)="removeCondition()"
+                                 (removeRating)="removeRating()" (removeRangeValue)="removeRangeValue()"
                                  [products]="products"></app-products-blocks>
           </div>
         </div>

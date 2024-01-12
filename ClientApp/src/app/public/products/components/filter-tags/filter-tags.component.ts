@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
+import {Condition} from "@core/interfaces/conditions";
 
 @Component({
   selector: 'app-filter-tags',
@@ -7,7 +8,7 @@ import {Router} from "@angular/router";
   styleUrl: './filter-tags.component.sass'
 })
 export class FilterTagsComponent {
-  @Input() selectedCondition: string;
+  @Input() selectedCondition: Condition;
   @Input() selectedRating: number;
   @Input() startValue = 0;
   @Input() endValue = 0;
@@ -15,13 +16,23 @@ export class FilterTagsComponent {
 
   @Output() removeCondition: EventEmitter<any> = new EventEmitter<any>();
   @Output() removeRating: EventEmitter<any> = new EventEmitter<any>();
-  @Output() removeStartValue: EventEmitter<any> = new EventEmitter<any>();
-  @Output() removeEndValue: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removeRangeValue: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private readonly router: Router
   ) {
 
+  }
+
+  selectConditionValue() {
+    switch (this.selectedCondition) {
+      case Condition.New:
+        return 'Nuevo';
+      case Condition.Used:
+        return 'Usado';
+      case Condition.Restored:
+        return 'Restaurado';
+    }
   }
 
   cleanFilters() {

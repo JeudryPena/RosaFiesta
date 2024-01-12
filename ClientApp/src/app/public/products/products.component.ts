@@ -8,6 +8,9 @@ import {decrypt} from '@core/shared/util/util-encrypt';
 import {ProductsService} from '@admin/inventory/services/products.service';
 import {CategoryPreviewResponse, CategoryResponse} from "@core/interfaces/Product/category";
 import {ProductPreviewResponse} from "@core/interfaces/Product/Response/productPreviewResponse";
+import {SearchFilter} from "@core/interfaces/searchFilter";
+import {Condition} from "@core/interfaces/conditions";
+import {SearchProducts} from "@core/interfaces/searchProducts";
 
 @Component({
   selector: 'app-products',
@@ -20,7 +23,7 @@ export class ProductsComponent implements OnInit {
   products$: Observable<ProductPreviewResponse[]>;
   selectedCategory: CategoryPreviewResponse;
 
-  selectedCondition: string;
+  selectedCondition: Condition;
   selectedRating: number;
   startValue = 0;
   endValue = 0;
@@ -38,26 +41,70 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveCategories();
-    this.Retrieve();
   }
 
   retrieveCategories() {
     this.categories$ = this.categoryService.GetCategories();
+    this.Retrieve();
   }
 
   Retrieve() {
     this.route.queryParams.subscribe(async (params: Params) => {
-      const categoryId = params['categoryId'];
-      if (categoryId) {
-        const idObject = decrypt<{ id: number }>(categoryId);
-        this.categoryProducts(idObject.id);
-      } else
-        await this.retrieveRecommendProducts();
+      const searchProduct = params['searchProduct'];
+      if (searchProduct) {
+        const searchFilter = decrypt<SearchProducts>(searchProduct);
+        await this.retrieveSearchProducts(searchFilter);
+      } else {
+        const search = params['search'];
+        if (search) {
+          const searchFilter = decrypt<SearchFilter>(search);
+          this.selectedCondition = searchFilter.condition;
+          this.selectedRating = searchFilter.rating;
+          this.startValue = searchFilter.startValue;
+          this.endValue = searchFilter.endValue;
+          await this.retrieveFilteredProducts(searchFilter);
+        } else {
+          const categoryId = params['categoryId'];
+          if (categoryId) {
+            const idObject = decrypt<{ id: number }>(categoryId);
+            this.categoryProducts(idObject.id);
+          } else
+            await this.retrieveRecommendProducts();
+        }
+      }
     });
   }
 
-  async retrieveRecommendProducts(): Promise<void> {
-    this.products$ = this.productsService.GetRecommendProducts().pipe(
+  async retrieveSearchProducts(searchProducts: SearchProducts): Promise<void> {
+    this.products$ = this.productsService.retrieveSearchProducts(searchProducts).pipe(
+      catchError(err => {
+        console.log(err);
+        return [];
+      }),
+      map((products: ProductPreviewResponse[]) => {
+        products.map((product: ProductPreviewResponse) => {
+          this.reviewService.GetReviewsPreview(product.option.id).subscribe((reviews: any) => {
+            product.option.reviews = reviews;
+            product.option.averageRating = reviews.reduce((acc: any, review: any) => acc + review.rating, 0) / reviews.length;
+          });
+          this.discountService.GetOptionDiscount(product.option.id).subscribe((discount: any) => {
+            if (discount) {
+              product.option.discount = discount;
+              product.option.offerPrice = product.option.price - (product.option.price * (discount.value / 100));
+            }
+          });
+        });
+        if (searchProducts.categoryId != null && searchProducts.categoryId > 0)
+          this.categories$.subscribe((categories: CategoryPreviewResponse[]) => {
+            this.selectedCategory = categories.find(category => category.id === searchProducts.categoryId);
+          });
+        return products;
+      })
+    )
+  }
+
+  async retrieveFilteredProducts(searchFilter: SearchFilter): Promise<void> {
+    this.products$ = this.productsService.retrieveFilteredProducts(searchFilter).pipe(
       catchError(err => {
         console.log(err);
         return [];
@@ -80,6 +127,32 @@ export class ProductsComponent implements OnInit {
     )
   }
 
+  async retrieveRecommendProducts(): Promise<void> {
+    this.products$ = this.productsService.GetProductsPreview().pipe(
+      catchError(err => {
+        console.log(err);
+        return [];
+      }),
+      map((products: ProductPreviewResponse[]) => {
+        products.map((product: ProductPreviewResponse) => {
+          this.reviewService.GetReviewsPreview(product.option.id).subscribe((reviews: any) => {
+            product.option.reviews = reviews;
+            product.option.averageRating = reviews.reduce((acc: any, review: any) => acc + review.rating, 0) / reviews.length;
+          });
+          this.discountService.GetOptionDiscount(product.option.id).subscribe((discount: any) => {
+            if (discount) {
+              if (discount) {
+                product.option.discount = discount;
+                product.option.offerPrice = product.option.price - (product.option.price * (discount.value / 100));
+              }
+            }
+          });
+        });
+        return products;
+      })
+    )
+  }
+
   selectRating(rating: number) {
     this.selectedRating = rating;
   }
@@ -92,7 +165,7 @@ export class ProductsComponent implements OnInit {
     this.endValue = end;
   }
 
-  selectCondition(condition: string) {
+  selectCondition(condition: Condition) {
     this.selectedCondition = condition;
   }
 
@@ -104,12 +177,9 @@ export class ProductsComponent implements OnInit {
     this.selectedRating = null;
   }
 
-  removeStartValue() {
-    this.startValue = 0;
-  }
-
-  removeEndValue() {
-    this.endValue = 0;
+  removeRangeValue() {
+    this.startValue = null;
+    this.endValue = null;
   }
 
   private categoryProducts(categoryId: number) {

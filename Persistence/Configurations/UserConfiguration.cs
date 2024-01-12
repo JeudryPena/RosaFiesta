@@ -35,10 +35,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 		builder.HasMany(user => user.Orders)
 			.WithOne(order => order.User)
 			.HasForeignKey(order => order.UserId);
-		builder.HasMany(owner => owner.Reviews)
-			.WithOne()
-			.HasForeignKey(review => review.UserId)
-			.OnDelete(DeleteBehavior.Cascade);
 		builder.HasOne(x => x.WishList)
 			.WithOne()
 			.HasForeignKey<WishListEntity>(wishList => wishList.UserId)

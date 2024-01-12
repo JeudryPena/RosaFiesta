@@ -4,8 +4,10 @@
       <div class="top-main">
         <div class="c-container">
           <div class="top-main-content">
-            <app-product-details-top [product]="product"></app-product-details-top>
-            <app-product-details-bottom [product]="product"></app-product-details-bottom>
+            <app-product-details-top [isAuthenticated]="isAuthenticated" [product]="product"></app-product-details-top>
+            <app-product-details-bottom [isAuthenticated]="isAuthenticated" [userId]="userId"
+                                        (refreshReviews)="refreshReviews()"
+                                        [product]="product"></app-product-details-bottom>
           </div>
         </div>
       </div>

@@ -3,6 +3,12 @@
     en <span>{{ categoryName }}</span>
   }
   </p>
+  <form [formGroup]="searchForm" class="hdr-search-bar">
+    <input formControlName="search" maxlength="100" minlength="3" placeholder="Buscar ..." required type="text"/>
+    <button (click)="searchProducts(searchForm.value)" [disabled]="!searchForm.valid" type="submit">
+      <span class="search-icon"></span>
+    </button>
+  </form>
   <!--  <div class="products-view-options">-->
   <!--    <div class="view-options-check">-->
   <!--      <input checked type="checkbox">-->

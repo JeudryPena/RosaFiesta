@@ -1,4 +1,4 @@
-@if (images) {
+@if (discount$ | async; as discount) {
   <section class="sc-deals">
     <div class="c-container">
 
@@ -6,7 +6,7 @@
         <div class="deals-countdown theme-p">
           <div class="deals-title">
             <h4 class="deals-countdown-title">Ofertas</h4>
-            <p class="text">Equipos desplegables</p>
+            <p class="text">% {{ discount.value }} de Descuento</p>
           </div>
           <div class="countdown-elems">
             <div
@@ -32,8 +32,8 @@
           </div>
         </div>
         <div class="deals-products">
-
-          <app-carousel-multiple [images]="images" [slidesPerView]="3"></app-carousel-multiple>
+          <app-carousel-multiple [productsDiscounts]="discount.productsDiscounts"
+                                 [slidesPerView]="3"></app-carousel-multiple>
         </div>
       </div>
     </div>

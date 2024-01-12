@@ -13,4 +13,11 @@ public interface IDiscountService
 	Task DeleteDiscountAsync(string userId, Guid discountId, CancellationToken cancellationToken = default);
 	Task<ManagementDiscountsResponse> GetManagementDiscountAsync(Guid discountId, CancellationToken cancellationToken = default);
 	Task DeleteDiscountProductsAsync(string userId, Guid discountId, Guid? optionId, CancellationToken cancellationToken = default);
+	
+	/// <summary>
+	/// Get all discounted products with highest discount
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<DiscountResponse> GetHotOffersAsync(CancellationToken cancellationToken);
 }

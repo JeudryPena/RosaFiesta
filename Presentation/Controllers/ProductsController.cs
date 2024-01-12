@@ -99,10 +99,17 @@ public class ProductsController : ControllerBase
 		return Ok(products);
 	}
 	
-	[HttpPost("{search}/filtered")]
-	public async Task<IActionResult> RetrieveFilteredAsync(string search, FilteredSearchDto filter, CancellationToken cancellationToken)
+	[HttpPost("filtered")]
+	public async Task<IActionResult> RetrieveFilteredAsync(FilteredSearchDto filter, CancellationToken cancellationToken)
 	{
-		ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.SearchProductAsyncPreview(search, filter, cancellationToken);
+		ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.FilterProductAsyncPreview(filter, cancellationToken);
+		return Ok(products);
+	}
+	
+	[HttpPost("search")]
+	public async Task<IActionResult> SearchProductsAsync(FilteredSearchDto filter, CancellationToken cancellationToken)
+	{
+		ICollection<ProductPreviewResponse> products = await _serviceManager.ProductService.SearchProductsAsync(filter, cancellationToken);
 		return Ok(products);
 	}
 

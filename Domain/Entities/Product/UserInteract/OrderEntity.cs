@@ -10,7 +10,6 @@ public class OrderEntity : BaseEntity, IAutoUpdate
 	public Guid Id { get; set; }
 	public string? UserId { get; set; }
 	public UserEntity? User { get; set; }
-	public Guid PayMethodId { get; set; }
 	public OrderStatusType Status { get; set; }
 	public ICollection<PurchaseDetailEntity>? Details { get; set; }
 	public Guid AddressId { get; set; }

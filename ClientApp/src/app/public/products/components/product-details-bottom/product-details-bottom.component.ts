@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProductDetailResponse} from "@core/interfaces/Product/Response/productDetailResponse";
 
 @Component({
@@ -7,8 +7,10 @@ import {ProductDetailResponse} from "@core/interfaces/Product/Response/productDe
   styleUrl: './product-details-bottom.component.sass'
 })
 export class ProductDetailsBottomComponent {
+  @Output() refreshReviews: EventEmitter<any> = new EventEmitter();
 
   @Input() product: ProductDetailResponse;
-  
+  @Input() isAuthenticated = false;
+  @Input() userId: string;
 
 }

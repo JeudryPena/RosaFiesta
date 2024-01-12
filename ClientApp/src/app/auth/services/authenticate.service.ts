@@ -16,6 +16,7 @@ import {RegisterDto} from "@core/interfaces/Security/registerDto";
 import {CustomEncoder} from "@core/classes/custom-encoder";
 import {ResetPasswordDto} from "@core/interfaces/Security/resetPasswordDto";
 import {LogingDto} from "@core/interfaces/Security/logingDto";
+import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +41,16 @@ export class AuthenticateService {
     })
   }
 
-  currentUser() {
-    return this.http.get(`${this.apiUrl}currentUser`);
+  currentUser(): CurrentUserResponse {
+    const token = localStorage.getItem("token");
+    const decodedToken = this.jwtHelper.decodeToken(token!);
+    const user: CurrentUserResponse = {
+      id: decodedToken.nameid,
+      userName: decodedToken.unique_name,
+      userRoles: []
+    }
+    user.userRoles.push(decodedToken.role)
+    return user;
   }
 
   externalLogin = () => {

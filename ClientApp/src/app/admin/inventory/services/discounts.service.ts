@@ -121,6 +121,10 @@ export class DiscountsService {
     });
   }
 
+  getHotOffers(): Observable<DiscountResponse> {
+    return this.http.get<DiscountResponse>(`${this.apiUrl}hotOffers`);
+  }
+
   AddDiscount(discount: DiscountDto) {
     return this.http.post(this.apiUrl, discount);
   }

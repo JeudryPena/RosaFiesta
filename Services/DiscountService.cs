@@ -31,6 +31,18 @@ internal sealed class DiscountService : IDiscountService
 		IEnumerable<ManagementDiscountsResponse> discountResponse = discounts.Adapt<IEnumerable<ManagementDiscountsResponse>>();
 		return discountResponse;
 	}
+	
+	/// <summary>
+	/// Get all discounted products with highest discount
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<DiscountResponse> GetHotOffersAsync(CancellationToken cancellationToken)
+	{
+		DiscountEntity discount = await _repositoryManager.DiscountRepository.GetHotOffersAsync(cancellationToken);
+		DiscountResponse discountResponse = discount.Adapt<DiscountResponse>();
+		return discountResponse;
+	}
 
 	public async Task<ManagementDiscountsResponse> GetManagementDiscountAsync(Guid discountId, CancellationToken cancellationToken = default)
 	{

@@ -1,11 +1,16 @@
+@use '../abstracts' as a
+
 input, button, textarea, select
   outline: 0
   font: inherit
   border: none
 
-.form-floating label
-  &:after
-    background: inherit !important
+.form-floating
+  label
+    @include a.text()
+
+    &:after
+      background: inherit !important
 
 a
   text-decoration: none !important
@@ -39,3 +44,6 @@ img
 img, picture, video, canvas, svg
   max-width: 100%
   display: block
+
+.mat-mdc-select-arrow svg
+  max-width: unset

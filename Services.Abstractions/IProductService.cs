@@ -40,11 +40,10 @@ public interface IProductService
 	/// <summary>
 	/// Search products
 	/// </summary>
-	/// <param name="search"></param>
 	/// <param name="filter"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<ICollection<ProductPreviewResponse>> SearchProductAsyncPreview(string search, FilteredSearchDto filter, CancellationToken cancellationToken);
+	Task<ICollection<ProductPreviewResponse>> FilterProductAsyncPreview(FilteredSearchDto filter, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Retrieves related products
@@ -53,4 +52,12 @@ public interface IProductService
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	Task<ICollection<ProductPreviewResponse>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken);
+	
+	/// <summary>
+	/// Search products
+	/// </summary>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<ICollection<ProductPreviewResponse>> SearchProductsAsync(FilteredSearchDto filter, CancellationToken cancellationToken);
 }

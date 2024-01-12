@@ -1,3 +1,4 @@
-
-<ngx-stars customSize="24px" [readonly]="true" [initialStars]="rating" [customStarIcons]="heartIcons"
-    [color]="'#FFA41C'"></ngx-stars>
+<ngx-stars (ratingOutput)="ratingChange.emit($event)" [color]="'#FFA41C'"
+           [customSize]="size"
+           [customStarIcons]="heartIcons" [initialStars]="rating"
+           [readonly]="readonly"></ngx-stars>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Security;
 
 namespace Domain.Entities.Product.UserInteract;
 
@@ -12,5 +13,6 @@ public class ReviewEntity : BaseEntity, IAutoUpdate
 	[StringLength(50, MinimumLength = 3)]
 	public string? Title { get; set; }
 	public string UserId { get; set; }
+	public UserEntity User { get; set; } 
 	public Guid OptionId { get; set; }
 }

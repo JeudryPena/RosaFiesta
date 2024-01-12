@@ -19,7 +19,7 @@ public class ProductRepository : IProductRepository
 	await _dbContext.Products.Include(x => x.Options).Include(x => x.Category).ToListAsync(cancellationToken);
 
 	public async Task<IEnumerable<ProductEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-	await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
+	await _dbContext.Products.Include(x => x.Option).ThenInclude(x => x.Image).ToListAsync(cancellationToken);
 
 	public async Task<ProductEntity> GetProductDetail(Guid cartItemProductId, Guid optionId,
 		CancellationToken cancellationToken = default)
@@ -172,28 +172,25 @@ public class ProductRepository : IProductRepository
 	/// <summary>
 	/// Search products
 	/// </summary>
-	/// <param name="search"></param>
 	/// <param name="filter"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public async Task<IEnumerable<ProductEntity>> SearchProductsAsync(string search, SearchFilter filter,
+	public async Task<IEnumerable<ProductEntity>> FilterProductsAsync(SearchFilter filter,
 		CancellationToken cancellationToken)
 	{
-		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
-		if(!string.IsNullOrEmpty(search))
-			products = products.Where(x => x.Options.Any(o => o.Title.ToLower().Contains(search.ToLower())));
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Image).ToListAsync(cancellationToken);
+		if(!string.IsNullOrEmpty(filter.SearchValue))
+			products = products.Where(x => x.Options.Any(o => o.Title.ToLower().Contains(filter.SearchValue.ToLower())));
 		if(filter.Condition != null)
 			products = products.Where(x => x.Options.Any(o => o.Condition == (ConditionType)filter.Condition));
 		if(filter.CategoryId != null)
 			products = products.Where(x => x.CategoryId == filter.CategoryId);
-		if(filter.MinPrice != null)
-			products = products.Where(x => x.Options.Any(o => o.Price >= filter.MinPrice));
-		if(filter.MaxPrice != null)
-			products = products.Where(x => x.Options.Any(o => o.Price <= filter.MaxPrice));
-		if(filter.GenderFor != null)
-			products = products.Where(x => x.Options.Any(o => o.GenderFor == (GenderType)filter.GenderFor));
-		if (filter.RateAverage != null)
-			products = products.Where(x => x.Options.Any(o => o.Reviews != null && o.Reviews.Average(r => r.Rating) >= filter.RateAverage));
+		if(filter.StartValue != null)
+			products = products.Where(x => x.Options.Any(o => o.Price >= filter.StartValue));
+		if(filter.EndValue != null)
+			products = products.Where(x => x.Options.Any(o => o.Price <= filter.EndValue));
+		if (filter.Rating != null)
+			products = products.Where(x => x.Options.Any(o => o.Reviews != null && o.Reviews.Average(r => r.Rating) >= filter.Rating));
 			
 		return products;
 	}
@@ -208,6 +205,17 @@ public class ProductRepository : IProductRepository
 	{
 		Guid random = Guid.NewGuid();
 		ICollection<ProductEntity> products = await _dbContext.Products.Include(x => x.Option).ThenInclude(x => x.Image).Where(x => x.CategoryId == categoryId).OrderBy(r => random).Take(5).ToListAsync(cancellationToken);
+		return products;
+	}
+
+	public async Task<IEnumerable<ProductEntity>> SearchProductsAsync(ProductsSearch filter, CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Image).ToListAsync(cancellationToken);
+		if(!string.IsNullOrEmpty(filter.SearchValue))
+			products = products.Where(x => x.Options.Any(o => o.Title.ToLower().Contains(filter.SearchValue.ToLower())));
+		if(filter.CategoryId != null)
+			products = products.Where(x => x.CategoryId == filter.CategoryId);
+			
 		return products;
 	}
 }

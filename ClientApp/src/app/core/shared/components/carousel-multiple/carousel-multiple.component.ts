@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
-import {Card} from "@core/interfaces/card";
+import {HotestProductsResponse} from "@core/interfaces/Product/Response/discountResponse";
 
 @Component({
   selector: 'app-carousel-multiple',
@@ -7,7 +7,7 @@ import {Card} from "@core/interfaces/card";
   styleUrl: './carousel-multiple.component.sass',
 })
 export class CarouselMultipleComponent implements AfterViewInit {
-  @Input() images: Card[] = [];
+  @Input() productsDiscounts: HotestProductsResponse[] = [];
   @Input() slidesPerView = 3;
 
   constructor() {

@@ -14,6 +14,8 @@ import {SearchResult} from '@core/interfaces/search-result';
 import {State} from '@core/interfaces/state';
 import {ProductDetailResponse} from '@core/interfaces/Product/Response/productDetailResponse';
 import {ProductPreviewResponse} from '@core/interfaces/Product/Response/productPreviewResponse';
+import {SearchFilter} from "@core/interfaces/searchFilter";
+import {SearchProducts} from "@core/interfaces/searchProducts";
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -105,6 +107,14 @@ export class ProductsService {
 
   set sortDirection(sortDirection: SortDirection) {
     this._set({sortDirection});
+  }
+
+  retrieveFilteredProducts(filter: SearchFilter): Observable<ProductPreviewResponse[]> {
+    return this.http.post<ProductPreviewResponse[]>(`${this.apiUrl}filtered`, filter);
+  }
+
+  retrieveSearchProducts(filter: SearchProducts): Observable<ProductPreviewResponse[]> {
+    return this.http.post<ProductPreviewResponse[]>(`${this.apiUrl}filtered`, filter);
   }
 
   RetrieveData() {

@@ -2,7 +2,8 @@
 
 .details-tabs
   @include a.border
-  padding: .5rem 1rem
+
+  padding: .5rem 1rem 1rem 1rem
   border-bottom: 1px solid a.$gray-300
   background-color: a.$white
 
@@ -26,12 +27,25 @@
     padding-top: 12px
     padding-bottom: 12px
 
+.mat-mdc-tab-body-wrapper
+  height: 100%
+
+mat-tab-body
+  height: 100%
+
+mat-tab-group
+  height: 100%
+
+.mat-mdc-tab-body-content
+  height: 100%
+
 .tab-container
   padding: 1rem
   border: 1px solid a.$gray-300
   background-color: a.$white
+  height: 100%
 
   .tab-grid
     display: grid
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: 2fr 5fr
     grid-gap: 1rem

@@ -41,7 +41,15 @@ public class DiscountsController : ControllerBase
 	[HttpGet("options/{optionId:guid}")]
 	public async Task<IActionResult> RetrieveOptionDiscountAsync(Guid optionId, CancellationToken cancellationToken)
 	{
-		DiscountResponse? discount = await _serviceManager.DiscountService.GetOptionDiscount(optionId, cancellationToken);
+		DiscountResponse? discount =
+			await _serviceManager.DiscountService.GetOptionDiscount(optionId, cancellationToken);
+		return Ok(discount);
+	}
+	
+	[HttpGet("hotOffers")]
+	public async Task<IActionResult> RetrieveHotOffersAsync(CancellationToken cancellationToken)
+	{
+		DiscountResponse discount = await _serviceManager.DiscountService.GetHotOffersAsync(cancellationToken);
 		return Ok(discount);
 	}
 

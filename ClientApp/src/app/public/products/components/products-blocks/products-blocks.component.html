@@ -1,8 +1,9 @@
 <div class="products-blocks">
-  <app-products-head [categoryName]="selectedCategory?.name" [total]="products.length"></app-products-head>
+  <app-products-head (search)="search($event)" [categoryName]="selectedCategory?.name"
+                     [total]="products.length"></app-products-head>
   <div class="products-section">
-    <app-filter-tags (removeCondition)="removeCondition.emit()" (removeEndValue)="removeEndValue.emit()"
-                     (removeRating)="removeRating.emit()" (removeStartValue)="removeStartValue.emit()"
+    <app-filter-tags (removeCondition)="removeCondition.emit()"
+                     (removeRangeValue)="removeRangeValue.emit()" (removeRating)="removeRating.emit()"
                      [categoryName]="selectedCategory?.name" [endValue]="endValue"
                      [selectedCondition]="selectedCondition"
                      [selectedRating]="selectedRating"

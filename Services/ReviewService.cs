@@ -34,6 +34,19 @@ internal sealed class ReviewService : IReviewService
 		return reviewResponse;
 	}
 
+	/// <summary>
+	/// Returns reviews with user info
+	/// </summary>
+	/// <param name="optionId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<IEnumerable<DetailedReviewResponse>> GetOptionReviewsDetailedAsync(Guid optionId, CancellationToken cancellationToken)
+	{
+		IEnumerable<ReviewEntity> reviews = await _repositoryManager.ReviewRepository.GetAllDetailedAsync(optionId, cancellationToken);
+    	var reviewResponse = reviews.Adapt<IEnumerable<DetailedReviewResponse>>();
+    	return reviewResponse;	
+	}
+
 	public async Task<ReviewResponse> GetByIdAsync(int reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
@@ -41,32 +54,29 @@ internal sealed class ReviewService : IReviewService
 		return reviewResponse;
 	}
 
-	public async Task<ReviewResponse> CreateAsync(string userId, Guid optionId, ReviewDto reviewDto,
+	public async Task CreateAsync(string userId, Guid optionId, ReviewDto reviewDto,
 		CancellationToken cancellationToken = default)
 	{
 		var review = reviewDto.Adapt<ReviewEntity>();
 		await _repositoryManager.ReviewRepository.AlredyExistAsync(optionId, userId, cancellationToken);
 		review.OptionId = optionId;
+		review.UserId = userId;
 		_repositoryManager.ReviewRepository.Insert(review);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-		var reviewResponse = review.Adapt<ReviewResponse>();
-		return reviewResponse;
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<ReviewResponse> UpdateAsync(int reviewId, ReviewDto reviewDto, CancellationToken cancellationToken = default)
+	public async Task UpdateAsync(int reviewId, ReviewDto reviewDto, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
 		review = reviewDto.Adapt(review);
 		_repositoryManager.ReviewRepository.Update(review);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-		var reviewResponse = review.Adapt<ReviewResponse>();
-		return reviewResponse;
 	}
 
 	public async Task DeleteAsync(int reviewId, CancellationToken cancellationToken = default)
 	{
 		ReviewEntity review = await _repositoryManager.ReviewRepository.GetByIdAsync(reviewId, cancellationToken);
-		_repositoryManager.ReviewRepository.Update(review);
+		_repositoryManager.ReviewRepository.Delete(review);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
 }

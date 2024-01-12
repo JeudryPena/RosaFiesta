@@ -69,7 +69,6 @@
         <input [value]="endValue" class="input-max" type="number">
       </div>
     </div>
-    <button class="btn btn-primary mt-3" type="button">Aplicar</button>
   </mat-expansion-panel>
 
   <mat-expansion-panel expanded="true">
@@ -86,7 +85,7 @@
           aria-labelledby="example-radio-group-label"
           class="conditions-radio-group">
           @for (condition of conditions; track condition) {
-            <mat-radio-button [value]="condition">{{ condition }}</mat-radio-button>
+            <mat-radio-button [value]="condition.value">{{ condition.text }}</mat-radio-button>
           }
         </mat-radio-group>
       </div>

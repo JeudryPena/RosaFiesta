@@ -10,18 +10,20 @@
           <span class="brand-text" routerLink="/main-page">Rosa<span class="brand-text-second">Fiesta</span></span>
         </a>
       </div>
-
-      <form class="hdr-search-bar">
-        <div class="select-wrapper">
-          <select>
-            <option>Categoria</option>
-            <option>Accessories</option>
-            <option>Gadgets</option>
-            <option>Clothing</option>
-          </select>
-        </div>
-        <input placeholder="Search" type="text"/>
-        <button type="submit">
+      <form [formGroup]="searchForm" class="hdr-search-bar">
+        @if (categories$ | async; as categories) {
+          <mat-form-field [formGroup]="searchForm">
+            <mat-select disableOptionCentering="true" formControlName="categoryId" required
+                        panelClass="custom-select" [disableRipple]="true" type="number">
+              <mat-option [value]="0">Categoría</mat-option>
+              @for (category of categories; track category) {
+                <mat-option [value]="category.id">{{ category.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+        <input formControlName="search" maxlength="100" minlength="3" placeholder="Buscar ..." required type="text"/>
+        <button (click)="searchProducts(searchForm.value)" [disabled]="!searchForm.valid" type="submit">
           <span class="search-icon"></span>
         </button>
       </form>

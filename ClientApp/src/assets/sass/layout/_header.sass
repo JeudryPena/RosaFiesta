@@ -33,6 +33,7 @@
         font-size: 20px
 
 .header
+  z-index: 999 !important
   transition: .3s ease-in-out
   background-color: a.$white
 
@@ -97,47 +98,6 @@
 
     @include a.breakpoint-down(lg)
       column-gap: 16px
-
-  .hdr-search-bar
-    border: 2px solid a.$blue
-    width: auto
-    max-width: 665px
-    border-radius: 6px
-    overflow: hidden
-    @include a.v-flex($align: stretch)
-
-    input[type="text"]
-      height: 40px
-      padding: 10px
-      width: 420px
-
-      &::placeholder
-        color: a.$gray-500
-
-    select
-      height: 100%
-      color: a.$dark
-      width: auto
-      padding-left: 10px
-      padding-right: 5px
-
-    button
-      background-color: a.$blue
-      color: a.$white
-      width: auto
-      padding: 0 .5rem
-      @include a.flexbox($align: center, $justify: center)
-
-      span
-        filter: invert(100%) sepia(3%) saturate(12%) hue-rotate(62deg) brightness(102%) contrast(108%)
-
-    .select-wrapper
-      border-right: 2px solid a.$blue
-      padding-right: .5rem
-      width: auto
-      @include a.v-flex()
-      @include a.breakpoint-down(lg)
-        display: none
 
   .hdr-navigation-bar--ms
     margin-left: auto
@@ -278,3 +238,51 @@
 
   &.focus
     width: 225px !important
+
+.hdr-search-bar
+  border: 2px solid a.$blue
+  width: auto
+  max-width: 665px
+  border-radius: 6px
+  overflow: hidden
+  @include a.v-flex($align: stretch)
+
+  mat-form-field
+    .mat-mdc-form-field-subscript-wrapper
+      display: none !important
+
+    .mat-form-field-infix
+      border: 0
+
+    .mat-mdc-form-field-flex
+      height: 40px
+      align-items: center
+
+    .mat-form-field-underline
+      display: none
+
+    .mdc-line-ripple
+
+      &:after
+        border: 0 !important
+
+      &:before
+        border: 0 !important
+
+  input[type="text"]
+    height: 40px
+    padding: 10px
+    width: 350px
+
+    &::placeholder
+      color: a.$gray-500
+
+  button
+    background-color: a.$blue
+    color: a.$white
+    width: auto
+    padding: 0 .5rem
+    @include a.flexbox($align: center, $justify: center)
+
+    span
+      filter: invert(100%) sepia(3%) saturate(12%) hue-rotate(62deg) brightness(102%) contrast(108%)

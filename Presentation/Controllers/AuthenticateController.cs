@@ -25,6 +25,26 @@ public class AuthenticateController : ControllerBase
 		_serviceManager = serviceManager;
 		_goolgeSettings = goolgeSettings;
 	}
+	
+	[HttpGet("change-promotional-emails")]
+	public async Task<IActionResult> ChangePromotionalEmailsAsync(CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			throw new Exception("User not found");
+		await _serviceManager.UserService.ChangePromotionalEmailsAsync(userId, cancellationToken);
+		return Ok();
+	}
+	
+	[HttpGet("delete-user")]
+	public async Task<IActionResult> DeleteMyUserAsync(CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			throw new Exception("User not found");
+		await _serviceManager.UserService.DeleteMyUserAsync(userId, cancellationToken);
+		return Ok();
+	}
 
 	[HttpGet("currentUser")]
 	[Authorize]

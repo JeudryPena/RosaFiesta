@@ -43,7 +43,7 @@ public interface IProductRepository
 	/// <param name="filter"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<IEnumerable<ProductEntity>> SearchProductsAsync(string search, SearchFilter filter,
+	Task<IEnumerable<ProductEntity>> FilterProductsAsync(SearchFilter filter,
 		CancellationToken cancellationToken);
 
 	/// <summary>
@@ -53,4 +53,12 @@ public interface IProductRepository
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	Task<IEnumerable<ProductEntity>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken);
+	
+	/// <summary>
+	/// Retrieves searched products
+	/// </summary>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<IEnumerable<ProductEntity>> SearchProductsAsync(ProductsSearch filter, CancellationToken cancellationToken);
 }

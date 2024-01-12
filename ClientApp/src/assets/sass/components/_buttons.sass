@@ -1,5 +1,9 @@
 @use '../abstracts' as a
 
+.mdc-button__label
+  @include a.v-flex()
+  gap: 6px
+
 .btn-link
   @include a.text(600)
   color: a.$blue !important

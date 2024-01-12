@@ -176,21 +176,20 @@ internal sealed class ProductService : IProductService
 	}
 
 	/// <summary>
-	/// Search products
+	/// Filter products
 	/// </summary>
-	/// <param name="search"></param>
 	/// <param name="filter"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public async Task<ICollection<ProductPreviewResponse>> SearchProductAsyncPreview(string search,
+	public async Task<ICollection<ProductPreviewResponse>> FilterProductAsyncPreview(
 		FilteredSearchDto filter, CancellationToken cancellationToken)
 	{
 		SearchFilter searchFilter = filter.Adapt<SearchFilter>(); 
-		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.SearchProductsAsync(search, searchFilter, cancellationToken);
+		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.FilterProductsAsync( searchFilter, cancellationToken);
 		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
 		return productPreviewResponse;
 	}
-
+	
 	/// <summary>
 	/// Retrieves related products
 	/// </summary>
@@ -200,6 +199,20 @@ internal sealed class ProductService : IProductService
 	public async Task<ICollection<ProductPreviewResponse>> GetRelatedProducts(int categoryId, CancellationToken cancellationToken)
 	{
 		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.GetRelatedProducts(categoryId, cancellationToken);
+		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
+		return productPreviewResponse;
+	}
+
+	/// <summary>
+	/// Search products
+	/// </summary>
+	/// <param name="filter"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<ICollection<ProductPreviewResponse>> SearchProductsAsync(FilteredSearchDto filter, CancellationToken cancellationToken)
+	{
+		ProductsSearch searchFilter = filter.Adapt<ProductsSearch>(); 
+		IEnumerable<ProductEntity> products = await _repositoryManager.ProductRepository.SearchProductsAsync( searchFilter, cancellationToken);
 		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
 		return productPreviewResponse;
 	}

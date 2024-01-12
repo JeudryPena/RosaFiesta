@@ -2,7 +2,8 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {config} from "@env/config.prod";
-import {ReviewResponse} from '@core/interfaces/Product/UserInteract/Response/reviewResponse';
+import {DetailReviewsResponse, ReviewResponse} from '@core/interfaces/Product/UserInteract/Response/reviewResponse';
+import {ReviewDto} from "@core/interfaces/Product/UserInteract/reviewDto";
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +16,27 @@ export class ReviewsService {
   ) {
   }
 
-  GetReviewsPreview(optionId: string) {
-    return this.http.get(`${this.apiUrl}options/${optionId}`);
+  GetReviewsPreview(optionId: string): Observable<ReviewResponse[]> {
+    return this.http.get<ReviewResponse[]>(`${this.apiUrl}options/${optionId}`);
+  }
+
+  GetReviewsDetail(id: string): Observable<DetailReviewsResponse[]> {
+    return this.http.get<DetailReviewsResponse[]>(`${this.apiUrl}options/${id}/all-detailed`);
   }
 
   GetReviews(optionId: string): Observable<ReviewResponse[]> {
     return this.http.get<ReviewResponse[]>(`${this.apiUrl}options/${optionId}/all`);
   }
 
-  CreateReview(optionId: string, review: any) {
+  createReview(optionId: string, review: ReviewDto) {
     return this.http.post(`${this.apiUrl}options/${optionId}`, review);
   }
 
-  UpdateReview(reviewId: string, review: any) {
+  UpdateReview(reviewId: number, review: ReviewDto) {
     return this.http.put(`${this.apiUrl}${reviewId}`, review);
   }
 
-  DeleteReview(reviewId: string) {
-    return this.http.delete(`${this.apiUrl}${reviewId}`);
+  DeleteReview(ratingId: number) {
+    return this.http.delete(`${this.apiUrl}${ratingId}`);
   }
 }

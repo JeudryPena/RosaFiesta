@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Card} from "@core/interfaces/card";
+import {catchError, map, Observable} from "rxjs";
+import {DiscountsService} from "@admin/inventory/services/discounts.service";
+import {DiscountResponse} from "@core/interfaces/Product/Response/discountResponse";
 
 @Component({
   selector: 'app-offers',
@@ -8,59 +10,31 @@ import {Card} from "@core/interfaces/card";
 })
 export class OffersComponent implements OnInit {
 
-  images: Card[] = [];
+  discount$: Observable<DiscountResponse> = new Observable<DiscountResponse>()
 
-  constructor() {
+  constructor(
+    private readonly discountService: DiscountsService,
+  ) {
   }
 
   ngOnInit() {
-    this.images = [
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      },
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      },
-      {
-        title: 'Computer',
-        description: 'Description about computer...',
-        url: 'assets/img/banner.png',
-      },
-      {
-        title: 'Building',
-        description: 'Building description...',
-        url: 'assets/img/banner2.jpg',
-      },
-      {
-        title: 'Glass over a computer',
-        description: 'Description of a glass over a computer',
-        url: 'assets/img/inquiry-img.jpg',
-      }
-    ]
+    this.retrieveData()
+  }
+
+  retrieveData() {
+    this.discount$ = this.discountService.getHotOffers().pipe(
+      catchError(err => {
+        console.error(err)
+        throw err
+      }),
+      map((discountResponse: DiscountResponse) => {
+        if (!discountResponse) return null
+        for (let product of discountResponse.productsDiscounts) {
+          product.option.offerPrice = product.option.price - (product.option.price * discountResponse.value)
+        }
+        return discountResponse;
+      })
+    );
   }
 
 }

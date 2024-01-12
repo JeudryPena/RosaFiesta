@@ -218,4 +218,29 @@ internal sealed class UserService : IUserService
 		string userName = await _repositoryManager.UserRepository.GetUserName(userId, cancellationToken);
 		return userName;
 	}
+
+	/// <summary>
+	/// Change promotional emails status
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	public async Task ChangePromotionalEmailsAsync(string userId, CancellationToken cancellationToken)
+	{
+		UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(userId, cancellationToken);
+		user.PromotionalMails = !user.PromotionalMails;
+		_repositoryManager.UserRepository.Update(user);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+	}
+
+	/// <summary>
+	/// Delete my user
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	public async Task DeleteMyUserAsync(string userId, CancellationToken cancellationToken)
+	{
+		UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(userId, cancellationToken);
+		_repositoryManager.UserRepository.Delete(user);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+	}
 }

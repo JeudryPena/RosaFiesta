@@ -36,6 +36,13 @@ public class ReviewsController : ControllerBase
 		IEnumerable<ReviewResponse> reviews = await _serviceManager.ReviewService.GetOptionReviews(optionId, cancellationToken);
 		return Ok(reviews);
 	}
+	
+	[HttpGet("options/{optionId:guid}/all-detailed")]
+	public async Task<IActionResult> GetReviewsDetailed(Guid optionId, CancellationToken cancellationToken)
+	{
+		IEnumerable<DetailedReviewResponse> reviews = await _serviceManager.ReviewService.GetOptionReviewsDetailedAsync(optionId, cancellationToken);
+		return Ok(reviews);
+	}
 
 	[HttpGet("{reviewId}")]
 	public async Task<IActionResult> GetReviewById(int reviewId, CancellationToken cancellationToken)
@@ -51,17 +58,16 @@ public class ReviewsController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		ReviewResponse reviewResponse = await _serviceManager.ReviewService.CreateAsync(userId, optionId, reviewDto, cancellationToken);
-		return Ok(reviewResponse);
+		await _serviceManager.ReviewService.CreateAsync(userId, optionId, reviewDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPut("{reviewId}")]
 	[Authorize]
 	public async Task<IActionResult> UpdateReview(int reviewId, [FromBody] ReviewDto reviewDto, CancellationToken cancellationToken)
 	{
-
-		ReviewResponse reviewResponse = await _serviceManager.ReviewService.UpdateAsync(reviewId, reviewDto, cancellationToken);
-		return Ok(reviewResponse);
+		await _serviceManager.ReviewService.UpdateAsync(reviewId, reviewDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpDelete("{reviewId}")]

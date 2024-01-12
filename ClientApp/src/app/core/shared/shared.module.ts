@@ -51,6 +51,7 @@ import {NgBootstrapModule} from "@core/shared/components/bootstrap/ng-bootstrap.
 import {MaterialModule} from "@core/shared/components/material/material.module";
 import {RelatedProductsComponent} from "@core/shared/components/products/related-products/related-products.component";
 import {ProductCardsComponent} from "@core/shared/components/products/product-cards/product-cards.component";
+import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import {ProductCardsComponent} from "@core/shared/components/products/product-ca
     ProductCardsComponent
   ],
   imports: [
+    ReactiveFormsModule,
     RouterModule,
     CommonModule,
     FormsModule,
@@ -109,7 +111,8 @@ import {ProductCardsComponent} from "@core/shared/components/products/product-ca
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
-    AvatarModule
+    AvatarModule,
+    SweetAlert2Module.forRoot()
   ],
   exports: [
     TestComponent,
@@ -159,6 +162,7 @@ import {ProductCardsComponent} from "@core/shared/components/products/product-ca
     DatePipe,
     DecimalPipe,
     AvatarModule,
+    SweetAlert2Module,
     CarouselMultipleComponent,
     SwiperDirective,
     CarouselThumbnailsComponent,

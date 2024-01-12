@@ -39,7 +39,7 @@
           </div>
           <div class="col-3">
             <form [formGroup]="cartForm" action="">
-              <div class="supplier-service d-flex gap-3 align-items-center pb-1">
+              <div class="supplier-service d-flex gap-3 align-items-center pb-2">
                 <span>Cantidad</span>
                 <input class="form-control quantity" formControlName="quantity" max="100" min="1" step="1" type="number"
                        value="1"/>
@@ -48,8 +48,6 @@
                       class="btn add-cart-btn mb-1" type="button"><i
                 class="shopping-cart-icon"></i>Al Carrito
               </button>
-
-              <button class="btn buy-now-btn" type="button"><i class="wallet-icon"></i>Comprar</button>
             </form>
           </div>
 

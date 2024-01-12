@@ -15,6 +15,7 @@ export class ProductDetailsTopComponent implements OnInit {
   cartForm!: FormGroup;
 
   @Input() product: ProductDetailResponse;
+  @Input() isAuthenticated = false;
 
   constructor(
     private readonly cartService: CartsService,

@@ -1,5 +1,15 @@
 @use '../abstracts' as a
 
+.rating-container
+  @include a.flexbox($align: center, $justify: center)
+  width: 100%
+  margin-bottom: 1rem
+
+.review-list
+  .review-user
+    @include a.text()
+    color: a.$gray-500
+
 .rating
   @include a.v-flex()
   column-gap: 1px

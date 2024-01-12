@@ -4,6 +4,12 @@ import {CartsService} from '@intranet/services/carts.service';
 import {SidenavService} from '../../../services/side-nav.service';
 import {SidenavComponent} from '../sidenav/sidenav.component';
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {SearchProducts} from "@core/interfaces/searchProducts";
+import {encrypt} from "@core/shared/util/util-encrypt";
+import {CategoriesService} from "@admin/inventory/services/categories.service";
+import {Observable} from "rxjs";
+import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
 
 @Component({
   selector: 'app-navbar',
@@ -15,44 +21,53 @@ export class NavbarComponent implements OnInit {
   userName: string;
   viewCart: boolean = false;
   @Input() main;
+  categories$: Observable<CategoryPreviewResponse[]> = new Observable<CategoryPreviewResponse[]>();
 
-  isSearchInputFocused = false;
   isAuthenticated = false;
   lastScrollTop = 0;
   navbar: any;
   totalItems: number = 0;
-
-  isFocused = false;
+  searchForm: FormGroup;
 
   constructor(
     public service: CartsService,
     private authService: AuthenticateService,
     private sidenavService: SidenavService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private categoryService: CategoriesService
   ) {
     this.Authenticate();
 
   }
 
-  ngOnInit() {
-
+  ngOnInit(): void {
+    this.retrieveCategories();
+    this.searchForm = this.fb.group({
+      search: [''],
+      categoryId: [0]
+    });
   }
 
-
-  onFocus() {
-    this.isFocused = true;
+  retrieveCategories() {
+    this.categories$ = this.categoryService.GetCategories();
   }
 
-  onBlur() {
-    this.isFocused = false;
+  searchProducts(searchFormValue: any) {
+    const searchForm = {...searchFormValue};
+    const searchObject: SearchProducts = {
+      searchValue: searchForm.search,
+      categoryId: searchForm.categoryId > 0 ? searchForm.categoryId : null
+    }
+    const searchEncrypted = encrypt(JSON.stringify(searchObject));
+    this.router.navigate(['/products/search'], {queryParams: {searchProduct: searchEncrypted}});
   }
 
   Authenticate() {
     this.isAuthenticated = this.authService.isUserAuthenticated();
     if (this.isAuthenticated) {
-      this.authService.currentUser().subscribe((data: any) => {
-        this.userName = data.userName;
-      });
+      const user = this.authService.currentUser();
+      this.userName = user.userName;
     }
   }
 
@@ -60,19 +75,9 @@ export class NavbarComponent implements OnInit {
     this.totalItems = event;
   }
 
-  redirectTo(route: string) {
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate([]);
-    });
-  }
-
   ToggleCollapsed(): void {
     this.sidenavService.toggleCollapsed();
   }
-
-  onToggleCart() {
-    this.viewCart = !this.viewCart
-  };
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: any) {

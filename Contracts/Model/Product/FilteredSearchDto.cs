@@ -6,6 +6,11 @@
 public sealed class FilteredSearchDto
 {
     /// <summary>
+    /// Search Value
+    /// </summary>
+    public string? SearchValue { get; set; }
+    
+    /// <summary>
     /// Product Category
     /// </summary>
     public int? CategoryId { get; set; }
@@ -16,22 +21,17 @@ public sealed class FilteredSearchDto
     public int? Condition { get; set; }
     
     /// <summary>
-    /// Option Gender for
-    /// </summary>
-    public int? GenderFor { get; set; }
-    
-    /// <summary>
     /// Product Rating Average
     /// </summary>
-    public float? RateAverage { get; set; }
+    public float? Rating { get; set; }
     
     /// <summary>
     /// Product Min Price
     /// </summary>
-    public int? MinPrice { get; set; }
+    public int? StartValue { get; set; }
     
     /// <summary>
     /// Product Max Price
     /// </summary>
-    public int? MaxPrice { get; set; }
+    public int? EndValue { get; set; }
 }

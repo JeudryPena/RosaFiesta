@@ -22,4 +22,20 @@ public interface IUserService
 	Task<IEnumerable<UsersListResponse>> GetUsersListAsync(CancellationToken cancellationToken = default);
 	Task<IEnumerable<RolesListResponse>> GetRolesListAsync(CancellationToken cancellationToken = default);
 	Task<string> GetUserName(string userId, CancellationToken cancellationToken);
+	
+	/// <summary>
+	/// Change promotional emails status
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task ChangePromotionalEmailsAsync(string userId, CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Delete my user
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task DeleteMyUserAsync(string userId, CancellationToken cancellationToken);
 }

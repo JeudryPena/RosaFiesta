@@ -1,15 +1,85 @@
 <div class="tab-container">
   <div class="tab-grid">
     <div class="review-left">
-      <div class="review-filters">
-        esadas
-      </div>
       <div class="create-review">
-        dsadsa
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="filt-head-text">
+              {{ alredyReviewedId ? 'Actualizar Reseña' : 'Dar Reseña' }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="rating-container">
+            <app-rating (ratingChange)="ratingChange($event)" [rating]="selectedRating" [readonly]="false"
+                        [size]="'40px'"></app-rating>
+          </div>
+          <mat-form-field [formGroup]="createReviewForm" class="custom-form">
+            <mat-label>Titulo</mat-label>
+            <input formControlName="title" matInput>
+          </mat-form-field>
+          <mat-form-field [formGroup]="createReviewForm" class="custom-form">
+            <mat-label>Descripción</mat-label>
+            <textarea class="custom-textarea" formControlName="description" matInput maxlength="250"></textarea>
+          </mat-form-field>
+          <button (click)="submitReview(createReviewForm.value)" [color]="alredyReviewedId ? 'accent' : 'primary'"
+                  [disabled]="!createReviewForm.valid"
+                  mat-raised-button>{{ alredyReviewedId ? 'Actualizar' : 'Enviar' }}
+          </button>
+        </mat-expansion-panel>
+      </div>
+      <div class="review-filters">
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="filt-head-text">
+              Filtrar por calificación
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="filt-body">
+            <div class="filt-list">
+              <mat-radio-group
+                (change)="filterReviews($event.value)"
+                [(ngModel)]="selectedRating"
+                aria-labelledby="example-radio-group-label"
+                class="conditions-radio-group">
+                @for (rating of ratings; track rating) {
+                  <mat-radio-button [value]="rating">
+                    <div class="rating">
+                      <app-rating [rating]="rating"></app-rating>
+                      <span class="review-quantity">{{ rating }}</span>
+                    </div>
+                  </mat-radio-button>
+                }
+              </mat-radio-group>
+            </div>
+          </div>
+        </mat-expansion-panel>
       </div>
     </div>
     <div class="review-list">
-      dsadasdas
+      <mat-card class="example-card">
+        @for (review of reviewsResult; track review) {
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>{{ review.title }}</mat-card-title>
+              <mat-card-subtitle>
+                <app-rating [size]="'20px'" [rating]="review.rating"></app-rating>
+              </mat-card-subtitle>
+              <div class="d-flex align-items-center gap-3">
+                <span class="review-user">{{ review.user.userName }}</span>
+                <ngx-avatars [name]="review.user.userName" [size]="40"></ngx-avatars>
+              </div>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ review.description }}</p>
+          </mat-card-content>
+          @if (userId == review.user.id) {
+            <mat-card-actions>
+              <button color="primary" mat-raised-button (click)="deleteReview(review.id)">Eliminar <i
+                class="delete-icon w-icon"></i></button>
+            </mat-card-actions>
+          }
+        }
+      </mat-card>
     </div>
   </div>
 </div>
