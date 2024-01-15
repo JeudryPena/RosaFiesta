@@ -29,7 +29,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles.sass",
+              "node_modules/ngx-sharebuttons/themes/circles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -98,7 +99,7 @@
               "src/styles.sass",
               "src/styles/bootstrap.min.css",
               "node_modules/@ng-bootstrap/ng-bootstrap//ng-bootstrap.css",
-              "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
+              "node_modules/ngx-sharebuttons/themes/circles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

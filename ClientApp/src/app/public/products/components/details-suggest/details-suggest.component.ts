@@ -5,6 +5,8 @@ import {ProductPreviewResponse} from "@core/interfaces/Product/Response/productP
 import {ProductsService} from "@admin/inventory/services/products.service";
 import {ReviewsService} from "@intranet/services/reviews.service";
 import {DiscountsService} from "@admin/inventory/services/discounts.service";
+import {encrypt} from "@core/shared/util/util-encrypt";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-details-suggest',
@@ -19,8 +21,15 @@ export class DetailsSuggestComponent implements OnInit {
   constructor(
     private readonly productService: ProductsService,
     private readonly reviewService: ReviewsService,
-    private readonly discountService: DiscountsService
+    private readonly discountService: DiscountsService,
+    private readonly router: Router
   ) {
+  }
+
+  productDetail(id: string) {
+    const data = {id: id};
+    const productId = encrypt(JSON.stringify(data));
+    this.router.navigate([`/products/detail`], {queryParams: {productId}});
   }
 
   async ngOnInit() {

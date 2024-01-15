@@ -26,7 +26,7 @@ function sort(discounts: ManagementDiscountsResponse[], column: SortColumn, dire
 function matches(discount: ManagementDiscountsResponse, term: string, pipe: PipeTransform) {
   return (
     discount.value ||
-    pipe.transform(discount.id).includes(term)
+    pipe.transform(discount.value).includes(term)
   );
 }
 

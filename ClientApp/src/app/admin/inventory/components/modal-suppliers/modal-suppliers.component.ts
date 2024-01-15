@@ -37,14 +37,13 @@ export class ModalSuppliersComponent implements OnInit {
   ) {
   }
 
-  onSelect(event: any): void {
+  onSelect(product: any): void {
     this.products.push({
-      id: event.item.id,
+      id: product.id,
       option: {
-        title: event.item.option.title
+        title: product.option.title
       }
     });
-    this.selected = '';
   }
 
   ngOnInit(): void {

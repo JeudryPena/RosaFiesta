@@ -24,7 +24,6 @@ export class ModalWarrantyComponent implements OnInit {
 
   warrantyForm$ = new BehaviorSubject<FormGroup>(null);
   products: any[] = [];
-  selected?: string;
   productsList: ProductsListResponse[] = [];
 
   constructor(
@@ -40,13 +39,11 @@ export class ModalWarrantyComponent implements OnInit {
 
   onSelect(event: any): void {
     this.products.push({
-      id: event.item.id,
+      id: event.id,
       option: {
-        title: event.item.option.title,
+        title: event.option.title,
       }
     });
-    this.selected = '';
-    console.log(event.item)
   }
 
   ngOnInit(): void {

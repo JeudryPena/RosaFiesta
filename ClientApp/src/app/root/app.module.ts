@@ -18,6 +18,7 @@ import {ToastContainerComponent} from "@root/toast-container/toast-container.com
 import {NgbToastModule} from "@ng-bootstrap/ng-bootstrap";
 import {RouterModule} from "@angular/router";
 import {register} from "swiper/element/bundle";
+import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -49,7 +50,8 @@ register();
         allowedDomains: ["localhost:7136"],
         disallowedRoutes: []
       }
-    })
+    }),
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     DecimalPipe,

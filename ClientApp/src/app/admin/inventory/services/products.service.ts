@@ -165,8 +165,8 @@ export class ProductsService {
     return this.http.get<ProductResponse>(`${this.apiUrl}${id}`);
   }
 
-  GetProductDetail(productId: string): Observable<ProductDetailResponse> {
-    return this.http.get<ProductDetailResponse>(`${this.apiUrl}${productId}/detail`);
+  GetProductDetail(productId: string, optionId: string): Observable<ProductDetailResponse> {
+    return this.http.get<ProductDetailResponse>(`${this.apiUrl}${productId}/option/${optionId}/detail`);
   }
 
   AddProduct(product: ProductDto) {

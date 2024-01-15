@@ -47,24 +47,17 @@
               <label class="form-check-label" for="connected">&nbsp;&nbsp;Recordarme</label>
             </div>
             <div class="col-7 text-end">
-              <a routerLink="/auth/forgot-password">Olvidaste la contraseña?</a>
+              <a class="a-link" routerLink="/auth/forgot-password">Olvidaste la contraseña?</a>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <div class="d-grid">
-                <button class="btn btn-success" routerLink="/auth/register">Registrarse</button>
-              </div>
-            </div>
-            <div class="col">
-              <div class="d-grid">
-                <button (click)="loginUser(loginForm.value)" [disabled]="!loginForm.valid" class="btn btn-primary"
-                        type="submit">
-                  Iniciar Sesión
-                </button>
-              </div>
-            </div>
+          <div class="auth-section">
+            <button class="btn btn-success" routerLink="/auth/register"><i class="register-icon w-icon"></i>Registrarse
+            </button>
+            <button (click)="loginUser(loginForm.value)" [disabled]="!loginForm.valid" class="btn btn-primary"
+                    type="submit"><i class="login-icon w-icon"></i>
+              Iniciar Sesión
+            </button>
           </div>
         </form>
       </div>

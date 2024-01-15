@@ -124,11 +124,11 @@ export class ModalProductComponent implements OnInit {
 
   onSelect(event: any, form: string): void {
     if (form == 'category') {
-      this.categoryForm = event.item;
+      this.categoryForm = event;
     } else if (form == 'warranty') {
-      this.warrantyForm = event.item;
+      this.warrantyForm = event;
     } else if (form == 'supplier') {
-      this.supplierForm = event.item;
+      this.supplierForm = event;
     }
   }
 

@@ -16,18 +16,18 @@
 
     .navigation-left
       @include a.v-flex($align: center)
-      overflow-x: scroll
+      overflow-x: auto
       width: calc(100% - 290px)
 
       &::-webkit-scrollbar
-        height: 5px
+        height: 5px !important
 
       &::-webkit-scrollbar-track
-        border-radius: 10px
+        border-radius: 10px !important
 
       &::-webkit-scrollbar-thumb
-        border-radius: 10px
-        background-color: a.$gray-400
+        border-radius: 10px !important
+        background-color: a.$gray-400 !important
 
     .navigation-right
       width: 260px

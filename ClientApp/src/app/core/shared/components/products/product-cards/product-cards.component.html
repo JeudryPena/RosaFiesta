@@ -9,15 +9,15 @@
         </div>
       </div>
       <div class="product-item">
-        <div class="item-img" (click)="productDetail(product.id)">
+        <div class="item-img" (click)="productDetail(product.id, product.option.id)">
           <img alt="" [src]="product.option.image | imgPath"/>
         </div>
         <div class="card-main">
           <div class="product-selector">
             <ul>
-              <li><i class="share-icon w-icon"></i></li>
+              <li (click)="shareButtons(product.shareUrl, product.option.title)"><i class="share-icon w-icon"></i></li>
               <li (click)="addToWishList(product.option.id)"><i class="favorite-icon w-icon"></i></li>
-              <li (click)="productDetail(product.id)"><i class="search-icon w-icon"></i></li>
+              <li (click)="productDetail(product.id, product.option.id)"><i class="search-icon w-icon"></i></li>
             </ul>
           </div>
         </div>
@@ -27,8 +27,8 @@
             <span class="review-quantity">{{ (product.option.reviews)?.length }}</span>
           </div>
           <div class="product-price">
-                    <span *ngIf="product.option.discount"
-                          class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
+            <span *ngIf="product.option.discount"
+                  class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
             <span class="new-price">{{ product.option.price | currency }}
               <span class="ms-1" *ngIf="product.option.discount">({{ product.option.discount.value }}
                 %)</span></span>

@@ -74,7 +74,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			{"email", email},
 		};
 
-		var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate", param);
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth", param);
 
 		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Confirm User</a>";
 
@@ -166,7 +166,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			{"token", codeEncoded },
 			{"email", email },
 		};
-		var callback = QueryHelpers.AddQueryString("http://localhost:4200/reset-password", param);
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth/reset-password", param);
 
 		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
 
@@ -264,8 +264,8 @@ internal sealed class AuthenticateService : IAuthenticateService
 				{"id", user.Id },
 			};
 
-			var callback = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/unlock-account", param);
-			var callback2 = QueryHelpers.AddQueryString("http://localhost:4200/authenticate/reset-password", param);
+			var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth/unlock-account", param);
+			var callback2 = QueryHelpers.AddQueryString("http://localhost:4200/auth/reset-password", param);
 
 			var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Restore User</a>";
 

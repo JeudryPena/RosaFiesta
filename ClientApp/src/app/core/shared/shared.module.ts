@@ -31,7 +31,7 @@ import {SidenavComponent} from "@core/shared/components/layout/sidenav/sidenav.c
 import {FooterComponent} from "@core/shared/components/layout/footer/footer.component";
 import {NavbarComponent} from "@core/shared/components/layout/navbar/navbar.component";
 import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
-import {NgbRatingConfig} from "@ng-bootstrap/ng-bootstrap";
+import {NgbRatingConfig, NgbTimepickerModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxPayPalModule} from "ngx-paypal";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarsModule} from "ngx-stars";
@@ -51,7 +51,17 @@ import {NgBootstrapModule} from "@core/shared/components/bootstrap/ng-bootstrap.
 import {MaterialModule} from "@core/shared/components/material/material.module";
 import {RelatedProductsComponent} from "@core/shared/components/products/related-products/related-products.component";
 import {ProductCardsComponent} from "@core/shared/components/products/product-cards/product-cards.component";
-import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
+import {ShareButtonsModule} from "ngx-sharebuttons/buttons";
+import {ShareIconsModule} from "ngx-sharebuttons/icons";
+import {ShareButtonsConfig} from "ngx-sharebuttons";
+import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share-buttons.component";
+import {FilterRolesPipe} from "@core/shared/pipes/filter-roles.pipe";
+import {FilterOptionsPipe} from "@core/shared/pipes/filter-options.pipe";
+import {FilterProductsPipe} from "@core/shared/pipes/filter-products.pipe";
+
+const shareButtonsConfig: ShareButtonsConfig = {
+  debug: true
+}
 
 @NgModule({
   declarations: [
@@ -93,7 +103,11 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     CarouselComponent,
     RecommendProductsComponent,
     RelatedProductsComponent,
-    ProductCardsComponent
+    ProductCardsComponent,
+    ShareButtonsComponent,
+    FilterRolesPipe,
+    FilterOptionsPipe,
+    FilterProductsPipe
   ],
   imports: [
     ReactiveFormsModule,
@@ -104,6 +118,7 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     MaterialModule,
     NgxStarsModule,
     NgxChartsModule,
+    ShareButtonsModule,
     NgTemplateOutlet,
     NgxFileDropModule,
     NgxPayPalModule,
@@ -112,7 +127,7 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     DatePipe,
     DecimalPipe,
     AvatarModule,
-    SweetAlert2Module.forRoot()
+    NgbTimepickerModule
   ],
   exports: [
     TestComponent,
@@ -155,6 +170,8 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     NgBootstrapModule,
     NgxStarsModule,
     NgxChartsModule,
+    ShareButtonsModule,
+    ShareIconsModule,
     NgTemplateOutlet,
     NgxFileDropModule,
     NgxPayPalModule,
@@ -162,18 +179,24 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     DatePipe,
     DecimalPipe,
     AvatarModule,
-    SweetAlert2Module,
     CarouselMultipleComponent,
+    ShareButtonsComponent,
     SwiperDirective,
     CarouselThumbnailsComponent,
     CarouselComponent,
     RecommendProductsComponent,
     RelatedProductsComponent,
-    ProductCardsComponent
+    ProductCardsComponent,
+    FilterRolesPipe,
+    FilterOptionsPipe,
+    FilterProductsPipe,
+    NgbTimepickerModule
   ],
   providers: [
-    NgbRatingConfig
-
+    NgbRatingConfig,
+    DatePipe,
+    FilterOptionsPipe,
+    FilterProductsPipe
   ],
   bootstrap: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

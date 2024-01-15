@@ -1,113 +1,127 @@
-<div *ngIf="discountForm$ | async as discountForm" class="form">
-  <div class="contact-form">
-    <span class="circle one"></span>
-    <span class="circle two"></span>
-    <form [formGroup]="discountForm" action="../../../../index.html" autocomplete="off">
-      <h3 class="title">{{title}}</h3>
-      <div class="d-flex justify-content-between input-container">
-        <div class="input-container m-0 me-3" isFocus>
-          <input class="input" formControlName="value" required
-                 type="number"/>
-          <label>Valor</label>
-          <span>Valor</span>
-          <h5 *ngIf="validate('value', 'required')">El Valor es<strong> Requerido</strong>
-          </h5>
-          <h5 *ngIf="validate('value', 'min')">El Valor es<strong> muy corto</strong></h5>
-        </div>
-
-        <div class="input-container m-0 ms-3" isFocus>
-          <div #p="ngbPopover" [autoClose]="false" [ngbPopover]="iconTemplate"
-               class="input-group flex-nowrap" triggers="manual">
-            <input
-              [readOnly]="true"
-              class="input"
-              formControlName="date"
-              required type="text"/>
-            <ng-template #iconTemplate>
-
-              <button (click)="p.toggle(); changeTime(discountForm.get('start')?.value, discountForm.get('end')?.value)"
-                      class="btn btn-dark pe-2 ps-2 wrap" type="button">
-                Agregar
-              </button>
-            </ng-template>
-            <button [disabled]="read"
-                    class="btn btn-outline-light bi bi-calendar3 pe-2 ps-2 input-group-text"
-                    type="button"></button>
+@if (discountForm$ | async; as discountForm) {
+  <div class="management-form">
+    <div class="left-form">
+      <span class="circle one"></span>
+      <span class="circle two"></span>
+      <form [formGroup]="discountForm" autocomplete="off">
+        <h3 class="management-form-title">{{ title }}</h3>
+        <div class="d-flex justify-content-between  management-input-container">
+          <div class=" management-input-container" isFocus>
+            <input formControlName="value" required
+                   type="number"/>
+            <label class="management-label">Valor</label>
+            <span class="management-span">Valor</span>
+            <h5 *ngIf="validate('value', 'required')">El Valor es<strong> Requerido</strong>
+            </h5>
+            <h5 *ngIf="validate('value', 'min')">El Valor es<strong> muy corto</strong></h5>
           </div>
-          <label>Periodo *</label>
-          <span>Periodo *</span>
-          <h5 *ngIf="validate('date', 'bsDate')">El Inicio es<strong> Requerido</strong>
-          </h5>
         </div>
-      </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field (click)="start.open()" class="management-input-container" isFocus>
+              <mat-datetimepicker-toggle [for]="start" matSuffix></mat-datetimepicker-toggle>
+              <mat-datetimepicker #start type="datetime" [openOnFocus]="true"
+                                  [timeInterval]="5"></mat-datetimepicker>
+              <input [min]="minDate" [max]="maxDate" matInput formControlName="start" [matDatetimepicker]="start"
+                     required
+                     autocomplete="false"/>
+              <label class="management-label">Inicio *</label>
+              <span class="management-span">Inicio *</span>
+              <h5 *ngIf="validate('start', 'required')">El inicio es<strong> Requerido</strong>
+              </h5>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field (click)="end.open()" class="management-input-container" isFocus>
+              <mat-datetimepicker-toggle [for]="end" matSuffix></mat-datetimepicker-toggle>
+              <mat-datetimepicker #end type="datetime" [openOnFocus]="true"
+                                  [timeInterval]="5"></mat-datetimepicker>
+              <input [min]="discountForm.get('start')?.value" [max]="maxDate" matInput formControlName="end"
+                     [matDatetimepicker]="end" required
+                     autocomplete="false"/>
+              <label class="management-label">Final *</label>
+              <span class="management-span">Final *</span>
+              <h5 *ngIf="validate('end', 'required')">El Final es<strong> Requerido</strong>
+              </h5>
+            </mat-form-field>
+          </div>
+        </div>
 
-      <div *ngIf="!read" class="input-container" isFocus>
-        <div class="input-group">
-          <input
-            [(ngModel)]="selected" class="input" formControlName="productsDiscounts"
-            id="typeahead-focus"
-            type="search"
-          />
-        </div>
-        <label>Opción</label>
-        <span>Opción</span>
-      </div>
 
-      <div class="input-container">
-        <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered ">
-          <li>
-            <div class="input-group">
-              <button class="btn text-md-start list btn-outline-light wrapper" type="text">{{i + 1}}.
-                {{product.option.title}}</button>
-              <button (click)="removeProduct(i)" [disabled]="read"
-                      class="btn btn-outline-light list pe-2 ps-2 wrap">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </li>
-        </ol>
-      </div>
+        @if (!read) {
+          <mat-form-field appearance="fill" class="management-input-container" isFocus>
+            <input #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
+            <label class="management-label">Productos *</label>
+            <span class="management-span">Productos *</span>
+            <mat-autocomplete #moduleAutocomplete="matAutocomplete"
+                              (optionSelected)="onSelect($event.option.value); moduleInput.value = ''">
+              <mat-option *ngFor="let option of optionsList | filterOptions: moduleInput.value"
+                          [value]="option">
+                {{ option.title }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon class="caret-down-icon" matSuffix></mat-icon>
+          </mat-form-field>
 
-      <div *ngIf="read">
-        <div class="input-container" isFocus>
-          <input class="input"
-                 formControlName="createdAt"
-                 readOnly type="text"/>
-          <label>Fecha de Creación</label>
-          <span>Fecha de Creación</span>
-        </div>
-        <div class="input-container" isFocus>
-          <input class="input" formControlName="createdBy" readOnly type="text"/>
-          <label>Creado por</label>
-          <span>Creado por</span>
-        </div>
-        <div class="input-container" isFocus>
-          <input class="input"
-                 formControlName="updatedAt"
-                 readOnly type="text"/>
-          <label>Fecha de Modificación</label>
-          <span>Fecha de Modificación</span>
-        </div>
-        <div class="input-container" isFocus>
-          <input class="input" formControlName="updatedBy" readOnly type="text"/>
-          <label>Modificado por</label>
-          <span>Modificado por</span>
-        </div>
-      </div>
-      <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
-        <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-        <input (click)="AddDiscount(discountForm.value)" *ngIf="read == false" [disabled]="!discountForm.valid"
-               class="btn submit"
-               type="submit" value="Crear"/>
-      </div>
-      <ng-template #updateP>
-        <div class="d-flex justify-content-between">
+        }
+        @if (products.length > 0) {
+          <div class=" management-input-container">
+            <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered w-100">
+              <li>
+                <div class="input-group flex-nowrap">
+                  <button class="btn text-md-start list btn-outline-light w-100" type="text">{{ i + 1 }}.
+                    {{ product.option.title }}
+                  </button>
+                  <button (click)="removeProduct(i)" [disabled]="read"
+                          class="btn btn-outline-light list pe-2 ps-2 input-group-text">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </li>
+            </ol>
+          </div>
+        }
+        @if (read) {
+          <div class=" management-input-container" isFocus>
+            <input
+              formControlName="createdAt"
+              readOnly type="text"/>
+            <label class="management-label">Fecha de Creación</label>
+            <span class="management-span">Fecha de Creación</span>
+          </div>
+          <div class=" management-input-container" isFocus>
+            <input formControlName="createdBy" readOnly type="text"/>
+            <label class="management-label">Creado por</label>
+            <span class="management-span">Creado por</span>
+          </div>
+          <div class=" management-input-container" isFocus>
+            <input
+              formControlName="updatedAt"
+              readOnly type="text"/>
+            <label class="management-label">Fecha de Modificación</label>
+            <span class="management-span">Fecha de Modificación</span>
+          </div>
+          <div class=" management-input-container" isFocus>
+            <input formControlName="updatedBy" readOnly type="text"/>
+            <label class="management-label">Modificado por</label>
+            <span class="management-span">Modificado por</span>
+          </div>
+        }
+        <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
           <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-          <input (click)="updateDiscount(discountForm.value)" [disabled]="!discountForm.valid"
-                 class="btn submit" type="submit"
-                 value="Actualizar"/>
+          <input (click)="AddDiscount(discountForm.value)" *ngIf="read == false" [disabled]="!discountForm.valid"
+                 class="btn submit"
+                 type="submit" value="Crear"/>
         </div>
-      </ng-template>
-    </form>
+        <ng-template #updateP>
+          <div class="d-flex justify-content-between">
+            <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+            <input (click)="updateDiscount(discountForm.value)" [disabled]="!discountForm.valid"
+                   class="btn submit" type="submit"
+                   value="Actualizar"/>
+          </div>
+        </ng-template>
+      </form>
+    </div>
   </div>
-</div>
+}

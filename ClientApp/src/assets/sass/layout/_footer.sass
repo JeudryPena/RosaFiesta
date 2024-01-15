@@ -15,9 +15,10 @@
     display: grid
     grid-template-columns: 276px repeat(3, 2fr) 1fr
     column-gap: 32px
-    padding-top: 36px
-    padding-bottom: 36px
-    grid-template-rows: 150px repeat(3, 2fr) 1fr
+    padding-top: 1.5rem
+    padding-bottom: 1.5rem
+    grid-template-rows: 125px repeat(3, 2fr) 1fr
+
 
     @include a.breakpoint-down(md)
       grid-template-columns: 2fr repeat(2, 1fr)
@@ -38,7 +39,7 @@
     .brand-intro
       @include a.text()
       color: a.$gray-600
-      padding: 12px 0 15px 0
+      padding: 10px 0 12px 0
       max-width: 300px
       font-size: a.$text-base
       margin-bottom: 0
@@ -50,7 +51,7 @@
   .social-links
     column-gap: 8px
     display: flex
-    padding-left: 0 !important
+    padding-left: 0.6rem !important
 
     @include a.breakpoint-down(sm)
       justify-content: center

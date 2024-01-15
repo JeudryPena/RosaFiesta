@@ -53,7 +53,6 @@
       flex-direction: column
       justify-content: start
 
-
 .product-price
   margin: 0 !important
   padding-bottom: 8px !important
@@ -63,17 +62,27 @@
     align-content: center
 
   .last-price
-    color: #f64749
+    color: a.$red
     text-decoration: line-through
-    font-size: 16px
+    font-size: a.$text-base
     font-style: italic
     margin-right: 1px
 
   .new-price
-    color: #256eff
+    color: a.$blue
     font-size: large
     font-weight: 500 !important
     display: inline-block
+
+.product-price-sm
+  padding-bottom: 0 !important
+  line-height: 1
+
+  .last-price, .new-price
+    font-size: small !important
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
 
 .product-selector
   text-align: center

@@ -2,8 +2,9 @@
   <section class="top-main">
     <div class="c-container">
       <div class="top-main-content">
-
         <div class="categories-list">
+          <span class="category-title">Buscar por Categoría</span>
+          <hr>
           @for (category of categories; track category.id) {
             <span class="category-item" (click)="selectCategory(category.id)">{{ category.name }}</span>
           }
@@ -29,9 +30,15 @@
                   </p>
                 </div>
               </div>
-              <div class="btn-group">
-                <a class="btn btn-sm btn-warning" href="#">Unirse</a>
-                <a class="btn btn-sm btn-primary" href="#">Acceder</a>
+              <div class="join-section">
+                <button class="btn btn-sm btn-success "
+                        routerLink="/auth"><i
+                  class="register-icon w-icon"></i>Unirse
+                </button>
+                <button class="btn btn-sm btn-primary"
+                        routerLink="/auth/register"><i
+                  class="login-icon w-icon"></i>Acceder
+                </button>
               </div>
             </div>
           }

@@ -51,10 +51,10 @@ public class ProductsController : ControllerBase
 		return Ok(options);
 	}
 
-	[HttpGet("{productId:guid}/detail")]
-	public async Task<IActionResult> RetrieveProductDetailAsync(Guid productId, CancellationToken cancellationToken)
+	[HttpGet("{productId:guid}/option/{optionId:guid}/detail")]
+	public async Task<IActionResult> RetrieveProductDetailAsync(Guid productId, Guid optionId, CancellationToken cancellationToken)
 	{
-		ProductDetailResponse productAndOption = await _serviceManager.ProductService.GetProductDetail(productId, cancellationToken);
+		ProductDetailResponse productAndOption = await _serviceManager.ProductService.GetProductDetail(productId, optionId, cancellationToken);
 		return Ok(productAndOption);
 	}
 

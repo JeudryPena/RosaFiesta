@@ -2,36 +2,41 @@
   <div class="c-container">
     <div class="inquiry-content">
       <div class="inquiry-text">
-        <h2>Una forma sencilla de solicitar tu pedido</h2>
+        <h2>Solicita tu evento de forma sencilla</h2>
         <p>
-          Completa el formulario y envia tu solicitud de pedido.
+          Permite que nos encarguemos de elaborar tu cotización personalizada, según tus necesidades.
         </p>
       </div>
       <div class="inquiry-form">
         <form>
           <p class="form-title">Solicitar Cotización</p>
-          <div class="form-elem">
-            <input class="form-elem-control" placeholder="¿Que productos te gustaría?" type="text">
+          <div class="form-elems">
+            <div class="form-elem">
+              <input class="form-elem-control" placeholder="Nombre completo" type="text">
+            </div>
+            <div class="form-elem">
+              <input class="form-elem-control" placeholder="Ej: Cumpleaños, boda..." type="text">
+            </div>
           </div>
           <div class="form-elem">
             <textarea class="form-elem-control" placeholder="Escribe mas detalles"></textarea>
           </div>
           <div class="form-elems">
             <div class="form-elem">
-              <input class="form-elem-control" placeholder="Cantidad" type="text">
+              <input class="form-elem-control" placeholder="Télefono" type="text">
             </div>
             <div class="form-elem">
-              <div class="select-wrapper">
-                <select class="form-elem-control" id="" name="">
-                  <option disabled selected value="">Pcs</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                </select>
-              </div>
+              <input class="form-elem-control" placeholder="Fecha" type="text">
             </div>
           </div>
-          <button class="btn btn-primary" type="submit">Send inquiry</button>
+          <div class="quote-section">
+            <button class="btn btn-success" type="submit"><i
+              class="whatsapp-icon"></i>Continuar por Whatsapp
+            </button>
+            <button class="btn btn-primary w-auto" type="submit"><i
+              class="products-icon w-icon"></i>Elegir productos
+            </button>
+          </div>
         </form>
       </div>
     </div>

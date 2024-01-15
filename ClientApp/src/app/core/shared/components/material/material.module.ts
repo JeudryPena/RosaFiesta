@@ -12,7 +12,11 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from "@angular/material/card";
-
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatDatetimepickerModule, MatNativeDatetimeModule} from "@mat-datetimepicker/core";
 
 @NgModule({
   declarations: [],
@@ -29,7 +33,13 @@ import {MatCardModule} from "@angular/material/card";
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatGridListModule,
+    MatDatetimepickerModule,
+    MatNativeDatetimeModule
   ],
   exports: [
     MatTabsModule,
@@ -43,7 +53,16 @@ import {MatCardModule} from "@angular/material/card";
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatGridListModule,
+    MatDatetimepickerModule,
+    MatNativeDatetimeModule
+  ],
+  providers: [
+    MatNativeDatetimeModule
   ]
 })
 export class MaterialModule {

@@ -1,3 +1,53 @@
 <div class="tab-container">
-  
+  <div class="warranty-grid">
+    @if (warranty) {
+      <div class="left-warranty">
+        <mat-card class="warranty-card">
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>Nombre</mat-card-title>
+              <mat-card-subtitle>
+                {{ warranty.name }}
+              </mat-card-subtitle>
+            </mat-card-title-group>
+
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="warranty-card">
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>Tipo</mat-card-title>
+              <mat-card-subtitle>
+                {{ warranty.type }}
+              </mat-card-subtitle>
+            </mat-card-title-group>
+          </mat-card-header>
+        </mat-card>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>Periodo</mat-card-title>
+              <mat-card-subtitle>
+                <span>{{ warranty.type }} dias</span>
+              </mat-card-subtitle>
+            </mat-card-title-group>
+          </mat-card-header>
+        </mat-card>
+      </div>
+      <div class="right-warranty">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>Descripción</mat-card-title>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              {{ warranty.description }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+  </div>
 </div>

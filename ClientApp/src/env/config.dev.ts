@@ -1,7 +1,8 @@
-import { Config } from "./config";
+import {Config} from "./config";
 
 export const config: Config = {
   apiURL: 'https://localhost:7136/api/',
+  clientURL: 'http://localhost:4200/',
   production: false,
   encrypt: true,
   keyEncrypt: 'Logidev@ñ',

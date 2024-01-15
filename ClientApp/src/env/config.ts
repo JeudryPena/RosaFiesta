@@ -1,5 +1,6 @@
 export interface Config {
   apiURL: string;
+  clientURL: string;
   production: boolean;
   encrypt: boolean,
   keyEncrypt: string;

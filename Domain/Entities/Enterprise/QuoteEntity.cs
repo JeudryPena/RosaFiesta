@@ -13,8 +13,6 @@ public class QuoteEntity : BaseEntity, IAutoUpdate
 	public string ContactNumber { get; set; }
 	[StringLength(5000, MinimumLength = 4)]
 	public string? ExtraInfo { get; set; }
-	[StringLength(320, MinimumLength = 7)]
-	public string? Email { get; set; }
 	[StringLength(50, MinimumLength = 2)]
 	public string EventName { get; set; }
 	public DateTimeOffset EventDate { get; set; }

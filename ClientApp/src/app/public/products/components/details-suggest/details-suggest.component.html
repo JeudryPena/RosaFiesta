@@ -3,7 +3,7 @@
     <h3 class="suggest-title">Puede que también te guste</h3>
     <div class="suggest-products-list">
       @for (product of products; track product) {
-        <div class="product-item product-item-sm">
+        <div class="product-item product-item-sm" (click)="productDetail(product.id)">
           <div class="item-img">
             <img alt="" [src]="product.option.image | imgPath">
           </div>

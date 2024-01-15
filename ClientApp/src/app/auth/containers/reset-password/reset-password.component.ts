@@ -46,10 +46,10 @@ export class ResetPasswordComponent {
       .subscribe({
         next: () => {
           this.toastService.show(null, 'Contraseña restablecida!', {
-            classname: 'bg - success text - light',
+            classname: 'bg-success text-light',
             delay: 5000
           });
-          this.router.navigate(['authenticate']);
+          this.router.navigate(['auth']);
         },
         error: (error) => {
           this.toastService.show('Error!', `${error}`, {classname: 'bg-danger text-light', delay: 5000});

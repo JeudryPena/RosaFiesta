@@ -40,28 +40,8 @@ export class DetailReviewTabComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['reviews'] && !changes['reviews'].firstChange) {
       this.filterReviews(this.selectedRating);
+      this.findReview();
     }
-  }
-
-  deleteReview(ratingId: number) {
-    this.reviewService.DeleteReview(ratingId).subscribe({
-      next: () => {
-        Swal.fire({
-          title: "Reseña agregada",
-          icon: "success"
-        }).then(() => {
-          this.refreshReviews.emit();
-        });
-      }, error: (err) => {
-        console.error(err);
-        Swal.fire({
-          title: "Hubo un error",
-          text: "Favor de contactar con el administrador",
-          icon: "error"
-        }).then(() => {
-        });
-      }
-    });
   }
 
   filterReviews(rating: number) {
@@ -83,6 +63,10 @@ export class DetailReviewTabComponent implements OnInit, OnChanges {
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]]
     });
+    this.findReview();
+  }
+
+  findReview() {
     if (this.isAuthenticated) {
       const review = this.reviews.find(review => review.user.id === this.userId);
       if (review) {
@@ -94,6 +78,33 @@ export class DetailReviewTabComponent implements OnInit, OnChanges {
         });
       }
     }
+  }
+
+  deleteReview(ratingId: number) {
+    this.reviewService.DeleteReview(ratingId).subscribe({
+      next: () => {
+        Swal.fire({
+          title: "Reseña agregada",
+          icon: "success"
+        }).then(() => {
+          this.refreshReviews.emit();
+          this.alredyReviewedId = null;
+          this.createReviewForm.patchValue({
+            title: '',
+            description: '',
+            rating: 0
+          })
+        });
+      }, error: (err) => {
+        console.error(err);
+        Swal.fire({
+          title: "Hubo un error",
+          text: "Favor de contactar con el administrador",
+          icon: "error"
+        }).then(() => {
+        });
+      }
+    });
   }
 
   submitReview(formValue: any) {

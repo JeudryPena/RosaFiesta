@@ -25,7 +25,7 @@ public interface IProductRepository
 	void InsertOptionImages(IList<MultipleOptionImagesEntity> images);
 	Task<ProductEntity> GetProductWithOption(Guid id, CancellationToken cancellationToken);
 	Task<IEnumerable<OptionEntity>> GetOptionsList(CancellationToken cancellationToken = default);
-	Task<ProductEntity> GetDetailAsync(Guid id, CancellationToken cancellationToken = default);
+	Task<ProductEntity> GetDetailAsync(Guid id, Guid optionId, CancellationToken cancellationToken = default);
 	Task<double> CartItemPrice(Guid optionId, int quantity, CancellationToken cancellationToken = default);
 	Task CheckOptionAviabilityAsync(Guid optionId, int quantity, CancellationToken cancellationToken = default);
 	

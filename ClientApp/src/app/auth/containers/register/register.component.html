@@ -67,30 +67,25 @@
                                                                                routerLink="/auth/terms-conditions">términos
             y
             condiciones</a> de nuestro servicio.</p>
-          <div class="row">
-            <div class="col">
-              <div class="form-check form-switch">
-                <input class="form-check-input" formControlName="promotionalMails" id="flexSwitchCheckDefault"
-                       role="switch"
-                       type="checkbox">
-                <label class="form-check-label" for="flexSwitchCheckDefault"> Deseo recibir ofertas y promociones a mi
-                  mail</label>
-              </div>
+          <div class="auth-section">
+            <div class="form-check form-switch">
+              <input class="form-check-input" formControlName="promotionalMails" id="flexSwitchCheckDefault"
+                     role="switch"
+                     type="checkbox">
+              <label class="form-check-label" for="flexSwitchCheckDefault"> Deseo recibir ofertas y promociones a mi
+                mail</label>
             </div>
-            <div class="col">
-              <div class="d-grid">
-                <button (click)="registerUser(registerForm.value)" [disabled]="!registerForm.valid"
-                        class="btn btn-success"
-                        type="submit">Registrarse
-                </button>
-              </div>
-            </div>
+            <button (click)="registerUser(registerForm.value)" [disabled]="!registerForm.valid"
+                    class="btn btn-success"
+                    type="submit"><i class="register-icon w-icon"></i>Registrarse
+            </button>
           </div>
         </form>
       </div>
       <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded-end">
         <div class="d-flex justify-content-center align-items-center h-100">
-          <button class="btn btn-primary" routerLink="/auth" type="submit">
+          <button class="btn btn-primary d-flex align-items-center" routerLink="/auth" type="submit">
+            <i class="login-icon w-icon me-1"></i>
             Iniciar Sesión
           </button>
         </div>

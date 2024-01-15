@@ -131,9 +131,10 @@
   .details-data
     .data-row
       margin: 8px 0
-      grid-template-columns: 120px auto
+      grid-template-columns: 75px auto
       gap: 20px
       display: grid
+
 
       @include a.breakpoint-down(sm)
         margin: 4px 0
@@ -167,8 +168,54 @@
 
       &-d
         color: a.$gray-600
+        width: auto
+        overflow-x: hidden
+
+        .option-list
+          display: grid
+          overflow-x: auto
+          height: auto
+          overflow-y: hidden
+          width: 100%
+          grid-template-rows: 1fr
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr))
+          grid-auto-flow: column
+          grid-auto-columns: minmax(120px, 1fr)
+          padding-bottom: 0.25rem
+          grid-gap: 0.5rem
+
+          .option-item
+            width: 100%
+
+            &:hover
+              .option-item-text
+                color: a.$blue
+
+              img
+                border: 1px solid a.$blue !important
+
+            &.active
+              .option-item-text
+                font-weight: bold
+
+              img
+                border: 1px solid #8B96A5
+
+            &-text
+              @include a.text(500)
+              color: a.$dark
+              overflow: hidden
+              text-overflow: ellipsis
+              white-space: nowrap
+
+            img
+              height: 100px
+              width: 150px
+              border-radius: 6px
+              border: 1px solid a.$gray-200
 
   .details-supplier
+
     &-wrapper
       border-radius: 6px
       border: 1px solid a.$gray-200
@@ -214,15 +261,45 @@
           width: 50%
 
     .btn-wishlist
+      background-color: a.$blue-400
+      border: a.$blue-400 !important
+      color: a.$alice-blue !important
+      box-shadow: rgba(221, 221, 221, 0.8117647059) 0.5px 0.5px 2px 0 !important
+
+      i
+        transition: 0.3s ease-in-out !important
+
+      &:hover
+        background-color: a.$alice-blue
+        color: a.$blue-400 !important
+        box-shadow: rgba(221, 221, 221, 0.8117647059) 0.5px 0.5px 2px 0 !important
+
+        i
+          filter: invert(62%) sepia(36%) saturate(343%) hue-rotate(167deg) brightness(93%) contrast(86%)
+
+    .btn-share
+
+      i
+        transition: 0.3s ease-in-out !important
+        filter: invert(30%) sepia(86%) saturate(3983%) hue-rotate(211deg) brightness(104%) contrast(96%)
+
+      &:hover
+        i
+          filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(73deg) brightness(100%) contrast(103%)
+
+    .btn-share, .btn-wishlist
       width: auto
       @include a.flexbox($align: center, $justify: center)
       margin: 20px 0
+      border-radius: 6px !important
+      transition: 0.3s ease-in-out !important
 
       span
-        margin-right: 6px
+        gap: 6px
         @include a.text()
         @include a.v-flex()
         text-align: center
+        transition: 0.1s ease-in-out !important
 
   .sc-related
     padding: 20px 0
@@ -267,6 +344,12 @@
       .product-item
         @include a.border()
         overflow: hidden
+
+        &:hover
+          border: 1px solid a.$blue
+
+          .item-img
+            border: 1px solid a.$blue
 
         .item-img
           overflow: hidden

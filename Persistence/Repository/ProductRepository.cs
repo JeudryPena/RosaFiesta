@@ -130,7 +130,8 @@ public class ProductRepository : IProductRepository
 
 	public async Task<IEnumerable<OptionEntity>> GetOptionsList(CancellationToken cancellationToken = default) => await _dbContext.Options.ToListAsync(cancellationToken);
 
-	public async Task<ProductEntity> GetDetailAsync(Guid id, CancellationToken cancellationToken = default)
+	public async Task<ProductEntity> GetDetailAsync(Guid id, Guid optionId,
+		CancellationToken cancellationToken = default)
 	{
 		ProductEntity? product = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Images).Include(x => x.Warranty).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 		if (product == null)

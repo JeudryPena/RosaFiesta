@@ -43,10 +43,10 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(async (params: Params) => {
-      const productId = decrypt<{ id: string }>(params['productId']);
-      this.service.increaseView(productId.id).subscribe();
-      if (productId) {
-        const productResponse = this.service.GetProductDetail(productId.id).pipe(
+      const productData = decrypt<{ id: string, optionId: string }>(params['product']);
+      this.service.increaseView(productData.id).subscribe();
+      if (productData) {
+        const productResponse = this.service.GetProductDetail(productData.id, productData.optionId).pipe(
           catchError(err => {
             this.router.navigate(['/']);
             throw err;
@@ -68,7 +68,14 @@ export class ProductDetailComponent implements OnInit {
             product.option.offerPrice = product.option.price - (product.option.price * (discount.value / 100));
           }
         });
-
+        for (let option of product.options) {
+          const discountResponse = this.discountService.GetOptionDiscount(option.id);
+          const discountPromise = await lastValueFrom(discountResponse);
+          if (discountPromise != null) {
+            option.discount = discountPromise;
+            option.offerPrice = option.price - (option.price * (discountPromise.value / 100));
+          }
+        }
         this.product$.next(product);
       } else
         await this.router.navigate(['/main-page']);

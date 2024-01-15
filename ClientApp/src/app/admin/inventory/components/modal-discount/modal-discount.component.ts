@@ -27,7 +27,6 @@ export class ModalDiscountComponent implements OnInit {
   discountForm$ = new BehaviorSubject<FormGroup>(null);
 
   products: any[] = [];
-  date!: Date[];
   minDate!: Date;
   maxDate!: Date;
   optionsList: OptionsListResponse[] = [];
@@ -46,23 +45,12 @@ export class ModalDiscountComponent implements OnInit {
 
   onSelect(event: any): void {
     this.products.push({
-      optionId: event.item.id,
+      optionId: event.id,
       option: {
-        title: event.item.title,
+        title: event.title,
       }
     });
     this.selected = '';
-  }
-
-  changeTime(start: any, end: any) {
-    const form = this.discountForm$.getValue();
-    this.date = form.value.date;
-    this.date[0].setUTCHours(start.getHours(), start.getMinutes(), start.getSeconds());
-    this.date[1].setUTCHours(end.getHours(), end.getMinutes(), end.getSeconds());
-    form.patchValue({
-      date: this.date
-    });
-    this.discountForm$.next(form);
   }
 
   async ngOnInit() {
@@ -83,9 +71,8 @@ export class ModalDiscountComponent implements OnInit {
     this.navegationProperties();
     this.discountForm$.next(this.fb.group({
       value: [0],
-      date: [],
       start: [this.minDate],
-      end: [this.maxDate],
+      end: [],
       productsDiscounts: [],
     }));
   }
@@ -93,19 +80,14 @@ export class ModalDiscountComponent implements OnInit {
   async onEdit() {
     const discount$ = this.service.GetManagementDiscount(this.code);
     let response: ManagementDiscountsResponse = await lastValueFrom(discount$);
-    let start = new Date(response.start);
-    let end = new Date(response.end);
-    this.date = [start, end];
-    this.minDate.setDate(this.date[0].getDate());
     this.maxDate.setDate(this.minDate.getDate() + 3648);
     this.maxDate.setHours(this.maxDate.getHours(), this.maxDate.getMinutes(), this.maxDate.getSeconds() + 1);
     this.products = response.productsDiscounts || [];
     this.navegationProperties();
     this.discountForm$.next(this.fb.group({
       value: response.value,
-      date: this.date,
-      start: this.minDate,
-      end: this.maxDate,
+      start: response.start,
+      end: response.end,
       productsDiscounts: [],
     }));
   }
@@ -113,15 +95,11 @@ export class ModalDiscountComponent implements OnInit {
   async onRead() {
     const discount$ = this.service.GetManagementDiscount(this.code);
     let response: ManagementDiscountsResponse = await lastValueFrom(discount$);
-    let start = new Date(response.start);
-    let end = new Date(response.end);
-    this.date = [start, end];
     this.products = response.productsDiscounts || [];
     const form = this.fb.group({
       value: response.value,
-      date: this.date,
-      start: this.minDate,
-      end: this.maxDate,
+      start: response.start,
+      end: response.end,
       createdAt: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
       updatedAt: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
       createdBy: response.createdBy,
@@ -168,8 +146,8 @@ export class ModalDiscountComponent implements OnInit {
         const discount = {...discountFormValue};
         const discountDto: DiscountDto = {
           value: discount.value,
-          start: this.date[0].toISOString(),
-          end: this.date[1].toISOString(),
+          start: discount.start.toISOString(),
+          end: discount.end.toISOString(),
           productsDiscounts: this.products
         }
         this.service.UpdateDiscount(this.code, discountDto).subscribe({
@@ -203,8 +181,8 @@ export class ModalDiscountComponent implements OnInit {
 
         const discountDto: DiscountDto = {
           value: discount.value,
-          start: this.date[0].toISOString(),
-          end: this.date[1].toISOString(),
+          start: discount.start.toISOString(),
+          end: discount.end.toISOString(),
           productsDiscounts: this.products
         }
 

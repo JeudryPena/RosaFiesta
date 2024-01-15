@@ -15,6 +15,7 @@ public interface IProductService
 		CancellationToken cancellationToken = default);
 	Task DeleteAsync(string userId, Guid productId, Guid? optionId, CancellationToken cancellationToken = default);
 	Task<ProductDetailResponse> GetProductDetail(Guid productCode,
+		Guid optionId,
 		CancellationToken cancellationToken = default);
 	Task AdjustOptionQuantityAsync(string userId, Guid optionId, Guid productId, int count, CancellationToken cancellationToken = default);
 	Task<ICollection<ManagementProductsResponse>> ManagementGetAllAsync(CancellationToken cancellationToken = default);

@@ -118,12 +118,15 @@ internal sealed class ProductService : IProductService
 	/// Retrieve product detail
 	/// </summary>
 	/// <param name="id"></param>
+	/// <param name="optionId"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	public async Task<ProductDetailResponse> GetProductDetail(Guid id,
+		Guid optionId,
 		CancellationToken cancellationToken = default)
 	{
-		ProductEntity product = await _repositoryManager.ProductRepository.GetDetailAsync(id, cancellationToken);
+		ProductEntity product = await _repositoryManager.ProductRepository.GetDetailAsync(id, optionId, cancellationToken);
+		product.OptionId = optionId;
 		ProductDetailResponse productDetailResponse = product.Adapt<ProductDetailResponse>();
 		return productDetailResponse;
 	}

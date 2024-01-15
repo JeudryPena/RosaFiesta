@@ -1,108 +1,119 @@
-<div *ngIf="supplierForm$ | async as supplierForm" class="form">
-  <div class="contact-form">
-    <span class="circle one"></span>
-    <span class="circle two"></span>
-    <form [formGroup]="supplierForm" action="../../../../index.html" autocomplete="off">
-      <h3 class="title">{{title}}</h3>
-      <div class="input-container" isFocus>
-        <input class="input" formControlName="name" maxlength="50" minlength="3"
-               required type="text"/>
-        <label>Nombre *</label>
-        <span>Nombre *</span>
-        <h5 *ngIf="validate('name', 'required')">El Nombre es<strong> requerido</strong></h5>
-        <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
-      </div>
-      <div class="input-container" isFocus>
-        <input class="input" formControlName="email" maxlength="253"
-               minlength="3" type="string"/>
-        <label>Email</label>
-        <span>Email</span>
-        <h5 *ngIf="validate('email', 'minlength')">El email es<strong> muy corto</strong></h5>
-      </div>
-      <div class="input-container" isFocus>
-        <input class="input" formControlName="phone" maxlength="50"
-               minlength="3" type="text"/>
-        <label>Teléfono</label>
-        <span>Teléfono</span>
-        <h5 *ngIf="validate('phone', 'minlength')">El telefono es<strong> muy corto</strong></h5>
-      </div>
-      <div *ngIf="!read" class="input-container" isFocus>
-        <div class="input-group flex-nowrap">
-          <input [(ngModel)]="selected"
-                 class="input" formControlName="products" id="search"
-                 type="search" typeaheadOptionField="option.title"/>
+@if (supplierForm$ | async; as supplierForm) {
+  <div class="management-form">
+    <div class="left-form">
+      <span class="circle one"></span>
+      <span class="circle two"></span>
+      <form [formGroup]="supplierForm" autocomplete="off">
+        <h3 class="management-form-title">{{ title }}</h3>
+        <div class=" management-input-container" isFocus>
+          <input formControlName="name" maxlength="50" minlength="3"
+                 required type="text"/>
+          <label class="management-label">Nombre *</label>
+          <span class="management-span">Nombre *</span>
+          <h5 *ngIf="validate('name', 'required')">El Nombre es<strong> requerido</strong></h5>
+          <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
         </div>
-        <label>Productos</label>
-        <span>Productos</span>
-      </div>
-      <div class="input-container">
-        <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered ">
-          <li>
-            <div class="input-group flex-nowrap">
-              <button class="btn text-md-start list w-100 btn-outline-light" type="text">{{i + 1}}.
-                {{product.option.title}}</button>
-              <button (click)="removeProduct(i)" [disabled]="read"
-                      class="btn btn-outline-light list pe-2 ps-2 input-group-text">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </li>
-        </ol>
-      </div>
-      <div class="input-container" isFocus>
-                <textarea class="input" formControlName="description" maxlength="250"
+        <div class=" management-input-container" isFocus>
+          <input formControlName="email" maxlength="253"
+                 minlength="3" type="string"/>
+          <label class="management-label">Email</label>
+          <span class="management-span">Email</span>
+          <h5 *ngIf="validate('email', 'minlength')">El email es<strong> muy corto</strong></h5>
+        </div>
+        <div class=" management-input-container" isFocus>
+          <input formControlName="phone" maxlength="50"
+                 minlength="3" type="text"/>
+          <label class="management-label">Teléfono</label>
+          <span class="management-span">Teléfono</span>
+          <h5 *ngIf="validate('phone', 'minlength')">El telefono es<strong> muy corto</strong></h5>
+        </div>
+        @if (!read) {
+          <mat-form-field appearance="fill" class="management-input-container" isFocus>
+            <input #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
+            <label class="management-label">Productos *</label>
+            <span class="management-span">Productos *</span>
+            <mat-autocomplete #moduleAutocomplete="matAutocomplete"
+                              (optionSelected)="onSelect($event.option.value); moduleInput.value = ''">
+              <mat-option *ngFor="let product of productsList | filterProducts: moduleInput.value"
+                          [value]="product">
+                {{ product.option.title }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon class="caret-down-icon" matSuffix></mat-icon>
+          </mat-form-field>
+        }
+        @if (products.length > 0) {
+          <div class=" management-input-container">
+            <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered ">
+              <li>
+                <div class="input-group flex-nowrap">
+                  <button class="btn text-md-start list w-100 btn-outline-light">{{ i + 1 }}.
+                    {{ product.option.title }}
+                  </button>
+                  <button (click)="removeProduct(i)" [disabled]="read"
+                          class="btn btn-outline-light list pe-2 ps-2 input-group-text">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </li>
+            </ol>
+          </div>
+        }
+        <div class="management-input-container textarea" isFocus>
+                <textarea formControlName="description" maxlength="250"
                           minlength="3" rows="3" type="text"></textarea>
-        <label>Descripción</label>
-        <span>Descripción</span>
-        <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
-          corta</strong></h5></div>
-      <div class="input-container" isFocus>
-                <textarea class="input" formControlName="address" maxlength="250"
+          <label class="management-label">Descripción</label>
+          <span class="management-span">Descripción</span>
+          <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
+            corta</strong></h5></div>
+        <div class="management-input-container textarea" isFocus>
+                <textarea formControlName="address" maxlength="250" rows="3"
                           minlength="3" type="text"></textarea>
-        <label>Dirección</label>
-        <span>Dirección</span>
-        <h5 *ngIf="validate('address', 'minlength')">La dirección es<strong> muy corta</strong></h5>
-      </div>
-      <div *ngIf="read">
-        <div class="input-container" isFocus>
-          <input class="input"
-                 formControlName="createdAt"
-                 type="text"/>
-          <label>Fecha de Creación</label>
-          <span>Fecha de Creación</span>
+          <label class="management-label">Dirección</label>
+          <span class="management-span">Dirección</span>
+          <h5 *ngIf="validate('address', 'minlength')">La dirección es<strong> muy corta</strong></h5>
         </div>
-        <div class="input-container" isFocus>
-          <input class="input" formControlName="createdBy" type="text"/>
-          <label>Creado por</label>
-          <span>Creado por</span>
-        </div>
-        <div class="input-container" isFocus>
-          <input class="input"
-                 formControlName="updatedAt"
-                 type="text"/>
-          <label>Fecha de Modificación</label>
-          <span>Fecha de Modificación</span>
-        </div>
-        <div class="input-container" isFocus>
-          <input class="input" formControlName="updatedBy" type="text"/>
-          <label>Modificado por</label>
-          <span>Modificado por</span>
-        </div>
-      </div>
-      <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
-        <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-        <input (click)="AddSupplier(supplierForm.value)" *ngIf="read == false" [disabled]="!supplierForm.valid"
-               class="btn submit"
-               type="submit" value="Crear"/>
-      </div>
-      <ng-template #updateP>
-        <div class="d-flex justify-content-between">
+        @if (read) {
+          <div class=" management-input-container" isFocus>
+            <input
+              formControlName="createdAt"
+              readOnly type="text"/>
+            <label class="management-label">Fecha de Creación</label>
+            <span class="management-span">Fecha de Creación</span>
+          </div>
+          <div class=" management-input-container" isFocus>
+            <input formControlName="createdBy" readOnly type="text"/>
+            <label class="management-label">Creado por</label>
+            <span class="management-span">Creado por</span>
+          </div>
+          <div class=" management-input-container" isFocus>
+            <input
+              formControlName="updatedAt"
+              readOnly type="text"/>
+            <label class="management-label">Fecha de Modificación</label>
+            <span class="management-span">Fecha de Modificación</span>
+          </div>
+          <div class=" management-input-container" isFocus>
+            <input formControlName="updatedBy" readOnly type="text"/>
+            <label class="management-label">Modificado por</label>
+            <span class="management-span">Modificado por</span>
+          </div>
+        }
+        <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
           <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-          <input (click)="updateSupplier(supplierForm.value)" [disabled]="!supplierForm.valid"
-                 class="btn submit" type="submit"
-                 value="Actualizar"/>
+          <input (click)="AddSupplier(supplierForm.value)" *ngIf="read == false" [disabled]="!supplierForm.valid"
+                 class="btn submit"
+                 type="submit" value="Crear"/>
         </div>
-      </ng-template>
-    </form>
+        <ng-template #updateP>
+          <div class="d-flex justify-content-between">
+            <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+            <input (click)="updateSupplier(supplierForm.value)" [disabled]="!supplierForm.valid"
+                   class="btn submit" type="submit"
+                   value="Actualizar"/>
+          </div>
+        </ng-template>
+      </form>
+    </div>
   </div>
-</div>
+}

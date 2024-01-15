@@ -1,2 +1,4 @@
 <router-outlet></router-outlet>
 <app-toast-container aria-atomic="true" aria-live="polite"></app-toast-container>
+<swal #swalBox (confirm)="handleConfirm($event, swalConfirmData, swalComponentContext)"
+      [swalVisible]="isSwalVisible"></swal>
