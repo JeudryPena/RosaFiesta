@@ -37,7 +37,6 @@
             <div class="filt-list">
               <mat-radio-group
                 (change)="filterReviews($event.value)"
-                [(ngModel)]="selectedRating"
                 aria-labelledby="example-radio-group-label"
                 class="conditions-radio-group">
                 @for (rating of ratings; track rating) {

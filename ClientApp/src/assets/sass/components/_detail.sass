@@ -49,22 +49,6 @@
         p
           margin: 0
 
-        .condition
-          text-decoration: none
-          text-transform: uppercase
-          background: #2175f5
-          color: #fff
-          padding: 0 0.3rem
-          transition: all 0.5s ease
-          font-size: 18px
-          font-weight: 600
-          letter-spacing: 1px
-          border-radius: 3px
-
-        .condition:hover
-          opacity: 0.9
-
-
     .details-info
       @include a.flexbox($align: center)
       flex-wrap: wrap
@@ -352,13 +336,15 @@
             border: 1px solid a.$blue
 
         .item-img
+          padding: 0 !important
+          height: 100px
+          width: 95px !important
           overflow: hidden
           @include a.flexbox($align: center, $justify: center)
 
         .item-info
           span
-            @include a.text($weight: 600)
-            color: a.$dark
+            font-size: small
 
           p
             @include a.text()

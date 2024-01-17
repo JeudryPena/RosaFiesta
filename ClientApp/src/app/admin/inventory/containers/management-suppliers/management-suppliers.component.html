@@ -14,7 +14,8 @@
                         <span style="color: #32CD32; display: inline-block;">Cargando..</span>
                     </span>
           <div class="col-xs-3 col-sm-auto input-group-sm d-flex search-container align-items-center">
-            <input [(ngModel)]="service.searchTerm" aria-label="Buscar" class="form-control searcher" id="table-complete-search"
+            <input [(ngModel)]="service.searchTerm" aria-label="Buscar" class="form-control searcher"
+                   id="table-complete-search"
                    name="searchTerm" placeholder="Buscar..." type="text"/>
           </div>
         </div>
@@ -118,7 +119,7 @@
             </tfoot>
           </table>
         </div>
-        <div class="d-flex justify-content-between p-2">
+        <div class="d-flex justify-content-between">
           <pre>Current page: {{ service.page }}</pre>
           <ngb-pagination [(page)]="service.page" [boundaryLinks]="true"
                           [collectionSize]="collectionSize" [collectionSize]="(total$ | async)!" [maxSize]="maxSize"

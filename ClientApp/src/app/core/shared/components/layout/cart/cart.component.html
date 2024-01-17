@@ -18,7 +18,7 @@
             class="delete-icon"></i>
             Remover
           </button>
-          <button (click)="deleteItem(product.detailId, product.optionId)" class="btn btn-sm btn-save"><i
+          <button (click)="addToWishList(product.detailId, product.optionId)" class="btn btn-sm btn-save"><i
             class="favorite-icon"></i>
             Guardar para después
           </button>
@@ -26,8 +26,18 @@
       </div>
       <div class="col-auto px-0">
         <div class="row">
-          <input (input)="OnQuantityChange($event, product.detailId, product.optionId)" class="m-0" min="0" step="1"
-                 type="number" value={{product.quantity}}>
+
+          <input #p="ngbPopover"
+                 (click)="p.open(); product.newQuantity = product.quantity" [autoClose]="'outside'"
+                 [ngbPopover]="popover" [readonly]="true" [value]="product.quantity"
+                 class="btn btn-outline-secondary me-2" min="0" placement="bottom"
+                 popoverTitle="Ajustar Cantidad" step="1" triggers="manual" type="number">
+          <ng-template #popover>
+            <input [(ngModel)]="product.newQuantity" type="number">
+            <button (click)="OnQuantityChange(product.newQuantity, product.detailId, product.optionId); p.close()"
+                    class="btn btn-primary btn-sm">Guardar
+            </button>
+          </ng-template>
         </div>
         <div class="row">
           <span class="price total">

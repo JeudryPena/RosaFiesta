@@ -35,8 +35,28 @@ export class ProductDetailsTopComponent implements OnInit {
   }
 
   buyNow(cartFormValue: any) {
-    this.cartSubmit(cartFormValue)
-    this.router.navigate(['/purchase']);
+    const cart = {...cartFormValue};
+
+    const cartDto: PurchaseDetailDto = {
+      productId: this.product.id,
+      quantity: cart.quantity,
+      optionId: this.product.optionId
+    }
+
+    this.cartService.AddProductToCart(cartDto).subscribe({
+      next: () => {
+        this.swalOptions.icon = 'success';
+        this.swalOptions.html = 'Se añadió el producto al carrito correctamente';
+        this.swalOptions.title = 'Producto añadido';
+        this.swalService.show(this.swalOptions);
+        this.cartService.updatedCart();
+        this.router.navigate(['/intranet/purchase']);
+      }, error: (err) => {
+        this.swalService.error();
+        console.error(err);
+      }
+    });
+
   }
 
   productDetail(productId: string, optionId: string) {
@@ -90,11 +110,16 @@ export class ProductDetailsTopComponent implements OnInit {
       quantity: cart.quantity,
       optionId: this.product.optionId
     }
-    console.log(cartDto)
+
     this.cartService.AddProductToCart(cartDto).subscribe({
       next: () => {
-        this.router.navigate(['']);
+        this.swalOptions.icon = 'success';
+        this.swalOptions.html = 'Se añadió el producto al carrito correctamente';
+        this.swalOptions.title = 'Producto añadido';
+        this.swalService.show(this.swalOptions);
+        this.cartService.updatedCart();
       }, error: (err) => {
+        this.swalService.error();
         console.error(err);
       }
     });

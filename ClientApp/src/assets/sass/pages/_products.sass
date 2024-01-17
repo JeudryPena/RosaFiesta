@@ -1,5 +1,6 @@
 @use '../abstracts' as a
 
+
 .products-page
   padding-top: 3rem
   padding-bottom: 1.5rem
@@ -277,7 +278,7 @@
 
 .recommend-products-list
   display: grid
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
+  grid-template-columns: repeat(auto-fill, minmax(234px, 1fr))
   gap: 20px
 
 .product-condition
@@ -326,3 +327,18 @@
   color: a.$dark
   font-size: a.$text-lg
   font-weight: 600
+
+.is-service
+  text-decoration: none
+  text-transform: uppercase
+  background: #2175f5
+  color: #fff
+  padding: 0 0.3rem
+  transition: all 0.5s ease
+  font-size: 18px
+  font-weight: 600
+  letter-spacing: 1px
+  border-radius: 3px
+
+  .is-service:hover
+    opacity: 0.9

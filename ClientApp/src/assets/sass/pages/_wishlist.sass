@@ -5,10 +5,10 @@
   margin: 0 6px
 
 .f-container
-  height: calc(100vh - 3.5rem)
-  padding: 3.5rem
+  height: calc(100vh - 5.5rem)
+  padding: 2.5rem
   width: 70%
-  margin: 0 auto
+  margin: 0 auto 2rem auto
 
   .wishlist-header
     display: flex
@@ -39,15 +39,22 @@
     border: 1px solid a.$gray-200
     background-color: a.$white
 
-    .items-container
-      padding: .5rem 1rem 1rem 1rem
-      border-bottom: 1px solid a.$gray-200
+    .wishlist-layout-container
+      overflow-y: auto
+      height: 100%
+      overflow-x: hidden
 
-    &-img
-      height: 125px
-      border-radius: 6px
-      border: 1px solid a.$gray-200
+      .items-container
+        padding: .5rem 1rem 1rem 1rem
+        border-bottom: 1px solid a.$gray-200
 
-    &-name
-      @include a.text(600)
-      font-size: a.$text-lg
+      &-img
+        height: 125px
+        border-radius: 6px
+        border: 1px solid a.$gray-200
+
+      &-info
+        padding-top: 1rem !important
+
+      .wishlist-items-img
+        height: 150px

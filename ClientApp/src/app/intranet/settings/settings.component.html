@@ -1,1 +1,89 @@
-<h1>Settings</h1>
+@if ($user | async; as user) {
+  <div class="page-wrapper">
+    <div class="details-page">
+      <div class="top-main">
+        <div class="c-container">
+          <div class="top-main-content">
+            <div class="settings-grid">
+              <div class="left-settings">
+                <mat-card class="settings-card">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-title>Usuario</mat-card-title>
+                      <mat-card-subtitle>
+                      </mat-card-subtitle>
+                    </mat-card-title-group>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="review-user">{{ user.userName }}</span>
+                      <ngx-avatars [name]="user.userName" [size]="38"></ngx-avatars>
+                    </div>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <div class="user-info">
+                      <span><strong>Correo:</strong> {{ user.email }}</span>
+                      <span><strong>Fecha de Nacimiento:</strong> {{ user.birthDate }}</span>
+                      <span><strong>Fecha de Creación:</strong> {{ user.createdAt | date :'dd-MMM-yyyy' }}</span>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card class="settings-card">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-title>Preferencias</mat-card-title>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <div class="user-info">
+                      <mat-slide-toggle [(ngModel)]="user.promotionalMails"
+                                        (toggleChange)="changePromotionalPreference()" name="enableWifi">
+                        Permitir correos promocionales
+                      </mat-slide-toggle>
+                      <div class="preference-buttons">
+                        <button mat-stroked-button color="primary"><i class="key-icon p-icon me-1"></i> Actualizar mi
+                          Contraseña
+                        </button>
+                        <button mat-stroked-button color="warn"><i class="delete-user-fill-icon r-icon me-1"></i>
+                          Eliminar
+                          mi
+                          Cuenta
+                        </button>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card>
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-title>Roles</mat-card-title>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <div class="user-info">
+                      @for (role of user.userRoles; track role) {
+                        <span>{{ role.role.name }}</span>
+                      }
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              <div class="right-settings">
+                <mat-card>
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-title>Direcciones de Envio</mat-card-title>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p>
+
+                    </p>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

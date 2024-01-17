@@ -10,4 +10,6 @@ public interface ICartRepository
 	Task<ICollection<PurchaseDetailEntity>> GetCartDetails(string userId, CancellationToken cancellationToken);
 	void UpdateDetailOption(PurchaseDetailOptions optionDetail);
 	Task<int> GetCartDetailsCountAsync(string userId, CancellationToken cancellationToken = default);
+	void RemoveDetailOption(PurchaseDetailOptions optionDetail);
+	void RemoveDetail(PurchaseDetailEntity purchase);
 }

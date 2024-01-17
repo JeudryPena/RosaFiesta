@@ -62,7 +62,7 @@ public class UsersController : ControllerBase
 
 		return Ok(usersResponse);
 	}
-
+	
 	[HttpPost]
 	public async Task<IActionResult> Persist(
 		[FromBody] UserForCreationDto userForCreationDto,

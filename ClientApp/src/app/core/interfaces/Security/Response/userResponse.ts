@@ -13,5 +13,5 @@ export interface UserResponse extends ByBaseResponse {
 export interface CurrentUserResponse {
   id: string;
   userName: string;
-  userRoles: UserRoleResponse[];
+  role: string;
 }

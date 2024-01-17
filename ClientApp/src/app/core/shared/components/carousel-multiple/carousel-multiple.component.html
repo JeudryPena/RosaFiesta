@@ -1,9 +1,24 @@
 <swiper-container autoplay-delay="2500" autoplay-disable-on-interaction="false" class="mySwiper"
                   grab-cursor="true"
-                  navigation="true" slides-per-view="4">
-  @for (product of productsDiscounts; track product; let i = $index) {
-    <swiper-slide>
-      <img src="{{product.option.image}}" alt="">
+                  slides-per-view="4">
+  @for (product of productsToShow; track product; let i = $index) {
+    <swiper-slide (click)="productDetail(product.option.productId, product.option.id)">
+      <div class="image-info-container">
+        <div class="image-info-background">
+          <div class="image-info-title">
+            {{ product.option.title }}
+          </div>
+          <div class="rating pt-1">
+            <app-rating [size]="'16px'" [rating]="product.option.averageRating"></app-rating>
+            <span class="review-quantity">{{ (product.option.reviews)?.length }}</span>
+          </div>
+        </div>
+      </div>
+      <img src="{{product.option.image | imgPath}}" alt="">
+      <div class="product-price">
+        <span class="last-price me-1">{{ product.option.price | currency }}</span>
+        <span class="new-price">{{ product.option.offerPrice | currency }}</span>
+      </div>
     </swiper-slide>
   }
 </swiper-container>

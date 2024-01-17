@@ -6,7 +6,7 @@
       <form [formGroup]="categoryForm" autocomplete="off">
         <h3 class="management-form-title">{{ title }}</h3>
         <div class="management-input-container" isFocus>
-          <input formControlName="name" maxlength="50" minlength="3" required
+          <input class="management-input" formControlName="name" maxlength="50" minlength="3" required
                  type="text"/>
           <label class="management-label">Nombre *</label>
           <span class="management-span">Nombre *</span>
@@ -14,7 +14,7 @@
           <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
         </div>
         <div class="management-input-container" isFocus>
-          <input formControlName="icon" maxlength="200" minlength="3" required
+          <input class="management-input" formControlName="icon" maxlength="200" minlength="3" required
                  type="text"/>
           <label class="management-label">Icono *</label>
           <span class="management-span">Icono *</span>
@@ -22,7 +22,7 @@
           <h5 *ngIf="validate('icon', 'minlength')">El Icono es<strong> muy corto</strong></h5>
         </div>
         <div class="management-input-container" isFocus>
-                <textarea formControlName="description"
+                <textarea class="management-input" formControlName="description"
                           maxlength="250"
                           minlength="5" required
                           rows="3" type="text"></textarea>
@@ -37,26 +37,26 @@
         </div>
         @if (read) {
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="createdAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="createdAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Creación</label>
             <span class="management-span">Fecha de Creación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="createdBy" readOnly type="text"/>
+            <input class="management-input" formControlName="createdBy" readOnly type="text"/>
             <label class="management-label">Creado por</label>
             <span class="management-span">Creado por</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="updatedAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="updatedAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Modificación</label>
             <span class="management-span">Fecha de Modificación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="updatedBy" readOnly type="text"/>
+            <input class="management-input" formControlName="updatedBy" readOnly type="text"/>
             <label class="management-label">Modificado por</label>
             <span class="management-span">Modificado por</span>
           </div>

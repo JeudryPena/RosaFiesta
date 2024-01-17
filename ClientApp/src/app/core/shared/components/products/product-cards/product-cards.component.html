@@ -22,18 +22,25 @@
           </div>
         </div>
         <div class="item-info">
+
+          <div class="product-name">{{ product.option.title }}
+          </div>
           <div class="rating">
-            <app-rating [rating]="product.option.averageRating"></app-rating>
-            <span class="review-quantity">{{ (product.option.reviews)?.length }}</span>
+            <div class="rates-container">
+              <app-rating [size]="'20px'" [rating]="product.option.averageRating"></app-rating>
+              <span class="review-quantity">{{ (product.option.reviews)?.length }}</span>
+            </div>
+            @if (product.isService) {
+              <span class="is-service">Servicio</span>
+            }
           </div>
           <div class="product-price">
-            <span *ngIf="product.option.discount"
-                  class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
-            <span class="new-price">{{ product.option.price | currency }}
+            <span [ngClass]="{'last-price': product.option.discount}"
+                  class="new-price me-1">{{ product.option.price | currency }}</span>
+            <span *ngIf="product.option.discount" class="new-price">{{ product.option.offerPrice | currency }}
               <span class="ms-1" *ngIf="product.option.discount">({{ product.option.discount.value }}
                 %)</span></span>
           </div>
-          <span class="product-name">{{ product.option.title }}</span>
         </div>
       </div>
     </div>

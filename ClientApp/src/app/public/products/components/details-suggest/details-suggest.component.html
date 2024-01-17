@@ -10,9 +10,9 @@
           <div class="item-info">
             <span>{{ product.option.title }}</span>
             <div class="product-price">
-                    <span *ngIf="product.option.discount"
-                          class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
-              <span class="new-price">{{ product.option.price | currency }}
+              <span [ngClass]="{'last-price': product.option.discount}"
+                    class="new-price me-1">{{ product.option.price | currency }}</span>
+              <span *ngIf="product.option.discount" class="new-price">{{ product.option.offerPrice | currency }}
                 <span *ngIf="product.option.discount" class="ms-1">({{ product.option.discount.value }}
                   %)</span></span>
             </div>

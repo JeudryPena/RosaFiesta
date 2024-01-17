@@ -24,12 +24,6 @@
   .item-info
     padding: 8px 16px
 
-    .product-name
-      margin-bottom: 0
-      @include a.text(600, a.$text-lg)
-      opacity: 0.9
-      transition: all .2s
-
   &.product-item-sm
     display: grid
     grid-template-columns: 80px auto
@@ -62,10 +56,10 @@
     align-content: center
 
   .last-price
-    color: a.$red
+    color: a.$red !important
     text-decoration: line-through
     font-size: a.$text-base
-    font-style: italic
+    font-style: italic !important
     margin-right: 1px
 
   .new-price
@@ -83,6 +77,15 @@
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
+
+.product-name
+  margin-bottom: 0
+  @include a.text(600, a.$text-lg)
+  opacity: 0.9
+  transition: all .2s
+  display: flex
+  align-items: center
+  gap: 4px
 
 .product-selector
   text-align: center

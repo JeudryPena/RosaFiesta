@@ -70,12 +70,20 @@ internal sealed class CartService : ICartService
 
 	public async Task AdjustCartItemQuantityAsync(string userId, Guid detailId, Guid optionId, int adjust, CancellationToken cancellationToken = default)
 	{
-		PurchaseDetailOptions optionDetail = await _repositoryManager.PurchaseDetailRepository.GetOptionDetailAsync(optionId, detailId, cancellationToken);
+		PurchaseDetailEntity purchase = await _repositoryManager.PurchaseDetailRepository.GetByIdAsync(detailId, cancellationToken);
+		PurchaseDetailOptions optionDetail = purchase.PurchaseOptions.FirstOrDefault(po => po.OptionId == optionId) ?? throw new Exception("Option not found");
 		OptionEntity option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionId, cancellationToken);
-		if (option.QuantityAvailable < optionDetail.Quantity + adjust)
+		if (option.QuantityAvailable < adjust)
 			throw new Exception("Not enough quantity available");
-		optionDetail.Quantity = adjust;
-		_repositoryManager.CartRepository.UpdateDetailOption(optionDetail);
+		if (adjust == 0)
+			purchase.PurchaseOptions.Remove(optionDetail);
+		else
+			optionDetail.Quantity = adjust;
+		
+		if(purchase.PurchaseOptions.Count == 0)
+			_repositoryManager.CartRepository.RemoveDetail(purchase);
+		else 
+			_repositoryManager.CartRepository.UpdateCartItem(purchase);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
@@ -85,9 +93,11 @@ internal sealed class CartService : ICartService
 		CartEntity cart = await _repositoryManager.CartRepository.GetByIdAsync(userId, cancellationToken);
 		if (cart.Details == null) throw new Exception("Cart is empty");
 		PurchaseDetailEntity cartItem = cart.Details.FirstOrDefault(cp => cp.Id == detailId) ?? throw new Exception("Product not found in cart");
-		if (optionId != null || cartItem.PurchaseOptions.LongCount() != 1)
+		if (optionId != null || cartItem.PurchaseOptions.Count() != 1)
 		{
 			cartItem.PurchaseOptions.Remove(cartItem.PurchaseOptions.FirstOrDefault(po => po.OptionId == optionId) ?? throw new Exception("Option not found in cart"));
+			if (!cartItem.PurchaseOptions.Any())
+				cart.Details.Remove(cartItem);
 		}
 		else
 			cart.Details.Remove(cartItem);
@@ -138,5 +148,20 @@ internal sealed class CartService : ICartService
 	{
 		int count = await _repositoryManager.CartRepository.GetCartDetailsCountAsync(userId, cancellationToken);
 		return count;
+	}
+
+	/// <summary>
+	/// Verify if the item is in stock
+	/// </summary>
+	/// <param name="detailId"></param>
+	/// <param name="optionId"></param>
+	/// <param name="quantity"></param>
+	/// <param name="cancellationToken"></param>
+	public async Task VerifyItemStockAsync(Guid detailId, Guid optionId, int quantity,
+		CancellationToken cancellationToken)
+	{
+		OptionEntity option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionId, cancellationToken);
+		if (option.QuantityAvailable < quantity)
+			throw new Exception($"No hay suficiente cantidad disponible, solo {option.QuantityAvailable} disponibles en el Stock");
 	}
 }

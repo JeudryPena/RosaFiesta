@@ -5,7 +5,9 @@
   <div class="details-top-r">
     <div class="details-product">
       <div class="details-header">
-        <p class="condition">{{ product.option.condition }}</p>
+        @if (product.isService) {
+          <p class="is-service">Servicio</p>
+        }
         <p class="details-title">{{ product.option.title }}</p>
       </div>
 
@@ -32,17 +34,17 @@
             <span class="data-row-h">Precio:</span>
             <span class="data-row-d">
               <div class="product-price">
-                    <span *ngIf="product.option.discount"
-                          class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
-                    <span class="new-price">{{ product.option.price | currency }}
+                    <span [ngClass]="{'last-price': product.option.discount}"
+                          class="new-price me-1">{{ product.option.price | currency }}</span>
+                    <span *ngIf="product.option.discount" class="new-price">{{ product.option.offerPrice | currency }}
                       <span *ngIf="product.option.discount" class="ms-1">({{ product.option.discount.value }}
                         %)</span></span>
                   </div>
             </span>
           </div>
           <div class="data-row">
-            <span class="data-row-h">Garantía: </span>
-            <span class="data-row-d">{{ product.warranty?.name }}</span>
+            <span class="data-row-h">Condición: </span>
+            <span class="data-row-d">{{ product.option.condition }}</span>
           </div>
         </div>
         <div class="data-row-wrapper">
@@ -76,9 +78,9 @@
                     <div class="option-item-text">{{ option.title }}</div>
 
                     <div class="product-price product-price-sm">
-                      <span *ngIf="product.option.discount"
-                            class="last-price me-1">{{ product.option.offerPrice | currency }}</span>
-                      <span class="new-price">{{ product.option.price | currency }}
+                      <span [ngClass]="{'last-price': product.option.discount}"
+                            class="new-price">{{ product.option.price | currency }}</span>
+                      <span *ngIf="product.option.discount" class="new-price">{{ product.option.offerPrice | currency }}
                         <span class="ms-1" *ngIf="product.option.discount">({{ product.option.discount.value }}
                           %)</span></span>
                     </div>

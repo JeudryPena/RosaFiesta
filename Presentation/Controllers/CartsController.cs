@@ -43,6 +43,22 @@ public class CartsController : ControllerBase
 		return Ok(cart);
 	}
 
+	/// <summary>
+	/// Verify if the item is in stock
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <param name="detailId"></param>
+	/// <param name="optionId"></param>
+	/// <param name="quantity"></param>
+	/// <returns></returns>
+	[HttpGet]
+	[Route("detail/{detailId:guid}/option/{optionId:guid}/quantity/{quantity:int}")]
+	public async Task<IActionResult> VerifyItemStockAsync(CancellationToken cancellationToken, Guid detailId, Guid optionId, int quantity)
+	{
+		await _serviceManager.CartService.VerifyItemStockAsync(detailId, optionId, quantity, cancellationToken);
+		return Ok();
+	}
+
 	[HttpPut("addProductToCart")]
 	public async Task<IActionResult> AddProductToCartAsync([FromBody] PurchaseDetailDto cartItem, CancellationToken cancellationToken)
 	{

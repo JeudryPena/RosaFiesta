@@ -19,7 +19,6 @@ import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
 export class NavbarComponent implements OnInit {
   @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
   userName: string;
-  viewCart: boolean = false;
   @Input() main;
   categories$: Observable<CategoryPreviewResponse[]> = new Observable<CategoryPreviewResponse[]>();
 

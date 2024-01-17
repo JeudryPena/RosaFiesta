@@ -6,6 +6,7 @@ import {Subject} from "rxjs";
   providedIn: 'root'
 })
 export class SwalService {
+  swalOptions: SweetAlertOptions = {icon: 'info'}
 
   private swalSource = new Subject<SweetAlertOptions>();
   swalEmitted = this.swalSource.asObservable();
@@ -58,6 +59,13 @@ export class SwalService {
     this.swalSource.complete();
     this.swalCloseSource.complete();
     this.swalConfirmSource.complete();
+  }
+
+  error() {
+    this.swalOptions.icon = 'error';
+    this.swalOptions.html = 'Favor de contactar con el administrador';
+    this.swalOptions.title = 'Hubo un error';
+    this.show(this.swalOptions);
   }
 }
 

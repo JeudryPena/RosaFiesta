@@ -38,6 +38,7 @@
     "material": "^0.7.9",
     "mathjs": "^11.8.0",
     "ngx-avatars": "^1.7.0",
+    "ngx-color-picker": "^16.0.0",
     "ngx-file-drop": "^15.0.0",
     "ngx-paypal": "^11.0.0",
     "ngx-sharebuttons": "^13.0.0",

@@ -51,4 +51,10 @@ internal sealed class CartRepository : ICartRepository
 			.SumAsync(cd => cd.PurchaseOptions.Sum(po => po.Quantity), cancellationToken);
 			return count;
 	}
+
+	public void RemoveDetailOption(PurchaseDetailOptions optionDetail)
+	=> _context.PurchaseDetailsOptions.Remove(optionDetail);
+
+	public void RemoveDetail(PurchaseDetailEntity purchase)
+	=> _context.PurchaseDetails.Remove(purchase);
 }

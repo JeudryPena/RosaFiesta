@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
@@ -17,8 +18,6 @@ public class AuthenticateController : ControllerBase
 {
 	private readonly IServiceManager _serviceManager;
 	private readonly IConfiguration _goolgeSettings;
-
-
 
 	public AuthenticateController(IServiceManager serviceManager, IConfiguration goolgeSettings)
 	{
@@ -55,6 +54,21 @@ public class AuthenticateController : ControllerBase
 			throw new Exception("User not found");
 		string userName = await _serviceManager.UserService.GetUserName(userId, cancellationToken);
 		return Ok(new { UserName = userName });
+	}
+	
+	[HttpGet("get-current-user")]
+	[Authorize]
+	public async Task<IActionResult> RetrieveCurrent(CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		UserResponse usersResponse = await _serviceManager.UserService.GetUserByIdAsync(
+			userId,
+			cancellationToken
+		);
+
+		return Ok(usersResponse);
 	}
 
 	[HttpPost("register")]

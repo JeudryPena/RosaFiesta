@@ -1,10 +1,12 @@
 @if (products$ | async; as products) {
-  <section class="sc-recommend">
-    <div class="c-container">
-      <div class="recommend-content">
-        <h3 class="title">Productos Recomendados</h3>
-        <app-product-cards [products]="products"></app-product-cards>
+  @if (products.length > 0) {
+    <section class="sc-recommend">
+      <div class="c-container">
+        <div class="recommend-content">
+          <h3 class="title">Productos Recomendados</h3>
+          <app-product-cards [products]="products"></app-product-cards>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  }
 }

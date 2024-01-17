@@ -58,6 +58,7 @@ import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share
 import {FilterRolesPipe} from "@core/shared/pipes/filter-roles.pipe";
 import {FilterOptionsPipe} from "@core/shared/pipes/filter-options.pipe";
 import {FilterProductsPipe} from "@core/shared/pipes/filter-products.pipe";
+import {ColorPickerModule} from "ngx-color-picker";
 
 const shareButtonsConfig: ShareButtonsConfig = {
   debug: true
@@ -127,7 +128,8 @@ const shareButtonsConfig: ShareButtonsConfig = {
     DatePipe,
     DecimalPipe,
     AvatarModule,
-    NgbTimepickerModule
+    NgbTimepickerModule,
+    ColorPickerModule
   ],
   exports: [
     TestComponent,
@@ -190,7 +192,8 @@ const shareButtonsConfig: ShareButtonsConfig = {
     FilterRolesPipe,
     FilterOptionsPipe,
     FilterProductsPipe,
-    NgbTimepickerModule
+    NgbTimepickerModule,
+    ColorPickerModule
   ],
   providers: [
     NgbRatingConfig,

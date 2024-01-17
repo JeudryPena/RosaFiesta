@@ -6,7 +6,7 @@
       <form [formGroup]="supplierForm" autocomplete="off">
         <h3 class="management-form-title">{{ title }}</h3>
         <div class=" management-input-container" isFocus>
-          <input formControlName="name" maxlength="50" minlength="3"
+          <input class="management-input" formControlName="name" maxlength="50" minlength="3"
                  required type="text"/>
           <label class="management-label">Nombre *</label>
           <span class="management-span">Nombre *</span>
@@ -14,14 +14,14 @@
           <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
         </div>
         <div class=" management-input-container" isFocus>
-          <input formControlName="email" maxlength="253"
+          <input class="management-input" formControlName="email" maxlength="253"
                  minlength="3" type="string"/>
           <label class="management-label">Email</label>
           <span class="management-span">Email</span>
           <h5 *ngIf="validate('email', 'minlength')">El email es<strong> muy corto</strong></h5>
         </div>
         <div class=" management-input-container" isFocus>
-          <input formControlName="phone" maxlength="50"
+          <input class="management-input" formControlName="phone" maxlength="50"
                  minlength="3" type="text"/>
           <label class="management-label">Teléfono</label>
           <span class="management-span">Teléfono</span>
@@ -29,7 +29,7 @@
         </div>
         @if (!read) {
           <mat-form-field appearance="fill" class="management-input-container" isFocus>
-            <input #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
+            <input class="management-input" #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
             <label class="management-label">Productos *</label>
             <span class="management-span">Productos *</span>
             <mat-autocomplete #moduleAutocomplete="matAutocomplete"
@@ -60,14 +60,14 @@
           </div>
         }
         <div class="management-input-container textarea" isFocus>
-                <textarea formControlName="description" maxlength="250"
+                <textarea class="management-input" formControlName="description" maxlength="250"
                           minlength="3" rows="3" type="text"></textarea>
           <label class="management-label">Descripción</label>
           <span class="management-span">Descripción</span>
           <h5 *ngIf="validate('description', 'minlength')">La Descripción es<strong> muy
             corta</strong></h5></div>
         <div class="management-input-container textarea" isFocus>
-                <textarea formControlName="address" maxlength="250" rows="3"
+                <textarea class="management-input" formControlName="address" maxlength="250" rows="3"
                           minlength="3" type="text"></textarea>
           <label class="management-label">Dirección</label>
           <span class="management-span">Dirección</span>
@@ -75,34 +75,34 @@
         </div>
         @if (read) {
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="createdAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="createdAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Creación</label>
             <span class="management-span">Fecha de Creación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="createdBy" readOnly type="text"/>
+            <input class="management-input" formControlName="createdBy" readOnly type="text"/>
             <label class="management-label">Creado por</label>
             <span class="management-span">Creado por</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="updatedAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="updatedAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Modificación</label>
             <span class="management-span">Fecha de Modificación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="updatedBy" readOnly type="text"/>
+            <input class="management-input" formControlName="updatedBy" readOnly type="text"/>
             <label class="management-label">Modificado por</label>
             <span class="management-span">Modificado por</span>
           </div>
         }
         <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
-          <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+          <input (click)="close()" class="btn btn-outline-light bi management-input" type="submit" value="Cerrar"/>
           <input (click)="AddSupplier(supplierForm.value)" *ngIf="read == false" [disabled]="!supplierForm.valid"
-                 class="btn submit"
+                 class="btn submit management-input"
                  type="submit" value="Crear"/>
         </div>
         <ng-template #updateP>

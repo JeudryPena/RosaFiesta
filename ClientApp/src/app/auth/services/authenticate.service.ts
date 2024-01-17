@@ -8,7 +8,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {config} from "@env/config.dev";
 import {ExternalAuthDto} from "@core/interfaces/Security/external-auth-dto";
 import {LoginResponse} from "@core/interfaces/Security/Response/loginResponse";
@@ -16,7 +16,7 @@ import {RegisterDto} from "@core/interfaces/Security/registerDto";
 import {CustomEncoder} from "@core/classes/custom-encoder";
 import {ResetPasswordDto} from "@core/interfaces/Security/resetPasswordDto";
 import {LogingDto} from "@core/interfaces/Security/logingDto";
-import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
+import {CurrentUserResponse, UserResponse} from "@core/interfaces/Security/Response/userResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -41,15 +41,22 @@ export class AuthenticateService {
     })
   }
 
+  changePromotionalPreference() {
+    return this.http.get(`${this.apiUrl}change-promotional-emails`);
+  }
+
+  getCurrentDetailUser(): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.apiUrl}get-current-user`);
+  }
+
   currentUser(): CurrentUserResponse {
     const token = localStorage.getItem("token");
     const decodedToken = this.jwtHelper.decodeToken(token!);
     const user: CurrentUserResponse = {
       id: decodedToken.nameid,
       userName: decodedToken.unique_name,
-      userRoles: []
+      role: decodedToken.role
     }
-    user.userRoles.push(decodedToken.role)
     return user;
   }
 
@@ -64,6 +71,7 @@ export class AuthenticateService {
       this.validateExternalAuth(externalAuth);
     })
   }
+
 
   public externalLoginx = (body: ExternalAuthDto) => {
     return this.http.post<LoginResponse>(`${this.apiUrl}external`, body);

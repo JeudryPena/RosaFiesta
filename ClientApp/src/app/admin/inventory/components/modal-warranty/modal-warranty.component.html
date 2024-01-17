@@ -6,7 +6,7 @@
       <form [formGroup]="warrantyForm" autocomplete="off">
         <h3 class="management-form-title">{{ title }}</h3>
         <div class=" management-input-container" isFocus>
-          <input formControlName="name" maxlength="50" minlength="3"
+          <input class="management-input" formControlName="name" maxlength="50" minlength="3"
                  required type="text"/>
           <label class="management-label">Nombre *</label>
           <span class="management-span">Nombre *</span>
@@ -15,7 +15,7 @@
         </div>
         @if (!read) {
           <mat-form-field appearance="fill" class="management-input-container" isFocus>
-            <input #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
+            <input class="management-input" #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
             <label class="management-label">Productos *</label>
             <span class="management-span">Productos *</span>
             <mat-autocomplete #moduleAutocomplete="matAutocomplete"
@@ -47,7 +47,7 @@
         }
         <div class="d-flex justify-content-between  management-input-container">
           <div class=" management-input-container m-0" isFocus>
-            <select class="text-decoration-none" formControlName="type"
+            <select class="text-decoration-none management-input" formControlName="type"
                     required type="number">
               <option hidden selected></option>
               <option value=1>Reembolso</option>
@@ -61,7 +61,7 @@
           </div>
 
           <div class=" management-input-container m-0" isFocus>
-            <input formControlName="period" required type="number"/>
+            <input class="management-input" formControlName="period" required type="number"/>
             <label class="management-label">Periodo *</label>
             <span class="management-span">Periodo *</span>
             <h5 *ngIf="validate('period', 'required')">El periodo es<strong> requerido</strong></h5>
@@ -70,7 +70,7 @@
         </div>
 
         <div class="textarea management-input-container" isFocus>
-        <textarea formControlName="description" maxlength="500"
+        <textarea class="management-input" formControlName="description" maxlength="500"
                   minlength="3" required rows="3" type="text"></textarea>
           <label class="management-label">Descripción *</label>
           <span class="management-span">Descripción *</span>
@@ -82,26 +82,26 @@
 
         @if (read) {
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="createdAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="createdAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Creación</label>
             <span class="management-span">Fecha de Creación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="createdBy" readOnly type="text"/>
+            <input class="management-input" formControlName="createdBy" readOnly type="text"/>
             <label class="management-label">Creado por</label>
             <span class="management-span">Creado por</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="updatedAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="updatedAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Modificación</label>
             <span class="management-span">Fecha de Modificación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="updatedBy" readOnly type="text"/>
+            <input class="management-input" formControlName="updatedBy" readOnly type="text"/>
             <label class="management-label">Modificado por</label>
             <span class="management-span">Modificado por</span>
           </div>

@@ -19,8 +19,9 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEnt
 			.HasForeignKey(option => option.ProductId)
 			.OnDelete(DeleteBehavior.Cascade);
 		builder.HasOne(product => product.Option)
-				.WithOne()
-				.HasForeignKey<ProductEntity>(product => product.OptionId);
+			.WithOne()
+			.HasForeignKey<ProductEntity>(product => product.OptionId)
+			.OnDelete(DeleteBehavior.Cascade);
 		builder.HasOne(product => product.Category)
 			.WithMany(category => category.Products)
 			.HasForeignKey(product => product.CategoryId);

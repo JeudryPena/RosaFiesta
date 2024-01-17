@@ -29,7 +29,7 @@ export class DetailsSuggestComponent implements OnInit {
   productDetail(id: string) {
     const data = {id: id};
     const productId = encrypt(JSON.stringify(data));
-    this.router.navigate([`/products/detail`], {queryParams: {productId}});
+    this.router.navigate([`/products/detail`], {queryParams: {productId}}).then((r) => window.location.reload());
   }
 
   async ngOnInit() {

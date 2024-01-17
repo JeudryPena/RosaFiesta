@@ -5,6 +5,7 @@ import {WarrantyResponse} from "@core/interfaces/Product/Response/warrantyRespon
 
 export interface ProductDetailResponse extends BaseResponse {
   id: string;
+  isService: boolean;
   categoryId: number | null;
   optionId: string | null;
   warranty: WarrantyResponse;

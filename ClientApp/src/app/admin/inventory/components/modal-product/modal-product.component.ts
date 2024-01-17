@@ -21,11 +21,12 @@ import {CategoriesListResponse} from "@core/interfaces/Product/category";
 @Component({
   selector: 'app-modal-product',
   templateUrl: './modal-product.component.html',
-  styleUrls: ['./modal-product.component.scss']
+  styleUrls: ['./modal-product.component.sass']
 })
 export class ModalProductComponent implements OnInit {
   updateOption = false;
   optionTitle = '';
+  color = '';
 
   @Input() read: boolean = false;
   @Input() update: boolean = false;
@@ -64,6 +65,10 @@ export class ModalProductComponent implements OnInit {
 
   }
 
+  displayModule(moduleName: CategoriesListResponse): string {
+    return moduleName.name;
+  }
+
   async ngOnInit() {
     if (!this.update && !this.read)
       this.onCreate();
@@ -97,8 +102,12 @@ export class ModalProductComponent implements OnInit {
     this.ReSelect()
     await this.RetrieveRelations();
     this.productForm$.next(this.fb.group({
-      code: [response.code],
-      isService: [response.isService],
+      code: [''],
+      options: [],
+      isService: [false],
+      categoryId: [''],
+      warrantyId: [''],
+      supplierId: ['']
     }));
   }
 
@@ -137,23 +146,24 @@ export class ModalProductComponent implements OnInit {
   }
 
   async ReadImages(images: any) {
+    let promises: any[] = [];
     for (const image of images) {
       let i = image.image;
       const file$ = this.filesService.getPhoto(i);
       let response: any = await lastValueFrom(file$);
       const fileName = i.split('\\').pop();
-      this.RetrieveFile(response, fileName);
+      promises.push(this.RetrieveFile(response, fileName));
     }
+    await Promise.all(promises);
     this.preview();
   }
 
-  RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
+  async RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
     if (data.body) {
 
       const downloadedFile = new Blob([data.body], {type: data.body.type});
 
       const file = new File([downloadedFile], fileName, {type: `${data.body.type}`});
-
       this.uploadFiles.push(file);
     }
   }
@@ -253,9 +263,11 @@ export class ModalProductComponent implements OnInit {
     this.optionForm = null;
   }
 
-  selectOption(index: number) {
+  async selectOption(index: number) {
     this.updateOption = true;
     this.optionTitle = 'Modificar Opción'
+    this.pictures = [];
+    this.uploadFiles = [];
     this.optionForm = new FormGroup({
       index: new FormControl(index),
       id: new FormControl(this.options[index].id),
@@ -271,7 +283,7 @@ export class ModalProductComponent implements OnInit {
     })
     this.imageFirst = this.options[index].imageIndex;
     if (this.update == true || this.read == true) {
-      this.ReadImages(this.options[index].images);
+      await this.ReadImages(this.options[index].images);
     } else {
       this.uploadFiles = this.options[index].images;
     }
@@ -281,9 +293,7 @@ export class ModalProductComponent implements OnInit {
   }
 
   preview() {
-    console.log(this.uploadFiles);
     this.uploadFiles.forEach(f => {
-      console.log(f);
       const reader = new FileReader();
       reader.readAsDataURL(f);
       reader.onload = () => {
@@ -422,5 +432,11 @@ export class ModalProductComponent implements OnInit {
         modalRef.componentInstance.status = Status.Failed;
       }
     });
+  }
+
+  colorChange($event: string) {
+    const withoutHash = $event.replace(/^[#]?/, "")
+    console.log(withoutHash);
+    this.optionForm.controls['color']?.setValue(withoutHash);
   }
 }

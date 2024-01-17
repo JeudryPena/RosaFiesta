@@ -126,7 +126,7 @@ internal sealed class ProductService : IProductService
 		CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetDetailAsync(id, optionId, cancellationToken);
-		product.OptionId = optionId;
+		product.Option = product.Options.FirstOrDefault(x => x.Id == optionId);
 		ProductDetailResponse productDetailResponse = product.Adapt<ProductDetailResponse>();
 		return productDetailResponse;
 	}

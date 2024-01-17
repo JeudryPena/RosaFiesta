@@ -6,38 +6,39 @@
       <form [formGroup]="productForm" autocomplete="off">
         <h3 class="management-form-title">{{ title }}</h3>
         <div class="management-input-container" isFocus>
-          <input formControlName="code" maxlength="500" minlength="3" type="text"/>
+          <input class="management-input" formControlName="code" maxlength="500" minlength="3" type="text"/>
           <label class="management-label">Código</label>
           <span class="management-span">Código</span>
           <h5 *ngIf="validate('code', 'minlength')">El Código es<strong> muy Corto</strong></h5>
         </div>
         <div class="form-check form-switch">
-          <input class="form-check-input" formControlName="isService" id="isService" role="switch" type="checkbox">
+          <input class="management-input" class="form-check-input" formControlName="isService" id="isService"
+                 role="switch" type="checkbox">
           <label class="form-check-label text-white" for="isService">Es Servicio</label>
         </div>
 
         @if (read) {
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="createdAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="createdAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Creación</label>
             <span class="management-span">Fecha de Creación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="createdBy" readOnly type="text"/>
+            <input class="management-input" formControlName="createdBy" readOnly type="text"/>
             <label class="management-label">Creado por</label>
             <span class="management-span">Creado por</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input
-              formControlName="updatedAt"
-              readOnly type="text"/>
+            <input class="management-input"
+                   formControlName="updatedAt"
+                   readOnly type="text"/>
             <label class="management-label">Fecha de Modificación</label>
             <span class="management-span">Fecha de Modificación</span>
           </div>
           <div class=" management-input-container" isFocus>
-            <input formControlName="updatedBy" readOnly type="text"/>
+            <input class="management-input" formControlName="updatedBy" readOnly type="text"/>
             <label class="management-label">Modificado por</label>
             <span class="management-span">Modificado por</span>
           </div>
@@ -46,7 +47,7 @@
         @if (!read) {
           <div class="management-input-container" isFocus>
             <div class="input-group flex-nowrap">
-              <input #optionsInput formControlName="options" type="text"/>
+              <input class="management-input" #optionsInput formControlName="options" type="text"/>
               <button (click)="addNewOption(optionsInput.value)" [disabled]="optionsInput.value.length < 3"
                       class="input-group-text btn btn-outline-light bi pe-2 ps-2">
                 <i class="fas fa-plus "></i>
@@ -85,20 +86,24 @@
           </div>
         }
         <mat-form-field appearance="fill" class="management-input-container" isFocus>
-          <input #categoryInput formControlName="categoryId" [matAutocomplete]="categoryAutocomplete" matInput
+          <input class="management-input" #categoryInput formControlName="categoryId"
+                 [matAutocomplete]="categoryAutocomplete" matInput
                  type="search"/>
           <label class="management-label">Categoría</label>
           <span class="management-span">Categoría</span>
-          <mat-autocomplete #categoryAutocomplete="matAutocomplete">
+          <mat-autocomplete (optionSelected)="onSelect($event.option.value, 'category')"
+                            #categoryAutocomplete="matAutocomplete"
+                            [displayWith]="displayModule">
             <mat-option *ngFor="let category of categories | filterRoles: categoryInput.value"
-                        (onSelectionChange)="onSelect(category, 'category')" [value]="category.name">
+                        [value]="category">
               {{ category.name }}
             </mat-option>
           </mat-autocomplete>
           <mat-icon class="caret-down-icon" matSuffix></mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" class="management-input-container" isFocus>
-          <input #warrantyInput formControlName="warrantyId" [matAutocomplete]="warrantyAutocomplete" matInput
+          <input class="management-input" #warrantyInput formControlName="warrantyId"
+                 [matAutocomplete]="warrantyAutocomplete" matInput
                  type="search"/>
           <label class="management-label">Garantía</label>
           <span class="management-span">Garantía</span>
@@ -111,7 +116,8 @@
           <mat-icon class="caret-down-icon" matSuffix></mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" class="management-input-container" isFocus>
-          <input #supplierInput formControlName="supplierId" [matAutocomplete]="supplierAutocomplete" matInput
+          <input class="management-input" #supplierInput formControlName="supplierId"
+                 [matAutocomplete]="supplierAutocomplete" matInput
                  type="search"/>
           <label class="management-label">Suplidor</label>
           <span class="management-span">Suplidor</span>
@@ -141,7 +147,7 @@
       <form [formGroup]="optionForm" autocomplete="off">
         <h3 class="management-form-title">{{ optionTitle }}</h3>
         <div class="management-input-container" isFocus>
-          <input formControlName="title" required type="text"/>
+          <input class="management-input" formControlName="title" required type="text"/>
           <label class="management-label">Título *</label>
           <span class="management-span">Título *</span>
           <h5 *ngIf="validateOption('title', 'required')">El Título es<strong> Requerido</strong>
@@ -154,8 +160,8 @@
                              [uploadFiles]="uploadFiles"></app-upload-images>
         </div>
         <div class="management-input-container textarea" isFocus>
-        <textarea formControlName="description" maxlength="1000" minlength="3" required
-                  type="text"></textarea>
+          <textarea class="management-input" formControlName="description" maxlength="1000" minlength="3" required
+                    type="text"></textarea>
           <label class="management-label">Descripción *</label>
           <span class="management-span">Descripción *</span>
           <h5 *ngIf="validateOption('description', 'required')">La Descripción
@@ -164,14 +170,14 @@
             Corta</strong></h5>
         </div>
         <div class="management-input-container" isFocus>
-          <input formControlName="price" required type="number"/>
+          <input class="management-input" formControlName="price" required type="number"/>
           <label class="management-label">Precio</label>
           <span class="management-span">Precio</span>
           <h5 *ngIf="validateOption('price', 'required')">El Precio es<strong> Requerido</strong>
           </h5>
         </div>
         <div class="management-input-container" isFocus>
-          <input formControlName="quantityAvailable" required type="number"/>
+          <input class="management-input" formControlName="quantityAvailable" required type="number"/>
           <label class="management-label">Cantidad Disponible *</label>
           <span class="management-span">Cantidad Disponible *</span>
           <h5 *ngIf="validateOption('quantityAvailable', 'required')">La Cantidad
@@ -182,7 +188,11 @@
             es<strong> muy Corta</strong></h5>
         </div>
         <div class="management-input-container" isFocus>
-          <input formControlName="color" maxlength="9" minlength="6" required type="text"/>
+          <input [cpPosition]="'top'" [(colorPicker)]="color" [style.background]="color"
+                 required [cpOKButton]="true"
+                 class="management-input management-input"
+                 [readonly]="true" [cpCancelButton]="true" (colorPickerSelect)="colorChange($event)"
+                 formControlName="color" type="text"/>
           <label class="management-label">Color *</label>
           <span class="management-span">Color *</span>
           <h5 *ngIf="validateOption('color', 'required')">El Color es<strong>
@@ -194,7 +204,8 @@
         <div class="row group">
           <div class="col">
             <div class="management-input-container" isFocus>
-              <select aria-label=".form-select-sm example" class="input form-select form-select-sm"
+              <select aria-label=".form-select-sm example"
+                      class="management-input input form-select form-select-sm"
                       formControlName="genderFor" required type="number">
                 <option selected=1 value=1>Varón</option>
                 <option value=2>Hembra</option>
@@ -206,7 +217,8 @@
           </div>
           <div class="col">
             <div class="management-input-container" isFocus>
-              <select aria-label=".form-select-sm example" class="input form-select form-select-sm"
+              <select aria-label=".form-select-sm example"
+                      class="management-input input form-select form-select-sm"
                       formControlName="condition" required type="number">
                 <option selected value=1>Nuevo</option>
                 <option value=2>Usado</option>
