@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TestComponent} from "@root/test/test.component";
+import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
 
 const adminModule = () => import('@admin/admin.module').then(x => x.AdminModule);
 const authModule = () => import('@auth/auth.module').then(x => x.AuthModule);
@@ -17,9 +17,8 @@ const routes: Routes = [
   {path: '', loadChildren: publicModule},
   {path: 'admin', loadChildren: adminModule},
   {path: 'auth', loadChildren: authModule},
-  {path: 'intranet', loadChildren: intranetModule},
+  {path: 'intranet', loadChildren: intranetModule, component: LayoutComponent},
   {path: 'shared', loadChildren: sharedModule},
-  {path: 'test', component: TestComponent},
   {path: '**', redirectTo: 'main-page'}
 ];
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence;
@@ -11,9 +12,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RosaFiestaContext))]
-    partial class RosaFiestaContextModelSnapshot : ModelSnapshot
+    [Migration("20240117225631_added warrantyId to purchaseDetailEntity")]
+    partial class addedwarrantyIdtopurchaseDetailEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -633,35 +636,35 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = new Guid("b22698b8-42a2-4115-9631-1c2d1e2ac5f7"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 12, 120, DateTimeKind.Unspecified).AddTicks(169), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 971, DateTimeKind.Unspecified).AddTicks(8786), new TimeSpan(0, -4, 0, 0, 0)),
                             IsDeleted = false,
                             UserId = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7"
                         },
                         new
                         {
                             Id = new Guid("7d9b7113-a8f8-4035-99a7-a20dd400f6a3"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 12, 120, DateTimeKind.Unspecified).AddTicks(266), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 971, DateTimeKind.Unspecified).AddTicks(8885), new TimeSpan(0, -4, 0, 0, 0)),
                             IsDeleted = false,
                             UserId = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3"
                         },
                         new
                         {
                             Id = new Guid("2301d884-221a-4e7d-b509-0113dcc043e1"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 12, 120, DateTimeKind.Unspecified).AddTicks(269), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 971, DateTimeKind.Unspecified).AddTicks(8891), new TimeSpan(0, -4, 0, 0, 0)),
                             IsDeleted = false,
                             UserId = "2301d884-221a-4e7d-b509-0113dcc043e1"
                         },
                         new
                         {
                             Id = new Guid("2301d884-221a-4e7d-b509-0113dcc043e2"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 12, 120, DateTimeKind.Unspecified).AddTicks(272), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 971, DateTimeKind.Unspecified).AddTicks(8895), new TimeSpan(0, -4, 0, 0, 0)),
                             IsDeleted = false,
                             UserId = "2301d884-221a-4e7d-b509-0113dcc043e2"
                         },
                         new
                         {
                             Id = new Guid("2301d884-221a-4e7d-b509-0113dcc043e3"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 12, 120, DateTimeKind.Unspecified).AddTicks(275), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 971, DateTimeKind.Unspecified).AddTicks(8933), new TimeSpan(0, -4, 0, 0, 0)),
                             IsDeleted = false,
                             UserId = "2301d884-221a-4e7d-b509-0113dcc043e3"
                         });
@@ -1008,17 +1011,17 @@ namespace Persistence.Migrations
                             Id = "b22698b8-42a2-4115-9631-1c2d1e2ac5f7",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 1),
-                            ConcurrencyStamp = "55f5de52-b895-4229-b300-e43bdc6e1e33",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 11, 770, DateTimeKind.Unspecified).AddTicks(5915), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "b9179bb2-8b05-416a-b0e2-219e22238f06",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 380, DateTimeKind.Unspecified).AddTicks(6867), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "ROSALBA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG5IcfE4s6qQ4WEr/RmuzZTacn93i4TD3Iwg4QyU4ukhq+q7zhwuw6CIdST7NWfkZg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMiG/2LKFANzUQl9eFdPLKnZTiQJVNAOT3+FMwU0ZgTeeGZVpOGyaT+UgbdtuvmsxA==",
                             PromotionalMails = false,
-                            SecurityStamp = "8ad5bae6-e211-4f08-90a0-9efc07b57c8a",
+                            SecurityStamp = "83528602-a529-4389-8604-e53a0cb79281",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba"
                         },
@@ -1027,17 +1030,17 @@ namespace Persistence.Migrations
                             Id = "7d9b7113-a8f8-4035-99a7-a20dd400f6a3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 2),
-                            ConcurrencyStamp = "ee65e090-9ec8-408f-8adc-598cd649bac6",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 11, 770, DateTimeKind.Unspecified).AddTicks(6151), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "da58fd4a-4395-4d40-ae72-fc2604592fdd",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 380, DateTimeKind.Unspecified).AddTicks(7124), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosanny@gmail.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSANNY@GMAIL.COM",
                             NormalizedUserName = "ROSANNY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL18w8zwFHLjxdM1MN/hx3a62CZCU58r/q0KSRfibljXYQ4mBoiGPj7MeJ5nmwz5NA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGKgYFG0gW5t0wPIfiF3yxbpUCl9YbQTWCyoroItIvleDAQTMPOpWX83QO1VSr7oXg==",
                             PromotionalMails = false,
-                            SecurityStamp = "5bb45d6f-b9df-44d6-818b-46d368cc64c2",
+                            SecurityStamp = "aac1b247-ed13-4651-adbd-abe9f51386f6",
                             TwoFactorEnabled = false,
                             UserName = "Rosanny"
                         },
@@ -1046,17 +1049,17 @@ namespace Persistence.Migrations
                             Id = "2301d884-221a-4e7d-b509-0113dcc043e1",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 3),
-                            ConcurrencyStamp = "97c1f44a-9837-48c1-b130-cecb41ed6484",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 11, 770, DateTimeKind.Unspecified).AddTicks(6195), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "88719ba4-c701-46ad-abce-1cf00c21a820",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 380, DateTimeKind.Unspecified).AddTicks(7170), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosalbapp@gmail.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSALBAPP@GMAIL.COM",
                             NormalizedUserName = "ROSALBA2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHMBA39wnBp05ZPE4EqWRpl3jtVRGyBvFWASDo006rK1J9r8BfvBCUIOtKFJZDgJMA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGHbFCdLSCE8eIuyiWBlD1uc2gw15LvgF8j8Q3TYqKmVs8NKqcVfqyi09V/KxvHI5Q==",
                             PromotionalMails = false,
-                            SecurityStamp = "38f34e4f-8aa1-4761-b357-baa92014ac90",
+                            SecurityStamp = "1e920086-7862-4362-b173-219be6686757",
                             TwoFactorEnabled = false,
                             UserName = "Rosalba2"
                         },
@@ -1065,17 +1068,17 @@ namespace Persistence.Migrations
                             Id = "2301d884-221a-4e7d-b509-0113dcc043e2",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 4),
-                            ConcurrencyStamp = "0c4d7a4e-da09-41ac-ab91-1c9dfb530d71",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 11, 770, DateTimeKind.Unspecified).AddTicks(6209), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "31599845-a143-49c9-a51a-08c9a0e556d4",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 380, DateTimeKind.Unspecified).AddTicks(7185), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "jendrypp@gmail.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JENDRYPP@GMAIL.COM",
                             NormalizedUserName = "JENDRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOSkysjJGqr09zl5vb6X0Ddj9pMGdRc2zND96Tb6n3cU25S6yLI+rMXyB27iUF1b1Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMPzldc0xaoi+h/I4IxvZkqMJaYxF9pvjFt9m6mMICKYA9WSs1NnI2DiD0QmTlrs8g==",
                             PromotionalMails = false,
-                            SecurityStamp = "75f8601d-e67e-44b8-a201-93dadaa6ab13",
+                            SecurityStamp = "6a89e702-42df-4669-afec-2d425b186b25",
                             TwoFactorEnabled = false,
                             UserName = "Jendry"
                         },
@@ -1084,17 +1087,17 @@ namespace Persistence.Migrations
                             Id = "2301d884-221a-4e7d-b509-0113dcc043e3",
                             AccessFailedCount = 0,
                             BirthDate = new DateOnly(1999, 1, 5),
-                            ConcurrencyStamp = "f601f8ec-182f-4051-85c3-5f5818324e80",
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 20, 15, 11, 770, DateTimeKind.Unspecified).AddTicks(6224), new TimeSpan(0, -4, 0, 0, 0)),
+                            ConcurrencyStamp = "48f1431d-50f4-41c4-9c88-85a42445f90c",
+                            CreatedAt = new DateTimeOffset(new DateTime(2024, 1, 17, 18, 56, 30, 380, DateTimeKind.Unspecified).AddTicks(7202), new TimeSpan(0, -4, 0, 0, 0)),
                             Email = "rosmerypp@gmail.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROSMERYPP@GMAIL.COM",
                             NormalizedUserName = "ROSMERY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOmsnswy3EO7FyjWmp5iIwNef8OVmt0X1CtlEPEPDBaYfe96SQbszmVdUjb38/nlBw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEISw1ArZNH/hi8fHyKBPQIVQDvbHXGwJrz4Qhc+OpddD+AL7MGR8yEZrDF6ROrfTfQ==",
                             PromotionalMails = false,
-                            SecurityStamp = "2e0753fc-a5a5-40b0-8e24-a30e22221b8b",
+                            SecurityStamp = "3213c788-ad68-4130-8629-79e98c18d416",
                             TwoFactorEnabled = false,
                             UserName = "Rosmery"
                         });
@@ -1319,13 +1322,11 @@ namespace Persistence.Migrations
                         .WithMany("QuoteItems")
                         .HasForeignKey("QuoteId");
 
-                    b.HasOne("Domain.Entities.Product.WarrantyEntity", "Warranty")
-                        .WithMany()
+                    b.HasOne("Domain.Entities.Product.WarrantyEntity", null)
+                        .WithMany("PurchaseDetails")
                         .HasForeignKey("WarrantyId");
 
                     b.Navigation("Cart");
-
-                    b.Navigation("Warranty");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product.UserInteract.PurchaseDetailOptions", b =>
@@ -1337,7 +1338,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Product.UserInteract.PurchaseDetailEntity", null)
                         .WithMany("PurchaseOptions")
                         .HasForeignKey("DetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Product.OptionEntity", "Option")
@@ -1533,6 +1534,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Product.WarrantyEntity", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("PurchaseDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.Security.RoleEntity", b =>

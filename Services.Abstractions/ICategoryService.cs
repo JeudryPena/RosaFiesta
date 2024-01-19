@@ -14,4 +14,5 @@ public interface ICategoryService
 	Task<CategoryManagementResponse> GetManagementByIdAsync(int categoryId, CancellationToken cancellationToken = default);
 	Task<IEnumerable<CategoryManagementResponse>> GetAllCategoriesManagementAsync(CancellationToken cancellationToken = default);
 	Task<IEnumerable<CategoriesListResponse>> GetAllCategoriesListAsync(CancellationToken cancellationToken = default);
+	Task<string> GetCategoryNameByProductIdAsync(Guid productId, CancellationToken cancellationToken);
 }

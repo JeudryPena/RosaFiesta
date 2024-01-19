@@ -1,62 +1,230 @@
-<div class="m-4">
-  <div class="pb-4 text-center">
-    <h2>Formulario de Pago</h2>
-  </div>
+@if (paginatedAddresses$ | async; as addresses) {
+  <div class="page-wrapper">
+    <div class="purchase-page">
+      <div class="top-main">
+        <div class="c-container">
+          <div class="top-main-content">
+            <div class="purchase-title">
+              <h2>Formulario de Pago</h2>
+            </div>
+            <div class="purchase">
+              <mat-stepper [linear]="true"
+                           class="purchase-stepper-container"
+                           [orientation]="(stepperOrientation | async)!">
+                <mat-step [stepControl]="firstStepForm" label="Dirección de Envío">
+                  <form [formGroup]="firstStepForm">
+                    <mat-card class="w-100 mt-3">
+                      <mat-card-header>
+                        <mat-card-title-group>
+                          <mat-card-title>
+                            Elige tu dirección de envío para este pedido
+                          </mat-card-title>
+                        </mat-card-title-group>
+                      </mat-card-header>
+                      <mat-card-content>
+                        <div class="row g-3 mb-4 mt-3">
+                          <div class="col-sm-8">
+                            <div class="input-group" role="group">
+                              <input class="form-control input" (keyup)="applyFilter($event)"
+                                     id="typeahead-focus" placeholder="Buscar de mis direcciones de envio"
+                                     required type="search"/>
+                              <div class="input-group-text">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 d-inline-flex align-items-center">
+                            <caption class="me-3 caption">/</caption>
+                            <button class="h-100" type="button" (click)="createAddress()" mat-raised-button>Crear Nueva
+                              Dirección
+                            </button>
+                          </div>
+                        </div>
 
-  <div class="row g-5">
-    <div class="col-md-5 col-lg-4 order-md-last">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-primary">Tu carrito</span>
-        <span class="badge bg-primary rounded-pill">3</span>
-      </h4>
-      <ul class="list-group mb-3">
-        <li class="list-group-item d-flex justify-content-between lh-sm">
-          <div>
-            <h6 class="my-0">Nombre de Producto</h6>
-            <small class="text-body-secondary">Brief description</small>
-          </div>
-          <span class="text-body-secondary">$12</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between">
-          <span>Total (RD$)</span>
-          <strong>$20</strong>
-        </li>
-      </ul>
-    </div>
-    <div class="col-md-7 col-lg-8">
-      <h4 class="mb-3">Dirección de Envío</h4>
-      <form [formGroup]="purchaseForm">
-        <div class="row g-3 mb-4 mt-3">
-          <div class="col-sm-9">
-            <div class="input-group" role="group">
-              <input #categoryIdInput [(ngModel)]="addressSelected" class="form-control input" formControlName="categoryId"
-                     id="typeahead-focus" placeholder="Elegir de mis métodos de pago"
-                     required type="search"/>
-              <div class="input-group-text">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                      </mat-card-content>
+                      <mat-card-footer>
+                        <mat-selection-list (selectionChange)="selectAddress($event.source._value)"
+                                            [multiple]="false">
+                          <mat-divider></mat-divider>
+                          @for (address of addresses; track address) {
+                            <span class="d-flex">
+                              <button mat-icon-button [matMenuTriggerFor]="menu"
+                                      aria-label="Example icon-button with a menu">
+                                <mat-icon>more_vert</mat-icon>
+                              </button>
+                              <mat-menu #menu="matMenu">
+                                <button (click)="viewAddress(address.id)" class="d-flex align-items-center"
+                                        mat-menu-item>
+                                  <mat-icon class="view-icon"></mat-icon>
+                                  <span>Consultar</span>
+                                </button>
+                                <button (click)="updateAddress(address.id)" mat-menu-item>
+                                  <mat-icon class="edit-icon"></mat-icon>
+                                  <span>Editar</span>
+                                </button>
+                                <button [disabled]="address.id === firstStepForm.get('addressSelected')?.value"
+                                        (click)="deleteAddress(address.id)" mat-menu-item>
+                                  <mat-icon class="delete-icon"></mat-icon>
+                                  <span>Eliminar</span>
+                                </button>
+                              </mat-menu>
+                              <mat-list-option [value]="address.id">{{ address.title }}</mat-list-option>
+                            </span>
+                            <mat-divider></mat-divider>
+                          }
+                        </mat-selection-list>
+                      </mat-card-footer>
+                      <mat-card-actions class="d-flex justify-content-end p-3">
+                        <button (click)="completeAddressStep()" mat-raised-button color="primary" matStepperNext
+                                [disabled]="!firstStepForm.valid">
+                          Siguiente
+                        </button>
+                      </mat-card-actions>
+                    </mat-card>
+                  </form>
+                </mat-step>
+                <mat-step [stepControl]="secondStepForm" label="Confirmar Detalles">
+                  <form [formGroup]="firstStepForm">
+                    <mat-card class="w-100 mt-3">
+                      <mat-card-header>
+                        <mat-card-title-group>
+                          <mat-card-title>
+                            Verifica los detalles de tu pedido
+                          </mat-card-title>
+                        </mat-card-title-group>
+                      </mat-card-header>
+                      <mat-card-content class="p-3">
+                        <div class="purchase-cart-container">
+                          <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-primary">Tu carrito</span>
+                            <span class="badge bg-primary rounded-pill">{{ this.totalItems }}</span>
+                          </h4>
+                          <ul class="list-group mb-3">
+                            @for (detail of this.details; track detail) {
+                              @for (detailOption of detail.purchaseOptions; track detailOption) {
+                                <li class="list-group-item d-flex justify-content-between lh-sm">
+                                  <div class="row w-100">
+                                    <div class="col-auto px-0">
+                                      <img alt="" class="rounded-2 purchase-item-image"
+                                           src="{{detailOption.option.image | imgPath}}">
+                                    </div>
+                                    <div class="col gap-2">
+                                      <h6 class="purchase-costs-title">{{ detailOption.option.title }}</h6>
+                                      <div class="purchase-costs">
+                                        <span class="purchase-cost-title">Precio: </span>
+                                        <div class="product-price">
+                                        <span [ngClass]="{'last-price': detailOption.option.offerPrice}"
+                                              class="new-price me-1">{{ detailOption.option.price | currency }}</span>
+                                          <span *ngIf="detailOption.option.offerPrice"
+                                                class="new-price">{{ detailOption.option.offerPrice | currency }}
+                                            <span class="ms-1"
+                                                  *ngIf="detailOption.option.offerPrice">({{ detailOption.option.discountValue }}
+                                              %)</span></span>
+                                        </div>
+                                      </div>
+                                      <div class="purchase-costs">
+                                        <span class="purchase-cost-title">Cantidad:</span>
+                                        <span class="purchase-cost-value">{{ detailOption.quantity }}</span>
+                                      </div>
+                                    </div>
+                                    <div class="col-auto">
+                                      <div class="purchase-costs-details">
+                                        <p class="stock-status">
+                                          <span><i class="fas fa-check"></i></span> {{ detail.warranty?.name }}
+                                        </p>
+                                        <div class="purchase-costs">
+                                          <span class="purchase-cost-title">Total de cantidad: </span>
+                                          <span
+                                            class="purchase-cost-value">{{ detailOption.quantity * (detailOption.option.offerPrice ? detailOption.option.offerPrice : detailOption.option.price) | currency }}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              }
+                            }
+                            <li class="list-group-item d-flex justify-content-end gap-3 ">
+                              <span class="text-primary purchase-costs-total-price">Total de todo:</span>
+                              <span
+                                class="text-primary purchase-costs-total-price-value">{{ totalPrice | currency }}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </mat-card-content>
+                      <mat-card-actions class="d-flex justify-content-between p-3">
+                        <button mat-raised-button matStepperPrevious color="warn">Volver atras</button>
+                        <button mat-raised-button color="primary" [disabled]="!secondStepForm.valid" matStepperNext>
+                          Siguiente
+                        </button>
+                      </mat-card-actions>
+                    </mat-card>
+                  </form>
+                </mat-step>
+                <mat-step [stepControl]="thirdStepForm" label="Realizar Pago">
+                  <mat-card>
+                    <mat-card-header>
+                      <mat-card-title-group>
+                        <mat-card-title>
+                          Pagar con PayPal o Tarjeta de Crédito
+                        </mat-card-title>
+                        <mat-card-subtitle>
+                          Al enviar tu metodo de pago se realiza la transacción
+                        </mat-card-subtitle>
+                      </mat-card-title-group>
+                    </mat-card-header>
+                    <mat-card-content class="pt-5">
+                      @if (payPalConfig$ | async; as payPalConfig) {
+                        <ngx-paypal [config]="payPalConfig">
+                        </ngx-paypal>
+                      }
+                    </mat-card-content>
+                    <mat-card-actions class="p-3">
+                      <button mat-raised-button matStepperPrevious color="warn">Volver atras</button>
+                    </mat-card-actions>
+                  </mat-card>
+                </mat-step>
+              </mat-stepper>
+              <div class="purchase-confirm-container">
+                <h4 class="d-flex justify-content-start align-items-center mb-3">
+                  <span class="text-primary">Confirmación del Pedido</span>
+                </h4>
+                <p class="purchase-confirm-text">
+                  Al realizar este pedido, <a class="a-link">aceptas los terminos, privacidad y condiciones de uso</a>
+                  de Rosa Fiesta.
+                </p>
+                <mat-card>
+                  <mat-card-header>
+                    <mat-card-title>
+                      Costo total del pedido
+                    </mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content class="pt-4">
+                    <div class="purchase-cost-container">
+                      <div class="purchase-costs">
+                        <span class="purchase-cost-title">Productos:</span>
+                        <span class="purchase-cost-value">{{ totalPrice | currency }}</span>
+                      </div>
+                      <div class="purchase-costs">
+                        <span class="purchase-cost-title">Envio:</span>
+                        <span class="purchase-cost-value">{{ sendPrice | currency }}</span>
+                      </div>
+                      <!--                      <div class="purchase-costs">-->
+                      <!--                        <span class="purchase-cost-title">Impuestos:</span>-->
+                      <!--                        <span class="purchase-cost-value">{{}}</span>-->
+                      <!--                      </div>-->
+                      <div class="purchase-costs-total justify-content-end">
+                        <span class="purchase-cost-title text-primary">Total:</span>
+                        <span
+                          class="purchase-cost-value text-primary">{{ totalPrice + this.sendPrice | currency }}</span>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
               </div>
             </div>
           </div>
-          <div class="col-sm-3 d-inline-flex">
-            <caption class="me-3 caption">/</caption>
-            <button (click)="createAddress()" class="btn btn-primary w-100" ngbAutofocus type="button">
-              Crear Nueva Dirección
-            </button>
-          </div>
         </div>
-      </form>
-      <hr class="my-4">
-
-      <h4 class="mb-3">Método de Pago</h4>
-
-      <ngx-paypal [config]="payPalConfig">
-
-      </ngx-paypal>
-
-      <hr class="my-4">
-      <div class="justify-content-center">
-        <button class="btn btn-primary btn-lg" type="submit">Confirmar Compra</button>
       </div>
     </div>
   </div>
-</div>
+}

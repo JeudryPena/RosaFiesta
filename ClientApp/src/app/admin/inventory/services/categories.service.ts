@@ -127,6 +127,10 @@ export class CategoriesService {
     });
   }
 
+  getCategoryNameByProductId(productId: string): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}product/${productId}/name`);
+  }
+
   AddCategory(category: CategoryDto) {
     return this.http.post(this.apiUrl, category);
   }

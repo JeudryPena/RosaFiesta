@@ -31,7 +31,7 @@ public class AddressController : ControllerBase
 		return Ok(addresses);
 	}
 
-	[HttpGet("myAddresses/{addressId:guid}")]
+	[HttpGet("{addressId:guid}")]
 	public async Task<IActionResult> RetrieveByIdAsync(Guid addressId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -41,7 +41,7 @@ public class AddressController : ControllerBase
 		return Ok(address);
 	}
 
-	[HttpPost("myAddresses")]
+	[HttpPost]
 	public async Task<IActionResult> PersistAsync(AddressDto addressDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -51,7 +51,7 @@ public class AddressController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPut("myAddresses/{addressId:guid}")]
+	[HttpPut("{addressId:guid}")]
 	public async Task<IActionResult> UpdateAsync(Guid addressId, AddressDto addressDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

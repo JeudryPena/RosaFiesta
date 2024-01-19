@@ -18,6 +18,9 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDatetimepickerModule, MatNativeDatetimeModule} from "@mat-datetimepicker/core";
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatListModule} from "@angular/material/list";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatStepperModule} from "@angular/material/stepper";
 
 @NgModule({
   declarations: [],
@@ -42,7 +45,10 @@ import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@ang
     MatDatetimepickerModule,
     MatNativeDatetimeModule,
     MatSlideToggleModule,
-    _MatSlideToggleRequiredValidatorModule
+    _MatSlideToggleRequiredValidatorModule,
+    MatListModule,
+    MatMenuModule,
+    MatStepperModule
   ],
   exports: [
     MatTabsModule,
@@ -64,7 +70,10 @@ import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@ang
     MatDatetimepickerModule,
     MatNativeDatetimeModule,
     MatSlideToggleModule,
-    _MatSlideToggleRequiredValidatorModule
+    _MatSlideToggleRequiredValidatorModule,
+    MatListModule,
+    MatMenuModule,
+    MatStepperModule
   ],
   providers: [
     MatNativeDatetimeModule

@@ -30,10 +30,10 @@ internal sealed class CartRepository : ICartRepository
 	public void UpdateCart(CartEntity cart)
 	=> _context.Carts.Update(cart);
 
-	public async Task<ICollection<PurchaseDetailEntity>> GetCartDetails(string userId, CancellationToken cancellationToken = default)
+	public async Task<IList<PurchaseDetailEntity>> GetCartDetails(string userId, CancellationToken cancellationToken = default)
 	{
 		CartEntity? cart = await _context.Carts
-			.Include(c => c.Details).FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
+			.Include(c => c.Details).ThenInclude(x => x.PurchaseOptions).FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
 		if (cart == null)
 			throw new Exception("Cart not found");
 		if (cart.Details == null || cart.Details.Count == 0)

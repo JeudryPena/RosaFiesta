@@ -11,4 +11,6 @@ public interface IWarrantyRepository
 	Task<IEnumerable<WarrantyEntity>> GetAllManagementAsync(CancellationToken cancellationToken = default);
 	void Insert(WarrantyEntity warrantyEntity);
 	void Update(WarrantyEntity warranty);
+	Task<WarrantyEntity> GetPreviewAsync(Guid warrantyId, CancellationToken cancellationToken);
+	Task<Guid?> GetPreviewByProductIdAsync(Guid warrantyId, CancellationToken cancellationToken);
 }

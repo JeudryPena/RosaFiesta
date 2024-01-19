@@ -10,4 +10,5 @@ public interface ICategoryRepository
 	void Update(CategoryEntity category);
 	Task<CategoryEntity> GetManagementById(int categoryId, CancellationToken cancellationToken = default);
 	void Delete(CategoryEntity category);
+	Task<string> GetCategoryNameByProductIdAsync(Guid productId, CancellationToken cancellationToken);
 }

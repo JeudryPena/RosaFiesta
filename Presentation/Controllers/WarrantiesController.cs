@@ -52,6 +52,22 @@ public class WarrantiesController : ControllerBase
 		WarrantyResponse warranty = await _serviceManager.WarrantyService.GetWarrantyAsync(warrantyId, cancellationToken);
 		return Ok(warranty);
 	}
+	
+	[HttpGet("{warrantyId:guid}/preview")]
+	public async Task<IActionResult> GetWarrantyPreview(Guid warrantyId, CancellationToken cancellationToken)
+	{
+		WarrantyPreviewResponse warranty = await _serviceManager.WarrantyService.GetWarrantyPreviewAsync(warrantyId, cancellationToken);
+		return Ok(warranty);
+	}
+	
+	[HttpGet("product/{productId:guid}/preview")]
+	public async Task<IActionResult> GetWarrantyPreviewByProductIdAsync(Guid warrantyId, CancellationToken cancellationToken)
+	{
+		Guid? id = await _serviceManager.WarrantyService.GetWarrantyPreviewByProductIdAsync(warrantyId, cancellationToken);
+		if(id == null)
+			return NotFound();
+		return Ok(id);
+	}
 
 	[HttpPost]
 	[Authorize(Roles = "Admin")]

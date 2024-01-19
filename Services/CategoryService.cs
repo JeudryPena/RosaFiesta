@@ -25,6 +25,12 @@ internal sealed class CategoryService : ICategoryService
 		return categoryResponse;
 	}
 
+	public async Task<string> GetCategoryNameByProductIdAsync(Guid productId, CancellationToken cancellationToken)
+	{
+		string name = await _repositoryManager.CategoryRepository.GetCategoryNameByProductIdAsync(productId, cancellationToken);
+		return name;
+	}
+
 	public async Task<IEnumerable<CategoryManagementResponse>> GetAllCategoriesManagementAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<CategoryEntity> categories = await _repositoryManager.CategoryRepository.GetAllAsync(cancellationToken);

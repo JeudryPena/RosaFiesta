@@ -1,5 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
@@ -16,8 +16,6 @@ import {BehaviorSubject, lastValueFrom} from "rxjs";
   styleUrls: ['./modal-user.component.sass']
 })
 export class ModalUserComponent {
-
-  @ViewChild('moduleInput') moduleInput!: ElementRef;
 
   @Input() read: boolean = false;
   @Input() update: boolean = false;

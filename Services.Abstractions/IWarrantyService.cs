@@ -14,4 +14,6 @@ public interface IWarrantyService
 	Task<IEnumerable<WarrantiesManagementResponse>> GetAllForManagementAsync(CancellationToken cancellationToken = default);
 	Task DeleteWarrantyProductAsync(string userId, Guid warrantyId, Guid productId, CancellationToken cancellationToken = default);
 	Task<IEnumerable<WarrantiesListResponse>> GetAllForAdminAsync(CancellationToken cancellationToken = default);
+	Task<WarrantyPreviewResponse> GetWarrantyPreviewAsync(Guid warrantyId, CancellationToken cancellationToken);
+	Task<Guid?> GetWarrantyPreviewByProductIdAsync(Guid warrantyId, CancellationToken cancellationToken);
 }

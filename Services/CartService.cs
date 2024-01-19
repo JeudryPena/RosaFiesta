@@ -126,6 +126,7 @@ internal sealed class CartService : ICartService
 			detail = new PurchaseDetailEntity();
 			detail.PurchaseOptions ??= new List<PurchaseDetailOptions>();
 			detail.ProductId = cartItem.ProductId;
+			detail.WarrantyId = cartItem.WarrantyId;
 			detail.PurchaseOptions.Add(new PurchaseDetailOptions
 			{
 				OptionId = cartItem.OptionId,

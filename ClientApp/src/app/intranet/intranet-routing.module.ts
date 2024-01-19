@@ -1,6 +1,5 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
 import {SettingsComponent} from "./settings/settings.component";
 import {MyOrdersComponent} from "./my-orders/my-orders.component";
 import {AuthGuard} from "@core/guards/auth.guard";
@@ -10,14 +9,10 @@ const purchaseModule = () => import('./purchase/purchase.module').then(x => x.Pu
 
 
 const routes: Routes = [
-  {
-    path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
-      {path: 'settings', component: SettingsComponent},
-      {path: 'my-orders', component: MyOrdersComponent},
-      {path: 'wishlist', component: WishListsComponent}
-    ]
-  },
-  {path: 'purchase', loadChildren: purchaseModule, canActivate: [AuthGuard], component: LayoutComponent}
+  {path: 'purchase', loadChildren: purchaseModule, canActivate: [AuthGuard]},
+  {path: 'settings', component: SettingsComponent},
+  {path: 'my-orders', component: MyOrdersComponent},
+  {path: 'wishlist', component: WishListsComponent}
 ];
 
 export const intranetRouter: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

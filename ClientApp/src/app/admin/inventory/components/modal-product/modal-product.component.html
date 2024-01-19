@@ -86,8 +86,8 @@
           </div>
         }
         <mat-form-field appearance="fill" class="management-input-container" isFocus>
-          <input class="management-input" #categoryInput formControlName="categoryId"
-                 [matAutocomplete]="categoryAutocomplete" matInput
+          <input class="management-input" #categoryInput [value]="categoryForm?.name"
+                 [matAutocomplete]="categoryAutocomplete" matInput (input)="verifyNullCategory(categoryInput.value)"
                  type="search"/>
           <label class="management-label">Categoría</label>
           <span class="management-span">Categoría</span>
@@ -102,28 +102,31 @@
           <mat-icon class="caret-down-icon" matSuffix></mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" class="management-input-container" isFocus>
-          <input class="management-input" #warrantyInput formControlName="warrantyId"
-                 [matAutocomplete]="warrantyAutocomplete" matInput
+          <input class="management-input" #warrantyInput [value]="warrantyForm?.name"
+                 [matAutocomplete]="warrantyAutocomplete" matInput (input)="verifyNullWarranty(warrantyInput.value)"
                  type="search"/>
           <label class="management-label">Garantía</label>
           <span class="management-span">Garantía</span>
-          <mat-autocomplete #warrantyAutocomplete="matAutocomplete">
+          <mat-autocomplete #warrantyAutocomplete="matAutocomplete"
+                            (optionSelected)="onSelect($event.option.value, 'warranty')" [displayWith]="displayModule">
             <mat-option *ngFor="let warranty of warranties | filterRoles: warrantyInput.value"
-                        (onSelectionChange)="onSelect(warranty, 'warranty')" [value]="warranty.name">
+                        [value]="warranty">
               {{ warranty.name }}
             </mat-option>
           </mat-autocomplete>
           <mat-icon class="caret-down-icon" matSuffix></mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" class="management-input-container" isFocus>
-          <input class="management-input" #supplierInput formControlName="supplierId"
-                 [matAutocomplete]="supplierAutocomplete" matInput
+          <input class="management-input" #supplierInput
+                 [matAutocomplete]="supplierAutocomplete" matInput (input)="verifyNullSupplier(supplierInput.value)"
+                 [value]="supplierForm?.name"
                  type="search"/>
           <label class="management-label">Suplidor</label>
           <span class="management-span">Suplidor</span>
-          <mat-autocomplete #supplierAutocomplete="matAutocomplete">
+          <mat-autocomplete (optionSelected)="onSelect($event.option.value, 'supplier')" [displayWith]="displayModule"
+                            #supplierAutocomplete="matAutocomplete">
             <mat-option *ngFor="let supplier of suppliers | filterRoles: supplierInput.value"
-                        [value]="supplier.name" (onSelectionChange)="onSelect(supplier, 'supplier')">
+                        [value]="supplier">
               {{ supplier.name }}
             </mat-option>
           </mat-autocomplete>

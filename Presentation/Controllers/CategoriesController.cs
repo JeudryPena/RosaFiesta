@@ -57,6 +57,13 @@ public class CategoriesController : ControllerBase
 		CategoryResponse products = await _serviceManager.CategoryService.GetByIdAsync(categoryId, cancellationToken);
 		return Ok(products);
 	}
+	
+	[HttpGet("product/{productId:guid}/name")]
+	public async Task<IActionResult> GetCategoryNameByProductIdAsync(Guid productId, CancellationToken cancellationToken)
+	{
+		string categoryName = await _serviceManager.CategoryService.GetCategoryNameByProductIdAsync(productId, cancellationToken);
+		return Ok(categoryName);
+	}
 
 	[HttpGet("{categoryId}/category-management")]
 	[Authorize(Roles = "Admin")]

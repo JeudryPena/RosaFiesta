@@ -42,4 +42,10 @@ public class CategoryRepository : ICategoryRepository
 
 	public void Delete(CategoryEntity category)
 	=> _rosaFiestaContext.Categories.Remove(category);
+
+	public async Task<string> GetCategoryNameByProductIdAsync(Guid productId, CancellationToken cancellationToken)
+	{
+		string name = await _rosaFiestaContext.Categories.Include(x => x.Products).FirstOrDefaultAsync(x => x.Products.Any(x => x.Id == productId), cancellationToken).ContinueWith( x => x.Result.Name, cancellationToken);
+		return name;
+	}
 }

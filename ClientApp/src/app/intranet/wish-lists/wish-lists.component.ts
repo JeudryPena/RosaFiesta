@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {WisheslistService} from "@intranet/services/wisheslist.service";
-import {catchError, map, Observable} from "rxjs";
+import {catchError, lastValueFrom, map, Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {DiscountsService} from "@admin/inventory/services/discounts.service";
 import {ReviewsService} from "@intranet/services/reviews.service";
@@ -9,6 +9,7 @@ import {WishListProductsResponse} from "@core/interfaces/Product/UserInteract/Re
 import {FormControl, FormGroup} from "@angular/forms";
 import {PurchaseDetailDto} from "@core/interfaces/Product/UserInteract/purchaseDetailDto";
 import {CartsService} from "@intranet/services/carts.service";
+import {WarrantiesService} from "@admin/inventory/services/warranties.service";
 
 @Component({
   selector: 'app-wish-lists',
@@ -25,7 +26,8 @@ export class WishListsComponent {
     private readonly router: Router,
     private readonly reviewService: ReviewsService,
     private readonly discountService: DiscountsService,
-    private readonly cartService: CartsService
+    private readonly cartService: CartsService,
+    private readonly warrantyService: WarrantiesService
   ) {
 
   }
@@ -37,13 +39,16 @@ export class WishListsComponent {
     this.retrieveProducts();
   }
 
-  AddToCart(cartFormValue: any, productId: string, optionId: string) {
+  async AddToCart(cartFormValue: any, productId: string, optionId: string) {
     const cart = {...cartFormValue};
 
+    const warrantResponse = this.warrantyService.GetWarrantyByProductId(productId);
+    const warrantId = await lastValueFrom(warrantResponse);
     const cartDto: PurchaseDetailDto = {
       productId: productId,
       quantity: cart.quantity,
-      optionId: optionId
+      optionId: optionId,
+      warrantyId: warrantId
     }
     this.cartService.AddProductToCart(cartDto).subscribe({
       next: () => {

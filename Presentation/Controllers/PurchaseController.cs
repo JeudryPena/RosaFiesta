@@ -72,13 +72,13 @@ public class PurchaseController : ControllerBase
 		return Ok(purchaseDetail);
 	}
 
-	[HttpPost("payMethod/{payMethodId:guid}/Address/{addressId:guid}/Purchase")]
-	public async Task<IActionResult> Purchase(Guid payMethodId, [FromBody] CancellationToken cancellationToken, Guid addressId)
+	[HttpGet("address/{addressId:guid}/purchase")]
+	public async Task<IActionResult> Purchase(CancellationToken cancellationToken, Guid addressId)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, payMethodId, addressId, cancellationToken);
+		OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, addressId, cancellationToken);
 		return Ok(cart);
 	}
 
@@ -93,7 +93,7 @@ public class PurchaseController : ControllerBase
 		return Ok(purchaseDetailEntity);
 	}
 
-	[HttpPut("{orderId:guid}/purchases/{detailId:guid}/return")]
+	[HttpGet("{orderId:guid}/purchases/{detailId:guid}/return")]
 	public async Task<IActionResult> ReturnOrder(Guid orderId, Guid detailId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

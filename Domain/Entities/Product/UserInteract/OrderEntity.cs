@@ -7,11 +7,11 @@ namespace Domain.Entities.Product.UserInteract;
 
 public class OrderEntity : BaseEntity, IAutoUpdate
 {
-	public Guid Id { get; set; }
+	public Guid Id { get; set; } = Guid.NewGuid();
 	public string? UserId { get; set; }
 	public UserEntity? User { get; set; }
 	public OrderStatusType Status { get; set; }
-	public ICollection<PurchaseDetailEntity>? Details { get; set; }
+	public IList<PurchaseDetailEntity>? Details { get; set; }
 	public Guid AddressId { get; set; }
 	public AddressEntity? Address { get; set; }
 	[Range(0.01, 9999.99)]

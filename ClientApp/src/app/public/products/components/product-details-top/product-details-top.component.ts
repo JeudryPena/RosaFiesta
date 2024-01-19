@@ -40,7 +40,8 @@ export class ProductDetailsTopComponent implements OnInit {
     const cartDto: PurchaseDetailDto = {
       productId: this.product.id,
       quantity: cart.quantity,
-      optionId: this.product.optionId
+      optionId: this.product.optionId,
+      warrantyId: this.product.warranty.id
     }
 
     this.cartService.AddProductToCart(cartDto).subscribe({
@@ -108,7 +109,8 @@ export class ProductDetailsTopComponent implements OnInit {
     const cartDto: PurchaseDetailDto = {
       productId: this.product.id,
       quantity: cart.quantity,
-      optionId: this.product.optionId
+      optionId: this.product.optionId,
+      warrantyId: this.product.warranty.id
     }
 
     this.cartService.AddProductToCart(cartDto).subscribe({

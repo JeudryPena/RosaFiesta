@@ -32,6 +32,21 @@ internal sealed class WarrantyRepository : IWarrantyRepository
 
 	public void Insert(WarrantyEntity warrantyEntity) => _dbContext.Warranties.Add(warrantyEntity);
 	public void Update(WarrantyEntity warranty) => _dbContext.Warranties.Update(warranty);
+	public async Task<WarrantyEntity> GetPreviewAsync(Guid warrantyId, CancellationToken cancellationToken)
+	{
+		WarrantyEntity? warranty = await _dbContext.Warranties.FirstOrDefaultAsync(x => x.Id == warrantyId, cancellationToken);
+		if(warranty == null)
+			throw new NullReferenceException($"Warranty with id {warrantyId} not found");
+		return warranty;
+	}
+
+	public async Task<Guid?> GetPreviewByProductIdAsync(Guid warrantyId, CancellationToken cancellationToken)
+	{
+		Guid? id = await _dbContext.Products.Include(x => x.Warranty)
+			.FirstOrDefaultAsync(x => x.Id == warrantyId, cancellationToken).ContinueWith(x => x.Result.WarrantyId, cancellationToken);
+		return id;
+	}
+
 	public void Delete(WarrantyEntity warranty)
 	=> _dbContext.Warranties.Remove(warranty);
 }

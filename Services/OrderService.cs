@@ -41,16 +41,17 @@ internal sealed class OrderService : IOrderService
 		return orderResponse;
 	}
 
-	public async Task<OrderResponse> OrderPurchaseAsync(string userId, Guid payMethodId,
+	public async Task<OrderResponse> OrderPurchaseAsync(string userId, 
 		Guid addressId, CancellationToken cancellationToken = default)
 	{
 		OrderEntity order = new();
 		order.AddressId = addressId;
 		order.UserId = userId;
-		order.Details = await _repositoryManager.CartRepository.GetCartDetails(userId, cancellationToken);
-		foreach (PurchaseDetailEntity detail in order.Details)
+		order.Details = new List<PurchaseDetailEntity>();
+		IList<PurchaseDetailEntity> details = await _repositoryManager.CartRepository.GetCartDetails(userId, cancellationToken);
+		foreach (PurchaseDetailEntity detail in details.ToList())
 		{
-			foreach (var optionPurchase in detail.PurchaseOptions)
+			foreach (var optionPurchase in detail.PurchaseOptions.ToList())
 			{
 				var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionPurchase.OptionId, cancellationToken);
 				if (option.QuantityAvailable < optionPurchase.Quantity)
@@ -61,12 +62,15 @@ internal sealed class OrderService : IOrderService
 				DiscountEntity? discount = await _repositoryManager.DiscountRepository.GetOptionDiscountAsync(option.Id, cancellationToken);
 				if (discount != null)
 				{
-					double Value = optionPurchase.UnitPrice * discount.Value / 100;
-					optionPurchase.UnitPrice -= Value;
+					double value = option.Price * discount.Value / 100;
+					optionPurchase.UnitPrice -= value;
 				}
+				detail.PurchaseOptions.Add(optionPurchase);
 			}
 			detail.OrderId = order.Id;
 			detail.CartId = null;
+			detail.Cart = null;
+			order.Details.Add(detail);
 		}
 		_repositoryManager.OrderRepository.CreateAsync(order);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);

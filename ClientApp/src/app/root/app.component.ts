@@ -64,6 +64,31 @@ export class AppComponent implements OnInit, AfterViewInit {
     //this will be overwrite by this.swalService.swalConfirmEmitted$
   }
 
+  deleteConfirm(isConfirm: string, data: any, context: any): void {
+    //console.log('delete item', data);
+    // call the service to delete user
+    context.userManagementService.delete(data.id).subscribe((result: {
+      success: any;
+      message: string | HTMLElement | JQuery | undefined;
+    }) => {
+      this.swalOptions.showCancelButton = false; //just need to show the OK button
+      context.confirmItem.fnConfirm = null;//reset the confirm function to avoid call this function again and again.
+      this.swalService.setConfirm(context.confirmItem);
+      if (result.success) {
+        this.swalOptions.icon = 'success'; //set the icon
+        this.swalOptions.html = `The user ${data.name} has been deleted!`;
+      } else {
+        this.swalOptions.icon = 'error';
+        this.swalOptions.html = result.message;
+      }
+      this.swalService.show(this.swalOptions);
+      context.loadData();
+    }, (error: { error: any; }) => {
+      console.error(error);
+      this.swalService.showErrors(error.error, this.swalOptions);
+    });
+  }
+
   ngOnInit(): void {
     this.authService.sendAuthStateChangeNotification(true);
   }

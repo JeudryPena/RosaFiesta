@@ -50,6 +50,7 @@ export class ModalProductComponent implements OnInit {
   suppliers: SuppliersListResponse[] = [];
   uploadFiles: File[] = [];
   pictures: any[] = [];
+  protected readonly console = module
 
   constructor(
     private modalService: NgbModal,
@@ -89,6 +90,10 @@ export class ModalProductComponent implements OnInit {
       warrantyId: [''],
       supplierId: ['']
     }));
+  }
+
+  onConsole(input: any) {
+    console.log(input)
   }
 
   async onEdit() {
@@ -438,5 +443,23 @@ export class ModalProductComponent implements OnInit {
     const withoutHash = $event.replace(/^[#]?/, "")
     console.log(withoutHash);
     this.optionForm.controls['color']?.setValue(withoutHash);
+  }
+
+  verifyNullCategory(value: string) {
+    if (!(value === this.categoryForm?.name)) {
+      this.categoryForm = null;
+    }
+  }
+
+  verifyNullWarranty(value: string) {
+    if (!(value === this.warrantyForm?.name)) {
+      this.warrantyForm = null;
+    }
+  }
+
+  verifyNullSupplier(value: string) {
+    if (!(value === this.supplierForm?.name)) {
+      this.supplierForm = null;
+    }
   }
 }

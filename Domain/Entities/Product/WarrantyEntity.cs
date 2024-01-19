@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 
 namespace Domain.Entities.Product;
 

@@ -5,4 +5,5 @@ public class PurchaseDetailDto
 	public Guid ProductId { get; set; }
 	public int Quantity { get; set; }
 	public Guid OptionId { get; set; }
+	public Guid? WarrantyId { get; set; }
 }

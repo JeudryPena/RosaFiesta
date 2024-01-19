@@ -180,6 +180,7 @@ internal sealed class UserService : IUserService
 	{
 		AddressEntity address = addressDto.Adapt<AddressEntity>();
 		address.UserId = userId;
+		address.FullName = addressDto.Name + " " + addressDto.LastName;
 		_repositoryManager.UserRepository.CreateAddress(address);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}
@@ -188,6 +189,7 @@ internal sealed class UserService : IUserService
 	{
 		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
 		address = addressDto.Adapt(address);
+		address.FullName = addressDto.Name + " " + addressDto.LastName;
 		_repositoryManager.UserRepository.UpdateAddress(address);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}

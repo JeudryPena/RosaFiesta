@@ -10,6 +10,7 @@ import {WarrantyDto} from '../../../core/interfaces/Product/warrantyDto';
 import {SortColumn, SortDirection} from '@core/shared/directives/sortable.directive';
 import {SearchResult} from '../../../core/interfaces/search-result';
 import {State} from '../../../core/interfaces/state';
+import {WarrantyPreviewResponse} from "@core/interfaces/Product/Response/warrantyPreviewResponse";
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
@@ -120,6 +121,14 @@ export class WarrantiesService {
 
       this._search$.next();
     });
+  }
+
+  GetWarranty(warrantyId: string): Observable<WarrantyPreviewResponse> {
+    return this.http.get<WarrantyPreviewResponse>(`${this.apiUrl}${warrantyId}/preview`);
+  }
+
+  GetWarrantyByProductId(productId: string): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}${productId}product/${productId}/preview`);
   }
 
   AddWarranty(warranty: WarrantyDto) {

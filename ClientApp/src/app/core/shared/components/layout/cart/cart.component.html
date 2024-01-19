@@ -1,60 +1,76 @@
 <div class="container">
   <h1 class="title">Mi Carrito (<span>{{ totalItems }}</span>)</h1>
   <hr>
-  <div *ngFor="let product of this.details" class="cart-form">
-    <div class="row">
-      <div class="col-auto px-0">
-        <img alt="" class="rounded-2 image" src="{{product.option.image | imgPath}}">
-      </div>
-      <div class="col">
-        <div class="row fw-bold">
-          {{ product.option.title }}
-        </div>
+  @for (detail of details; track detail) {
+    @for (detailOption of detail.purchaseOptions; track detailOption) {
+      <div class="cart-form">
         <div class="row">
-          <span class="price">{{ product.option.price | currency }}</span>
-        </div>
-        <div class="row gap-2">
-          <button (click)="deleteItem(product.detailId, product.optionId)" class="btn btn-sm btn-thrash"><i
-            class="delete-icon"></i>
-            Remover
-          </button>
-          <button (click)="addToWishList(product.detailId, product.optionId)" class="btn btn-sm btn-save"><i
-            class="favorite-icon"></i>
-            Guardar para después
-          </button>
-        </div>
-      </div>
-      <div class="col-auto px-0">
-        <div class="row">
+          <div class="col-auto px-0">
+            <img alt="" class="rounded-2 image" src="{{detailOption.option.image | imgPath}}">
+          </div>
+          <div class="col d-flex flex-column gap-1">
+            <div class="row fw-bold">
+              {{ detailOption.option.title }}
+            </div>
+            <div class="row">
+              <div class="product-price product-price-sm ps-0">
+                                        <span [ngClass]="{'last-price': detailOption.option.offerPrice}"
+                                              class="new-price me-1">{{ detailOption.option.price | currency }}</span>
+                <span *ngIf="detailOption.option.offerPrice"
+                      class="new-price">{{ detailOption.option.offerPrice | currency }}
+                  <span class="ms-1"
+                        *ngIf="detailOption.option.offerPrice">({{ detailOption.option.discountValue }}
+                    %)</span></span>
+              </div>
+            </div>
+            <div class="row gap-2">
+              <button (click)="deleteItem(detailOption.detailId, detailOption.optionId)" class="btn btn-sm btn-thrash">
+                <i
+                  class="delete-icon"></i>
+                Remover
+              </button>
+              <button (click)="addToWishList(detailOption.detailId, detailOption.optionId)" class="btn btn-sm btn-save">
+                <i
+                  class="favorite-icon"></i>
+                Guardar para después
+              </button>
+            </div>
+          </div>
+          <div class="col-auto px-0">
+            <div class="row">
 
-          <input #p="ngbPopover"
-                 (click)="p.open(); product.newQuantity = product.quantity" [autoClose]="'outside'"
-                 [ngbPopover]="popover" [readonly]="true" [value]="product.quantity"
-                 class="btn btn-outline-secondary me-2" min="0" placement="bottom"
-                 popoverTitle="Ajustar Cantidad" step="1" triggers="manual" type="number">
-          <ng-template #popover>
-            <input [(ngModel)]="product.newQuantity" type="number">
-            <button (click)="OnQuantityChange(product.newQuantity, product.detailId, product.optionId); p.close()"
-                    class="btn btn-primary btn-sm">Guardar
-            </button>
-          </ng-template>
-        </div>
-        <div class="row">
+              <input #p="ngbPopover"
+                     (click)="p.open(); detailOption.newQuantity = detailOption.quantity" [autoClose]="'outside'"
+                     [ngbPopover]="popover" [readonly]="true" [value]="detailOption.quantity"
+                     class="btn btn-outline-secondary me-2" min="0" placement="bottom"
+                     popoverTitle="Ajustar Cantidad" step="1" triggers="manual" type="number">
+              <ng-template #popover>
+                <input [(ngModel)]="detailOption.newQuantity" type="number">
+                <button
+                  (click)="OnQuantityChange(detailOption.newQuantity, detailOption.detailId, detailOption.optionId); p.close()"
+                  class="btn btn-primary btn-sm">Guardar
+                </button>
+              </ng-template>
+            </div>
+            <div class="row">
           <span class="price total">
-            {{ product.quantity * product.option.price | currency }}
+            <span class="total-text">Total de cantidad:</span>
+            {{ detailOption.quantity * (detailOption.option.offerPrice ? detailOption.option.offerPrice : detailOption.option.price) | currency }}
           </span>
+            </div>
+          </div>
         </div>
+        <hr>
       </div>
-    </div>
-    <hr>
-  </div>
+    }
+  }
   <div class="row">
     <div class="col d-flex px-0 pb-1">
       <strong>Total: </strong>
       <p class="mb-0 ms-2">{{ totalPrice | currency }}</p>
     </div>
     <div class="btn-groups col-auto">
-      <button (click)="purchase()" class="btn buy-now-btn w-auto" type="button"><i
+      <button (click)="purchase()" [disabled]="totalItems == 0" class="btn buy-now-btn w-auto" type="button"><i
         class="wallet-icon"></i>Comprar
       </button>
       <button (click)="clearCart()" class="btn add-cart-btn" type="button"><i

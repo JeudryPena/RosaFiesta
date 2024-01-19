@@ -120,7 +120,7 @@
             </tfoot>
           </table>
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="management-pagination">
           <pre>Current page: {{ service.page }}</pre>
           <ngb-pagination [(page)]="service.page" [boundaryLinks]="true"
                           [collectionSize]="collectionSize" [collectionSize]="(total$ | async)!" [maxSize]="maxSize"

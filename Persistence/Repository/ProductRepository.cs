@@ -42,7 +42,7 @@ public class ProductRepository : IProductRepository
 
 	public async Task<ProductEntity> GetProductById(Guid productId, CancellationToken cancellationToken = default)
 	{
-		var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;

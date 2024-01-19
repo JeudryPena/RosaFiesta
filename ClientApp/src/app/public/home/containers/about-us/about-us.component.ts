@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'app-about-us',
@@ -10,14 +10,12 @@ export class AboutUsComponent implements OnInit, OnDestroy {
 
   myClass = document.getElementById('main');
 
-  constructor(
-
-  ) {
-
+  constructor() {
+    this.myClass.classList.add('about-us-main');
   }
 
   ngOnInit(): void {
-    this.myClass.classList.add('about-us-main');
+
   }
 
   ngOnDestroy() {

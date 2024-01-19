@@ -3,9 +3,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CartResponse} from '@core/interfaces/Product/Response/cartResponse';
-import {
-  PurchaseDetailOptionResponse
-} from '@core/interfaces/Product/UserInteract/Response/purchaseDetailOptionResponse';
 import {CartsService} from '@intranet/services/carts.service';
 import {ProductsService} from '@admin/inventory/services/products.service';
 import {SwalService} from "@core/shared/services/swal.service";
@@ -13,6 +10,7 @@ import {WisheslistService} from "@intranet/services/wisheslist.service";
 import {SweetAlertOptions} from "sweetalert2";
 import {lastValueFrom} from "rxjs";
 import {DiscountsService} from "@admin/inventory/services/discounts.service";
+import {PurchaseDetailResponse} from "@core/interfaces/Product/UserInteract/Response/purchaseDetailResponse";
 
 @Component({
   selector: 'app-cart',
@@ -22,7 +20,7 @@ import {DiscountsService} from "@admin/inventory/services/discounts.service";
 })
 export class CartComponent implements OnInit {
   viewCart: boolean = false;
-  details: PurchaseDetailOptionResponse[] = [];
+  details: PurchaseDetailResponse[] = [];
   totalPrice: number = 0;
 
   swalOptions: SweetAlertOptions = {icon: 'info'};
@@ -73,29 +71,26 @@ export class CartComponent implements OnInit {
     this.service.getMyCart().subscribe({
       next: async (response: CartResponse) => {
         if (response.details) {
-          this.viewCart = true;
           let totalItems = 0;
           let totalPrice = 0;
-          let details = [];
-          response.details.forEach(element => {
-            element.purchaseOptions.forEach(detail => {
-              details.push(detail);
+          for (let element of response.details) {
+            for (let detail of element.purchaseOptions) {
+              const discountResponse = this.discountService.GetOptionDiscount(detail.optionId);
+              const discount = await lastValueFrom(discountResponse);
               totalItems += detail.quantity;
-              totalPrice += detail.option.price * detail.quantity;
-            });
-          });
-          this.totalItems = totalItems;
-          this.totalPrice = totalPrice;
-          this.details = details;
-          for (let option of this.details) {
-            const discountResponse = this.discountService.GetOptionDiscount(option.optionId);
-            const discountPromise = await lastValueFrom(discountResponse);
-            if (discountPromise != null) {
-              option.discount = discountPromise;
-              option.offerPrice = option.unitPrice - (option.unitPrice * (discountPromise.value / 100));
+              if (discount != null) {
+                detail.option.offerPrice = detail.unitPrice - (detail.unitPrice * (discount.value / 100));
+                detail.option.discountValue = discount.value;
+                totalPrice += detail.option.offerPrice * detail.quantity;
+              } else {
+                totalPrice += detail.option.price * detail.quantity;
+              }
             }
           }
 
+          this.totalItems = totalItems;
+          this.totalPrice = totalPrice;
+          this.details = response.details;
           this.total.emit(this.totalItems);
         }
       }, error: (error) => {
