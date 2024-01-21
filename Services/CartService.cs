@@ -122,26 +122,28 @@ internal sealed class CartService : ICartService
 		PurchaseDetailEntity? detail = cart.Details.FirstOrDefault(cp => cp.ProductId == cartItem.ProductId);
 		if (detail == null)
 		{
-			double optionPrice = await _repositoryManager.ProductRepository.CartItemPrice(cartItem.OptionId, cartItem.Quantity, cancellationToken);
+			await _repositoryManager.ProductRepository.CheckOptionAviabilityAsync(cartItem.OptionId, cartItem.Quantity, cancellationToken);
 			detail = new PurchaseDetailEntity();
-			detail.PurchaseOptions ??= new List<PurchaseDetailOptions>();
+			detail.Id = Guid.NewGuid();
 			detail.ProductId = cartItem.ProductId;
 			detail.WarrantyId = cartItem.WarrantyId;
+			detail.CartId = cart.Id;
 			detail.PurchaseOptions.Add(new PurchaseDetailOptions
 			{
 				OptionId = cartItem.OptionId,
 				Quantity = cartItem.Quantity,
-				UnitPrice = optionPrice,
+				DetailId = detail.Id
 			});
 			cart.Details.Add(detail);
+			_repositoryManager.CartRepository.AddDetail(detail);
 		}
 		else
 		{
 			PurchaseDetailOptions optionDetail = detail.PurchaseOptions.FirstOrDefault(po => po.OptionId == cartItem.OptionId) ?? throw new Exception("Option not found");
 			optionDetail.Quantity += cartItem.Quantity;
 			await _repositoryManager.ProductRepository.CheckOptionAviabilityAsync(cartItem.OptionId, optionDetail.Quantity, cancellationToken);
+			_repositoryManager.CartRepository.UpdateCartItem(detail);
 		}
-		_repositoryManager.CartRepository.UpdateCartItem(detail);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 

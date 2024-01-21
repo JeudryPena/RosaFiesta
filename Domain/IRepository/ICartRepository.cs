@@ -12,4 +12,5 @@ public interface ICartRepository
 	Task<int> GetCartDetailsCountAsync(string userId, CancellationToken cancellationToken = default);
 	void RemoveDetailOption(PurchaseDetailOptions optionDetail);
 	void RemoveDetail(PurchaseDetailEntity purchase);
+	void AddDetail(PurchaseDetailEntity detail);
 }

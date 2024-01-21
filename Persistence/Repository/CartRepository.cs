@@ -57,4 +57,6 @@ internal sealed class CartRepository : ICartRepository
 
 	public void RemoveDetail(PurchaseDetailEntity purchase)
 	=> _context.PurchaseDetails.Remove(purchase);
+
+	public void AddDetail(PurchaseDetailEntity detail) => _context.PurchaseDetails.Add(detail);
 }
