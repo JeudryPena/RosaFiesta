@@ -18,7 +18,6 @@ export class BodyComponent {
   @Input() main;
 
   isSideNavCollapsed = false;
-  screenWidths = 0;
 
   onToggleSidenav(data: SidenavToggle): void {
     this.screenWidth = data.screenWidth;

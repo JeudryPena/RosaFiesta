@@ -35,7 +35,7 @@ public class AuthenticateController : ControllerBase
 		return Ok();
 	}
 	
-	[HttpGet("delete-user")]
+	[HttpDelete("delete-user")]
 	public async Task<IActionResult> DeleteMyUserAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -135,7 +135,7 @@ public class AuthenticateController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPost("change-password")]
+	[HttpPut("change-password")]
 	[Authorize]
 	public async Task<IActionResult> ChangePasswordAsync(changePasswordDto changePasswordDto,
 		CancellationToken cancellationToken)

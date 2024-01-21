@@ -18,7 +18,7 @@ internal sealed class OrderRepository : IOrderRepository
 
 	public async Task<OrderEntity> GetByIdAsync(Guid billId, CancellationToken cancellationToken = default)
 	{
-		OrderEntity? order = await _context.Orders.Include(x => x.Details).Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == billId, cancellationToken);
+		OrderEntity? order = await _context.Orders.Include(x => x.Details).FirstOrDefaultAsync(x => x.Id == billId, cancellationToken);
 		if (order == null)
 			throw new Exception("Order not found");
 		return order;

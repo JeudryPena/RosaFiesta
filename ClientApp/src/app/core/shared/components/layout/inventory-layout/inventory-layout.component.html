@@ -1,3 +1,8 @@
-<app-navbar></app-navbar>
-<app-sidenav [layout]="layout" Secciones="Secciones" (onToggleSidenav)="onToggleSidenav($event)"></app-sidenav>
-<app-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></app-body>
+<app-sidenav (onToggleSidenav)="onToggleSidenav($event)" [layout]="layout"></app-sidenav>
+<main [ngClass]="{'no-sidenav': main, 'body-trimmed': (collapsed && screenWidth > 768)}" id="main">
+
+  <div class="sidenav-container sidenav-container-admin">
+    <app-navbar (logout)="logout()" [main]="main" [user]="user"></app-navbar>
+    <router-outlet></router-outlet>
+  </div>
+</main>

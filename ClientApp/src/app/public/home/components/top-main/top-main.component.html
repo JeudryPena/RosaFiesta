@@ -6,7 +6,8 @@
           <span class="category-title">Buscar por Categoría</span>
           <hr>
           @for (category of categories; track category.id) {
-            <span class="category-item" (click)="selectCategory(category.id)">{{ category.name }}</span>
+            <span class="category-item" (click)="selectCategory(category.id)"><i
+              class="{{category.icon}} me-3"></i> {{ category.name }}</span>
           }
         </div>
         <div class="banner-slider">

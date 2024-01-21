@@ -12,11 +12,14 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
 		builder.HasKey(bill => bill.Id);
 		builder.Property(bill => bill.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);
-		builder.HasOne(x => x.Address)
-			.WithMany()
-			.HasForeignKey(x => x.AddressId);
 		builder.HasMany(order => order.Details)
 			.WithOne()
 			.HasForeignKey(detail => detail.OrderId);
+		builder.HasOne(order => order.Address)
+			.WithOne()
+			.HasForeignKey<OrderEntity>(order => order.AddressId);
+		builder.HasOne(order => order.Quote)
+			.WithOne()
+			.HasForeignKey<OrderEntity>(order => order.QuoteId);
 	}
 }

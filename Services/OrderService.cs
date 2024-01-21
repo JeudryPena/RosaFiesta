@@ -1,7 +1,9 @@
-﻿using Contracts.Model.Product.Response;
+﻿using Contracts.Model.Product;
+using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract.Response;
 
 using Domain.Entities.Product;
+using Domain.Entities.Product.Helpers;
 using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 
@@ -41,13 +43,14 @@ internal sealed class OrderService : IOrderService
 		return orderResponse;
 	}
 
-	public async Task<OrderResponse> OrderPurchaseAsync(string userId, 
-		Guid addressId, CancellationToken cancellationToken = default)
+	public async Task<OrderResponse> OrderPurchaseAsync(OrderDto orderDto, string userId,
+		CancellationToken cancellationToken = default)
 	{
 		OrderEntity order = new();
-		order.AddressId = addressId;
+		order = orderDto.Adapt<OrderEntity>();
 		order.UserId = userId;
 		order.Details = new List<PurchaseDetailEntity>();
+		
 		IList<PurchaseDetailEntity> details = await _repositoryManager.CartRepository.GetCartDetails(userId, cancellationToken);
 		foreach (PurchaseDetailEntity detail in details.ToList())
 		{
@@ -64,21 +67,23 @@ internal sealed class OrderService : IOrderService
 				{
 					double value = option.Price * discount.Value / 100;
 					optionPurchase.UnitPrice -= value;
+					optionPurchase.Discounted = value;
 				}
 				detail.PurchaseOptions.Add(optionPurchase);
 			}
-			detail.OrderId = order.Id;
 			detail.CartId = null;
 			detail.Cart = null;
 			order.Details.Add(detail);
 		}
+		order.Status = OrderStatusType.Pagado;
 		_repositoryManager.OrderRepository.CreateAsync(order);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		OrderResponse orderResponse = order.Adapt<OrderResponse>();
 		return orderResponse;
 	}
 
-	public async Task ReturnOrderDetailAsync(string userId, Guid purchaseNumber, Guid orderId, CancellationToken cancellationToken)
+	public async Task ReturnOrderDetailAsync(string userId, Guid purchaseNumber, Guid orderId,
+		CancellationToken cancellationToken)
 	{
 		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
 		if (order.UserId != userId)
@@ -99,5 +104,11 @@ internal sealed class OrderService : IOrderService
 			_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(optionPurchase);
 		}
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+	}
+
+	public async Task<OrderResponse> CreateOrderAsync(OrderDto orderDto, string userId,
+		CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
 	}
 }

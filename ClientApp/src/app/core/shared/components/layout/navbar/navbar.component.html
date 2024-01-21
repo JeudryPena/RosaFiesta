@@ -2,7 +2,7 @@
   <div class="header-content">
     <div class="header-top">
       <div class="site-brand">
-        <button (click)="ToggleCollapsed()" class="sidebar-open-btn--ms" type="button">
+        <button (click)="toggleSideNav.emit()" class="sidebar-open-btn--ms" type="button">
           <img alt="" class="d-icon" src="./assets/icons/menu-bars.svg"/>
         </button>
         <a class="site-brand-wrapper">
@@ -30,19 +30,40 @@
 
       <div class="hdr-navigation-bar--ms">
         <a class="hdr-nav-item--ms" href="#"><img alt="" class="h-icon" src="./assets/icons/shopping-cart.svg"/></a>
-        <a class="hdr-nav-item--ms" href="#"><img alt="" class="h-icon" src="./assets/icons/profile.svg"/></a>
+        @if (user) {
+          <div [ngbPopover]="dropdown" class="hdr-nav-icon" display="dynamic"
+               ngbDropdown placement="bottom-end">
+            <ngx-avatars [name]="user.userName" size="30"></ngx-avatars>
+            <ng-template #dropdown>
+              <div class="user-drop">
+                <a class="item" routerLink="/intranet/settings"><i
+                  class="settings-icon"></i>Configuración</a>
+                <a class="item" routerLink="/intranet/wishlist"><i
+                  class="favorite-icon"></i>Lista de
+                  deseos</a>
+                <a class="item" routerLink="/intranet/my-orders"><i
+                  class="orders-icon"></i>Mis
+                  ordenes</a>
+                <hr class="mt-2 mb-2">
+                <a (click)="logout.emit()" class="item"><i
+                  class="logout-icon"></i>Salir</a>
+              </div>
+            </ng-template>
+          </div>
+          <span class="hdr-nav-text">{{ user.userName }}</span>
+        }
       </div>
 
 
       <ul class="hdr-navigation-bar">
-        <li class="hdr-nav-item">
+        <li (click)="messageWhatsapp()" class="hdr-nav-item">
           <div class="hdr-nav-icon">
             <img alt="" class="h-icon" src="./assets/icons/message.svg"/>
           </div>
           <span class="hdr-nav-text">Escribenos</span>
         </li>
-        <ng-container *ngIf="isAuthenticated; else elseBlock">
-          <li class="hdr-nav-item">
+        <ng-container *ngIf="user; else elseBlock">
+          <li class="hdr-nav-item" routerLink="/intranet/my-orders">
             <div class="hdr-nav-icon">
               <img alt="" class="h-icon" src="./assets/icons/orders.svg"/>
             </div>
@@ -66,7 +87,7 @@
           <li class="hdr-nav-item">
             <div [ngbPopover]="dropdown" class="hdr-nav-icon" display="dynamic"
                  ngbDropdown placement="bottom-end">
-              <ngx-avatars [name]="userName" size="30"></ngx-avatars>
+              <ngx-avatars [name]="user.userName" size="30"></ngx-avatars>
               <ng-template #dropdown>
                 <div class="user-drop">
                   <a class="item" routerLink="/intranet/settings"><i
@@ -78,12 +99,12 @@
                     class="orders-icon"></i>Mis
                     ordenes</a>
                   <hr class="mt-2 mb-2">
-                  <a (click)="Logout()" class="item"><i
+                  <a (click)="logout.emit()" class="item"><i
                     class="logout-icon"></i>Salir</a>
                 </div>
               </ng-template>
             </div>
-            <span class="hdr-nav-text">{{ userName }}</span>
+            <span class="hdr-nav-text">{{ user.userName }}</span>
           </li>
         </ng-container>
         <ng-template #elseBlock>
@@ -133,25 +154,28 @@
                 <p class="m-0">Nosotros</p>
               </div>
             </a>
-            <div display="dynamic" ngbDropdown placement="bottom-end">
-              <a aria-labelledby="navbarDropdown3" class="nav-link" id="adminMenu"
-                 ngbDropdownToggle>
-                <div class="d-inline-flex">
-                  <i class="admin-icon d-icon"></i>
-                  <p class="m-0">Admin</p>
-                </div>
-              </a>
-              <div aria-labelledby="adminMenu" ngbDropdownMenu>
-                <div class="admin-dropdown">
-                  <a class="dropdown-item" routerLink="/admin/inventory"><i
-                    class="inventory-icon me-1"></i>Inventario</a>
-                  <a class="dropdown-item" routerLink="/admin/dashboard"><i
-                    class="dashboard-icon me-1"></i>Panel
-                    de
-                    Admin</a>
+            @if (user && user.role !== 'Client') {
+              <div display="dynamic" ngbDropdown placement="bottom-end">
+                <a aria-labelledby="navbarDropdown3" class="nav-link" id="adminMenu"
+                   ngbDropdownToggle>
+
+                  <div class="d-inline-flex">
+                    <i class="admin-icon d-icon"></i>
+                    <p class="m-0">Admin</p>
+                  </div>
+                </a>
+                <div aria-labelledby="adminMenu" ngbDropdownMenu>
+                  <div class="admin-dropdown">
+                    <a class="dropdown-item" routerLink="/admin/inventory"><i
+                      class="inventory-icon me-1"></i>Inventario</a>
+                    <a class="dropdown-item" routerLink="/admin/dashboard"><i
+                      class="dashboard-icon me-1"></i>Panel
+                      de
+                      Admin</a>
+                  </div>
                 </div>
               </div>
-            </div>
+            }
           </div>
         </div>
       </div>

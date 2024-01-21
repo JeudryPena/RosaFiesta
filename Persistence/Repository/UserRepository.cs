@@ -41,21 +41,6 @@ public class UserRepository : IUserRepository
 	public void Update(UserEntity user) =>
 	_context.Users.Update(user);
 
-	public async Task<IEnumerable<AddressEntity>> GetAddressesAsync(string userId, CancellationToken cancellationToken)
-	=> _context.Addresses.Where(x => x.UserId == userId).ToList();
-	
-
-	public async Task<AddressEntity> GetAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken)
-	{
-		AddressEntity? address = await _context.Addresses.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == addressId, cancellationToken);
-		if (address == null)
-			throw new NullReferenceException("Address not found");
-		return address;
-	}
-
-	public void CreateAddress(AddressEntity address) => _context.Addresses.Add(address);
-	public void UpdateAddress(AddressEntity address) => _context.Addresses.Update(address);
-
 	public async Task<string> GetUserName(string userId, CancellationToken cancellationToken)
 	{
 		string? userName = await _context.Users.Where(x => x.Id == userId).Select(x => x.UserName).FirstOrDefaultAsync(cancellationToken);
@@ -66,9 +51,6 @@ public class UserRepository : IUserRepository
 
 	public void Delete(UserEntity user)
 	=> _context.Users.Remove(user);
-
-	public void DeleteAddress(AddressEntity address)
-	=> _context.Addresses.Remove(address);
 
 	public async Task<IEnumerable<RoleEntity>> GetRolesList(CancellationToken cancellationToken = default) => await _context.Roles.ToListAsync(cancellationToken);
 }

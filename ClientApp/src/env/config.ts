@@ -7,4 +7,6 @@ export interface Config {
   googleClientId: string;
   facebookClientId: string;
   payPalClientId: string;
+  payPalSecret: string;
+  whatsappNumber: string;
 }

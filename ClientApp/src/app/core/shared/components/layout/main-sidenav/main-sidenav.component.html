@@ -1,0 +1,96 @@
+<nav class="sidenav bg-white">
+  <button class="sidenav-hide-btn" type="button">
+    <i (click)="toggleSideNav.emit()" class="close-icon"></i>
+  </button>
+  <div class="sidenav-wrapper">
+    <div class="sidenav-top">
+      @if (!user) {
+        <div class="avatar">
+          <i class="avatar-icon"></i>
+        </div>
+        <div class="links-group">
+          <button class="links-group-button" routerLink="/auth">Acceso</button>
+          <span>|</span>
+          <button class="links-group-button" routerLink="/auth/register">Registro</button>
+        </div>
+      } @else {
+        <div class="avatar">
+          <ngx-avatars [name]="user.userName" [size]="44"></ngx-avatars>
+        </div>
+        <div class="links-group">
+          <button class="links-group-button">{{ user.userName }}</button>
+          <span>|</span>
+          <button class="links-group-button">{{ user.role }}</button>
+        </div>
+      }
+    </div>
+
+    <div class="sidenav-main">
+      <a class="sidenav-item" routerLink="/main-page">
+        <span class="sidenav-item-icon"><i class="home-icon"></i></span>
+        <span class="sidenav-item-title">Home</span>
+      </a>
+      <a class="sidenav-item" routerLink="/products/search">
+        <span class="sidenav-item-icon"><i class="products-icon"></i></span>
+        <span class="sidenav-item-title">Procutos</span>
+      </a>
+      <a class="sidenav-item" routerLink="/products/search">
+        <span class="sidenav-item-icon"><i class="tag-icon"></i></span>
+        <span class="sidenav-item-title">Categorias</span>
+      </a>
+      <a class="sidenav-item" routerLink="/main-page/about-us">
+        <span class="sidenav-item-icon"><i class="info-circle-icon"></i></span>
+        <span class="sidenav-item-title">Nosotros</span>
+      </a>
+      <div class="sidenav-item-separator"></div>
+      @if (user) {
+        <a class="sidenav-item" routerLink="/main-page/about-us">
+          <span class="sidenav-item-icon"><i class="settings-icon"></i></span>
+          <span class="sidenav-item-title">Configuración</span>
+        </a>
+        <a class="sidenav-item" routerLink="/intranet/wishlist">
+          <span class="sidenav-item-icon"><i class="favorite-icon"></i></span>
+          <span class="sidenav-item-title">Lista de Deseos</span>
+        </a>
+        <a class="sidenav-item" routerLink="/intranet/my-orders">
+          <span class="sidenav-item-icon"><i class="orders-icon"></i></span>
+          <span class="sidenav-item-title">Mis Ordenes</span>
+        </a>
+        @if (user.role !== 'Client') {
+          <a class="sidenav-item" routerLink="/main-page/about-us">
+            <span class="sidenav-item-icon"><i class="inventory-icon"></i></span>
+            <span class="sidenav-item-title">Inventario</span>
+          </a>
+          <a class="sidenav-item" routerLink="/main-page/about-us">
+            <span class="sidenav-item-icon"><i class="dashboard-icon"></i></span>
+            <span class="sidenav-item-title">Dashboard</span>
+          </a>
+        }
+      }
+      <div class="sidenav-item-separator"></div>
+      <a class="sidenav-item" routerLink="">
+        <span class="sidenav-item-icon">
+          <i class="terms-icon"></i>
+        </span>
+        <span class="sidenav-item-title">Terminos y condiciones</span>
+      </a>
+      <a class="sidenav-item" routerLink="">
+        <span class="sidenav-item-icon">
+          <i class="policy-icon"></i>
+        </span>
+        <span class="sidenav-item-title">Politica de Privacidad</span>
+      </a>
+      @if (user) {
+        <div class="sidenav-item-separator"></div>
+        <a class="sidenav-item" (click)="logout.emit()">
+        <span class="sidenav-item-icon">
+          <i class="logout-icon"></i>
+        </span>
+          <span class="sidenav-item-title">Salir</span>
+
+        </a>
+      }
+    </div>
+
+  </div>
+</nav>

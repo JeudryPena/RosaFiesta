@@ -20,7 +20,7 @@
         <div class="information">
           <img alt="" class="icon" height="25" src="../../../assets/icons/phone.png" width="34"/>
           <p> O marcando al teléfono <a
-            href="tel:+18497505944">+1 849-750-5944</a></p>
+            href="tel:{{config.whatsappNumber}}">+1 (829) 942 4971</a></p>
         </div>
         <div class="social-media">
           <p class="section-title">Redes Sociales: </p>
@@ -33,7 +33,7 @@
               <i class="fab fa-instagram"></i>
               <a href="https://www.instagram.com/rosafiestard/" target="_blank">RosaFiestaRD</a>
             </div>
-            <div>
+            <div (click)="messageWhatsapp()">
               <i class="fab fa-whatsapp"></i>
               <a href="https://wa.link/xwr3nh" target="_blank">+1 (829) 942-4971</a>
             </div>

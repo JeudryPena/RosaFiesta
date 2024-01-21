@@ -15,7 +15,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 	public RosaFiestaContext(DbContextOptions<RosaFiestaContext> options)
 		: base(options)
 	{
-		Addresses = Set<AddressEntity>();
 		Products = Set<ProductEntity>();
 		OptionImages = Set<MultipleOptionImagesEntity>();
 		Options = Set<OptionEntity>();
@@ -54,7 +53,6 @@ public sealed class RosaFiestaContext : IdentityDbContext<UserEntity, RoleEntity
 		modelBuilder.Entity<UserRole>().HasOne(ur => ur.Role).WithMany(x => x.UserRoles).HasForeignKey(ur => ur.RoleId);
 	}
 
-	public DbSet<AddressEntity> Addresses { get; set; }
 	public DbSet<ProductEntity> Products { get; }
 	public DbSet<OptionEntity> Options { get; set; }
 	public DbSet<MultipleOptionImagesEntity> OptionImages { get; set; }

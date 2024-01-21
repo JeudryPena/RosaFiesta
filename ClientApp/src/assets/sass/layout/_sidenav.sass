@@ -1,0 +1,94 @@
+@use '../abstracts' as a
+
+.sidenav
+  width: 280px
+  height: 100%
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0
+  z-index: 100000
+
+  @include a.breakpoint-down(xs)
+    width: 100%
+
+  &-top
+    background-color: a.$gray-200
+    padding: 20px
+    row-gap: 10px
+    grid-template-columns: 44px auto
+    align-items: center
+    column-gap: 16px
+    display: grid
+
+    .avatar
+      width: 44px
+      height: 44px
+      max-height: 44px
+      border-radius: 50%
+      overflow: hidden
+
+      &-icon
+        height: 100%
+
+    .links-group
+      display: flex
+      gap: .25rem
+
+      &-button
+        @include a.text()
+        color: a.$dark
+        zoom: 1
+
+        &:hover
+          opacity: 0.9
+          zoom: 1.1
+          font-weight: 600
+          color: #fa0
+
+  &-main
+    padding: 20px
+
+  .sidenav-item
+    display: grid
+    column-gap: 12px
+    align-items: center
+    grid-template-columns: 24px auto
+    margin: 12px
+
+    &:hover
+      opacity: 0.9
+      cursor: pointer
+
+      .sidenav-item-title
+        font-weight: 600
+        color: #fa0
+
+      .sidenav-item-icon
+        filter: invert(68%) sepia(17%) saturate(5423%) hue-rotate(1deg) brightness(105%) contrast(106%)
+
+    &-title
+      @include a.text()
+      color: a.$dark
+      transition: all .05s ease-in-out
+
+    @include a.breakpoint-down(sm)
+      margin: 8px
+
+    &-icon
+      width: 24px
+      color: a.$gray-800
+      transition: all .05s ease-in-out
+
+    &-separator
+      height: 1px
+      background-color: a.$gray-300
+      width: 100%
+      margin: 16px 0
+
+  &-hide-btn
+    position: absolute
+    top: 12px
+    right: 12px
+    font-size: 20px
+    color: a.$gray-500
+
+    &:hover
+      color: a.$dark

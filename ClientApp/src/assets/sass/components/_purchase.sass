@@ -10,7 +10,13 @@
 
     &-content
       display: grid
-      row-gap: 20px
+      grid-template-rows: 70px auto
+      row-gap: 1.5rem
+      column-gap: 28px
+
+      @include a.breakpoint-down(xl)
+        grid-template-columns: 100%
+        row-gap: 24px
 
   .purchase-item-image
     height: 80px
@@ -18,7 +24,7 @@
 
   .purchase-title
     padding-bottom: 1rem
-    padding-top: 1.5rem
+    padding-top: 1rem
     text-align: center
     background-color: a.$white
     border-radius: 6px
@@ -101,3 +107,57 @@
     .purchase-cost-value
       @include a.text($weight: 500)
       color: a.$dark
+
+  .cart-services
+    display: flex
+    justify-content: space-between
+    margin-top: 10px
+    margin-bottom: 30px
+
+    @include a.breakpoint-down(lg)
+      grid-template-columns: repeat(2, 1fr)
+
+
+    @include a.breakpoint-down(sm)
+      grid-template-columns: 100%
+
+
+    &-item
+      background-color: a.$white
+      border: 1px solid a.$gray-200
+      border-radius: 6px
+      padding: 1rem
+      display: grid
+      grid-template-columns: 48px auto
+      column-gap: 10px
+
+      &:nth-child(2)
+        .item-icon
+          img
+            width: 20px
+
+      &:nth-child(3)
+        .item-icon
+          img
+            width: 22px
+
+    .item-text
+      @include a.flexbox($direction: column)
+
+      &-title
+        @include a.text($weight: bold)
+        color: a.$dark
+
+      &-description
+        @include a.text($weight: 500)
+        color: a.$gray-500
+
+    .item-icon
+      width: 48px
+      height: 48px
+      border-radius: 50%
+      background-color: a.$gray-300
+      @include a.flexbox($justify: center, $align: center)
+
+      img
+        width: 16px

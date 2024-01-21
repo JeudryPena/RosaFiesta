@@ -155,52 +155,6 @@ internal sealed class UserService : IUserService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
 
-	public async Task<IEnumerable<AddressPreviewResponse>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
-	{
-		IEnumerable<AddressEntity> addresses = await _repositoryManager.UserRepository.GetAddressesAsync(
-			userId,
-			cancellationToken
-		);
-		var addressesDto = addresses.Adapt<IEnumerable<AddressPreviewResponse>>();
-		return addressesDto;
-	}
-
-	public async Task<AddressResponse> GetAddressByIdAsync(string userId, Guid addressId, CancellationToken cancellationToken = default)
-	{
-		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(
-			userId,
-			addressId,
-			cancellationToken
-		);
-		AddressResponse addressDto = address.Adapt<AddressResponse>();
-		return addressDto;
-	}
-
-	public async Task CreateAddressAsync(string userId, AddressDto addressDto, CancellationToken cancellationToken = default)
-	{
-		AddressEntity address = addressDto.Adapt<AddressEntity>();
-		address.UserId = userId;
-		address.FullName = addressDto.Name + " " + addressDto.LastName;
-		_repositoryManager.UserRepository.CreateAddress(address);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-	}
-
-	public async Task UpdateAddressAsync(string userId, Guid addressId, AddressDto addressDto, CancellationToken cancellationToken)
-	{
-		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
-		address = addressDto.Adapt(address);
-		address.FullName = addressDto.Name + " " + addressDto.LastName;
-		_repositoryManager.UserRepository.UpdateAddress(address);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-	}
-
-	public async Task DisableAddressAsync(string userId, Guid addressId, CancellationToken cancellationToken)
-	{
-		AddressEntity address = await _repositoryManager.UserRepository.GetAddressAsync(userId, addressId, cancellationToken);
-		_repositoryManager.UserRepository.DeleteAddress(address);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
-	}
-
 	public async Task<IEnumerable<UsersListResponse>> GetUsersListAsync(CancellationToken cancellationToken = default)
 	{
 		IEnumerable<UserEntity> users = await _repositoryManager.UserRepository.GetUsersList(cancellationToken);

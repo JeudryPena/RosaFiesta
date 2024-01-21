@@ -2,6 +2,8 @@
 
 public enum OrderStatusType
 {
+	
+	Cotización = 0,
 	Pendiente = 1,
 	Procesando = 2,
 	Pagado = 3,

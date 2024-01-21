@@ -8,6 +8,15 @@ $background-dark: #2f3336
 .about-us-main
   @include main-custom($background-dark)
 
+
+.sidenav-container
+  padding-top: 3.5rem
+  height: 100%
+  background: inherit
+
+  &-admin
+    margin: 0 1.5rem 0 5rem
+
 main
   width: calc(100% - 3.5rem)
   z-index: 0
@@ -15,7 +24,6 @@ main
   font-family: 'roboto', sans-serif
   top: 0
   margin-left: 3.5rem
-  padding: 3.5rem 1rem 0 1rem
   transition: width .5s ease
   background: a.$bg-gray
   overflow-y: auto
@@ -25,7 +33,6 @@ main
   &.no-sidenav
     width: 100%
     margin-left: 0
-    padding: 3.5rem 0 0 0
 
   &-trimmed
     width: calc(100% - 16.5625rem)

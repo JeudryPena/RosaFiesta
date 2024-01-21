@@ -1,7 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {HomeComponent} from "@public/home/containers/home/home.component";
 import {FeaturesComponent} from "@public/home/components/features/features.component";
-import {HeroesComponent} from "@public/home/components/heroes/heroes.component";
 import {AboutUsComponent} from "@public/home/containers/about-us/about-us.component";
 import {PublicModule} from "@public/public.module";
 import {ProductsModule} from "@public/products/products.module";
@@ -18,7 +17,6 @@ import {NewsletterComponent} from "@public/home/components/newsletter/newsletter
   declarations: [
     HomeComponent,
     FeaturesComponent,
-    HeroesComponent,
     AboutUsComponent,
     MainPageComponent,
     TopMainComponent,

@@ -1,17 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ICreateOrderRequest, IPayPalConfig, ITransactionItem} from 'ngx-paypal';
-import {AddressesComponent} from './addresses/addresses.component';
-import {config} from "@env/config.dev";
-import {AddressPreviewResponse} from "@core/interfaces/Security/Response/addressPreviewResponse";
-import {AddressesService} from "@intranet/services/addresses.service";
-import {SwalConfirmItem, SwalService} from "@core/shared/services/swal.service";
+import {SwalService} from "@core/shared/services/swal.service";
 import {SweetAlertOptions} from "sweetalert2";
-import {BehaviorSubject, lastValueFrom, map, Observable} from "rxjs";
+import {lastValueFrom, map, Observable} from "rxjs";
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {StepperOrientation} from '@angular/material/stepper';
-import {MatTableDataSource} from "@angular/material/table";
 import {DiscountsService} from "@admin/inventory/services/discounts.service";
 import {CartsService} from "@intranet/services/carts.service";
 import {Router} from "@angular/router";
@@ -20,7 +14,9 @@ import {PurchaseDetailResponse} from "@core/interfaces/Product/UserInteract/Resp
 import {WarrantiesService} from "@admin/inventory/services/warranties.service";
 import {PurchaseService} from "@intranet/services/purchase.service";
 import {AuthenticateService} from "@auth/services/authenticate.service";
+import {OrderDto} from "@core/interfaces/Product/UserInteract/orderDto";
 
+declare var paypal: any;
 
 @Component({
   selector: 'app-purchase',
@@ -31,13 +27,8 @@ export class PurchaseComponent implements OnInit {
 
   stepperOrientation: Observable<StepperOrientation>;
 
+  @ViewChild('paypal', {static: true}) paypalElement: ElementRef;
   @ViewChild('name') name: any;
-
-  public confirmItem: SwalConfirmItem = {
-    fnConfirm: this.deleteConfirm,
-    confirmData: null,
-    context: this
-  };
 
   totalItems: number = 0;
   totalPrice: number = 0;
@@ -45,21 +36,18 @@ export class PurchaseComponent implements OnInit {
   details: PurchaseDetailResponse[] = [];
 
   firstStepForm: FormGroup;
-  secondStepForm: FormGroup;
   thirdStepForm: FormGroup;
-
-  addresses: MatTableDataSource<AddressPreviewResponse> =
-    new MatTableDataSource<AddressPreviewResponse>();
-
-  paginatedAddresses$: Observable<AddressPreviewResponse[]>;
 
   swalOptions: SweetAlertOptions = {icon: 'info'};
 
-  payPalConfig$: BehaviorSubject<IPayPalConfig | null> = new BehaviorSubject<IPayPalConfig | null>(null);
+  config = {
+    onCompleteAuthorization: (authorization: string) => {
+      this.completePurchase(authorization);
+    }
+  };
 
   constructor(
     public modalService: NgbModal,
-    private readonly addressService: AddressesService,
     private readonly swalService: SwalService,
     private readonly breakpointObserver: BreakpointObserver,
     private readonly fb: FormBuilder,
@@ -75,111 +63,56 @@ export class PurchaseComponent implements OnInit {
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
 
-  ngOnInit(): void {
-    this.initForms();
-    this.retrieveData();
-  }
+  completePurchase(order: any) {
+    const orderDto: OrderDto = {
+      orderId: order.id,
+      address: {
+        countryCode: order.purchase_units[0].shipping.address.country_code,
+        phoneNumber: order.payer.phone.phone_number.national_number,
+        customerName: `${order.payer.name.given_name} ${order.payer.name.surname}`,
+        address: order.purchase_units[0].shipping.address.address_line_1,
+        description: order.purchase_units[0].shipping.address.address_line_2,
+        location: `${order.purchase_units[0].shipping.address.admin_area_2}`,
+        province: `${order.purchase_units[0].shipping.address.admin_area_1}`,
+        postalCode: order.purchase_units[0].shipping.address.postal_code
+      },
+      total: order.purchase_units[0].amount.value,
+      transactionId: order.purchase_units[0].payments.captures[0].id,
+      currencyCode: order.purchase_units[0].amount.currency_code,
+      payerId: order.payer.payer_id,
+      shipping: order.purchase_units[0].amount.breakdown.shipping.value,
+      transactionDate: order.create_time
+    }
 
-  createAddress() {
-    const modalRef = this.modalService.open(AddressesComponent, {size: 'xl', scrollable: true});
-    modalRef.componentInstance.title = 'Crear Dirección';
-    modalRef.result.then((result) => {
-      if (result)
-        this.retrieveData();
-    });
-  }
+    console.log(orderDto)
 
-  updateAddress(addressId: string) {
-    const modalRef = this.modalService.open(AddressesComponent, {size: 'xl', scrollable: true});
-    modalRef.componentInstance.title = 'Modificar Dirección';
-    modalRef.componentInstance.id = addressId;
-    modalRef.componentInstance.update = true;
-    modalRef.result.then((result) => {
-      if (result)
-        this.retrieveData();
-    });
-  }
-
-  viewAddress(addressId: string) {
-    const modalRef = this.modalService.open(AddressesComponent, {size: 'xl', scrollable: true});
-    modalRef.componentInstance.title = 'Ver Dirección';
-    modalRef.componentInstance.id = addressId;
-    modalRef.componentInstance.read = true;
-    modalRef.result.then((result) => {
-      if (result)
-        this.retrieveData();
-    });
-  }
-
-  deleteAddress(addressId: string) {
-    this.swalOptions.icon = 'question';
-    this.swalOptions.title = 'Eliminar Dirección de Envio';
-    this.swalOptions.html = `Esta seguro de que desea eliminar la Dirección de Envio?`;
-    this.swalOptions.showConfirmButton = true;
-    this.swalOptions.showCancelButton = true;
-    this.confirmItem.confirmData = addressId;
-    this.confirmItem.fnConfirm = this.deleteConfirm;
-    this.swalService.setConfirm(this.confirmItem);
-    this.swalService.show(this.swalOptions);
-  }
-
-  public deleteConfirm(isConfirm: string, data: any, context: any): void {
-    context.addressService.delete(data).subscribe({
-      next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha eliminado la dirección correctamente';
-        this.swalOptions.title = 'Dirección eliminada';
-        this.swalService.show(this.swalOptions);
-        context.retrieveData();
-        this.swalOptions.showCancelButton = false; //just need to show the OK button
-        context.confirmItem.fnConfirm = null;//reset the confirm function to avoid call this function again and again.
-        this.swalService.setConfirm(context.confirmItem);
+    this.purchaseService.purchase(orderDto).subscribe({
+      next: (response) => {
+        this.swalService.show({
+          icon: 'success',
+          title: 'Pago procesado correctamente',
+          text: 'Gracias por su compra, en breve recibirá un correo con los detalles de su compra, puede revisar el estado de su compra en la sección de mis ordenes'
+        });
+        this.router.navigate(['/intranet/my-orders']);
+        this.service.updatedCart();
       },
       error: (err) => {
         this.swalService.error();
         console.error(err);
       }
-    });
+    })
   }
 
-  selectAddress(selectedAddress: any) {
-    this.firstStepForm.get('addressSelected').setValue(selectedAddress[0]);
+  ngOnInit(): void {
+    this.initForms();
+    this.getCartItems();
   }
 
-  applyFilter(event: any) {
-    let filter = (event.target as HTMLInputElement).value;
-    filter = filter.trim();
-    filter = filter.toLowerCase();
-    this.addresses.filter = filter;
-  }
-
-  retrieveData() {
-    const response = this.addressService.retrieveAll();
-    const address = lastValueFrom(response);
-    address.catch(() => {
-      this.swalService.error();
-    });
-    address.then((result: AddressPreviewResponse[]) => {
-      this.getCartItems();
-      this.addresses.data = result;
-      this.addresses.filterPredicate = (data: AddressPreviewResponse, filter: string) => {
-        const normalizedName = data.title
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '');
-        const normalizedFilter = filter
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '');
-        return normalizedName.toLowerCase().includes(normalizedFilter);
-      };
-      this.paginatedAddresses$ = this.addresses.connect();
-    });
-  }
-
-  async completeAddressStep() {
-    let items: ITransactionItem[] = [];
+  async initConfig() {
+    let items: any[] = [];
     for (let detail of this.details) {
       for (let option of detail.purchaseOptions) {
-        const item: ITransactionItem = {
+        const item: any = {
           name: option.option.title,
           quantity: option.quantity.toString(),
           category: "PHYSICAL_GOODS",
@@ -192,68 +125,29 @@ export class PurchaseComponent implements OnInit {
       }
     }
 
-    let addressValue = this.firstStepForm.get('addressSelected')?.value;
-    let addressResponse = this.addressService.retrieveById(addressValue);
-    let address = await lastValueFrom(addressResponse);
-
-
     let userResponse = this.authenticateService.getCurrentDetailUser();
     let user = await lastValueFrom(userResponse);
-
-    let splitName = address.fullName.split(' ');
-
-    let firstName = splitName.slice(0, (splitName.length / 2)).join(' ');
-    let lastName = splitName.slice((splitName.length / 2)).join(' ');
-
-    this.payPalConfig$.next({
-      currency: 'USD',
-      clientId: config.payPalClientId,
-      createOrderOnClient: (data: any) => <ICreateOrderRequest>{
-        intent: 'CAPTURE',
-        application_context: {
-          shipping_preference: 'SET_PROVIDED_ADDRESS'
-        },
-        payer: {
-          name: {
-            given_name: `${firstName}`,
-            surname: `${lastName}`
+    paypal.Buttons({
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          intent: 'CAPTURE',
+          payer: {
+            email_address: `${user.email}`
           },
-          email_address: `${user.email}`,
-          phone: {
-            phone_type: "MOBILE",
-            phone_number: {
-              national_number: `${address.phoneNumber}`
-            }
-          },
-          address: {
-            
-            postal_code: `${address.zipCode}`,
-            country_code: "US"
-          }
-        },
-        purchase_units: [{
-          amount: {
-            currency_code: 'USD',
-            value: `${this.totalPrice + this.sendPrice}`,
-            breakdown: {
-              item_total: {
-                currency_code: 'USD',
-                value: `${this.totalPrice + this.sendPrice}`
+          purchase_units: [{
+            amount: {
+              currency_code: 'USD',
+              value: `${this.totalPrice + this.sendPrice}`,
+              breakdown: {
+                item_total: {
+                  currency_code: 'USD',
+                  value: `${this.totalPrice + this.sendPrice}`
+                }
               }
-            }
-          },
-          shipping: {
-            address: {
-              address_line_1: "2211 N First Street",
-              address_line_2: "Building 17",
-              admin_area_2: "San Jose",
-              admin_area_1: "CA",
-              postal_code: "95131",
-              country_code: "US"
-            }
-          },
-          items: items
-        }]
+            },
+            items: items
+          }]
+        });
       },
       advanced: {
         commit: 'true'
@@ -264,19 +158,23 @@ export class PurchaseComponent implements OnInit {
       },
       onApprove: (data: any, actions: any) => {
         console.log('onApprove - transaction was approved, but not authorized', data, actions);
-        actions.order.get().then((details: any) => {
-          console.log('onApprove - you can get full order details inside onApprove: ', details);
-          this.completePurchase();
+        return actions.order.capture().then((order: any) => {
+          if (order.status === 'COMPLETED') {
+            console.log(order)
+            this.completePurchase(order);
+          }
         });
       },
-      onClientAuthorization(authorization) {
+      onClientAuthorization: (authorization) => {
         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', authorization);
-
+      },
+      onError: err => {
+        console.error(err);
       },
       onCancel: (data: any, actions: any) => {
         console.log('OnCancel', data, actions);
       },
-    });
+    }).render(this.paypalElement.nativeElement);
   }
 
   getCartItems() {
@@ -312,6 +210,10 @@ export class PurchaseComponent implements OnInit {
           else
             this.sendPrice = sendPrice;
           this.details = response.details;
+          await this.initConfig();
+        } else {
+          this.swalService.show({icon: 'error', title: 'No tienes productos en el carrito'});
+          this.router.navigate(['/main-page/home']);
         }
       }, error: (error) => {
         this.swalService.error();
@@ -320,24 +222,8 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
-  completePurchase() {
-    this.purchaseService.purchase(this.firstStepForm.get('addressSelected')?.value).subscribe({
-      next: (response) => {
-        this.swalService.show({icon: 'success', title: 'Pago procesado correctamente'});
-        this.router.navigate(['/intranet/my-orders']);
-      },
-      error: (err) => {
-        this.swalService.error();
-        console.error(err);
-      }
-    })
-  }
-
   private initForms() {
     this.firstStepForm = this.fb.group({
-      addressSelected: new FormControl(null, [Validators.required])
-    })
-    this.secondStepForm = this.fb.group({
       detailsConfirmed: new FormControl(false, [Validators.required])
     })
     this.thirdStepForm = this.fb.group({

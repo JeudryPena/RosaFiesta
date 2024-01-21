@@ -33,7 +33,7 @@
         font-size: 20px
 
 .header
-  z-index: 999 !important
+  z-index: 1000 !important
   transition: .3s ease-in-out
   background-color: a.$white
 
@@ -43,7 +43,7 @@
     .hdr-navigation-bar
       margin: 0 0 0 auto
       padding: 0
-      column-gap: 32px
+      column-gap: 20px
       @include a.v-flex($align: end)
       @include a.breakpoint-down(xl)
         column-gap: 16px
@@ -51,7 +51,25 @@
         display: none
 
     .hdr-nav-item
+      padding-left: .5rem
+      padding-right: .5rem
+      border-radius: 6px
       @include a.flexbox($align: center, $justify: center, $direction: column)
+
+      &:hover
+
+        cursor: pointer
+        background-color: a.$alice-blue-v1
+
+
+        .hdr-nav-text
+          color: a.$dark
+          font-weight: 600
+
+        .hdr-nav-icon
+          img
+            filter: invert(7%) sepia(16%) saturate(191%) hue-rotate(316deg) brightness(95%) contrast(91%) !important
+
 
       &:nth-child(2)
         .hdr-nav-icon

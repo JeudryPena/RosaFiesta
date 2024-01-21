@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Security.Claims;
-
+using Contracts.Model.Product;
 using Contracts.Model.Product.Response;
 using Contracts.Model.Product.UserInteract;
 using Contracts.Model.Product.UserInteract.Response;
@@ -49,6 +49,16 @@ public class PurchaseController : ControllerBase
 		IEnumerable<OrderPreviewResponse> bills = await _serviceManager.OrderService.GetByUserIdAsync(userId, cancellationToken);
 		return Ok(bills);
 	}
+	
+	[HttpPost("create-order")]
+	public async Task<IActionResult> CreateOrder(OrderDto orderDto, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		OrderResponse order = await _serviceManager.OrderService.CreateOrderAsync(orderDto, userId, cancellationToken);
+		return Ok(order);
+	}
 
 	[HttpGet("{orderId:guid}")]
 	public async Task<IActionResult> RetrieveById(Guid orderId, CancellationToken cancellationToken)
@@ -72,13 +82,13 @@ public class PurchaseController : ControllerBase
 		return Ok(purchaseDetail);
 	}
 
-	[HttpGet("address/{addressId:guid}/purchase")]
-	public async Task<IActionResult> Purchase(CancellationToken cancellationToken, Guid addressId)
+	[HttpPost("purchase")]
+	public async Task<IActionResult> Purchase(OrderDto orderDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(userId, addressId, cancellationToken);
+		OrderResponse cart = await _serviceManager.OrderService.OrderPurchaseAsync(orderDto, userId,  cancellationToken);
 		return Ok(cart);
 	}
 
@@ -99,7 +109,7 @@ public class PurchaseController : ControllerBase
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, orderId, detailId, cancellationToken);
+		await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, detailId, orderId, cancellationToken);
 		return Ok();
 	}
 

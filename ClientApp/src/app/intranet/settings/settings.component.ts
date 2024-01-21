@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticateService} from "@auth/services/authenticate.service";
 import {UserResponse} from "@core/interfaces/Security/Response/userResponse";
 import {Observable} from "rxjs";
-import {SwalService} from "@core/shared/services/swal.service";
+import {SwalConfirmItem, SwalService} from "@core/shared/services/swal.service";
 import {SweetAlertOptions} from "sweetalert2";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -14,16 +15,62 @@ export class SettingsComponent implements OnInit {
 
   $user: Observable<UserResponse>;
   swalOptions: SweetAlertOptions = {icon: 'info'};
+  public confirmItem: SwalConfirmItem = {
+    fnConfirm: this.confirmDelete,
+    confirmData: null,
+    context: this
+  };
 
   constructor(
     private authService: AuthenticateService,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private router: Router
   ) {
 
   }
 
   ngOnInit(): void {
     this.Authenticate();
+    this.authService.generatePaypalToken().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.authService.orderDetails(res.access_token, "1LF99760VT745821U");
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  deleteMyAccount() {
+    this.swalOptions.icon = 'question';
+    this.swalOptions.title = 'Eliminar Usuario';
+    this.swalOptions.html = `Esta seguro de que desea eliminar su usuario? esta acción no se puede deshacer`;
+    this.swalOptions.showConfirmButton = true;
+    this.swalOptions.showCancelButton = true;
+    this.confirmItem.fnConfirm = this.confirmDelete;
+    this.swalService.setConfirm(this.confirmItem);
+    this.swalService.show(this.swalOptions);
+  }
+
+  confirmDelete(isConfirm: string, data: any, context: any) {
+    context.authService.deleteMyAccount().subscribe({
+      next: () => {
+        this.swalOptions.icon = 'success';
+        this.swalOptions.html = 'Se ha eliminado la cuenta correctamente';
+        this.swalOptions.title = 'Cuenta Eliminada';
+        this.swalService.show(this.swalOptions);
+        this.swalOptions.showCancelButton = false; //just need to show the OK button
+        context.confirmItem.fnConfirm = null;//reset the confirm function to avoid call this function again and again.
+        context.authService.logout();
+        context.router.navigate(['/main-page']);
+        this.swalService.setConfirm(context.confirmItem);
+      },
+      error: (err) => {
+        this.swalService.error();
+        console.error(err);
+      }
+    });
   }
 
   changePromotionalPreference() {

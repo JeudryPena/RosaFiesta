@@ -52,6 +52,7 @@ export class ResetPasswordComponent {
           this.router.navigate(['auth']);
         },
         error: (error) => {
+          console.error(error);
           this.toastService.show('Error!', `${error}`, {classname: 'bg-danger text-light', delay: 5000});
         }
       })

@@ -39,10 +39,12 @@
                         Permitir correos promocionales
                       </mat-slide-toggle>
                       <div class="preference-buttons">
-                        <button mat-stroked-button color="primary"><i class="key-icon p-icon me-1"></i> Actualizar mi
+                        <button mat-stroked-button routerLink="/auth/change-password" color="primary"><i
+                          class="key-icon p-icon me-1"></i> Actualizar mi
                           Contraseña
                         </button>
-                        <button mat-stroked-button color="warn"><i class="delete-user-fill-icon r-icon me-1"></i>
+                        <button mat-stroked-button (click)="deleteMyAccount()" color="warn"><i
+                          class="delete-user-fill-icon r-icon me-1"></i>
                           Eliminar
                           mi
                           Cuenta

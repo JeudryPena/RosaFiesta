@@ -27,9 +27,6 @@ public class UserEntity : IdentityUser, IAutoBy
 	public WishListEntity? WishList { get; set; }
 	public Guid? WishListId { get; set; }
 	public ICollection<OrderEntity>? Orders { get; set; }
-	public ICollection<AddressEntity>? Addresses { get; set; }
-	public AddressEntity? DefaultAddress { get; set; }
-	public Guid? DefaultAddressId { get; set; }
 	public ICollection<QuoteEntity>? Quotes { get; set; }
 	public bool IsDeleted { get; set; }
 	public virtual ICollection<UserRole> UserRoles { get; set; }

@@ -5,6 +5,8 @@ public class PurchaseDetailOptions : BaseEntity, IAutoUpdate
 	public Guid DetailId { get; set; }
 	public int Quantity { get; set; }
 	public double UnitPrice { get; set; }
+	public double Taxes { get; set; }
+	public double Discounted { get; set; }
 	public Guid? AppliedId { get; set; }
 	public DiscountEntity? Discount { get; set; }
 	public Guid OptionId { get; set; }

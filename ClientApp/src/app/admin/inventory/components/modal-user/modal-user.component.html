@@ -8,7 +8,7 @@
         <div class="row group">
           <div class="col">
             <div class="management-input-container" isFocus>
-              <input  class="management-input"  [readOnly]="read" formControlName="userName" maxlength="256"
+              <input class="management-input" [readOnly]="read" formControlName="userName" maxlength="256"
                      minlength="3" required type="text"/>
               <label class="management-label">Usuario *</label>
               <span class="management-span">Usuario *</span>
@@ -22,7 +22,7 @@
           </div>
           <div class="col">
             <div class="management-input-container" isFocus>
-              <input  class="management-input"  [readOnly]="read" formControlName="email" maxlength="253"
+              <input class="management-input" [readOnly]="read" formControlName="email" maxlength="253"
                      minlength="3" type="text"/>
               <label class="management-label">Email *</label>
               <span class="management-span">Email *</span>
@@ -36,7 +36,7 @@
         <div class="row group">
           <div class="col">
             <div class="management-input-container" isFocus>
-              <input  class="management-input"  [readOnly]="read" autocomplete="new-password" formControlName="password"
+              <input class="management-input" [readOnly]="read" autocomplete="new-password" formControlName="password"
                      maxlength="256"
                      minlength="8" required type="password"/>
               <label class="management-label">Contraseña *</label>
@@ -50,7 +50,8 @@
           </div>
           <div class="col">
             <div class="management-input-container" isFocus>
-              <input  class="management-input"  [readOnly]="read" autocomplete="new-password" formControlName="confirmPassword"
+              <input class="management-input" [readOnly]="read" autocomplete="new-password"
+                     formControlName="confirmPassword"
                      maxlength="256" minlength="8" required type="password"/>
               <label class="management-label">Confirmar contraseña *</label>
               <span class="management-span">Confirmar contraseña *</span>
@@ -64,7 +65,7 @@
         </div>
         @if (!read) {
           <mat-form-field appearance="fill" class="management-input-container" isFocus>
-            <input class="management-input"  #moduleInput [matAutocomplete]="moduleAutocomplete" matInput
+            <input class="management-input" #moduleInput [matAutocomplete]="moduleAutocomplete" matInput
                    type="search"
             />
             <label class="management-label">Roles *</label>
@@ -99,7 +100,8 @@
         <div class="row group">
           <div class="col">
             <div class="form-check form-switch mt-0">
-              <input class="form-check-input management-input" formControlName="promotionalMails" id="flexSwitchCheckDefault"
+              <input class="form-check-input management-input" formControlName="promotionalMails"
+                     id="flexSwitchCheckDefault"
                      role="switch"
                      type="checkbox">
               <label class="form-check-label text-white" for="flexSwitchCheckDefault">Aceptar
@@ -108,7 +110,8 @@
           </div>
           <div class="col">
             <mat-form-field (click)="picker.open()" class="management-input-container" isFocus>
-              <input  class="management-input"  [disabled]="true" [matDatepicker]="picker" [readOnly]="true" [readonly]="true"
+              <input class="management-input" [disabled]="true" [matDatepicker]="picker" [readOnly]="true"
+                     [readonly]="true"
                      formControlName="birthDate" matInput
                      required type="text">
               <mat-hint>MM/DD/YYYY</mat-hint>
@@ -126,26 +129,26 @@
         </div>
         @if (read) {
           <div class="management-input-container" isFocus>
-            <input  class="management-input"
-                    formControlName="createdAt"
-              type="text"/>
+            <input class="management-input"
+                   formControlName="createdAt"
+                   type="text"/>
             <label class="management-label">Fecha de Creación</label>
             <span class="management-span">Fecha de Creación</span>
           </div>
           <div class="management-input-container" isFocus>
-            <input class="management-input"  formControlName="createdBy" type="text"/>
+            <input class="management-input" formControlName="createdBy" type="text"/>
             <label class="management-label">Creado por</label>
             <span class="management-span">Creado por</span>
           </div>
           <div class="management-input-container" isFocus>
             <input class="management-input"
                    formControlName="updatedAt"
-              type="text"/>
+                   type="text"/>
             <label class="management-label">Fecha de Modificación</label>
             <span class="management-span">Fecha de Modificación</span>
           </div>
           <div class="management-input-container" isFocus>
-            <input class="management-input"  formControlName="updatedBy" type="text"/>
+            <input class="management-input" formControlName="updatedBy" type="text"/>
             <label class="management-label">Modificado por</label>
             <span class="management-span">Modificado por</span>
           </div>
@@ -153,14 +156,14 @@
 
         <div *ngIf="update == false; else updateP" class="d-flex justify-content-between">
           <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-          <input (click)="Add(userForm$.value)" *ngIf="read == false" [disabled]="!userForm.valid" class="btn submit"
+          <input (click)="Add(userForm.value)" *ngIf="read == false" [disabled]="!userForm.valid" class="btn submit"
                  type="submit"
                  value="Crear"/>
         </div>
         <ng-template #updateP>
           <div class="d-flex justify-content-between">
             <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
-            <input (click)="updateUser(userForm$.value)" [disabled]="!userForm.valid" class="btn submit" type="submit"
+            <input (click)="updateUser(userForm.value)" [disabled]="!userForm.valid" class="btn submit" type="submit"
                    value="Actualizar"/>
           </div>
         </ng-template>

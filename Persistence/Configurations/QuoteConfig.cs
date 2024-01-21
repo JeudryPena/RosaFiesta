@@ -12,6 +12,5 @@ public class QuoteConfig : IEntityTypeConfiguration<QuoteEntity>
 		builder.HasKey(q => q.Id);
 		builder.Property(q => q.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);
-		builder.HasMany(q => q.QuoteItems).WithOne().HasForeignKey(qi => qi.QuoteId);
 	}
 }

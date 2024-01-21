@@ -32,7 +32,6 @@ import {FooterComponent} from "@core/shared/components/layout/footer/footer.comp
 import {NavbarComponent} from "@core/shared/components/layout/navbar/navbar.component";
 import {LayoutComponent} from "@core/shared/components/layout/layout/layout.component";
 import {NgbRatingConfig, NgbTimepickerModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgxPayPalModule} from "ngx-paypal";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarsModule} from "ngx-stars";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
@@ -59,6 +58,8 @@ import {FilterRolesPipe} from "@core/shared/pipes/filter-roles.pipe";
 import {FilterOptionsPipe} from "@core/shared/pipes/filter-options.pipe";
 import {FilterProductsPipe} from "@core/shared/pipes/filter-products.pipe";
 import {ColorPickerModule} from "ngx-color-picker";
+import {PdfComponent} from "@core/shared/components/pdfcomponent/pdf.component";
+import {MainSidenavComponent} from "@core/shared/components/layout/main-sidenav/main-sidenav.component";
 
 const shareButtonsConfig: ShareButtonsConfig = {
   debug: true
@@ -108,7 +109,9 @@ const shareButtonsConfig: ShareButtonsConfig = {
     ShareButtonsComponent,
     FilterRolesPipe,
     FilterOptionsPipe,
-    FilterProductsPipe
+    FilterProductsPipe,
+    PdfComponent,
+    MainSidenavComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -122,7 +125,6 @@ const shareButtonsConfig: ShareButtonsConfig = {
     ShareButtonsModule,
     NgTemplateOutlet,
     NgxFileDropModule,
-    NgxPayPalModule,
     NgOptimizedImage,
     CurrencyPipe,
     DatePipe,
@@ -176,7 +178,6 @@ const shareButtonsConfig: ShareButtonsConfig = {
     ShareIconsModule,
     NgTemplateOutlet,
     NgxFileDropModule,
-    NgxPayPalModule,
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
@@ -193,7 +194,9 @@ const shareButtonsConfig: ShareButtonsConfig = {
     FilterOptionsPipe,
     FilterProductsPipe,
     NgbTimepickerModule,
-    ColorPickerModule
+    ColorPickerModule,
+    PdfComponent,
+    MainSidenavComponent
   ],
   providers: [
     NgbRatingConfig,

@@ -21,6 +21,7 @@ import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@ang
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatStepperModule} from "@angular/material/stepper";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 @NgModule({
   declarations: [],
@@ -48,7 +49,8 @@ import {MatStepperModule} from "@angular/material/stepper";
     _MatSlideToggleRequiredValidatorModule,
     MatListModule,
     MatMenuModule,
-    MatStepperModule
+    MatStepperModule,
+    MatSidenavModule
   ],
   exports: [
     MatTabsModule,
@@ -73,7 +75,8 @@ import {MatStepperModule} from "@angular/material/stepper";
     _MatSlideToggleRequiredValidatorModule,
     MatListModule,
     MatMenuModule,
-    MatStepperModule
+    MatStepperModule,
+    MatSidenavModule
   ],
   providers: [
     MatNativeDatetimeModule

@@ -4,7 +4,7 @@ import {
   SocialAuthService,
   SocialUser
 } from "@abacritt/angularx-social-login";
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {JwtHelperService} from '@auth0/angular-jwt';
@@ -17,6 +17,7 @@ import {CustomEncoder} from "@core/classes/custom-encoder";
 import {ResetPasswordDto} from "@core/interfaces/Security/resetPasswordDto";
 import {LogingDto} from "@core/interfaces/Security/logingDto";
 import {CurrentUserResponse, UserResponse} from "@core/interfaces/Security/Response/userResponse";
+import {ChangePasswordDto} from "@core/interfaces/Security/changePasswordDto";
 
 @Injectable({
   providedIn: 'root'
@@ -41,8 +42,20 @@ export class AuthenticateService {
     })
   }
 
+  deleteMyAccount() {
+    return this.http.delete(`${this.apiUrl}delete-user`);
+  }
+
+  paypalTest(id: string) {
+    return this.http.get(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${id}`);
+  }
+
   changePromotionalPreference() {
     return this.http.get(`${this.apiUrl}change-promotional-emails`);
+  }
+
+  changePassword(changeDto: ChangePasswordDto) {
+    return this.http.put(`${this.apiUrl}change-password`, changeDto);
   }
 
   getCurrentDetailUser(): Observable<UserResponse> {
@@ -135,6 +148,41 @@ export class AuthenticateService {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     this.sendAuthStateChangeNotification(false);
+    this.router.navigate(['/']).then(() => {
+      window.location.reload();
+    });
+  }
+
+  public generatePaypalToken() {
+    const url = 'https://api-m.sandbox.paypal.com/v1/oauth2/token';
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa(`${config.payPalClientId}:${config.payPalSecret}`),
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    const body = 'grant_type=client_credentials';
+    return this.http.post<any>(url, body, {headers});
+  }
+
+  orderDetails(accessToken: string, orderId: string) {
+    const url = `https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`
+    });
+    this.http.get<any>(url, {headers})
+      .subscribe(response => {
+        console.log(response);
+      }, error => {
+        console.error(error);
+      });
+  }
+
+  transactionCaptures(transactionId: string) {
+    // this.http.get<any>(url, {headers})
+    //   .subscribe(response => {
+    //     console.log(response);
+    //   }, error => {
+    //     console.error(error);
+    //   });
   }
 
   private validateExternalAuth(externalAuth: ExternalAuthDto) {
@@ -149,6 +197,7 @@ export class AuthenticateService {
             this.router.navigate(['']);
         },
         error: (err: any) => {
+          console.error(err);
           this.signOutExternal();
         }
       });

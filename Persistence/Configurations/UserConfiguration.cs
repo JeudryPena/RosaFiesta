@@ -39,14 +39,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 			.WithOne()
 			.HasForeignKey<WishListEntity>(wishList => wishList.UserId)
 			.OnDelete(DeleteBehavior.Cascade);
-		builder.HasMany(user => user.Addresses)
-			.WithOne(address => address.User)
-			.HasForeignKey(address => address.UserId)
-			.OnDelete(DeleteBehavior.Restrict);
-		builder.HasOne(user => user.DefaultAddress)
-			.WithMany()
-			.HasForeignKey(user => user.DefaultAddressId)
-			.OnDelete(DeleteBehavior.SetNull);
 
 		var admin = new UserEntity
 		{

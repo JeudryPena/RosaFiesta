@@ -91,6 +91,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.authService.sendAuthStateChangeNotification(true);
+    
   }
 
 

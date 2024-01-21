@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthenticateService} from '@auth/services/authenticate.service';
 import {CartsService} from '@intranet/services/carts.service';
 import {SidenavService} from '../../../services/side-nav.service';
@@ -10,6 +10,8 @@ import {encrypt} from "@core/shared/util/util-encrypt";
 import {CategoriesService} from "@admin/inventory/services/categories.service";
 import {Observable} from "rxjs";
 import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
+import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
+import {config} from "@env/config.dev";
 
 @Component({
   selector: 'app-navbar',
@@ -18,11 +20,13 @@ import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
 })
 export class NavbarComponent implements OnInit {
   @ViewChild(SidenavComponent) sidenav!: SidenavComponent;
-  userName: string;
+  @Input() user: CurrentUserResponse;
   @Input() main;
   categories$: Observable<CategoryPreviewResponse[]> = new Observable<CategoryPreviewResponse[]>();
+  @Output() toggleSideNav: EventEmitter<any> = new EventEmitter<any>();
+  @Output() logout: EventEmitter<any> = new EventEmitter<any>();
 
-  isAuthenticated = false;
+
   lastScrollTop = 0;
   navbar: any;
   totalItems: number = 0;
@@ -36,7 +40,6 @@ export class NavbarComponent implements OnInit {
     private fb: FormBuilder,
     private categoryService: CategoriesService
   ) {
-    this.Authenticate();
 
   }
 
@@ -46,6 +49,18 @@ export class NavbarComponent implements OnInit {
       search: [''],
       categoryId: [0]
     });
+  }
+
+  messageWhatsapp() {
+    let user;
+    if (this.user) {
+      user = this.user;
+    }
+    const phone = config.whatsappNumber;
+
+    const mensaje = `Buenas! ${user ? `soy ${user.userName}.` : ''} Y quisiera comunicarme con ustedes.`;
+    const link = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURI(mensaje)}`;
+    window.open(link, '_blank');
   }
 
   retrieveCategories() {
@@ -62,19 +77,12 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/products/search'], {queryParams: {searchProduct: searchEncrypted}});
   }
 
-  Authenticate() {
-    this.isAuthenticated = this.authService.isUserAuthenticated();
-    if (this.isAuthenticated) {
-      const user = this.authService.currentUser();
-      this.userName = user.userName;
-    }
-  }
-
   total(event: any) {
     this.totalItems = event;
   }
 
   ToggleCollapsed(): void {
+    this.toggleSideNav.emit();
     this.sidenavService.toggleCollapsed();
   }
 
@@ -90,12 +98,4 @@ export class NavbarComponent implements OnInit {
     }
     this.lastScrollTop = scrollTop;
   }
-
-  Logout() {
-    this.authService.logout();
-    if (this.authService.isExternalAuth)
-      this.authService.signOutExternal();
-    window.location.reload();
-  }
-
 }
