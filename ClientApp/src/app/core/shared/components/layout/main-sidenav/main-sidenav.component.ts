@@ -12,5 +12,8 @@ export class MainSidenavComponent {
   @Input() user: CurrentUserResponse;
 
   constructor() {
+
   }
+
+
 }

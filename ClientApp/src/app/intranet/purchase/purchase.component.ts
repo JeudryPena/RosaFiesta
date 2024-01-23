@@ -28,7 +28,6 @@ export class PurchaseComponent implements OnInit {
   stepperOrientation: Observable<StepperOrientation>;
 
   @ViewChild('paypal', {static: true}) paypalElement: ElementRef;
-  @ViewChild('name') name: any;
 
   totalItems: number = 0;
   totalPrice: number = 0;
@@ -37,7 +36,6 @@ export class PurchaseComponent implements OnInit {
 
   firstStepForm: FormGroup;
   thirdStepForm: FormGroup;
-
   swalOptions: SweetAlertOptions = {icon: 'info'};
 
   config = {
@@ -74,7 +72,8 @@ export class PurchaseComponent implements OnInit {
         description: order.purchase_units[0].shipping.address.address_line_2,
         location: `${order.purchase_units[0].shipping.address.admin_area_2}`,
         province: `${order.purchase_units[0].shipping.address.admin_area_1}`,
-        postalCode: order.purchase_units[0].shipping.address.postal_code
+        postalCode: order.purchase_units[0].shipping.address.postal_code,
+        email: order.payer.email_address
       },
       total: order.purchase_units[0].amount.value,
       transactionId: order.purchase_units[0].payments.captures[0].id,
@@ -93,7 +92,7 @@ export class PurchaseComponent implements OnInit {
           title: 'Pago procesado correctamente',
           text: 'Gracias por su compra, en breve recibirá un correo con los detalles de su compra, puede revisar el estado de su compra en la sección de mis ordenes'
         });
-        this.router.navigate(['/intranet/my-orders']);
+        this.router.navigate(['/intranet/settings']);
         this.service.updatedCart();
       },
       error: (err) => {

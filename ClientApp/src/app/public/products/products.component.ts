@@ -205,8 +205,7 @@ export class ProductsComponent implements OnInit {
         this.selectedCategory = {
           id: category.id,
           name: category.name,
-          description: category.description,
-          icon: ''
+          description: category.description
         }
         return category.products;
       })

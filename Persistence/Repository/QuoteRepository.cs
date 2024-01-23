@@ -25,7 +25,7 @@ internal sealed class QuoteRepository : IQuoteRepository
 
 	public async Task<QuoteEntity> GetQuoteAsync(Guid id, CancellationToken cancellationToken)
 	{
-		QuoteEntity? quote = await _context.Quotes.FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
+		QuoteEntity? quote = await _context.Quotes.Include(x => x.Order).ThenInclude(x => x.Details).ThenInclude(x => x.PurchaseOptions).Include(x => x.Order).ThenInclude(x => x.Address).FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
 		if (quote == null)
 			throw new Exception("Quote not found");
 		return quote;
@@ -47,4 +47,10 @@ internal sealed class QuoteRepository : IQuoteRepository
 
 	public void Delete(QuoteEntity quote)
 	=> _context.Quotes.Remove(quote);
+
+	public async Task<int> GetQuotesCountAsync(CancellationToken cancellationToken)
+	{
+		int count = await _context.Quotes.CountAsync(cancellationToken);
+		return count;
+	}
 }

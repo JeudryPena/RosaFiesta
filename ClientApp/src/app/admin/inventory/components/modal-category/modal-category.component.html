@@ -14,14 +14,6 @@
           <h5 *ngIf="validate('name', 'minlength')">El Nombre es<strong> muy corto</strong></h5>
         </div>
         <div class="management-input-container" isFocus>
-          <input class="management-input" formControlName="icon" maxlength="200" minlength="3" required
-                 type="text"/>
-          <label class="management-label">Icono *</label>
-          <span class="management-span">Icono *</span>
-          <h5 *ngIf="validate('icon', 'required')">El Icono es<strong> Requerido</strong></h5>
-          <h5 *ngIf="validate('icon', 'minlength')">El Icono es<strong> muy corto</strong></h5>
-        </div>
-        <div class="management-input-container" isFocus>
                 <textarea class="management-input" formControlName="description"
                           maxlength="250"
                           minlength="5" required

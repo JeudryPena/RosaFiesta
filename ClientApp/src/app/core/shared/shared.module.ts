@@ -60,6 +60,7 @@ import {FilterProductsPipe} from "@core/shared/pipes/filter-products.pipe";
 import {ColorPickerModule} from "ngx-color-picker";
 import {PdfComponent} from "@core/shared/components/pdfcomponent/pdf.component";
 import {MainSidenavComponent} from "@core/shared/components/layout/main-sidenav/main-sidenav.component";
+import {LastPurchasesComponent} from "@admin/dashboard/components/last-purchases/last-purchases.component";
 
 const shareButtonsConfig: ShareButtonsConfig = {
   debug: true
@@ -111,7 +112,8 @@ const shareButtonsConfig: ShareButtonsConfig = {
     FilterOptionsPipe,
     FilterProductsPipe,
     PdfComponent,
-    MainSidenavComponent
+    MainSidenavComponent,
+    LastPurchasesComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -196,7 +198,8 @@ const shareButtonsConfig: ShareButtonsConfig = {
     NgbTimepickerModule,
     ColorPickerModule,
     PdfComponent,
-    MainSidenavComponent
+    MainSidenavComponent,
+    LastPurchasesComponent
   ],
   providers: [
     NgbRatingConfig,

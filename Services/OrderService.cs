@@ -22,10 +22,11 @@ internal sealed class OrderService : IOrderService
 		_repositoryManager = repositoryManager;
 	}
 
-	public async Task<IEnumerable<OrderPreviewResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<OrderManagementPreviewResponse>> GetAllAsync(int? ordersToTake,
+		CancellationToken cancellationToken = default)
 	{
-		IEnumerable<OrderEntity> orders = await _repositoryManager.OrderRepository.GetAllAsync(cancellationToken);
-		IEnumerable<OrderPreviewResponse> orderResponse = orders.Adapt<IEnumerable<OrderPreviewResponse>>();
+		IEnumerable<OrderEntity> orders = await _repositoryManager.OrderRepository.GetAllAsync(ordersToTake, cancellationToken);
+		IEnumerable<OrderManagementPreviewResponse> orderResponse = orders.Adapt<IEnumerable<OrderManagementPreviewResponse>>();
 		return orderResponse;
 	}
 
@@ -61,14 +62,16 @@ internal sealed class OrderService : IOrderService
 					throw new Exception("You can't add more than the quantity available");
 				option.QuantityAvailable -= optionPurchase.Quantity;
 				_repositoryManager.ProductRepository.UpdateOption(option);
-
+				optionPurchase.Title = option.Title;
 				DiscountEntity? discount = await _repositoryManager.DiscountRepository.GetOptionDiscountAsync(option.Id, cancellationToken);
+				optionPurchase.UnitPrice = option.Price;
 				if (discount != null)
 				{
 					double value = option.Price * discount.Value / 100;
 					optionPurchase.UnitPrice -= value;
 					optionPurchase.Discounted = value;
 				}
+				optionPurchase.IsService = await _repositoryManager.ProductRepository.IsService(option.ProductId, cancellationToken);
 				detail.PurchaseOptions.Add(optionPurchase);
 			}
 			detail.CartId = null;
@@ -82,33 +85,33 @@ internal sealed class OrderService : IOrderService
 		return orderResponse;
 	}
 
-	public async Task ReturnOrderDetailAsync(string userId, Guid purchaseNumber, Guid orderId,
+	public async Task<bool> ReturnOrderDetailAsync(string userId, Guid orderId,
 		CancellationToken cancellationToken)
 	{
 		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
 		if (order.UserId != userId)
 			throw new Exception("You can't return this order");
-		if (order.CreatedAt.AddDays(31) < DateTimeOffset.UtcNow)
-			throw new Exception("You can't return this order, the time limit has expired");
-		if (order.Details == null)
-			throw new Exception("You can't return this order, the detail doesn't exist");
-		var detail = order.Details.FirstOrDefault(x => x.Id == purchaseNumber);
-		if (detail == null)
-			throw new Exception("You can't return this order, the detail doesn't exist");
-		foreach (var optionPurchase in detail.PurchaseOptions)
+		if(order.Status == OrderStatusType.Rembolso)
+			order.Status = OrderStatusType.Pagado;
+		else
 		{
-			var option = await _repositoryManager.ProductRepository.GetOptionByIdAsync(optionPurchase.OptionId, cancellationToken);
-			option.QuantityAvailable += optionPurchase.Quantity;
-			optionPurchase.IsReturned = true;
-			_repositoryManager.ProductRepository.UpdateOption(option);
-			_repositoryManager.PurchaseDetailRepository.UpdateOptionDetail(optionPurchase);
+			if (order.CreatedAt.AddDays(31) < DateTimeOffset.UtcNow)
+				return false;
+			order.Status = OrderStatusType.Rembolso;
 		}
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		return true;
 	}
 
 	public async Task<OrderResponse> CreateOrderAsync(OrderDto orderDto, string userId,
 		CancellationToken cancellationToken)
 	{
 		throw new NotImplementedException();
+	}
+
+	public async Task<double> GetGainsAsync(CancellationToken cancellationToken)
+	{
+		 double gains = await _repositoryManager.OrderRepository.GetGainsAsync(cancellationToken);
+		 return gains;
 	}
 }

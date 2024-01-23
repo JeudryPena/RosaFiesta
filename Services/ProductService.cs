@@ -219,4 +219,18 @@ internal sealed class ProductService : IProductService
 		ICollection<ProductPreviewResponse> productPreviewResponse = products.Adapt<ICollection<ProductPreviewResponse>>();
 		return productPreviewResponse;
 	}
+
+	public async Task<int> GetCountViews(CancellationToken cancellationToken)
+	{
+		int count = await _repositoryManager.ProductRepository.GetCountViews(cancellationToken);
+		return count;
+	}
+
+
+	public async Task<IEnumerable<MostPurchasedProductsResponse>> GetMostPurchasedProductsAsync(CancellationToken cancellationToken)
+	{
+		IEnumerable<MostPurchasedProducts> mostPurchasedProducts = await _repositoryManager.ProductRepository.GetMostPurchasedProductsAsync(cancellationToken);
+		IEnumerable<MostPurchasedProductsResponse> mostPurchasedProductsResponse = mostPurchasedProducts.Adapt<IEnumerable<MostPurchasedProductsResponse>>();
+		return mostPurchasedProductsResponse;
+	}
 }

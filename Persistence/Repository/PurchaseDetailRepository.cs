@@ -37,4 +37,14 @@ internal sealed class PurchaseDetailRepository : IPurchaseDetailRepository
 	public void UpdateOptionDetail(PurchaseDetailOptions detail)
 	=> _rosaFiestaContext.PurchaseDetailsOptions.Update(detail);
 
+	public async Task<int> GetCountAsync(CancellationToken cancellationToken)
+	{
+		int count = await _rosaFiestaContext.Orders.CountAsync(cancellationToken);
+		return count;
+	}
+
+	public async Task CreateAsync(PurchaseDetailEntity newDetail)
+	{
+		await _rosaFiestaContext.PurchaseDetails.AddAsync(newDetail);
+	}
 }

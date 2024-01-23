@@ -3,7 +3,7 @@ import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {ManagementUsersResponse} from '../../../../core/interfaces/Security/Response/managementUsersResponse';
+import {ManagementUsersResponse} from '@core/interfaces/Security/Response/managementUsersResponse';
 import {NgbdSortableHeader, SortEvent} from '@core/shared/directives/sortable.directive';
 import {UsersService} from '../../services/users.service';
 import {ModalUserComponent} from '../../components/modal-user/modal-user.component';

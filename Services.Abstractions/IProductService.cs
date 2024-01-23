@@ -61,4 +61,7 @@ public interface IProductService
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	Task<ICollection<ProductPreviewResponse>> SearchProductsAsync(FilteredSearchDto filter, CancellationToken cancellationToken);
+
+	Task<int> GetCountViews(CancellationToken cancellationToken);
+	Task<IEnumerable<MostPurchasedProductsResponse>> GetMostPurchasedProductsAsync(CancellationToken cancellationToken);
 }

@@ -8,34 +8,52 @@
         </p>
       </div>
       <div class="inquiry-form">
-        <form>
-          <p class="form-title">Solicitar Cotización</p>
-          <div class="form-elems">
-            <div class="form-elem">
-              <input class="form-elem-control" placeholder="Nombre completo" type="text">
+        <form [formGroup]="formGroup">
+          <div class="d-flex flex-column gap-4">
+            <p class="form-title">Solicitar Cotización</p>
+            <div class="input-wrap form-floating">
+              <input class="form-control contact-input" formControlName="fullName"
+                     id="title" maxlength="128" minlength="3" placeholder="Nombre completo" required
+                     type="text"/>
+              <label for="floatingInput">Nombre Completo</label>
+              <i class="icon fa-regular fa-id-card"></i>
+              <h5 *ngIf="validate('fullName', 'required')">El Nombre es<strong>
+                Requerido</strong></h5>
+              <h5 *ngIf="validate('fullName', 'minlength')">El Nombre es<strong> muy
+                corto</strong></h5>
             </div>
-            <div class="form-elem">
-              <input class="form-elem-control" placeholder="Ej: Cumpleaños, boda..." type="text">
+
+            <div class="input-wrap form-floating">
+              <input class="form-control contact-input" formControlName="eventName"
+                     id="eventName" maxlength="128" minlength="3" placeholder="Nombre de Evento" required
+                     type="text"/>
+              <label for="floatingInput">Nombre de Evento</label>
+              <i class="icon party-icon h-icon"></i>
+              <h5 *ngIf="validate('eventName', 'required')">El Nombre es<strong>
+                Requerido</strong></h5>
+              <h5 *ngIf="validate('eventName', 'minlength')">El Nombre es<strong> muy
+                corto</strong></h5>
             </div>
-          </div>
-          <div class="form-elem">
-            <textarea class="form-elem-control" placeholder="Escribe mas detalles"></textarea>
-          </div>
-          <div class="form-elems">
-            <div class="form-elem">
-              <input class="form-elem-control" placeholder="Télefono" type="text">
+            <div class="input-wrap form-floating">
+              <input class="form-control contact-input" formControlName="email"
+                     id="email" maxlength="258" minlength="3" placeholder="Correo" required
+                     type="text"/>
+              <label for="floatingInput">Correo</label>
+              <i class="icon email-icon h-icon"></i>
+              <h5 *ngIf="validate('email', 'required')">El Correo es<strong>
+                Requerido</strong></h5>
+              <h5 *ngIf="validate('email', 'minlength')">El Correo es<strong> muy
+                corto</strong></h5>
             </div>
-            <div class="form-elem">
-              <input class="form-elem-control" placeholder="Fecha" type="text">
+            <div class="quote-section">
+              <button (click)="makeQuote(formGroup.value)" [disabled]="!formGroup.valid" class="btn btn-success"
+                      type="submit"><i
+                class="whatsapp-icon"></i>Acordar detalles por Whatsapp
+              </button>
+              <!--            <button class="btn btn-primary w-auto" type="submit"><i-->
+              <!--              class="products-icon w-icon"></i>Elegir productos-->
+              <!--            </button>-->
             </div>
-          </div>
-          <div class="quote-section">
-            <button class="btn btn-success" type="submit"><i
-              class="whatsapp-icon"></i>Continuar por Whatsapp
-            </button>
-            <!--            <button class="btn btn-primary w-auto" type="submit"><i-->
-            <!--              class="products-icon w-icon"></i>Elegir productos-->
-            <!--            </button>-->
           </div>
         </form>
       </div>

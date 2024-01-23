@@ -21,6 +21,14 @@ public class QuotesController : ControllerBase
 	{
 		_serviceManager = serviceManager;
 	}
+	
+	[HttpGet("count")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> GetQuotesCount(CancellationToken cancellationToken)
+	{
+		int count = await _serviceManager.QuoteService.GetQuotesCountAsync(cancellationToken);
+		return Ok(count);
+	}
 
 	[HttpGet]
 	[Authorize(Roles = "Admin")]
@@ -68,8 +76,15 @@ public class QuotesController : ControllerBase
 	[HttpPost]
 	public async Task<IActionResult> MakeQuote([FromBody] QuoteDto quoteDto, CancellationToken cancellationToken)
 	{
-		QuoteResponse quote = await _serviceManager.QuoteService.CreateQuoteAsync(quoteDto, cancellationToken);
-		return Ok(quote);
+		await _serviceManager.QuoteService.CreateQuoteAsync(quoteDto, cancellationToken);
+		return Ok();
+	}
+	
+	[HttpPut("oficialize")]
+	public async Task<IActionResult> OficializeQuote([FromBody] OficializeQuoteDto oficializeQuoteDto, CancellationToken cancellationToken)
+	{
+		await _serviceManager.QuoteService.OficializeQuoteAsync(oficializeQuoteDto, cancellationToken);
+		return Ok();
 	}
 
 	[HttpPost("userQuote")]

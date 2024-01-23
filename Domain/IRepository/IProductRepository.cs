@@ -61,4 +61,8 @@ public interface IProductRepository
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	Task<IEnumerable<ProductEntity>> SearchProductsAsync(ProductsSearch filter, CancellationToken cancellationToken);
+
+	Task<bool> IsService(Guid optionProductId, CancellationToken cancellationToken);
+	Task<int> GetCountViews(CancellationToken cancellationToken);
+	Task<IEnumerable<MostPurchasedProducts>> GetMostPurchasedProductsAsync(CancellationToken cancellationToken);
 }

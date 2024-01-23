@@ -43,7 +43,6 @@ export class ModalCategoryComponent implements OnInit {
     this.categoryForm$.next(this.fb.group({
       name: [''],
       subCategories: [],
-      icon: [''],
       description: [''],
     }));
   }
@@ -53,7 +52,6 @@ export class ModalCategoryComponent implements OnInit {
     let response = await lastValueFrom(category$);
     this.categoryForm$.next(this.fb.group({
       name: response.name,
-      icon: response.icon,
       description: response.description
     }));
   }
@@ -63,7 +61,6 @@ export class ModalCategoryComponent implements OnInit {
     let response = await lastValueFrom(product$);
     const form = this.fb.group({
       name: response.name,
-      icon: response.icon,
       description: response.description,
       createdAt: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
       updatedAt: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
@@ -95,7 +92,6 @@ export class ModalCategoryComponent implements OnInit {
 
         const categoryDto: CategoryDto = {
           name: category.name,
-          icon: category.icon,
           description: category.description
         }
         this.service.UpdateCategory(this.categoryId, categoryDto).subscribe({
@@ -129,7 +125,6 @@ export class ModalCategoryComponent implements OnInit {
 
         const categoryDto: CategoryDto = {
           name: category.name,
-          icon: category.icon,
           description: category.description
         }
 

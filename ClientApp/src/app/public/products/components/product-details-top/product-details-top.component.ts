@@ -41,7 +41,7 @@ export class ProductDetailsTopComponent implements OnInit {
       productId: this.product.id,
       quantity: cart.quantity,
       optionId: this.product.optionId,
-      warrantyId: this.product.warranty.id
+      warrantyId: this.product.warranty?.id ?? null
     }
 
     this.cartService.AddProductToCart(cartDto).subscribe({
@@ -110,7 +110,7 @@ export class ProductDetailsTopComponent implements OnInit {
       productId: this.product.id,
       quantity: cart.quantity,
       optionId: this.product.optionId,
-      warrantyId: this.product.warranty.id
+      warrantyId: this.product.warranty?.id ?? null
     }
 
     this.cartService.AddProductToCart(cartDto).subscribe({

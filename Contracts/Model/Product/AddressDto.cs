@@ -10,4 +10,5 @@ public sealed class AddressDto
     public string Location { get; set; } = string.Empty;
     public string Province { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
 }

@@ -11,5 +11,7 @@ public enum OrderStatusType
 	Enviado = 5,
 	Entregado = 6,
 	Devuelto = 7,
-	Reembolsado = 8,
+	Rembolso = 8,
+	Reembolsado = 9,
+	Oficializado = 10
 }

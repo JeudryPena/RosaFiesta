@@ -1,67 +1,135 @@
-<section class="contact">
-    <div class="container">
-        <div class="left">
-            <div class="form-wrapper">
-                <div class="contact-heading">
-                    <h1>Let's work together<span>.</span></h1>
-                    <p class="text">Or reach us via: <a href="mailto:Publius@gmail.com">
-                            Publius&#64;gmail.com</a></p>
-                </div>
-                <form action="../../../index.html" class="contact-form" method="post">
-                    <div [ngClass]="{'focus': firstNameFocused}" class="input-wrap form-floating">
-                        <input #firstNameInput (blur)="firstNameFocused = false" (focus)="firstNameFocused = true" class="form-control contact-input"
-                            placeholder="First Name" required type="text">
-                        <label for="floatingInput">First Name </label>
-                        <i class="icon fa-solid fa-address-card"></i>
-                    </div>
-                    <div [ngClass]="{'focus': lastNameFocused}" class="input-wrap form-floating">
-                        <input #lastNameInput (blur)="lastNameFocused = false;" (focus)="lastNameFocused = true" class="form-control contact-input"
-                            placeholder="Last Name" required type="text">
-                        <label for="floatingInput">Last Name </label>
-                        <i class="icon fa-solid fa-address-card"></i>
-                    </div>
-                    <div [ngClass]="{'focus': emailFocused}" class="input-wrap w-100 form-floating">
-                        <input #emailInput (blur)="emailFocused = false" (focus)="emailFocused = true" class="form-control contact-input" placeholder="Email"
-                            required type="email">
-                        <label for="floatingInput">Email </label>
-                        <i class="icon fa-solid fa-envelope"></i>
-                    </div>
-                    <div [ngClass]="{'focus': messageFocused}" class="input-wrap textarea w-100 form-floating">
-                        <textarea #messageInput (blur)="messageFocused = false" (focus)="messageFocused = true"
-                            autocomplete="off" class="contact-input form-control" placeholder="Message"
-                            required></textarea>
-                        <label for="floatingInput">Message </label>
-                        <i class="icon fa-solid fa-inbox"></i>
-                    </div>
-
-                    <div class="contact-buttons w-100">
-                        <button class="btn upload">
-                            <span>
-                                <i class="fa-solid fa-paperclip"></i> Añade un archivo
-                            </span>
-                            <input name="attachement" type="file">
-                        </button>
-                        <input class="btn" type="submit" value="Send message">
-                    </div>
-
-                </form>
-            </div>
+@if (quoteForm$ | async; as quoteForm) {
+  <div class="management-form ">
+    <div class="left-form">
+      <span class="circle one"></span>
+      <span class="circle two"></span>
+      <form [formGroup]="quoteForm" autocomplete="off">
+        <h3 class="management-form-title">{{ title }}</h3>
+        <div class=" management-input-container" isFocus>
+          <input class="management-input" formControlName="phone" required
+                 type="tel"/>
+          <label class="management-label">Telefono</label>
+          <span class="management-span">Telefono</span>
+          <h5 *ngIf="validate('phone', 'required')">El Telefono es<strong> Requerido</strong>
+          </h5>
+          <h5 *ngIf="validate('phone', 'min')">El Telefono es<strong> muy corto</strong></h5>
         </div>
-        <div class="right">
-            <div class="image-wrapper">
-                <img class="img" src="../../../assets/img/backgrounds/loginBG.jpg">
-                <div class="wave-wrap">
-                    <svg class="wave" fill="none" viewBox="0 0 783 1536" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M236.705 1356.18C200.542 1483.72 64.5004 1528.54 1 1535V1H770.538C793.858 63.1213 797.23 196.197 624.165 231.531C407.833 275.698 274.374 331.715 450.884 568.709C627.393 805.704 510.079 815.399 347.561 939.282C185.043 1063.17 281.908 1196.74 236.705 1356.18Z"
-                            id="wave" />
-                    </svg>
-                    <svg class="dashed-wave" fill="none" viewBox="0 0 345 877" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.5 876C25.6667 836.167 73.2 739.8 62 673C48 589.5 35.5 499.5 125.5 462C215.5 424.5 150 365 87 333.5C24 302 44 237.5 125.5 213.5C207 189.5 307 138.5 246 87C185 35.5 297 1 344.5 1"
-                            id="dashed-wave" />
-                    </svg>
-                </div>
-
-            </div>
+        <div class=" management-input-container" isFocus>
+          <input class="management-input" formControlName="address" required
+                 type="text"/>
+          <label class="management-label">Dirección</label>
+          <span class="management-span">Dirección</span>
+          <h5 *ngIf="validate('address', 'required')">La Dirección es<strong> Requerida</strong>
+          </h5>
+          <h5 *ngIf="validate('address', 'min')">La dirección es<strong> muy corta</strong></h5>
         </div>
+        <div class=" management-input-container" isFocus>
+          <input class="management-input" formControlName="description" required
+                 type="text"/>
+          <label class="management-label">Descripción de Dirección</label>
+          <span class="management-span">Descripción de Dirección</span>
+          <h5 *ngIf="validate('description', 'required')">La Descripción es<strong> Requerida</strong>
+          </h5>
+          <h5 *ngIf="validate('description', 'min')">La Descripción es<strong> muy corta</strong></h5>
+        </div>
+        <div class=" management-input-container" isFocus>
+          <input class="management-input" formControlName="location" required
+                 type="text"/>
+          <label class="management-label">Localidad</label>
+          <span class="management-span">Localidad</span>
+          <h5 *ngIf="validate('location', 'required')">La Localidad es<strong> Requerida</strong>
+          </h5>
+          <h5 *ngIf="validate('location', 'min')">La Localidad es<strong> muy corta</strong></h5>
+        </div>
+        <div class=" management-input-container" isFocus>
+          <input class="management-input" formControlName="province" required
+                 type="text"/>
+          <label class="management-label">Provincía</label>
+          <span class="management-span">Provincía</span>
+          <h5 *ngIf="validate('province', 'required')">La Provincía es<strong> Requerida</strong>
+          </h5>
+          <h5 *ngIf="validate('province', 'min')">La Provincía es<strong> muy corta</strong></h5>
+        </div>
+        <div class=" management-input-container" isFocus>
+          <input class="management-input" formControlName="postalCode" required
+                 type="number "/>
+          <label class="management-label">Código Postal</label>
+          <span class="management-span">Código Postal</span>
+          <h5 *ngIf="validate('postalCode', 'required')">El Código Postal es<strong> Requerido</strong>
+          </h5>
+          <h5 *ngIf="validate('postalCode', 'min')">El Código Postal es<strong> muy corto</strong></h5>
+        </div>
+        <mat-form-field (click)="start.open()" class="management-input-container" isFocus>
+          <mat-datetimepicker-toggle [for]="start" matSuffix></mat-datetimepicker-toggle>
+          <mat-datetimepicker #start type="datetime" [openOnFocus]="true"
+                              [timeInterval]="5"></mat-datetimepicker>
+          <input class="management-input" [max]="maxDate" matInput formControlName="eventDate"
+                 [matDatetimepicker]="start"
+                 required
+                 autocomplete="false"/>
+          <label class="management-label">Fecha de evento *</label>
+          <span class="management-span">Fecha de evento *</span>
+          <h5 *ngIf="validate('eventDate', 'required')">La fecha es<strong> Requerida</strong>
+          </h5>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="management-input-container" isFocus>
+          <input class="management-input" #moduleInput [matAutocomplete]="moduleAutocomplete" matInput type="search"/>
+          <label class="management-label">Productos *</label>
+          <span class="management-span">Productos *</span>
+          <mat-autocomplete #moduleAutocomplete="matAutocomplete"
+                            (optionSelected)="onSelect($event.option.value); moduleInput.value = ''">
+            <mat-option *ngFor="let option of optionsList | filterOptions: moduleInput.value"
+                        [value]="option">
+              {{ option.title }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-icon class="caret-down-icon" matSuffix></mat-icon>
+        </mat-form-field>
+
+        @if (products.length > 0) {
+          <div class=" management-input-container">
+            <ol *ngFor="let product of products; let i = index" class="list-group list-group-numbered w-100">
+              <li>
+                <div class="d-flex justify-content-between  management-input-container">
+                  <div class="input-group flex-nowrap">
+                    <button class="btn text-md-start list btn-outline-light w-100" type="text">{{ i + 1 }}.
+                      {{ product.title }}
+                    </button>
+                    <button (click)="removeProduct(i)"
+                            class="btn btn-outline-light list pe-2 ps-2 input-group-text">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  <div class=" management-input-container" isFocus>
+                    <input [value]="product.quantity" class="management-input" (input)="changeValue($event, i)" required
+                           type="number"/>
+                    <label class="management-label">Cantidad</label>
+                    <span class="management-span">Cantidad</span>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+        }
+        <div class="d-flex justify-content-between  management-input-container">
+          <div class=" management-input-container" isFocus>
+            <input class="management-input" formControlName="shipping" required
+                   type="number"/>
+            <label class="management-label">Costo de envío</label>
+            <span class="management-span">Costo de Envío</span>
+            <h5 *ngIf="validate('shipping', 'required')">El Costo es<strong> Requerido</strong>
+            </h5>
+            <h5 *ngIf="validate('shipping', 'min')">El Costo es<strong> muy corta</strong></h5>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <input (click)="close()" class="btn btn-outline-light bi" type="submit" value="Cerrar"/>
+          <input (click)="AddQuote(quoteForm.value)" [disabled]="!quoteForm.valid"
+                 class="btn submit"
+                 type="submit" value="Crear"/>
+        </div>
+      </form>
     </div>
-</section>
+  </div>
+}

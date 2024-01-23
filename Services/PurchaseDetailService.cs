@@ -51,4 +51,10 @@ internal sealed class PurchaseDetailService : IPurchaseDetailService
 		_repositoryManager.PurchaseDetailRepository.Update(purchaseDetail);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 	}
+
+	public async Task<int> GetCountAsync(CancellationToken cancellationToken)
+	{
+		int count = await _repositoryManager.PurchaseDetailRepository.GetCountAsync(cancellationToken);
+		return count;
+	}
 }

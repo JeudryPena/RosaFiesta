@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Product;
 using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 
 using Microsoft.EntityFrameworkCore;
@@ -218,5 +219,34 @@ public class ProductRepository : IProductRepository
 			products = products.Where(x => x.CategoryId == filter.CategoryId);
 			
 		return products;
+	}
+
+	public async Task<bool> IsService(Guid optionProductId, CancellationToken cancellationToken)
+	{
+		 bool isService = await _dbContext.Products.AnyAsync(x => x.Id == optionProductId && x.IsService, cancellationToken);
+		 return isService;
+	}
+
+	public async Task<int> GetCountViews(CancellationToken cancellationToken)
+	{
+		int count = await _dbContext.Products.SumAsync(x => x.Views, cancellationToken);
+		return count;
+	}
+
+	public async Task<IEnumerable<MostPurchasedProducts>> GetMostPurchasedProductsAsync(
+		CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _dbContext.Products
+			.Where(x => x.Details != null && x.Details.Count > 0).OrderByDescending(p =>
+				p.Details.Where(x => x.CartId == null)
+					.Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))).Include(x => x.Option).Include(x => x.Details).ThenInclude(x => x.PurchaseOptions).Take(5)
+			.ToListAsync(cancellationToken);
+		
+		IEnumerable<MostPurchasedProducts> mostPurchasedProducts = products.Select(x => new MostPurchasedProducts
+		{
+			Name = x.Option.Title,
+			Value = x.Details.Where(x => x.CartId == null).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))
+		});
+		return mostPurchasedProducts;
 	}
 }

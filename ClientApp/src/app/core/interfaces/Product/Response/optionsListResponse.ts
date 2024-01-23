@@ -1,4 +1,5 @@
 export interface OptionsListResponse {
-    id: string;
-    title: string;
+  id: string;
+  title: string;
+  productId: string;
 }

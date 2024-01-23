@@ -23,12 +23,44 @@ public class PurchaseController : ControllerBase
 	{
 		_serviceManager = serviceManager;
 	}
-
-	[HttpGet("orders")]
+	
+	[HttpGet("count")]
 	[Authorize(Roles = "Admin")]
-	public async Task<IActionResult> RetrieveAll(CancellationToken cancellationToken)
+	public async Task<IActionResult> RetrieveCount(CancellationToken cancellationToken)
 	{
-		IEnumerable<OrderPreviewResponse> orders = await _serviceManager.OrderService.GetAllAsync(cancellationToken);
+		int count = await _serviceManager.PurchaseDetailService.GetCountAsync(cancellationToken);
+		return Ok(count);
+	}
+	
+	[HttpGet("gains")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveGains(CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		double gains = await _serviceManager.OrderService.GetGainsAsync(cancellationToken);
+		return Ok(gains);
+	}
+	
+	[HttpGet("most-purchased-products")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveMostPurchasedProductsAsync(CancellationToken cancellationToken)
+	{
+		IEnumerable<MostPurchasedProductsResponse> mostPurchasedProducts = await _serviceManager.ProductService.GetMostPurchasedProductsAsync(cancellationToken);
+		return Ok(mostPurchasedProducts);
+	}
+
+	[HttpGet("orders/{take:int}")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveAll(int take, CancellationToken cancellationToken)
+	{
+		int? ordersToTake;
+		if(take == 0)
+			ordersToTake = null;
+		else  
+			ordersToTake = take;
+		IEnumerable<OrderManagementPreviewResponse> orders = await _serviceManager.OrderService.GetAllAsync(ordersToTake,cancellationToken);
 		return Ok(orders);
 	}
 
@@ -60,7 +92,7 @@ public class PurchaseController : ControllerBase
 		return Ok(order);
 	}
 
-	[HttpGet("{orderId:guid}")]
+	[HttpGet("{orderId:guid}/detail")]
 	public async Task<IActionResult> RetrieveById(Guid orderId, CancellationToken cancellationToken)
 	{
 		OrderResponse bill = await _serviceManager.OrderService.GetByIdAsync(orderId, cancellationToken);
@@ -103,14 +135,14 @@ public class PurchaseController : ControllerBase
 		return Ok(purchaseDetailEntity);
 	}
 
-	[HttpGet("{orderId:guid}/purchases/{detailId:guid}/return")]
-	public async Task<IActionResult> ReturnOrder(Guid orderId, Guid detailId, CancellationToken cancellationToken)
+	[HttpGet("{orderId:guid}/return")]
+	public async Task<IActionResult> ReturnOrder(Guid orderId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
-		await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, detailId, orderId, cancellationToken);
-		return Ok();
+		bool valid = await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, orderId, cancellationToken);
+		return Ok(valid);
 	}
 
 	[HttpDelete("{detailId}")]

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-stacked-area-chart',
@@ -75,7 +75,7 @@ export class StackedAreaChartComponent {
     }
   ];
 
-  view: [number, number] = [700, 300];
+  view: [number, number] = [500, 400];
 
   // options
   legend: boolean = true;
@@ -97,7 +97,7 @@ export class StackedAreaChartComponent {
     // Object.assign(this, { multi });
   }
 
-  onSelect(event:any) {
+  onSelect(event: any) {
     console.log(event);
   }
 }

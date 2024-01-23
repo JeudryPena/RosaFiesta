@@ -13,4 +13,5 @@ public interface IWarrantyRepository
 	void Update(WarrantyEntity warranty);
 	Task<WarrantyEntity> GetPreviewAsync(Guid warrantyId, CancellationToken cancellationToken);
 	Task<Guid?> GetPreviewByProductIdAsync(Guid warrantyId, CancellationToken cancellationToken);
+	Task<Guid?> GetIdByProductId(Guid newDetailProductId, CancellationToken cancellationToken);
 }

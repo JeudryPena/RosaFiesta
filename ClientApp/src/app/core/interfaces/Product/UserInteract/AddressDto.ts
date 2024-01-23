@@ -7,4 +7,5 @@ export interface AddressDto {
   location: string
   province: string
   postalCode: string
+  email: string
 }

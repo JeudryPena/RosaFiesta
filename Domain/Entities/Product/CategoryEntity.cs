@@ -9,7 +9,5 @@ public class CategoryEntity : ByBaseEntity, IAutoBy
 	public string Name { get; set; }
 	[StringLength(250, MinimumLength = 3)]
 	public string Description { get; set; }
-	[StringLength(200, MinimumLength = 3)]
-	public string Icon { get; set; }
 	public ICollection<ProductEntity>? Products { get; set; }
 }

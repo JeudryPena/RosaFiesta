@@ -41,9 +41,6 @@
                 <a class="item" routerLink="/intranet/wishlist"><i
                   class="favorite-icon"></i>Lista de
                   deseos</a>
-                <a class="item" routerLink="/intranet/my-orders"><i
-                  class="orders-icon"></i>Mis
-                  ordenes</a>
                 <hr class="mt-2 mb-2">
                 <a (click)="logout.emit()" class="item"><i
                   class="logout-icon"></i>Salir</a>
@@ -63,7 +60,7 @@
           <span class="hdr-nav-text">Escribenos</span>
         </li>
         <ng-container *ngIf="user; else elseBlock">
-          <li class="hdr-nav-item" routerLink="/intranet/my-orders">
+          <li class="hdr-nav-item" routerLink="/intranet/settings">
             <div class="hdr-nav-icon">
               <img alt="" class="h-icon" src="./assets/icons/orders.svg"/>
             </div>
@@ -95,9 +92,6 @@
                   <a class="item" routerLink="/intranet/wishlist"><i
                     class="favorite-icon"></i>Lista de
                     deseos</a>
-                  <a class="item" routerLink="/intranet/my-orders"><i
-                    class="orders-icon"></i>Mis
-                    ordenes</a>
                   <hr class="mt-2 mb-2">
                   <a (click)="logout.emit()" class="item"><i
                     class="logout-icon"></i>Salir</a>

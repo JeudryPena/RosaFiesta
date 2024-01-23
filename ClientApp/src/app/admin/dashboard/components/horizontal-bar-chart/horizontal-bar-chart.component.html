@@ -1,5 +1,17 @@
-<ngx-charts-bar-horizontal [view]="view" [results]="single" [gradient]="gradient"
-    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)"
-    (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
-</ngx-charts-bar-horizontal>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>5 Productos mas comprados</mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <ngx-charts-bar-horizontal (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"
+                               (select)="onSelect($event)"
+                               [gradient]="gradient" [legend]="showLegend" [results]="values"
+                               [showXAxisLabel]="showXAxisLabel"
+                               [showYAxisLabel]="showYAxisLabel" [view]="view" [xAxisLabel]="xAxisLabel"
+                               [xAxis]="showXAxis"
+                               [yAxisLabel]="yAxisLabel" [yAxis]="showYAxis">
+    </ngx-charts-bar-horizontal>
+  </mat-card-content>
+</mat-card>

@@ -8,4 +8,5 @@ public class OrderPreviewResponse
 	public string? CurrencyCode { get; set; }
 	public string? TransactionDate { get; set; }
 	public string Status { get; set; }
+	public Guid? QuoteId { get; set; }
 }

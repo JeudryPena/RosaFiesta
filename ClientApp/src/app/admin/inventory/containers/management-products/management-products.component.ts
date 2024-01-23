@@ -4,7 +4,7 @@ import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {SaveModalComponent} from '@core/shared/components/save-modal/save-modal.component';
 import {Status} from '@core/shared/components/save-modal/status';
-import {ManagementProductsResponse} from '../../../../core/interfaces/Product/Response/managementProductsResponse';
+import {ManagementProductsResponse} from '@core/interfaces/Product/Response/managementProductsResponse';
 import {NgbdSortableHeader, SortEvent} from '@core/shared/directives/sortable.directive';
 import {ProductsService} from '../../services/products.service';
 import {ModalProductComponent} from '../../components/modal-product/modal-product.component';

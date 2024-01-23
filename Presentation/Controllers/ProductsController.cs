@@ -21,6 +21,14 @@ public class ProductsController : ControllerBase
 	{
 		_serviceManager = serviceManager;
 	}
+	
+	[HttpGet("count-views")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveCountViews(CancellationToken cancellationToken)
+	{
+		int count = await _serviceManager.ProductService.GetCountViews(cancellationToken);
+		return Ok(count);
+	}
 
 	[HttpGet("options-list")]
 	public async Task<IActionResult> OptionsList(CancellationToken cancellationToken)

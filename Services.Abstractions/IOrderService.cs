@@ -6,12 +6,14 @@ namespace Services.Abstractions;
 
 public interface IOrderService
 {
-	Task<IEnumerable<OrderPreviewResponse>> GetAllAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<OrderManagementPreviewResponse>> GetAllAsync(int? ordersToTake = null,
+		CancellationToken cancellationToken = default);
 	Task<IEnumerable<OrderPreviewResponse>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default);
 	Task<OrderResponse> GetByIdAsync(Guid billId, CancellationToken cancellationToken = default);
 	Task<OrderResponse> OrderPurchaseAsync(OrderDto orderDto, string userId,
 		CancellationToken cancellationToken = default);
-	Task ReturnOrderDetailAsync(string userId, Guid purchaseNumber, Guid orderId,
+	Task<bool> ReturnOrderDetailAsync(string userId, Guid orderId,
 		CancellationToken cancellationToken);
 	Task<OrderResponse> CreateOrderAsync(OrderDto orderDto, string userId, CancellationToken cancellationToken);
+	Task<double> GetGainsAsync(CancellationToken cancellationToken);
 }

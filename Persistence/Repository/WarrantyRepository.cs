@@ -47,6 +47,13 @@ internal sealed class WarrantyRepository : IWarrantyRepository
 		return id;
 	}
 
+	public async Task<Guid?> GetIdByProductId(Guid newDetailProductId, CancellationToken cancellationToken)
+	{
+		Guid? id = await _dbContext.Products.Include(x => x.Warranty)
+			.FirstOrDefaultAsync(x => x.Id == newDetailProductId, cancellationToken).ContinueWith(x => x.Result.WarrantyId, cancellationToken);
+		return id;
+	}
+
 	public void Delete(WarrantyEntity warranty)
 	=> _dbContext.Warranties.Remove(warranty);
 }

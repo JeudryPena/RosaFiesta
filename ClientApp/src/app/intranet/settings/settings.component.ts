@@ -31,15 +31,6 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.Authenticate();
-    this.authService.generatePaypalToken().subscribe({
-      next: (res) => {
-        console.log(res);
-        this.authService.orderDetails(res.access_token, "1LF99760VT745821U");
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
   }
 
   deleteMyAccount() {

@@ -41,7 +41,6 @@ function matches(product: ManagementProductsResponse, term: string, pipe: PipeTr
   providedIn: 'root'
 })
 export class ProductsService {
-
   private apiUrl = `${config.apiURL}products/`
   private _search$ = new Subject<void>();
   private _managementProducts$: ManagementProductsResponse[] = [];
@@ -107,6 +106,10 @@ export class ProductsService {
 
   set sortDirection(sortDirection: SortDirection) {
     this._set({sortDirection});
+  }
+
+  retrieveCountViews(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}count-views`);
   }
 
   retrieveFilteredProducts(filter: SearchFilter): Observable<ProductPreviewResponse[]> {

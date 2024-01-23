@@ -9,4 +9,6 @@ public interface IPurchaseDetailRepository
 	void Update(PurchaseDetailEntity purchaseDetail);
 	Task<PurchaseDetailOptions> GetOptionDetailAsync(Guid optionId, Guid detailId, CancellationToken cancellationToken);
 	void UpdateOptionDetail(PurchaseDetailOptions detail);
+	Task<int> GetCountAsync(CancellationToken cancellationToken);
+	Task CreateAsync(PurchaseDetailEntity newDetail);
 }

@@ -24,7 +24,6 @@
             <thead class="tables">
             <tr class="table-row">
               <th class="table-cell" scope="col">Nombre</th>
-              <th class="table-cell" scope="col">Icono</th>
               <th class="table-cell" scope="col">
                 Descripción
               </th>
@@ -38,9 +37,6 @@
             <tr *ngFor="let item of categories$ | async " class="scroll">
               <td>
                 <ngb-highlight [result]="item.name" [term]="service.searchTerm"></ngb-highlight>
-              <td>
-                <i class="{{item.icon}}"></i>
-              </td>
               <td>
                 <ngb-highlight [result]="item.description | truncate:30" [term]="service.searchTerm"
                                ngbTooltip="{{item.description}}" placement="top"></ngb-highlight>

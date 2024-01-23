@@ -27,7 +27,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
     }
     const phone = config.whatsappNumber;
 
-    const mensaje = `Buenas! ${user ? `soy ${user.userName}.` : ''} Y quisiera comunicarme con ustedes.`;
+    const mensaje = `Buenas! ${user ? `soy ${user.userName}. Y` : ''} quisiera comunicarme con ustedes.`;
     const link = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURI(mensaje)}`;
     window.open(link, '_blank');
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-horizontal-bar-chart',
@@ -6,21 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./horizontal-bar-chart.component.scss']
 })
 export class HorizontalBarChartComponent {
-  single = [
-    {
-      "name": "Germany",
-      "value": 8940000
-    },
-    {
-      "name": "USA",
-      "value": 5000000
-    },
-    {
-      "name": "France",
-      "value": 7200000
-    }
-  ];
-  view: [number, number] = [700, 400];
+  @Input() values: any[] = [];
+  view: [number, number] = [600, 370];
 
   // options
   showXAxis: boolean = true;
@@ -28,9 +15,9 @@ export class HorizontalBarChartComponent {
   gradient: boolean = false;
   showLegend: boolean = true;
   showXAxisLabel: boolean = true;
-  yAxisLabel: string = 'Country';
+  yAxisLabel: string = 'Productos';
   showYAxisLabel: boolean = true;
-  xAxisLabel: string = 'Population';
+  xAxisLabel: string = 'Cantidades compradas';
 
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
@@ -40,15 +27,15 @@ export class HorizontalBarChartComponent {
     // Object.assign(this, { single });
   }
 
-  onSelect(data:any): void {
+  onSelect(data: any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
-  onActivate(data:any): void {
+  onActivate(data: any): void {
     console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
-  onDeactivate(data:any): void {
+  onDeactivate(data: any): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 }

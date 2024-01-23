@@ -1,5 +1,72 @@
-<div class="page-wrapper">
-  <div class="purchase-page">
-    <div class="top-main">
-      <div class="c-container">
-        <div class="top-main-content">
+<mat-card>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Mis Ordenes</mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
+
+  <mat-card-content>
+    <table [dataSource]="dataSource" mat-table>
+      <ng-container matColumnDef="orderId">
+        <th *matHeaderCellDef mat-header-cell> Codigo de Orden</th>
+        <td *matCellDef="let element" mat-cell> {{ element.orderId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th *matHeaderCellDef mat-header-cell> Total</th>
+        <td *matCellDef="let element" mat-cell> {{ element.total | currency: element.currencyCode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="transactionDate">
+        <th *matHeaderCellDef mat-header-cell> Fecha</th>
+        <td *matCellDef="let element" mat-cell> {{ element.transactionDate }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th *matHeaderCellDef mat-header-cell> Estatus</th>
+        <td *matCellDef="let element" mat-cell> {{ element.status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell> Acciones</th>
+        <td *matCellDef="let element" mat-cell>
+          <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                  mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)="invoice(invoiceAction.VIEW, element.id)" class="d-flex align-items-center"
+                    mat-menu-item>
+              <mat-icon class="view-icon"></mat-icon>
+              <span>Ver Factura</span>
+            </button>
+            <button (click)="invoice(invoiceAction.DOWNLOAD, element.id)" class="d-flex align-items-center"
+                    mat-menu-item>
+              <mat-icon class="download-icon"></mat-icon>
+              <span>Descargar Factura</span>
+            </button>
+            <button (click)="invoice(invoiceAction.PRINT, element.id)" class="d-flex align-items-center"
+                    mat-menu-item>
+              <mat-icon class="print-icon"></mat-icon>
+              <span>Imprimir Factura</span>
+            </button>
+            <button (click)="requestRefund(element.id)" class="d-flex align-items-center"
+                    mat-menu-item>
+              <mat-icon class="refund-icon"></mat-icon>
+              <span>{{ element.status === 'Rembolso' ? 'Retirar reembolso' : 'Solicitar Rembolso' }}</span>
+            </button>
+          </mat-menu>
+        </td>
+
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   aria-label="Select page of periodic elements"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>
