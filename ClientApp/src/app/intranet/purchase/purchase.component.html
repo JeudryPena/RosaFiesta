@@ -57,7 +57,9 @@
                                   <div class="col-auto">
                                     <div class="purchase-costs-details">
                                       <p class="stock-status">
-                                        <span><i class="fas fa-check"></i></span> {{ detail.warranty?.name }}
+                                        @if (detail.warranty) {
+                                          <span><i class="fas fa-check"></i></span> {{ detail.warranty?.name }}
+                                        }
                                       </p>
                                       <div class="purchase-costs">
                                         <span class="purchase-cost-title">Total de cantidad: </span>
@@ -113,7 +115,9 @@
                 <span class="text-primary">Confirmación del Pedido</span>
               </h4>
               <p class="purchase-confirm-text">
-                Al realizar este pedido, <a class="a-link">aceptas los terminos, privacidad y condiciones de uso</a>
+                Al realizar este pedido, <a class="a-link" routerLink="/main-page/terms">aceptas los Terminos y
+                Condiciones de uso</a> y las <a class="a-link" routerLink="/main-page/privacy">Politicas de
+                Privacidad</a>
                 de Rosa Fiesta.
               </p>
               <mat-card>

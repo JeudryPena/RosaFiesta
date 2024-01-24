@@ -43,7 +43,7 @@ internal sealed class OrderRepository : IOrderRepository
 
 	public async Task<double> GetGainsAsync(CancellationToken cancellationToken)
 	{
-		double gains = await _context.Orders.Where(x => x.Status == OrderStatusType.Pagado || x.Status == OrderStatusType.Enviado || x.Status == OrderStatusType.Entregado).SumAsync(x => x.Total, cancellationToken);
-		return gains;
+		double? gains = await _context.Orders.Where(x => x.Status == OrderStatusType.Pagado || x.Status == OrderStatusType.Enviado || x.Status == OrderStatusType.Entregado || x.Status == OrderStatusType.Oficializado && x.Total != null).SumAsync(x => x.Total, cancellationToken);
+		return (double)gains;
 	}
 }

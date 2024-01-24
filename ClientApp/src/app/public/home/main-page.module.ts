@@ -12,6 +12,7 @@ import {ProductsSourceComponent} from "@public/home/components/products-source/p
 import {InquiryComponent} from "@public/home/components/inquiry/inquiry.component";
 import {ServicesComponent} from "@public/home/components/services/services.component";
 import {NewsletterComponent} from "@public/home/components/newsletter/newsletter.component";
+import {PrivacyComponent} from "@public/home/containers/privacy/privacy.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {NewsletterComponent} from "@public/home/components/newsletter/newsletter
     ProductsSourceComponent,
     InquiryComponent,
     ServicesComponent,
-    NewsletterComponent
+    NewsletterComponent,
+    PrivacyComponent
   ],
   imports: [
     mainPageRouter,

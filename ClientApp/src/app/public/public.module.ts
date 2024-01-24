@@ -3,10 +3,12 @@ import {publicRouter} from "@public/public-routing.module";
 import {PublicComponent} from '@public/public.component';
 import {SharedModule} from "@core/shared/shared.module";
 import {ReactiveFormsModule} from "@angular/forms";
+import {TermsComponent} from "@public/home/containers/terms/terms.component";
 
 @NgModule({
   declarations: [
-    PublicComponent
+    PublicComponent,
+    TermsComponent
   ],
   imports: [
     publicRouter,
