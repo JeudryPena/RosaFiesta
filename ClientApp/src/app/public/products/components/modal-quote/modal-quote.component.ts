@@ -124,9 +124,9 @@ export class ModalQuoteComponent implements OnInit {
               this.activeModal.close(true);
             });
           }, error: (error) => {
-            console.log(error);
+            console.error(error);
             const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
-            modalRef.componentInstance.title = error.error.error;
+            modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
         });

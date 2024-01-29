@@ -1,80 +1,89 @@
-<mat-card class="orders-container">
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>Ordenes</mat-card-title>
-    </mat-card-title-group>
-  </mat-card-header>
+<div class="dashboard">
+  <mat-card class="orders-container">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>Ordenes</mat-card-title>
+      </mat-card-title-group>
+    </mat-card-header>
 
-  <mat-card-content class="order-table-container">
-    <table [dataSource]="dataSource" mat-table>
+    <mat-card-content class="order-table-container">
+      <table [dataSource]="dataSource" mat-table>
 
-      <ng-container matColumnDef="customerName">
-        <th *matHeaderCellDef mat-header-cell> Nombre Cliente</th>
-        <td *matCellDef="let element" mat-cell> {{ element.address.customerName }}</td>
-      </ng-container>
+        <ng-container matColumnDef="customerName">
+          <th *matHeaderCellDef mat-header-cell> Nombre Cliente</th>
+          <td *matCellDef="let element" mat-cell> {{ element.address.customerName }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="orderId">
-        <th *matHeaderCellDef mat-header-cell> Codigo de Orden</th>
-        <td *matCellDef="let element" mat-cell> {{ element.orderId }}</td>
-      </ng-container>
+        <ng-container matColumnDef="orderId">
+          <th *matHeaderCellDef mat-header-cell> Codigo de Orden</th>
+          <td *matCellDef="let element" mat-cell> {{ element.orderId }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="total">
-        <th *matHeaderCellDef mat-header-cell> Total</th>
-        <td *matCellDef="let element" mat-cell> {{ element.total | currency: element.currencyCode }}</td>
-      </ng-container>
+        <ng-container matColumnDef="total">
+          <th *matHeaderCellDef mat-header-cell> Total</th>
+          <td *matCellDef="let element" mat-cell> {{ element.total | currency: element.currencyCode }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="transactionDate">
-        <th *matHeaderCellDef mat-header-cell> Fecha</th>
-        <td *matCellDef="let element" mat-cell> {{ element.transactionDate }}
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="transactionDate">
+          <th *matHeaderCellDef mat-header-cell> Fecha</th>
+          <td *matCellDef="let element" mat-cell> {{ element.transactionDate }}
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="status">
-        <th *matHeaderCellDef mat-header-cell> Estatus</th>
-        <td *matCellDef="let element" mat-cell> {{ element.status }}</td>
-      </ng-container>
+        <ng-container matColumnDef="status">
+          <th *matHeaderCellDef mat-header-cell> Estatus</th>
+          <td *matCellDef="let element" mat-cell> {{ element.status }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th *matHeaderCellDef mat-header-cell> Acciones</th>
-        <td *matCellDef="let element" mat-cell>
-          <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
-                  mat-icon-button>
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            @if (element.status === 'Cotización') {
-              <button (click)="oficialize(element.id, element.quoteId)" class="d-flex align-items-center"
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell> Acciones</th>
+          <td *matCellDef="let element" mat-cell>
+            <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                    mat-icon-button>
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              @if (element.status === 'Cotización') {
+                <button (click)="oficialize(element.id, element.quoteId)" class="d-flex align-items-center"
+                        mat-menu-item>
+                  <mat-icon class="oficialize-icon"></mat-icon>
+                  <span>Oficializar Cotización</span>
+                </button>
+              }
+              @if (element.status === 'Rembolso') {
+                <button (click)="refund(element.id)" class="d-flex align-items-center"
+                        mat-menu-item>
+                  <mat-icon class="refund-icon"></mat-icon>
+                  <span>Oficializar Reembolso</span>
+                </button>
+              }
+              <button (click)="invoice(invoiceAction.VIEW, element.id)" class="d-flex align-items-center"
                       mat-menu-item>
-                <mat-icon class="oficialize-icon"></mat-icon>
-                <span>Oficializar Cotización</span>
+                <mat-icon class="view-icon"></mat-icon>
+                <span>Ver Factura</span>
               </button>
-            }
-            <button (click)="invoice(invoiceAction.VIEW, element.id)" class="d-flex align-items-center"
-                    mat-menu-item>
-              <mat-icon class="view-icon"></mat-icon>
-              <span>Ver Factura</span>
-            </button>
-            <button (click)="invoice(invoiceAction.DOWNLOAD, element.id)" class="d-flex align-items-center"
-                    mat-menu-item>
-              <mat-icon class="download-icon"></mat-icon>
-              <span>Descargar Factura</span>
-            </button>
-            <button (click)="invoice(invoiceAction.PRINT, element.id)" class="d-flex align-items-center"
-                    mat-menu-item>
-              <mat-icon class="print-icon"></mat-icon>
-              <span>Imprimir Factura</span>
-            </button>
-          </mat-menu>
-        </td>
+              <button (click)="invoice(invoiceAction.DOWNLOAD, element.id)" class="d-flex align-items-center"
+                      mat-menu-item>
+                <mat-icon class="download-icon"></mat-icon>
+                <span>Descargar Factura</span>
+              </button>
+              <button (click)="invoice(invoiceAction.PRINT, element.id)" class="d-flex align-items-center"
+                      mat-menu-item>
+                <mat-icon class="print-icon"></mat-icon>
+                <span>Imprimir Factura</span>
+              </button>
+            </mat-menu>
+          </td>
 
-      </ng-container>
+        </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
-      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-    </table>
-  </mat-card-content>
-  <mat-paginator [pageSizeOptions]="[8, 14, 20]"
-                 aria-label="Select page of periodic elements"
-                 showFirstLastButtons>
-  </mat-paginator>
-</mat-card>
+        <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+      </table>
+    </mat-card-content>
+    <mat-paginator [pageSizeOptions]="[8, 14, 20]"
+                   aria-label="Select page of periodic elements"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </mat-card>
+</div>

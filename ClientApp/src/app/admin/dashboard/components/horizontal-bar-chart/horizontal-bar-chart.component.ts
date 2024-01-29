@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'app-horizontal-bar-chart',
   templateUrl: './horizontal-bar-chart.component.html',
-  styleUrls: ['./horizontal-bar-chart.component.scss']
+  styleUrls: ['./horizontal-bar-chart.component.sass']
 })
 export class HorizontalBarChartComponent {
   @Input() values: any[] = [];

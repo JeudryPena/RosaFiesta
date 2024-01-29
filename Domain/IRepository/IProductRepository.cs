@@ -65,4 +65,7 @@ public interface IProductRepository
 	Task<bool> IsService(Guid optionProductId, CancellationToken cancellationToken);
 	Task<int> GetCountViews(CancellationToken cancellationToken);
 	Task<IEnumerable<MostPurchasedProducts>> GetMostPurchasedProductsAsync(CancellationToken cancellationToken);
+	Task VerifyIfOptionExists(string optionTitle, CancellationToken cancellationToken);
+	Task VerifyIfOptionAlredyExists(string optionTitle, Guid optionId, CancellationToken cancellationToken);
+	Task<IEnumerable<MostPurchasedProductsWithDates>> GetMostPurchasedProductsWithDatesAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken);
 }

@@ -51,14 +51,18 @@ export class SettingsComponent implements OnInit {
         this.swalOptions.html = 'Se ha eliminado la cuenta correctamente';
         this.swalOptions.title = 'Cuenta Eliminada';
         this.swalService.show(this.swalOptions);
-        this.swalOptions.showCancelButton = false; //just need to show the OK button
-        context.confirmItem.fnConfirm = null;//reset the confirm function to avoid call this function again and again.
+        this.swalOptions.showCancelButton = false;
+        context.confirmItem.fnConfirm = null;
         context.authService.logout();
         context.router.navigate(['/main-page']);
         this.swalService.setConfirm(context.confirmItem);
       },
       error: (err) => {
-        this.swalService.error();
+        this.swalService.showErrors(err, {
+          icon: 'error',
+          title: 'Error',
+          text: err.message
+        });
         console.error(err);
       }
     });

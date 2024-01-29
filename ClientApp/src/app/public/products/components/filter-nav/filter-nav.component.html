@@ -55,18 +55,22 @@
     <div class="range-input">
       <mat-slider [max]="max" [min]="min" [step]="step" class="price-range"
                   discrete="false">
-        <input (dragEnd)="selectStartPrice($event.value)" [(ngModel)]="startValue" matSliderStartThumb>
-        <input (dragEnd)="selectEndPrice($event.value)" [(ngModel)]="endValue" matSliderEndThumb>
+        <input (dragEnd)="selectStartPriceEvent.emit($event.value)" [(ngModel)]="startValue" matSliderStartThumb>
+        <input (dragEnd)="selectEndPriceEvent.emit($event.value)" [(ngModel)]="endValue" matSliderEndThumb>
       </mat-slider>
     </div>
     <div class="price-input">
       <div class="field">
         <span>Minimo</span>
-        <input [value]="startValue" class="input-min" type="number">
+        <input (keyup)="selectStartPrice($event)" [(ngModel)]="startValue" [max]="max" [min]="min"
+               class="input-min"
+               type="number">
       </div>
       <div class="field">
         <span class="text-sm">Maximo</span>
-        <input [value]="endValue" class="input-max" type="number">
+        <input (keyup)="selectEndPrice($event)" [(ngModel)]="endValue" [max]="max" [min]="min"
+               class="input-max"
+               type="number">
       </div>
     </div>
   </mat-expansion-panel>

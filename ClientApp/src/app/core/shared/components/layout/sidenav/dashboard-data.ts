@@ -10,5 +10,10 @@ export const dashboardData: IData[] = [
     id: 'orders',
     icon: 'orders-icon',
     name: 'Pedidos',
+  },
+  {
+    id: 'analytics',
+    icon: 'analytics-icon',
+    name: 'Analíticas'
   }
 ];

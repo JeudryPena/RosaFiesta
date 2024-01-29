@@ -16,4 +16,10 @@ public interface IUserRepository
 	Task<IEnumerable<RoleEntity>> GetAllRolesAsync(CancellationToken cancellationToken = default);
 	Task<IEnumerable<UserEntity>> GetUsersList(CancellationToken cancellationToken = default);
 	Task<IEnumerable<RoleEntity>> GetRolesList(CancellationToken cancellationToken = default);
+	Task VerifyUserAlredyExistsAsync(string? username, string userId, CancellationToken cancellationToken);
+	Task VerifyEmailAlredyExistsAsync(string email, string userId, CancellationToken cancellationToken);
+	Task VerifyIfUserAlredyExistsAsync(string userName, CancellationToken cancellationToken);
+	Task VerifyIfEmailAlredyExistsAsync(string email, CancellationToken cancellationToken);
+	Task<List<string>> GetAdminEmails(CancellationToken cancellationToken);
+	Task<List<string>> GetAllUsersWithPromoEnabled(CancellationToken cancellationToken);
 }

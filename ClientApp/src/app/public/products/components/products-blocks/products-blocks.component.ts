@@ -26,7 +26,7 @@ export class ProductsBlocksComponent implements AfterViewInit, OnInit {
   @Input() selectedRating: number;
   @Input() startValue = 0;
   @Input() endValue = 0;
-
+  @Output() removeCategory: EventEmitter<any> = new EventEmitter<any>();
   @Input() products: ProductPreviewResponse[];
   @Input() selectedCategory: CategoryPreviewResponse;
 
@@ -46,10 +46,10 @@ export class ProductsBlocksComponent implements AfterViewInit, OnInit {
   ) {
   }
 
-  search(value: string) {
+  search(value: string | null = null) {
     const searchFilter: SearchFilter = {
       searchValue: value ? value : null,
-      categoryId: this.selectedCategory?.id ? null : this.selectedCategory.id,
+      categoryId: this.selectedCategory?.id == null ? null : this.selectedCategory?.id,
       condition: this.selectedCondition == null ? null : this.selectedCondition,
       rating: this.selectedRating == null ? null : this.selectedRating,
       startValue: this.startValue == null ? null : this.startValue,

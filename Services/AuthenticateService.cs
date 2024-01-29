@@ -51,6 +51,8 @@ internal sealed class AuthenticateService : IAuthenticateService
 		CancellationToken cancellationToken = default
 	)
 	{
+		await _repositoryManager.UserRepository.VerifyIfUserAlredyExistsAsync(registerDto.UserName, cancellationToken);
+		await _repositoryManager.UserRepository.VerifyIfEmailAlredyExistsAsync(registerDto.Email, cancellationToken);
 		UserEntity user = registerDto.Adapt<UserEntity>();
 		user.Id = Guid.NewGuid().ToString();
 		var result = await _userManager.CreateAsync(user, registerDto.Password)
@@ -76,9 +78,9 @@ internal sealed class AuthenticateService : IAuthenticateService
 
 		var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth", param);
 
-		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Confirm User</a>";
+		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Confirmar Usuario</a>";
 
-		var message = new EmailMessage(new[] { email }, "Email Confirmation token", $"Click the next button to confirm your user registration: <br/> <br/> {htmlButton}", null);
+		var message = new EmailMessage(new[] { email }, "Correo de confirmación de Email", $"Haz click en el siguiente boton para confirmar el registro de tu nuevo Usuario: <br/> <br/> {htmlButton}", null);
 		await _emailSender.SendEmailAsync(message);
 	}
 
@@ -168,9 +170,9 @@ internal sealed class AuthenticateService : IAuthenticateService
 		};
 		var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth/reset-password", param);
 
-		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
+		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reiniciar Contraseña</a>";
 
-		var message = new EmailMessage(new[] { email }, "Reset password token", $"Click the next button to reset your password: <br/> <br/> {htmlButton}", null);
+		var message = new EmailMessage(new[] { email }, "Reiniciar Contraseña Rosafiesta", $"Haz click en el siguiente boton para reiniciar tu contraseña: <br/> <br/> {htmlButton}", null);
 		await _emailSender.SendEmailAsync(message).ConfigureAwait(false);
 	}
 
@@ -218,17 +220,17 @@ internal sealed class AuthenticateService : IAuthenticateService
 		}
 		if (user == null)
 		{
-			return new LoginResponse { Message = "Invalid username or password" };
+			return new LoginResponse { Message = "Usuario o contraseña incorrecta" };
 		}
 		var result = await _userManager.CheckPasswordAsync(user, logingDto.Password);
 		if (!result)
 		{
 			await _userManager.AccessFailedAsync(user);
-			return new LoginResponse { Message = "Invalid username or password" };
+			return new LoginResponse { Message = "Usuario o contraseña incorrecta" };
 		}
 		if (!await _userManager.IsEmailConfirmedAsync(user))
 		{
-			return new LoginResponse { Message = "Email is not confirmed" };
+			return new LoginResponse { Message = "Correo no confirmado" };
 		}
 
 		if (result)
@@ -271,21 +273,21 @@ internal sealed class AuthenticateService : IAuthenticateService
 
 			var htmlButton2 = $"<a href='{callback2}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a>";
 
-			var content = $"Your account is locked out because of many access failures. To unlock the account click this link: <br> <br> {htmlButton} <br> <br> or you could reset your password in this link: <br> <br> {htmlButton2}";
+			var content = $"Tu usuario de RosaFiesta, le ha sido bloqueado el acceso para protegerte, debido a que se ha intentado acceder varias veces sin exito. Para desbloquearla haz click en el siguiente link: <br> <br> {htmlButton} <br> <br> o si sientes que debas cambiar tu contraseña para estar mas seguro, haz click en el siguiente enlace: <br> <br> {htmlButton2}";
 
 			var message = new EmailMessage(new[] { logingDto.Username },
-				"Locked out account information", content, null);
+				"Usuario bloqueado temporalmente", content, null);
 
 			await _emailSender.SendEmailAsync(message).ConfigureAwait(false);
 
-			return new LoginResponse { Message = "User account is locked out for 5 minutes" };
+			return new LoginResponse { Message = "El usuario ha sido bloqueado temporalmente, revisa tu correo" };
 		}
 
 		if (await _userManager.IsLockedOutAsync(user))
 		{
-			return new LoginResponse { Message = "User account is temporally locked out" };
+			return new LoginResponse { Message = "El usuario esta bloqueado temporalmente, revisa tu correo" };
 		}
-		return new LoginResponse { Message = "Invalid username or password" };
+		return new LoginResponse { Message = "Usuario o contraseña invalida" };
 	}
 
 	public LoginResponse RefreshToken(TokenApiDto tokenApiDto)

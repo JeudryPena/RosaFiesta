@@ -3,7 +3,9 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {ReviewsService} from "@intranet/services/reviews.service";
 import {ReviewDto} from "@core/interfaces/Product/UserInteract/reviewDto";
 import {DetailReviewsResponse} from "@core/interfaces/Product/UserInteract/Response/reviewResponse";
-import Swal from "sweetalert2";
+import Swal, {SweetAlertOptions} from "sweetalert2";
+import {SwalService} from "@core/shared/services/swal.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-detail-review-tab',
@@ -30,10 +32,13 @@ export class DetailReviewTabComponent implements OnInit, OnChanges {
     description: []
   });
 
+  swalOptions: SweetAlertOptions = {icon: 'info'};
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly reviewService: ReviewsService
+    private readonly reviewService: ReviewsService,
+    private readonly swalService: SwalService,
+    private readonly router: Router
   ) {
   }
 
@@ -108,6 +113,22 @@ export class DetailReviewTabComponent implements OnInit, OnChanges {
   }
 
   submitReview(formValue: any) {
+    if (!this.isAuthenticated) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Para poder comentar debes iniciar sesión",
+        icon: "info",
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Ir a inicio de sesión",
+        cancelButtonText: "Cancelar"
+      }).then((response) => {
+        if (response.isConfirmed) {
+          this.router.navigate(['/auth']);
+        }
+      });
+      return;
+    }
     const value = {...formValue};
     const reviewObject: ReviewDto = {
       rating: value.rating,

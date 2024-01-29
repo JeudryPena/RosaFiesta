@@ -8,7 +8,7 @@ import {MostPurchasedProductsResponse} from "@core/interfaces/Product/Response/M
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit {
 

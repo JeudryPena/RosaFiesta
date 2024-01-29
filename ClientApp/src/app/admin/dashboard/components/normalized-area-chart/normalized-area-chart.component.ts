@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-normalized-area-chart',
@@ -11,15 +11,15 @@ export class NormalizedAreaChartComponent {
       "name": "Germany",
       "series": [
         {
-          "name": "1990",
+          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 62000000
         },
         {
-          "name": "2010",
+          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 73000000
         },
         {
-          "name": "2011",
+          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 89400000
         }
       ]
@@ -29,15 +29,15 @@ export class NormalizedAreaChartComponent {
       "name": "USA",
       "series": [
         {
-          "name": "1990",
+          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 250000000
         },
         {
-          "name": "2010",
+          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 309000000
         },
         {
-          "name": "2011",
+          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 311000000
         }
       ]
@@ -47,15 +47,15 @@ export class NormalizedAreaChartComponent {
       "name": "France",
       "series": [
         {
-          "name": "1990",
+          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 58000000
         },
         {
-          "name": "2010",
+          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 50000020
         },
         {
-          "name": "2011",
+          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 58000000
         }
       ]
@@ -64,11 +64,15 @@ export class NormalizedAreaChartComponent {
       "name": "UK",
       "series": [
         {
-          "name": "1990",
+          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 57000000
         },
         {
-          "name": "2010",
+          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
+          "value": 62000000
+        },
+        {
+          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
           "value": 62000000
         }
       ]
@@ -84,19 +88,15 @@ export class NormalizedAreaChartComponent {
   yAxis: boolean = true;
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Year';
-  yAxisLabel: string = 'Normalized Population';
+  xAxisLabel: string = 'Mes';
+  yAxisLabel: string = 'Cantidades Compradas';
   timeline: boolean = true;
 
   colorScheme = {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 
-  constructor() {
-    // Object.assign(this, { multi });
-  }
-
-  onSelect(event:any) {
+  onSelect(event: any) {
     console.log(event);
   }
 }

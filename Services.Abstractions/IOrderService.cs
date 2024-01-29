@@ -16,4 +16,5 @@ public interface IOrderService
 		CancellationToken cancellationToken);
 	Task<OrderResponse> CreateOrderAsync(OrderDto orderDto, string userId, CancellationToken cancellationToken);
 	Task<double> GetGainsAsync(CancellationToken cancellationToken);
+	Task<bool> OficializeReturnOrderDetailAsync(string userId, Guid orderId, CancellationToken cancellationToken);
 }

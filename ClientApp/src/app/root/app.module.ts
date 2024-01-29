@@ -1,4 +1,4 @@
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -19,6 +19,7 @@ import {NgbToastModule} from "@ng-bootstrap/ng-bootstrap";
 import {RouterModule} from "@angular/router";
 import {register} from "swiper/element/bundle";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
+import {ErrorHandlerService} from "@core/services/error-handler.service";
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -54,6 +55,11 @@ register();
     SweetAlert2Module.forRoot()
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerService,
+      multi: true
+    },
     DecimalPipe,
     {
       provide: 'SocialAuthServiceConfig',

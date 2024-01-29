@@ -64,4 +64,6 @@ public interface IProductService
 
 	Task<int> GetCountViews(CancellationToken cancellationToken);
 	Task<IEnumerable<MostPurchasedProductsResponse>> GetMostPurchasedProductsAsync(CancellationToken cancellationToken);
+	Task<IEnumerable<MostPurchasedProductsWithDatesResponse>> GetMostPurchasedProductsWithDatesAsync(DateOnly start,
+		DateOnly end, CancellationToken cancellationToken);
 }

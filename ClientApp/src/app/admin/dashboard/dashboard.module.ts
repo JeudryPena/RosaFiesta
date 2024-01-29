@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {DashboardComponent} from "@admin/dashboard/dashboard.component";
 import {dashboardRouter} from "@admin/dashboard/dashboard-routing.module";
-import {StatisticsComponent} from "@admin/dashboard/containers/statistics/statistics.component";
 import {BubleChartComponent} from "@admin/dashboard/components/buble-chart/buble-chart.component";
 import {GaugeChartComponent} from "@admin/dashboard/components/gauge-chart/gauge-chart.component";
 import {
@@ -11,7 +10,6 @@ import {HeartChartComponent} from "@admin/dashboard/components/heart-chart/heart
 import {
   HorizontalBarChartComponent
 } from "@admin/dashboard/components/horizontal-bar-chart/horizontal-bar-chart.component";
-import {LineChartComponent} from "@admin/dashboard/components/line-chart/line-chart.component";
 import {LinearGaugeChartComponent} from "@admin/dashboard/components/linear-gauge-chart/linear-gauge-chart.component";
 import {
   NormalizedAreaChartComponent
@@ -32,10 +30,10 @@ import {
   NormalizedVerticalBarChartComponent
 } from "@admin/dashboard/components/normalized-vertical-bar-chart/normalized-vertical-bar-chart.component";
 import {OrdersComponent} from "@admin/dashboard/containers/orders/orders.component";
+import {AnalyticsComponent} from "@admin/dashboard/containers/analytics/analytics.component";
 
 @NgModule({
   declarations: [
-    StatisticsComponent,
     DashboardComponent,
     AdvancedPieChartComponent,
     AreaChartComponent,
@@ -44,7 +42,6 @@ import {OrdersComponent} from "@admin/dashboard/containers/orders/orders.compone
     GroupedHorizontalBarComponent,
     HeartChartComponent,
     HorizontalBarChartComponent,
-    LineChartComponent,
     LinearGaugeChartComponent,
     NormalizedAreaChartComponent,
     NormalizedVerticalBarChartComponent,
@@ -55,7 +52,8 @@ import {OrdersComponent} from "@admin/dashboard/containers/orders/orders.compone
     StackedAreaChartComponent,
     StackedVerticalBarChartComponent,
     TreeMapChartComponent,
-    OrdersComponent
+    OrdersComponent,
+    AnalyticsComponent
   ],
   imports: [
     dashboardRouter,

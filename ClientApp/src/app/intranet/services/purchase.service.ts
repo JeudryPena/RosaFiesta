@@ -54,4 +54,8 @@ export class PurchaseService {
   retrieveMostPurchasedProducts(): Observable<MostPurchasedProductsResponse[]> {
     return this.http.get<MostPurchasedProductsResponse[]>(`${this.apiUrl}most-purchased-products`);
   }
+
+  retrieveMostPurchasedProductsWithDates(start: string, end: string) {
+    return this.http.get(`${this.apiUrl}most-purchased-products/${start}/${end}`);
+  }
 }

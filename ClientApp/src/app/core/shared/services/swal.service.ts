@@ -20,37 +20,23 @@ export class SwalService {
   constructor() {
   }
 
-  // Show swal with options
-  // icon: SweetAlertIcon = 'success' | 'error' | 'warning' | 'info' | 'question'
   show(options: SweetAlertOptions) {
     this.swalSource.next(options);
   }
 
-  // Close the swal
   close() {
     this.swalCloseSource.next(true);
   }
 
   // Set the confirm event
   setConfirm(confirmItem: SwalConfirmItem) {
-
     this.swalConfirmSource.next(confirmItem);
   }
 
   // Handle the HttpErrorResponse and show the error box
   showErrors(error: any, options: SweetAlertOptions) {
-    console.log('%c [ error ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', error);
-    if (error.error && error.error.errors) {
-      var errors = '';
-      for (var key in error.error.errors) {
-        errors += error.error.errors[key] + '<br>';
-      }
-      options.html = error.error.title + '<br>' + errors;
-    } else {
-      options.html = error.error;
-    }
+    console.error('%c [ error ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', error);
     options.icon = 'error';
-    //show the dialog
     this.swalSource.next(options);
   }
 

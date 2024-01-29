@@ -2,8 +2,9 @@
   <app-products-head (search)="search($event)" [categoryName]="selectedCategory?.name"
                      [total]="products.length"></app-products-head>
   <div class="products-section">
-    <app-filter-tags (removeCondition)="removeCondition.emit()"
-                     (removeRangeValue)="removeRangeValue.emit()" (removeRating)="removeRating.emit()"
+    <app-filter-tags (removeCategory)="removeCategory.emit()"
+                     (removeCondition)="removeCondition.emit()" (removeRangeValue)="removeRangeValue.emit()"
+                     (removeRating)="removeRating.emit()" (search)="search()"
                      [categoryName]="selectedCategory?.name" [endValue]="endValue"
                      [selectedCondition]="selectedCondition"
                      [selectedRating]="selectedRating"

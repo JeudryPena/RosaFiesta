@@ -36,12 +36,12 @@ public sealed class ServiceManager : IServiceManager
 		_lazyCategoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager));
 		_lazySupplierService = new Lazy<ISupplierService>(() => new SupplierService(repositoryManager));
 		_lazyWarrantyService = new Lazy<IWarrantyService>(() => new WarrantyService(repositoryManager));
-		_lazyDiscountService = new Lazy<IDiscountService>(() => new DiscountService(repositoryManager));
+		_lazyDiscountService = new Lazy<IDiscountService>(() => new DiscountService(repositoryManager, emailSender));
 		_lazyPurchaseDetailService = new Lazy<IPurchaseDetailService>(() => new PurchaseDetailService(repositoryManager));
 		_lazyCartService = new Lazy<ICartService>(() => new CartService(repositoryManager));
 		_lazyReviewService = new Lazy<IReviewService>(() => new ReviewService(repositoryManager));
 		_lazyWishListService = new Lazy<IWishListService>(() => new WishListService(repositoryManager));
-		_lazyBillService = new Lazy<IOrderService>(() => new OrderService(repositoryManager));
+		_lazyBillService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, emailSender));
 		_lazyFileService = new Lazy<IFileService>(() => new FileService());
 		_lazyQuoteService = new Lazy<IQuoteService>(() => new QuoteService(repositoryManager));
 	}

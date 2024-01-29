@@ -6,11 +6,12 @@ import {MatSort} from "@angular/material/sort";
 import {SweetAlertOptions} from "sweetalert2";
 import {InvoiceAction} from "@core/interfaces/invoice";
 import {PurchaseService} from "@intranet/services/purchase.service";
-import {SwalService} from "@core/shared/services/swal.service";
+import {SwalConfirmItem, SwalService} from "@core/shared/services/swal.service";
 import {FilesService} from "@core/shared/services/files.service";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalQuoteComponent} from "@public/products/components/modal-quote/modal-quote.component";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-orders',
@@ -25,6 +26,11 @@ export class OrdersComponent {
   swalOptions: SweetAlertOptions = {icon: 'info'};
 
   invoiceAction = InvoiceAction;
+  public confirmItem: SwalConfirmItem = {
+    fnConfirm: this.confirmRefund,
+    confirmData: null,
+    context: this
+  };
 
   constructor(
     private readonly purchaseService: PurchaseService,
@@ -85,5 +91,40 @@ export class OrdersComponent {
     modalRef.componentInstance.title = 'Oficializar Cotización';
     modalRef.componentInstance.orderId = id;
     modalRef.componentInstance.id = quoteId;
+  }
+
+  refund(id) {
+    this.swalOptions.icon = 'question';
+    this.swalOptions.title = 'Oficializar Reembolso';
+    this.swalOptions.html = `¿Esta seguro de que desea oficializar el reembolso?`;
+    this.swalOptions.showConfirmButton = true;
+    this.swalOptions.showCancelButton = true;
+    this.confirmItem.fnConfirm = this.confirmRefund;
+    this.swal.setConfirm(this.confirmItem);
+    this.swal.show(this.swalOptions);
+  }
+
+  confirmRefund(isConfirm: string, data: any, context: any) {
+    context.authService.deleteMyAccount().subscribe({
+      next: () => {
+        this.swalOptions.icon = 'success';
+        this.swalOptions.html = 'Se ha realizado el reembolso correctamente';
+        this.swalOptions.title = 'Cuenta Eliminada';
+        this.swal.show(this.swalOptions);
+        this.swalOptions.showCancelButton = false;
+        context.confirmItem.fnConfirm = null;
+        context.authService.logout();
+        context.router.navigate(['/main-page']);
+        this.swal.setConfirm(context.confirmItem);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.swal.showErrors(err, {
+          icon: 'error',
+          title: 'Error',
+          text: err.message
+        });
+        console.error(err);
+      }
+    });
   }
 }

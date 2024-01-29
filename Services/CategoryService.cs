@@ -85,6 +85,7 @@ internal sealed class CategoryService : ICategoryService
 
 	public async Task CreateAsync(string userId, CategoryDto categoryDto, CancellationToken cancellationToken = default)
 	{
+		await _repositoryManager.CategoryRepository.CheckIfCategoryExistsAsync(categoryDto.Name, cancellationToken);
 		var category = new CategoryEntity();
 		category = categoryDto.Adapt(category);
 		_repositoryManager.CategoryRepository.Insert(category);
@@ -93,6 +94,7 @@ internal sealed class CategoryService : ICategoryService
 
 	public async Task UpdateAsync(string userId, int categoryId, CategoryDto categoryUpdateDto, CancellationToken cancellationToken = default)
 	{
+		await _repositoryManager.CategoryRepository.CheckIfCategoryExistsAsync(categoryUpdateDto.Name, cancellationToken);
 		CategoryEntity category = await _repositoryManager.CategoryRepository.GetByIdAsync(categoryId, cancellationToken);
 		category = categoryUpdateDto.Adapt(category);
 		_repositoryManager.CategoryRepository.Update(category);

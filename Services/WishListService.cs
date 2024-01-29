@@ -55,7 +55,7 @@ internal sealed class WishListService : IWishListService
 		foreach (var i in wishListDto)
 		{
 			if (wishListEntity.ProductsWish.Any(x => x.OptionId == i.OptionId))
-				throw new Exception("Product already exists in wish list");
+				throw new Exception("El producto ya esta en tu lista de Deseos");
 			wishListEntity.ProductsWish.Add(new()
 			{
 				WishListId = wishListEntity.Id,
@@ -77,7 +77,7 @@ internal sealed class WishListService : IWishListService
 		if (wishListEntity.ProductsWish == null)
 			wishListEntity.ProductsWish = new List<WishListProductsEntity>();
 		if (wishListEntity.ProductsWish.Any(x => x.OptionId == optionId))
-			throw new Exception("Product already exists in wish list");
+			throw new Exception("El producto ya esta en tu lista de Deseos.");
 		wishListEntity.ProductsWish.Add(new()
 		{
 			WishListId = wishListEntity.Id,
@@ -98,7 +98,7 @@ internal sealed class WishListService : IWishListService
 	{
 		WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListByIdAsync(userId, cancellationToken);
 		if (wishListEntity.ProductsWish == null)
-			throw new Exception("Wish list is alredy empty");
+			throw new Exception("La lista de Deseos ya esta vacía.");
 		wishListEntity.ProductsWish.Clear();
 		_repositoryManager.WishListRepository.Update(wishListEntity);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);

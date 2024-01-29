@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticateService} from '@auth/services/authenticate.service';
 import {register} from "swiper/element/bundle";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal, {SweetAlertOptions} from "sweetalert2";
 import {SwalComponent} from "@sweetalert2/ngx-sweetalert2";
 import {SwalService} from "@core/shared/services/swal.service";
 
@@ -47,51 +47,43 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.swalConfirmData = confirmItem.confirmData;
       this.swalComponentContext = confirmItem.context;
     });
-    //handle close the swal event
+
     this.swalService.swalCloseEmitted$.subscribe(item => {
-      this.swalBox.close();
+      this.swalBox.close().then(() => {
+        this.swalService.setConfirm({
+          fnConfirm: null,
+          confirmData: null,
+          context: null
+        })
+        this.swalBox.update({
+          showCancelButton: false
+        });
+      });
     });
 
 
   }
 
   handleConfirm(item: string, data: any, context: any): void {
-    //this will be overwrite by this.swalService.swalConfirmEmitted$
+
+  }
+
+  handleDismiss($event: Swal.DismissReason) {
+    this.swalService.close();
+  }
+
+  handleDenial() {
+    this.swalService.close();
   }
 
   //just for reset(remove) the existing handle confirm function
   resetHandleConfirm(item: string, data: any, context: any): void {
-    //this will be overwrite by this.swalService.swalConfirmEmitted$
-  }
 
-  deleteConfirm(isConfirm: string, data: any, context: any): void {
-    //console.log('delete item', data);
-    // call the service to delete user
-    context.userManagementService.delete(data.id).subscribe((result: {
-      success: any;
-      message: string | HTMLElement | JQuery | undefined;
-    }) => {
-      this.swalOptions.showCancelButton = false; //just need to show the OK button
-      context.confirmItem.fnConfirm = null;//reset the confirm function to avoid call this function again and again.
-      this.swalService.setConfirm(context.confirmItem);
-      if (result.success) {
-        this.swalOptions.icon = 'success'; //set the icon
-        this.swalOptions.html = `The user ${data.name} has been deleted!`;
-      } else {
-        this.swalOptions.icon = 'error';
-        this.swalOptions.html = result.message;
-      }
-      this.swalService.show(this.swalOptions);
-      context.loadData();
-    }, (error: { error: any; }) => {
-      console.error(error);
-      this.swalService.showErrors(error.error, this.swalOptions);
-    });
   }
 
   ngOnInit(): void {
     this.authService.sendAuthStateChangeNotification(true);
-    
+
   }
 
 

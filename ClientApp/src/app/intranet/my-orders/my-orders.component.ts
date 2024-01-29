@@ -20,7 +20,6 @@ export class MyOrdersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filesTbSort') filesTbSort = new MatSort();
   displayedColumns: string[] = ['orderId', 'total', 'transactionDate', 'status', 'actions'];
-  swalOptions: SweetAlertOptions = {icon: 'info'};
 
   invoiceAction = InvoiceAction;
 
@@ -50,10 +49,11 @@ export class MyOrdersComponent implements OnInit {
   requestRefund(id: string) {
     this.purchaseService.requestRefund(id).subscribe({
       next: (data: boolean) => {
-        this.swalOptions.title = data ? 'Solicitud de reembolso enviada' : 'No se pudo enviar la solicitud de reembolso';
-        this.swalOptions.icon = data ? 'success' : 'error';
-        this.swalOptions.text = data ? 'Se ha enviado la solicitud de reembolso correctamente' : 'Su compra ya excedio el tiempo para solicitar un reembolso';
-        this.swal.show(this.swalOptions);
+        let swalOptions: SweetAlertOptions = {};
+        swalOptions.title = data ? 'Solicitud de reembolso enviada' : 'No se pudo enviar la solicitud de reembolso';
+        swalOptions.icon = data ? 'success' : 'error';
+        swalOptions.text = data ? 'Se ha enviado la solicitud de reembolso correctamente' : 'Su compra ya excedio el tiempo para solicitar un reembolso';
+        this.swal.show(swalOptions);
         this.retrieveData()
       },
       error: (error) => {

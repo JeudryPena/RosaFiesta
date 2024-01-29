@@ -139,7 +139,7 @@ export class ModalCategoryComponent implements OnInit {
             });
           }, error: (error) => {
             const modalRef = this.modalService.open(SaveModalComponent, {size: '', scrollable: true});
-            modalRef.componentInstance.title = error.error.error;
+            modalRef.componentInstance.title = error;
             modalRef.componentInstance.status = Status.Failed;
           }
         });

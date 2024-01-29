@@ -17,6 +17,8 @@ export class FilterTagsComponent {
   @Output() removeCondition: EventEmitter<any> = new EventEmitter<any>();
   @Output() removeRating: EventEmitter<any> = new EventEmitter<any>();
   @Output() removeRangeValue: EventEmitter<any> = new EventEmitter<any>();
+  @Output() search: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removeCategory: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private readonly router: Router
@@ -45,11 +47,5 @@ export class FilterTagsComponent {
     this.selectedRating = null;
     this.startValue = 0;
     this.endValue = 0;
-  }
-
-  removeFilter() {
-    this.router.navigate([`/products/search`]).then(() => {
-      window.location.reload();
-    });
   }
 }

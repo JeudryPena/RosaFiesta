@@ -48,4 +48,11 @@ public class CategoryRepository : ICategoryRepository
 		string name = await _rosaFiestaContext.Categories.Include(x => x.Products).FirstOrDefaultAsync(x => x.Products.Any(x => x.Id == productId), cancellationToken).ContinueWith( x => x.Result.Name, cancellationToken);
 		return name;
 	}
+
+	public async Task CheckIfCategoryExistsAsync(string categoryDtoName, CancellationToken cancellationToken)
+	{
+		bool exists = await _rosaFiestaContext.Categories.AnyAsync(x => x.Name == categoryDtoName, cancellationToken);
+		if (exists)
+			throw new Exception("Ya existe una categoría con ese nombre");
+	}
 }

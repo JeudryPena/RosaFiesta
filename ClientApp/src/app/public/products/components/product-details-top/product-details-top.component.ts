@@ -9,7 +9,7 @@ import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {WisheslistService} from "@intranet/services/wisheslist.service";
 import {SwalService} from "@core/shared/services/swal.service";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal, {SweetAlertOptions} from "sweetalert2";
 
 @Component({
   selector: 'app-product-details-top',
@@ -35,6 +35,22 @@ export class ProductDetailsTopComponent implements OnInit {
   }
 
   buyNow(cartFormValue: any) {
+    if (!this.isAuthenticated) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Para poder realizar una compra, debes iniciar sesión",
+        icon: "info",
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Ir a inicio de sesión",
+        cancelButtonText: "Cancelar"
+      }).then((response) => {
+        if (response.isConfirmed) {
+          this.router.navigate(['/auth']);
+        }
+      });
+      return;
+    }
     const cart = {...cartFormValue};
 
     const cartDto: PurchaseDetailDto = {
@@ -80,6 +96,22 @@ export class ProductDetailsTopComponent implements OnInit {
   }
 
   addToWishList(optionId: string) {
+    if (!this.isAuthenticated) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Para poder añadir a una Lista de Deseos, debes iniciar sesión",
+        icon: "info",
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Ir a inicio de sesión",
+        cancelButtonText: "Cancelar"
+      }).then((response) => {
+        if (response.isConfirmed) {
+          this.router.navigate(['/auth']);
+        }
+      });
+      return;
+    }
     this.wishlistService.addToWishList(optionId).subscribe({
       next: () => {
         this.swalOptions.icon = 'success';
@@ -88,7 +120,7 @@ export class ProductDetailsTopComponent implements OnInit {
         this.swalService.show(this.swalOptions);
       },
       error: (error) => {
-        this.swalService.showErrors(error, {title: 'Error'});
+        this.swalService.showErrors(error, {title: 'Error', text: error.message});
       }
     });
   }
@@ -104,6 +136,22 @@ export class ProductDetailsTopComponent implements OnInit {
   }
 
   cartSubmit(cartFormValue: any) {
+    if (!this.isAuthenticated) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Para poder añadir al carrito, debes iniciar sesión",
+        icon: "info",
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Ir a inicio de sesión",
+        cancelButtonText: "Cancelar"
+      }).then((response) => {
+        if (response.isConfirmed) {
+          this.router.navigate(['/auth']);
+        }
+      });
+      return;
+    }
     const cart = {...cartFormValue};
 
     const cartDto: PurchaseDetailDto = {

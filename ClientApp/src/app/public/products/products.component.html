@@ -13,6 +13,7 @@
                             (selectEndPriceEvent)="selectEndPrice($event)"
                             (selectConditionEvent)="selectCondition($event)"></app-filter-nav>
             <app-products-blocks [selectedCategory]="selectedCategory" [selectedCondition]="selectedCondition"
+                                 (removeCategory)="removeCategory()"
                                  [selectedRating]="selectedRating" [startValue]="startValue" [endValue]="endValue"
                                  (removeCondition)="removeCondition()"
                                  (removeRating)="removeRating()" (removeRangeValue)="removeRangeValue()"

@@ -114,7 +114,7 @@ export class CartComponent implements OnInit {
         });
       }, error: (error) => {
         this.swalOptions.icon = 'error';
-        this.swalOptions.html = error.error.error;
+        this.swalOptions.html = error;
         this.swalOptions.title = 'Stock insuficiente';
         this.swalService.show(this.swalOptions);
         this.getCartItems();

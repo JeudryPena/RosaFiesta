@@ -61,6 +61,8 @@ internal sealed class UserService : IUserService
 	public async Task UpdateAsync(string? username, string userId, UserForCreationDto userForUpdateDto,
 		CancellationToken cancellationToken = default)
 	{
+		await _repositoryManager.UserRepository.VerifyUserAlredyExistsAsync(userForUpdateDto.UserName, userId, cancellationToken);
+		await _repositoryManager.UserRepository.VerifyEmailAlredyExistsAsync(userForUpdateDto.Email, userId, cancellationToken);
 		UserEntity user = await _repositoryManager.UserRepository.GetByIdAsync(
 			userId,
 			cancellationToken
@@ -110,6 +112,8 @@ internal sealed class UserService : IUserService
 
 	public async Task CreateAsync(UserForCreationDto userForCreationDto, string userId, CancellationToken cancellationToken = default)
 	{
+		await _repositoryManager.UserRepository.VerifyIfUserAlredyExistsAsync(userForCreationDto.UserName, cancellationToken);
+		await _repositoryManager.UserRepository.VerifyIfEmailAlredyExistsAsync(userForCreationDto.Email, cancellationToken);
 		UserEntity user = userForCreationDto.Adapt<UserEntity>();
 		user.EmailConfirmed = true;
 		user.LockoutEnabled = true;

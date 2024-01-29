@@ -26,15 +26,19 @@
       padding-left: 6px
       padding-right: 6px
       column-gap: 6px
+      white-space: nowrap
 
-      .span
+      span
         color: a.$dark
         @include a.text(600)
 
       button
-        color: a.$blue
         align-items: center
         display: flex
+        width: 100%
+        padding: 0
+        border: 0
+        height: 100%
 
         .close-icon
           width: 16px

@@ -269,6 +269,21 @@
   .btn-clear-filters
     @include a.text()
     font-size: a.$text-sm
+    padding-left: 6px !important
+    padding-right: 6px !important
+    border-radius: 5px !important
+
+  .btn-apply-filters
+    @include a.text()
+    font-size: a.$text-sm
+    color: a.$blue
+    border-radius: 5px !important
+    padding-left: 6px !important
+    padding-right: 6px !important
+
+    &:hover
+      background-color: a.$blue
+      color: a.$white !important
 
 .products-blocks
   background-color: a.$bg-gray

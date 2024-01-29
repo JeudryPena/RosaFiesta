@@ -4,9 +4,10 @@ import {WisheslistService} from "@intranet/services/wisheslist.service";
 import {Router} from "@angular/router";
 import {encrypt} from "@core/shared/util/util-encrypt";
 import {SwalService} from "@core/shared/services/swal.service";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal, {SweetAlertOptions} from "sweetalert2";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share-buttons.component";
+import {AuthenticateService} from "@auth/services/authenticate.service";
 
 @Component({
   selector: 'app-product-cards',
@@ -16,13 +17,17 @@ import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share
 export class ProductCardsComponent implements OnInit {
   @Input() products: ProductPreviewResponse[];
   swalOptions: SweetAlertOptions = {icon: 'info'};
+  isAuthenticated: boolean;
 
   constructor(
     private readonly wishlistService: WisheslistService,
     private readonly router: Router,
     private readonly swalService: SwalService,
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private readonly authService: AuthenticateService
   ) {
+    this.isAuthenticated = this.authService.isUserAuthenticated();
+
   }
 
   ngOnInit(): void {
@@ -46,6 +51,22 @@ export class ProductCardsComponent implements OnInit {
   }
 
   addToWishList(optionId: string) {
+    if (!this.isAuthenticated) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Para poder añadir un producto a la Lista de Deseos, debes iniciar sesión",
+        icon: "info",
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Ir a inicio de sesión",
+        cancelButtonText: "Cancelar"
+      }).then((response) => {
+        if (response.isConfirmed) {
+          this.router.navigate(['/auth']);
+        }
+      });
+      return;
+    }
     this.wishlistService.addToWishList(optionId).subscribe({
       next: () => {
         this.swalOptions.icon = 'success';
@@ -54,7 +75,7 @@ export class ProductCardsComponent implements OnInit {
         this.swalService.show(this.swalOptions);
       },
       error: (error) => {
-        this.swalService.showErrors(error, {title: 'Error'});
+        this.swalService.showErrors(error, {title: 'Error', text: error.message});
       }
     });
   }

@@ -3,7 +3,7 @@
     @if (categoryName) {
       <li class="tag-item">
         <span>Categoria: </span>{{ categoryName }}
-        <button type="button" (click)="removeFilter()"><i class="close-icon"></i></button>
+        <button type="button" (click)="removeCategory.emit()"><i class="close-icon"></i></button>
       </li>
     }
     @if (selectedCondition) {
@@ -25,11 +25,16 @@
       </li>
     }
     @if (categoryName || selectedCondition || selectedRating || startValue || endValue) {
-      <li class="tag-item">
-        <button (click)="cleanFilters()" class="btn-link btn-clear-filters" type="button">
+      <li class="tag-item p-0">
+        <button (click)="cleanFilters()" class="btn btn-outline-danger btn-clear-filters" type="button">
           Limpiar filtros
         </button>
       </li>
     }
+    <li class="tag-item p-0">
+      <button (click)="search.emit()" class="btn-link btn-apply-filters" type="button">
+        Aplicar Filtros
+      </button>
+    </li>
   </ul>
 </div>

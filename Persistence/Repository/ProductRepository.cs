@@ -180,19 +180,19 @@ public class ProductRepository : IProductRepository
 	public async Task<IEnumerable<ProductEntity>> FilterProductsAsync(SearchFilter filter,
 		CancellationToken cancellationToken)
 	{
-		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Image).ToListAsync(cancellationToken);
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Options).ThenInclude(x => x.Image).Include(x => x.Options).ThenInclude(x => x.Reviews).ToListAsync(cancellationToken);
 		if(!string.IsNullOrEmpty(filter.SearchValue))
 			products = products.Where(x => x.Options.Any(o => o.Title.ToLower().Contains(filter.SearchValue.ToLower())));
-		if(filter.Condition != null)
-			products = products.Where(x => x.Options.Any(o => o.Condition == (ConditionType)filter.Condition));
-		if(filter.CategoryId != null)
-			products = products.Where(x => x.CategoryId == filter.CategoryId);
-		if(filter.StartValue != null)
-			products = products.Where(x => x.Options.Any(o => o.Price >= filter.StartValue));
-		if(filter.EndValue != null)
-			products = products.Where(x => x.Options.Any(o => o.Price <= filter.EndValue));
-		if (filter.Rating != null)
-			products = products.Where(x => x.Options.Any(o => o.Reviews != null && o.Reviews.Average(r => r.Rating) >= filter.Rating));
+		if (filter.Condition is > 0)
+			products = products.Where(x => x.Options.Any(o => o.Condition == (ConditionType)filter.Condition)).ToList();
+		if (filter.CategoryId != null)
+			products = products.Where(x => x.CategoryId == filter.CategoryId).ToList();
+		if(filter.StartValue is > 0)
+			products = products.Where(x => x.Options.Any(o => o.Price >= filter.StartValue)).ToList();
+		if(filter.EndValue is > 0)
+			products = products.Where(x => x.Options.Any(o => o.Price <= filter.EndValue)).ToList();
+		if (filter.Rating is > 0)
+			products = products.Where(x => x.Options.Any(o => o.Reviews is { Count: > 0 } && o.Reviews.Average(r => r.Rating) >= filter.Rating)).ToList();
 			
 		return products;
 	}
@@ -247,6 +247,38 @@ public class ProductRepository : IProductRepository
 			Name = x.Option.Title,
 			Value = x.Details.Where(x => x.CartId == null).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))
 		});
+		return mostPurchasedProducts;
+	}
+
+	public async Task VerifyIfOptionExists(string optionTitle, CancellationToken cancellationToken)
+	{
+		bool exists = await _dbContext.Options.AnyAsync(x => x.Title == optionTitle, cancellationToken);
+		if (exists)
+			throw new Exception("Ya existe una opción de producto con ese nombre");
+	}
+
+	public async Task VerifyIfOptionAlredyExists(string optionTitle, Guid optionId, CancellationToken cancellationToken)
+	{
+		bool exists = await _dbContext.Options.AnyAsync(x => x.Title == optionTitle && x.Id != optionId, cancellationToken);
+		if (exists)
+			throw new Exception("Ya existe una opción de producto con ese nuevo nombre");
+	}
+
+	public async Task<IEnumerable<MostPurchasedProductsWithDates>> GetMostPurchasedProductsWithDatesAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		IEnumerable<ProductEntity> products = await _dbContext.Products
+			.Where(x => x.Details != null && x.Details.Count > 0).OrderByDescending(p =>
+				p.Details.Where(x => x.CartId == null)
+					.Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))).Include(x => x.Option).Include(x => x.Details).ThenInclude(x => x.PurchaseOptions).Take(5)
+			.ToListAsync(cancellationToken);
+		
+		// IEnumerable<MostPurchasedProductsWithDates> mostPurchasedProducts = products.Select(x => new MostPurchasedProductsWithDates 
+		// {
+		// 	Name = x.Option.Title,
+		// 	Series = new PurchasedProductsWithDates()
+		// 	Value = x.Details.Where(x => x.CartId == null).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))
+		// });
+		IEnumerable<MostPurchasedProductsWithDates> mostPurchasedProducts = new List<MostPurchasedProductsWithDates>();
 		return mostPurchasedProducts;
 	}
 }

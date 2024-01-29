@@ -182,6 +182,10 @@ export class ProductsComponent implements OnInit {
     this.endValue = null;
   }
 
+  removeCategory() {
+    this.selectedCategory = null;
+  }
+
   private categoryProducts(categoryId: number) {
     this.products$ = this.categoryService.GetCategory(categoryId).pipe(
       catchError(err => {

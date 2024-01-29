@@ -1,4 +1,4 @@
-<ngx-charts-area-chart [view]="view" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi" (select)="onSelect($event)">
+<ngx-charts-area-chart (select)="onSelect($event)" [legend]="legend" [results]="multi"
+                       [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [timeline]="timeline" [view]="view"
+                       [xAxisLabel]="xAxisLabel" [xAxis]="xAxis" [yAxisLabel]="yAxisLabel" [yAxis]="yAxis">
 </ngx-charts-area-chart>

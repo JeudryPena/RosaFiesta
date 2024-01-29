@@ -63,7 +63,12 @@ internal sealed class ProductService : IProductService
 		ProductEntity product = productDto.Adapt<ProductEntity>();
 
 		_repositoryManager.ProductRepository.Insert(product);
+		foreach (var option in product.Options)
+		{
+			await _repositoryManager.ProductRepository.VerifyIfOptionExists(option.Title, cancellationToken);
+		}
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		
 		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductWithOption(product.Id, cancellationToken);
 		newProduct.OptionId = newProduct.Options[productDto.OptionIndex].Id;
 		int index = 0;
@@ -82,6 +87,10 @@ internal sealed class ProductService : IProductService
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
 		product = productDto.Adapt(product);
+		foreach (var option in product.Options)
+		{
+			await _repositoryManager.ProductRepository.VerifyIfOptionAlredyExists(option.Title, option.Id,  cancellationToken);
+		}
 		_repositoryManager.ProductRepository.Update(product);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductWithOption(product.Id, cancellationToken);
@@ -231,6 +240,14 @@ internal sealed class ProductService : IProductService
 	{
 		IEnumerable<MostPurchasedProducts> mostPurchasedProducts = await _repositoryManager.ProductRepository.GetMostPurchasedProductsAsync(cancellationToken);
 		IEnumerable<MostPurchasedProductsResponse> mostPurchasedProductsResponse = mostPurchasedProducts.Adapt<IEnumerable<MostPurchasedProductsResponse>>();
+		return mostPurchasedProductsResponse;
+	}
+
+	public async Task<IEnumerable<MostPurchasedProductsWithDatesResponse>> GetMostPurchasedProductsWithDatesAsync(DateOnly start,
+		DateOnly end, CancellationToken cancellationToken)
+	{
+		IEnumerable<MostPurchasedProductsWithDates> mostPurchasedProducts = await _repositoryManager.ProductRepository.GetMostPurchasedProductsWithDatesAsync(start, end, cancellationToken);
+		IEnumerable<MostPurchasedProductsWithDatesResponse> mostPurchasedProductsResponse = mostPurchasedProducts.Adapt<IEnumerable<MostPurchasedProductsWithDatesResponse>>();
 		return mostPurchasedProductsResponse;
 	}
 }

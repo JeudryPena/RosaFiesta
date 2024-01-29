@@ -2,7 +2,7 @@ import {IData} from "./data-interface";
 
 export const inventoryData: IData[] = [
   {
-    id: 'users',
+    id: '',
     icon: 'user-icon',
     name: 'Usuarios',
   },

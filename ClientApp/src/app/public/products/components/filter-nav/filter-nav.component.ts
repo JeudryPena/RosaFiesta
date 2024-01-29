@@ -59,12 +59,22 @@ export class FilterNavComponent {
     this.selectRatingEvent.emit(rating);
   }
 
-  selectStartPrice(start: number) {
-    this.selectStartPriceEvent.emit(start);
+  selectStartPrice(start: any) {
+    let value = start.target.value;
+    if (value > this.max) {
+      value = this.max;
+      this.startValue = this.max;
+    }
+    this.selectStartPriceEvent.emit(value);
   }
 
-  selectEndPrice(end: number) {
-    this.selectEndPriceEvent.emit(end);
+  selectEndPrice(end: any) {
+    let value = end.target.value;
+    if (value > this.max) {
+      value = this.max;
+      this.endValue = this.max;
+    }
+    this.selectEndPriceEvent.emit(value);
   }
 
   selectCondition(condition: Condition) {

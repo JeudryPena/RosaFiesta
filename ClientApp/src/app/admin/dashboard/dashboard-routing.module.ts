@@ -1,12 +1,12 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {StatisticsComponent} from "@admin/dashboard/containers/statistics/statistics.component";
 import {DashboardComponent} from "@admin/dashboard/dashboard.component";
 import {OrdersComponent} from "@admin/dashboard/containers/orders/orders.component";
+import {AnalyticsComponent} from "@admin/dashboard/containers/analytics/analytics.component";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
-  {path: 'statistics', component: StatisticsComponent},
+  {path: 'analytics', component: AnalyticsComponent},
   {path: 'orders', component: OrdersComponent}
 ];
 

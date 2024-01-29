@@ -50,6 +50,14 @@ public class PurchaseController : ControllerBase
 		IEnumerable<MostPurchasedProductsResponse> mostPurchasedProducts = await _serviceManager.ProductService.GetMostPurchasedProductsAsync(cancellationToken);
 		return Ok(mostPurchasedProducts);
 	}
+	
+	[HttpGet("most-purchased-products/{start}/{end}")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveMostPurchasedProductsWithDatesAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		IEnumerable<MostPurchasedProductsWithDatesResponse> mostPurchasedProducts = await _serviceManager.ProductService.GetMostPurchasedProductsWithDatesAsync(start, end, cancellationToken);
+		return Ok(mostPurchasedProducts);
+	}
 
 	[HttpGet("orders/{take:int}")]
 	[Authorize(Roles = "Admin")]
@@ -142,6 +150,17 @@ public class PurchaseController : ControllerBase
 		if (userId == null)
 			return StatusCode((int)HttpStatusCode.Unauthorized);
 		bool valid = await _serviceManager.OrderService.ReturnOrderDetailAsync(userId, orderId, cancellationToken);
+		return Ok(valid);
+	}
+	
+	[HttpGet("{orderId:guid}/oficializeReturn")]
+	[Authorize(Roles="Admin")]
+	public async Task<IActionResult> OficializeReturnOrder(Guid orderId, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		bool valid = await _serviceManager.OrderService.OficializeReturnOrderDetailAsync(userId, orderId, cancellationToken);
 		return Ok(valid);
 	}
 
