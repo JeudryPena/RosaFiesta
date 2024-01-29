@@ -6,7 +6,10 @@ import {OrderPreviewResponse} from "@core/interfaces/Product/Response/orderPrevi
 import {Observable} from "rxjs";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {OrderManagementPreviewResponse} from "@core/interfaces/Product/Response/OrderManagementPreviewResponse";
-import {MostPurchasedProductsResponse} from "@core/interfaces/Product/Response/MostPurchasedProductsResponse";
+import {
+  MostPurchasedProductsResponse,
+  MostPurchasedProductsWithDateResponse
+} from "@core/interfaces/Product/Response/MostPurchasedProductsResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +58,7 @@ export class PurchaseService {
     return this.http.get<MostPurchasedProductsResponse[]>(`${this.apiUrl}most-purchased-products`);
   }
 
-  retrieveMostPurchasedProductsWithDates(start: string, end: string) {
-    return this.http.get(`${this.apiUrl}most-purchased-products/${start}/${end}`);
+  retrieveMostPurchasedProductsWithDates(start: string, end: string): Observable<MostPurchasedProductsWithDateResponse[]> {
+    return this.http.get<MostPurchasedProductsWithDateResponse[]>(`${this.apiUrl}most-purchased-products/${start}/${end}`);
   }
 }

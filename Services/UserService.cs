@@ -1,6 +1,6 @@
 using Contracts.Model.Security;
 using Contracts.Model.Security.Response;
-
+using Domain.Entities.Product.UserInteract;
 using Domain.Entities.Security;
 using Domain.Exceptions;
 using Domain.IRepository;
@@ -121,6 +121,7 @@ internal sealed class UserService : IUserService
 		user.AccessFailedCount = 0;
 		user.SecurityStamp = Guid.NewGuid().ToString();
 		user.Cart = new();
+		user.WishList = new WishListEntity { Id = Guid.NewGuid() };
 		var result = await _userManager.CreateAsync(user, userForCreationDto.Password);
 		if (!result.Succeeded)
 			IdentityResultMessage(result);

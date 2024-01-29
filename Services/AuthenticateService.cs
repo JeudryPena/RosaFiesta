@@ -104,7 +104,8 @@ internal sealed class AuthenticateService : IAuthenticateService
 					Email = payload.Email,
 					UserName = payload.Email,
 					EmailConfirmed = payload.EmailVerified,
-					Cart = new CartEntity { Id = Guid.NewGuid() }
+					Cart = new CartEntity { Id = Guid.NewGuid() },
+					WishList = new WishListEntity { Id = Guid.NewGuid() },
 				};
 				await _userManager.CreateAsync(user);
 				await _userManager.AddToRoleAsync(user, "Client");
@@ -149,6 +150,7 @@ internal sealed class AuthenticateService : IAuthenticateService
 			IdentityResultMessage(confirmResult);
 
 		user.Cart = new CartEntity();
+		user.WishList = new WishListEntity();
 		await _userManager.UpdateAsync(user).ConfigureAwait(false);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}

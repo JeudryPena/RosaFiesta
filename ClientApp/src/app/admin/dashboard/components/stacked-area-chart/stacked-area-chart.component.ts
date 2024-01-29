@@ -6,6 +6,7 @@ import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {MonthPickAdapter} from "@core/classes/month-pick-adapter";
 import {PurchaseService} from "@intranet/services/purchase.service";
 import {DatePipe} from "@angular/common";
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-stacked-area-chart',
@@ -30,74 +31,7 @@ export class StackedAreaChartComponent implements OnInit {
   public monthAndYearChange = new EventEmitter<Date | null>();
   minDate: Date;
   maxDate: Date;
-  multi = [
-    {
-      "name": "Germany",
-      "series": [
-        {
-          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 62000000
-        },
-        {
-          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 73000000
-        },
-        {
-          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 89400000
-        }
-      ]
-    },
-
-    {
-      "name": "USA",
-      "series": [
-        {
-          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 250000000
-        },
-        {
-          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 309000000
-        },
-        {
-          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 311000000
-        }
-      ]
-    },
-
-    {
-      "name": "France",
-      "series": [
-        {
-          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 58000000
-        },
-        {
-          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 50000020
-        },
-        {
-          "name": new Date("2018-03-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 58000000
-        }
-      ]
-    },
-    {
-      "name": "UK",
-      "series": [
-        {
-          "name": new Date("2018-01-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 57000000
-        },
-        {
-          "name": new Date("2018-02-01").toLocaleString('es-ES', {month: 'long'}),
-          "value": 62000000
-        }
-      ]
-    }
-  ];
+  multi = [];
   view: [number, number] = [870, 600];
   // options
   legend: boolean = true;
@@ -148,14 +82,22 @@ export class StackedAreaChartComponent implements OnInit {
     const start = startDate.transform(this.start, 'yyyy-MM-dd');
     const end = endDate.transform(this.end, 'yyyy-MM-dd');
     this.start.toISOString();
-    const response = this.purchaseService.retrieveMostPurchasedProductsWithDates(start, end);
+    const observable = this.purchaseService.retrieveMostPurchasedProductsWithDates(start, end);
+    const response = lastValueFrom(observable);
+    response.catch((error) => {
+      console.error(error);
+    });
+    response.then((response) => {
+      this.multi = response;
+    });
   }
 
   ngOnInit(): void {
     this.maxDate = new Date();
     this.minDate.setMonth(this.maxDate.getMonth() - 6);
-    this.start = this.maxDate;
-    this.end = this.minDate;
+    this.start = this.minDate;
+    this.end = this.maxDate;
+    this.retrieveData();
   }
 
   onSelect(event: any) {
