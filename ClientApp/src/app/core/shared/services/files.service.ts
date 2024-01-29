@@ -9,6 +9,10 @@ import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {PurchaseOrderOptionResponse} from "@core/interfaces/Product/UserInteract/Response/PurchaseOrderOptionResponse";
+import {
+  AnalyticDataResponse,
+  MostPurchasedProductsWithDateResponse
+} from "@core/interfaces/Product/Response/MostPurchasedProductsResponse";
 
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
@@ -22,6 +26,110 @@ export class FilesService {
   constructor(
     private http: HttpClient
   ) {
+  }
+
+  generateReport(start: Date, end: Date, analyticData: AnalyticDataResponse, orderComparative: any[], multi: MostPurchasedProductsWithDateResponse[], userName: string) {
+    const products: any[] = multi.map(x => {
+      const options = x.series.map(y => {
+        return {
+          product: x.name,
+          quantity: y.value,
+          date: y.name
+        }
+      });
+      return options;
+    }).flat();
+    let docDefinition = {
+      content: [
+        {
+          text: 'RosaFiesta',
+          fontSize: 16,
+          alignment: 'center',
+          color: '#1980e5'
+        },
+        {
+          text: 'Reporte',
+          fontSize: 20,
+          bold: true,
+          alignment: 'center',
+          decoration: 'underline',
+          color: 'skyblue'
+        },
+        {
+          text: 'Detalles del Reporte',
+          style: 'sectionHeader'
+        },
+        {
+          columns: [
+            [
+              {text: `Desde la Fecha: ${start.toLocaleDateString()}`,},
+              {text: `Hasta la Fecha: ${end.toLocaleDateString()}`}
+            ],
+            [
+              {
+                text: `Generado por: ${userName}`,
+                alignment: 'right'
+              }
+            ]
+          ]
+        },
+        {
+          text: 'Los 5 Productos mas comprados en la fecha designada',
+          style: 'sectionHeader'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', 'auto', 'auto'],
+            body: [
+              ['Product', 'Cantidad', 'Fecha'],
+              ...products.map(p => ([p.product, p.quantity, p.date]))
+            ]
+          }
+        },
+        {
+          text: 'Comparación de Ordenes, Cotizaciones, Devoluciones y Productos no comprados durante el periodo',
+          style: 'sectionHeader'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', 'auto'],
+            body: [
+              ['Producto', 'Cantidad Comprada'],
+              ...orderComparative.map(p => ([p.name, p.value]))
+            ]
+          }
+        },
+        {
+          text: 'Exito del Negocio',
+          style: 'sectionHeader'
+        },
+        {
+          text: `Total de Clientes: ${analyticData.totalClients}`,
+          margin: [0, 0, 0, 15]
+        },
+        {
+          text: `Promedio de Reviews: ${analyticData.averageReviews}`,
+          margin: [0, 0, 0, 15]
+        },
+        {
+          text: `Ganancias Totales: ${analyticData.totalGains}`,
+          margin: [0, 0, 0, 15]
+        }
+      ],
+      styles: {
+        sectionHeader: {
+          bold: true,
+          decoration: 'underline',
+          fontSize: 14,
+          margin: [0, 15, 0, 15]
+        }
+      }
+    };
+
+    const pdf = pdfMake.createPdf(docDefinition);
+    pdf.open();
   }
 
   generatePDF(action: InvoiceAction = InvoiceAction.VIEW, invoice: OrderResponse) {
@@ -94,9 +202,9 @@ export class FilesService {
             widths: ['*', 'auto', 'auto', 'auto'],
             body: [
 
-              ['Product', 'Price', 'Quantity', 'Amount'],
+              ['Producto', 'Precio', 'Cantidad', 'Monto'],
               ...products.map(p => ([p.title, p.unitPrice, p.quantity, (p.unitPrice * p.quantity).toFixed(2)])), [{
-                text: 'Total Amount',
+                text: 'Monto Total',
                 colSpan: 3
               }, {}, {}, total]
             ]

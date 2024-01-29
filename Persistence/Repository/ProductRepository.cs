@@ -237,15 +237,15 @@ public class ProductRepository : IProductRepository
 		CancellationToken cancellationToken)
 	{
 		IEnumerable<ProductEntity> products = await _dbContext.Products
-			.Where(x => x.Details != null && x.Details.Count > 0).OrderByDescending(p =>
-				p.Details.Where(x => x.CartId == null)
-					.Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))).Include(x => x.Option).Include(x => x.Details).ThenInclude(x => x.PurchaseOptions).Take(5)
+			.Where(x => x.Details != null && x.Details.Count > 0 && x.Details.Any(x => x.Order != null)).OrderByDescending(p =>
+				p.Details.Where(x => x.Order != null)
+					.Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))).Include(x => x.Option).Include(x => x.Details).ThenInclude(x => x.PurchaseOptions).Include(x => x.Details).ThenInclude(x => x.Order).Take(5)
 			.ToListAsync(cancellationToken);
 		
 		IEnumerable<MostPurchasedProducts> mostPurchasedProducts = products.Select(x => new MostPurchasedProducts
 		{
 			Name = x.Option.Title,
-			Value = x.Details.Where(x => x.CartId == null).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))
+			Value = x.Details.Where(x => x.Order != null).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))
 		});
 		return mostPurchasedProducts;
 	}
@@ -267,35 +267,40 @@ public class ProductRepository : IProductRepository
 	public async Task<IEnumerable<MostPurchasedProductsWithDates>> GetMostPurchasedProductsWithDatesAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
 	{
 		IEnumerable<ProductEntity> products = await _dbContext.Products
-			.Where(x => x.Details != null && x.Details.Count > 0).OrderByDescending(p =>
-				p.Details.Where(x => x.CartId == null && DateOnly.FromDateTime(x.Order.CreatedAt.Date) >= start && DateOnly.FromDateTime(x.CreatedAt.Date) <= end)
-					.Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))).Include(x => x.Option).Include(x => x.Details).ThenInclude(x => x.PurchaseOptions).Take(5)
+			.Where(x => x.Details != null && x.Details.Count > 0 && x.Details.Any(x => x.Order != null)).OrderByDescending(p =>
+				p.Details.Where(x => x.Order != null && DateOnly.FromDateTime(x.Order.CreatedAt.Date) >= start && DateOnly.FromDateTime(x.CreatedAt.Date) <= end)
+					.Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity))).Include(x => x.Option).Include(x => x.Details).ThenInclude(x => x.PurchaseOptions).Include(x => x.Details).ThenInclude(x => x.Order).Take(5)
 			.ToListAsync(cancellationToken);
 		
 		List<DateOnly> dates = new List<DateOnly>();
 		
 		for (DateOnly date = start; date <= end; date = date.AddMonths(1))
 			dates.Add(date);
-		
-		
-		
-		IEnumerable<MostPurchasedProductsWithDates> mostPurchasedProducts = products.Select(x =>
-		{
+
+
+
+		List<MostPurchasedProductsWithDates> mostPurchasedProducts = new List<MostPurchasedProductsWithDates>(); 
+			
+		foreach(var x in products) {
 			MostPurchasedProductsWithDates mostPurchasedProductsWithDates = new MostPurchasedProductsWithDates();
 			mostPurchasedProductsWithDates.Name = x.Option.Title;
 
 			foreach (DateOnly date in dates)
 			{
-				int value = x.Details.Where(x => x.CartId == null && DateOnly.FromDateTime(x.Order.CreatedAt.Date).Month == date.Month && DateOnly.FromDateTime(x.CreatedAt.Date).Month == date.Month).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity));
-				mostPurchasedProductsWithDates.Series.Add(new PurchasedProductsWithDates
-				{
+				int value = x.Details.Where(x => x.Order != null && DateOnly.FromDateTime(x.Order.CreatedAt.Date).Month == date.Month && DateOnly.FromDateTime(x.CreatedAt.Date).Month == date.Month).Sum(d => d.PurchaseOptions.Count + d.PurchaseOptions.Sum(o => o.Quantity));
+			   mostPurchasedProductsWithDates.Series.Add(new PurchasedProductsWithDates
+			   {
 					Name = date,
 					Value = value
-				});	
+			   });	
 			}
 
-			return mostPurchasedProductsWithDates;
-		});
+			if (mostPurchasedProductsWithDates.Series.Count > 0 && mostPurchasedProductsWithDates.Series.Any(x => x.Value > 0))
+			{
+				mostPurchasedProducts.Add(mostPurchasedProductsWithDates);
+			}
+		}
+		
 		return mostPurchasedProducts;
 	}
 } 

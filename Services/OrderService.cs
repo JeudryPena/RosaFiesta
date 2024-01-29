@@ -129,7 +129,27 @@ internal sealed class OrderService : IOrderService
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		return true;
 	}
-	
+
+	public async Task<OrderComparativeResponse> GetOrderCompareAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		OrderComparative orderComparative = new();
+		orderComparative.Orders = await _repositoryManager.OrderRepository.GetOrderCompareAsync(start, end, cancellationToken);
+		orderComparative.Quotes = await _repositoryManager.OrderRepository.GetQuotesCompareAsync(start, end, cancellationToken);
+		orderComparative.Refunds = await _repositoryManager.OrderRepository.GetRefundsCompareAsync(start, end, cancellationToken);
+		orderComparative.NotPurchased = await _repositoryManager.PurchaseDetailRepository.GetNotPurchasedCompareAsync(start, end, cancellationToken);
+		OrderComparativeResponse orderComparativeResponse = orderComparative.Adapt<OrderComparativeResponse>();
+		return orderComparativeResponse;
+	}
+
+	public async Task<AnalyticDataResponse> GetAnalyticDataAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		AnalyticDataResponse analyticData = new();
+		analyticData.TotalGains = await _repositoryManager.OrderRepository.GetGainsWithDatesAsync(cancellationToken, start, end);
+		analyticData.TotalClients = await _repositoryManager.UserRepository.GetTotalClientsWithDatesAsync(cancellationToken, start, end);
+		analyticData.AverageReviews = await _repositoryManager.ReviewRepository.GetTotalReviewsWithDatesAsync(cancellationToken, start, end);
+		return analyticData;
+	}
+
 	public async Task ReturnOrderEmailAsync(string userId, Guid orderId, CancellationToken cancellationToken)
 	{
 		string userName = await _repositoryManager.UserRepository.GetUserName(userId, cancellationToken);

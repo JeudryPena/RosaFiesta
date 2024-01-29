@@ -1,46 +1,22 @@
-<mat-card>
+<mat-card class="h-100">
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title class="mt-2">5 Productos mas comprados</mat-card-title>
-      <div class="chart-header">
-        <mat-form-field (click)="picker.open()" appearance="fill">
-          <mat-label>Inicio</mat-label>
-          <input (dateChange)="emitDateChange($event)" [(ngModel)]="start" [matDatepicker]="picker"
-                 [max]="maxDate" [min]="minDate" [readonly]="true"
-                 matInput/>
-          <mat-hint>MM/YYYY</mat-hint>
-          <mat-datepicker-toggle
-            [for]="picker"
-            matSuffix>
-          </mat-datepicker-toggle>
-          <mat-datepicker #picker (monthSelected)="startMonthChanged($event, picker)" [startView]="'multi-year'"
-                          class="example-month-picker">
-          </mat-datepicker>
-        </mat-form-field>
-        <mat-form-field (click)="endPicker.open()" appearance="fill">
-          <mat-label>Final</mat-label>
-          <input (dateChange)="emitDateChange($event)" [(ngModel)]="end" [matDatepicker]="endPicker"
-                 [max]="maxDate" [min]="minDate" [readonly]="true"
-                 matInput/>
-          <mat-hint>MM/YYYY</mat-hint>
-          <mat-datepicker-toggle
-            [for]="endPicker"
-            matSuffix>
-          </mat-datepicker-toggle>
-          <mat-datepicker #endPicker (monthSelected)="endMonthChanged($event, endPicker)" [startView]="'multi-year'"
-                          class="example-month-picker">
-          </mat-datepicker>
-        </mat-form-field>
-      </div>
+      <mat-card-title class="my-3">5 Productos mas comprados</mat-card-title>
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content>
-    <ngx-charts-area-chart-stacked (select)="onSelect($event)" [legend]="legend" [results]="multi"
-                                   [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-                                   [timeline]="timeline"
-                                   [view]="view"
-                                   [xAxisLabel]="xAxisLabel" [xAxis]="xAxis" [yAxisLabel]="yAxisLabel"
-                                   [yAxis]="yAxis">
-    </ngx-charts-area-chart-stacked>
+    @if (multi.length == 0) {
+      <div class="alert alert-info d-flex align-items-center justify-content-center" role="alert">
+        No se encontro data para mostrar
+      </div>
+    } @else {
+      <ngx-charts-area-chart-stacked (select)="onSelect($event)" [legend]="legend" [results]="multi"
+                                     [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                     [timeline]="timeline"
+                                     [view]="view"
+                                     [xAxisLabel]="xAxisLabel" [xAxis]="xAxis" [yAxisLabel]="yAxisLabel"
+                                     [yAxis]="yAxis">
+      </ngx-charts-area-chart-stacked>
+    }
   </mat-card-content>
 </mat-card>

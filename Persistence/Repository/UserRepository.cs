@@ -92,4 +92,10 @@ public class UserRepository : IUserRepository
 		List<string> emails = await _context.Users.Where(x => x.PromotionalMails).Select(x => x.Email).ToListAsync(cancellationToken);
 		return emails;
 	}
+
+	public async Task<int> GetTotalClientsWithDatesAsync(CancellationToken cancellationToken, DateOnly start, DateOnly end)
+	{
+		int totalClients = await _context.Users.Where(x => DateOnly.FromDateTime(x.CreatedAt.Date) >= start && DateOnly.FromDateTime(x.CreatedAt.Date) <= end && x.Orders != null && x.Orders.Count > 0).CountAsync(cancellationToken);
+		return totalClients;
+	}
 }

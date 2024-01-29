@@ -11,4 +11,6 @@ public interface IPurchaseDetailRepository
 	void UpdateOptionDetail(PurchaseDetailOptions detail);
 	Task<int> GetCountAsync(CancellationToken cancellationToken);
 	Task CreateAsync(PurchaseDetailEntity newDetail);
+	Task<OrderComparativeData> GetNotPurchasedCompareAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken);
+	
 }

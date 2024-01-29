@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {LegendPosition} from '@swimlane/ngx-charts';
 
 @Component({
@@ -7,25 +7,8 @@ import {LegendPosition} from '@swimlane/ngx-charts';
   styleUrls: ['./pie-chart.component.scss']
 })
 export class PieChartComponent {
-  single = [
-    {
-      "name": "Germany",
-      "value": 8940000
-    },
-    {
-      "name": "USA",
-      "value": 5000000
-    },
-    {
-      "name": "France",
-      "value": 7200000
-    },
-    {
-      "name": "UK",
-      "value": 6200000
-    }
-  ];
-  view: [number, number] = [500, 400];
+  @Input() single: any[];
+  view: [number, number] = [425, 375];
 
   // options
   gradient: boolean = true;

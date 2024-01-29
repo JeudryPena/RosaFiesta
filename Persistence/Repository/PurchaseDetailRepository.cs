@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Product.UserInteract;
+﻿using Domain.Entities.Product.Helpers;
+using Domain.Entities.Product.UserInteract;
 using Domain.IRepository;
 
 using Microsoft.EntityFrameworkCore;
@@ -46,5 +47,13 @@ internal sealed class PurchaseDetailRepository : IPurchaseDetailRepository
 	public async Task CreateAsync(PurchaseDetailEntity newDetail)
 	{
 		await _rosaFiestaContext.PurchaseDetails.AddAsync(newDetail);
+	}
+
+	public async Task<OrderComparativeData> GetNotPurchasedCompareAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		OrderComparativeData orderComparativeData = new();
+		orderComparativeData.Name = "No Compradas";
+		orderComparativeData.Value = await _rosaFiestaContext.PurchaseDetails.Where(x => DateOnly.FromDateTime(x.CreatedAt.Date) >= start && DateOnly.FromDateTime(x.CreatedAt.Date) <= end && x.Order != null && x.Order.Status == OrderStatusType.Pagado).CountAsync(cancellationToken);
+		return orderComparativeData;
 	}
 }

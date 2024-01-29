@@ -7,8 +7,10 @@ import {Observable} from "rxjs";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {OrderManagementPreviewResponse} from "@core/interfaces/Product/Response/OrderManagementPreviewResponse";
 import {
+  AnalyticDataResponse,
   MostPurchasedProductsResponse,
-  MostPurchasedProductsWithDateResponse
+  MostPurchasedProductsWithDateResponse,
+  OrderComparativeResponse
 } from "@core/interfaces/Product/Response/MostPurchasedProductsResponse";
 
 @Injectable({
@@ -60,5 +62,13 @@ export class PurchaseService {
 
   retrieveMostPurchasedProductsWithDates(start: string, end: string): Observable<MostPurchasedProductsWithDateResponse[]> {
     return this.http.get<MostPurchasedProductsWithDateResponse[]>(`${this.apiUrl}most-purchased-products/${start}/${end}`);
+  }
+
+  retrieveOrderComparative(start: string, end: string): Observable<OrderComparativeResponse> {
+    return this.http.get<OrderComparativeResponse>(`${this.apiUrl}order-comparative/${start}/${end}`);
+  }
+
+  retrieveAnalyticData(start: string, end: string): Observable<AnalyticDataResponse> {
+    return this.http.get<AnalyticDataResponse>(`${this.apiUrl}analytic-data/${start}/${end}`);
   }
 }

@@ -22,4 +22,5 @@ public interface IUserRepository
 	Task VerifyIfEmailAlredyExistsAsync(string email, CancellationToken cancellationToken);
 	Task<List<string>> GetAdminEmails(CancellationToken cancellationToken);
 	Task<List<string>> GetAllUsersWithPromoEnabled(CancellationToken cancellationToken);
+	Task<int> GetTotalClientsWithDatesAsync(CancellationToken cancellationToken, DateOnly start, DateOnly end);
 }

@@ -1,7 +1,104 @@
-<div class="dashboard">
-  <div class="analytics-data-container">
-    <div class="dashboard-charts">
-      <app-stacked-area-chart></app-stacked-area-chart>
+@if (observable | async) {
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title-group>
+            <div class="dashboard-title">
+              <mat-card-title>Analíticas</mat-card-title>
+              <div class="chart-header ">
+                <a (click)="generateReport()" class="btn d-flex align-items-center gap-2">Generar Reporte<i
+                  class="report-icon w-icon"></i>
+                </a>
+              </div>
+            </div>
+            <div class="chart-header pt-3">
+              <span>Seleccionar Rango de Fecha</span>
+              <mat-form-field (click)="picker.open()" appearance="fill">
+                <mat-label>Inicio</mat-label>
+                <input (dateChange)="emitDateChange($event)" [(ngModel)]="start" [matDatepicker]="picker"
+                       [max]="maxDate" [min]="minDate" [readonly]="true"
+                       matInput/>
+                <mat-hint>MM/YYYY</mat-hint>
+                <mat-datepicker-toggle
+                  [for]="picker"
+                  matSuffix>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker (monthSelected)="startMonthChanged($event, picker)" [startView]="'multi-year'"
+                                class="example-month-picker">
+                </mat-datepicker>
+              </mat-form-field>
+              <mat-form-field (click)="endPicker.open()" appearance="fill">
+                <mat-label>Final</mat-label>
+                <input (dateChange)="emitDateChange($event)" [(ngModel)]="end" [matDatepicker]="endPicker"
+                       [max]="maxDate" [min]="minDate" [readonly]="true"
+                       matInput/>
+                <mat-hint>MM/YYYY</mat-hint>
+                <mat-datepicker-toggle
+                  [for]="endPicker"
+                  matSuffix>
+                </mat-datepicker-toggle>
+                <mat-datepicker #endPicker (monthSelected)="endMonthChanged($event, endPicker)"
+                                [startView]="'multi-year'"
+                                class="example-month-picker">
+                </mat-datepicker>
+              </mat-form-field>
+            </div>
+          </mat-card-title-group>
+        </mat-card-header>
+      </mat-card>
+    </div>
+    <div class="analytics-data-container">
+
+      <div class="dashboard-charts">
+        <app-stacked-area-chart [multi]="multi"></app-stacked-area-chart>
+      </div>
+      <div class="dashboard-data">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>Comparativa de Ordenes, Cotizaciónes, Compras no efectuadas y Reembolsos</mat-card-title>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content class="dashboard-data-compare">
+            <app-pie-chart [single]="orderComparative"></app-pie-chart>
+          </mat-card-content>
+        </mat-card>
+        <div class="d-flex gap-3 justify-content-between">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>Nuevos Clientes</mat-card-title>
+              </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content>
+              <span class="dashboard-data-value">{{ analyticData.totalClients }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>Ganancias</mat-card-title>
+              </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content>
+              <span class="dashboard-data-value">{{ analyticData.totalGains }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>Reseñas</mat-card-title>
+              </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="rates-container">
+                <app-rating [rating]="analyticData.averageReviews" [size]="'18px'"></app-rating>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+}

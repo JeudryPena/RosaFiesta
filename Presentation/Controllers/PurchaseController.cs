@@ -24,6 +24,22 @@ public class PurchaseController : ControllerBase
 		_serviceManager = serviceManager;
 	}
 	
+	[HttpGet("analytic-data/{start}/{end}")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveAnalyticDataAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		AnalyticDataResponse analyticData = await _serviceManager.OrderService.GetAnalyticDataAsync(start, end, cancellationToken);
+		return Ok(analyticData);
+	}
+	
+	[HttpGet("order-comparative/{start}/{end}")]
+	[Authorize(Roles = "Admin")]
+	public async Task<IActionResult> RetrieveOrderCompareAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
+	{
+		OrderComparativeResponse orderCompare = await _serviceManager.OrderService.GetOrderCompareAsync(start, end, cancellationToken);
+		return Ok(orderCompare);
+	}
+	
 	[HttpGet("count")]
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> RetrieveCount(CancellationToken cancellationToken)
