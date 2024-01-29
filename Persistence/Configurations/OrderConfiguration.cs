@@ -13,7 +13,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
 		builder.Property(bill => bill.Id).ValueGeneratedOnAdd();
 		builder.HasQueryFilter(a => !a.IsDeleted);
 		builder.HasMany(order => order.Details)
-			.WithOne()
+			.WithOne(x => x.Order)
 			.HasForeignKey(detail => detail.OrderId);
 		builder.HasOne(order => order.Address)
 			.WithOne()

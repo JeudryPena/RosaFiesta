@@ -143,8 +143,10 @@ export class StackedAreaChartComponent implements OnInit {
   }
 
   retrieveData() {
-    const start = new DatePipe('en-US');
-    const end = this.end.transform(user.birthDate, 'yyyy-MM-dd').toISOString();
+    const startDate = new DatePipe('en-US');
+    const endDate = new DatePipe('en-US');
+    const start = startDate.transform(this.start, 'yyyy-MM-dd');
+    const end = endDate.transform(this.end, 'yyyy-MM-dd');
     this.start.toISOString();
     const response = this.purchaseService.retrieveMostPurchasedProductsWithDates(start, end);
   }

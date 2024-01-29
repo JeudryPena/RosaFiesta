@@ -24,7 +24,7 @@ public class UserEntity : IdentityUser, IAutoBy
 	public string? UpdatedBy { get; set; }
 	public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
 	public CartEntity Cart { get; set; }
-	public WishListEntity? WishList { get; set; }
+	public WishListEntity? WishList { get; set; } = new();
 	public Guid? WishListId { get; set; }
 	public ICollection<OrderEntity>? Orders { get; set; }
 	public ICollection<QuoteEntity>? Quotes { get; set; }
