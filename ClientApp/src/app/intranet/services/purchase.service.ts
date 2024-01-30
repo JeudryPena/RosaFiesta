@@ -71,4 +71,12 @@ export class PurchaseService {
   retrieveAnalyticData(start: string, end: string): Observable<AnalyticDataResponse> {
     return this.http.get<AnalyticDataResponse>(`${this.apiUrl}analytic-data/${start}/${end}`);
   }
+
+  oficializeReturn(orderId: string) {
+    return this.http.get(`${this.apiUrl}${orderId}/oficialize-return`);
+  }
+
+  rejectReturn(orderId: string) {
+    return this.http.get(`${this.apiUrl}${orderId}/reject-return`);
+  }
 }

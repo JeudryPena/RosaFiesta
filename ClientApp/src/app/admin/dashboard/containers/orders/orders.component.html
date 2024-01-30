@@ -56,6 +56,11 @@
                   <mat-icon class="refund-icon"></mat-icon>
                   <span>Oficializar Reembolso</span>
                 </button>
+                <button (click)="cancelRefund(element.id)" class="d-flex align-items-center"
+                        mat-menu-item>
+                  <mat-icon class="refund-icon"></mat-icon>
+                  <span>Rechazar Reembolso</span>
+                </button>
               }
               <button (click)="invoice(invoiceAction.VIEW, element.id)" class="d-flex align-items-center"
                       mat-menu-item>

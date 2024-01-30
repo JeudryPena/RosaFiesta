@@ -93,35 +93,73 @@ export class OrdersComponent {
     modalRef.componentInstance.id = quoteId;
   }
 
-  refund(id) {
+  refund(id: string) {
+    this.confirmItem.fnConfirm = this.confirmRefund;
+    this.confirmItem.confirmData = id;
+    this.swal.setConfirm(this.confirmItem);
     this.swalOptions.icon = 'question';
     this.swalOptions.title = 'Oficializar Reembolso';
     this.swalOptions.html = `¿Esta seguro de que desea oficializar el reembolso?`;
     this.swalOptions.showConfirmButton = true;
     this.swalOptions.showCancelButton = true;
-    this.confirmItem.fnConfirm = this.confirmRefund;
-    this.swal.setConfirm(this.confirmItem);
     this.swal.show(this.swalOptions);
   }
 
   confirmRefund(isConfirm: string, data: any, context: any) {
-    context.authService.deleteMyAccount().subscribe({
+    context.purchaseService.oficializeReturn(data).subscribe({
       next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha realizado el reembolso correctamente';
-        this.swalOptions.title = 'Cuenta Eliminada';
-        this.swal.show(this.swalOptions);
-        this.swalOptions.showCancelButton = false;
+        context.swalOptions.icon = 'success';
+        context.swalOptions.html = 'Se ha realizado el reembolso correctamente';
+        context.swalOptions.title = 'Rembolso realizado';
+        context.swal.show(context.swalOptions);
+        context.swalOptions.showCancelButton = false;
         context.confirmItem.fnConfirm = null;
-        context.authService.logout();
-        context.router.navigate(['/main-page']);
-        this.swal.setConfirm(context.confirmItem);
+        context.swal.setConfirm(context.confirmItem);
+        context.retrieveData();
       },
       error: (err: HttpErrorResponse) => {
-        this.swal.showErrors(err, {
+        context.swal.showErrors(err, {
           icon: 'error',
           title: 'Error',
-          text: err.message
+          html: err.message
+        });
+        console.error(err);
+      }
+    });
+  }
+
+  cancelRefund(id: string) {
+    this.confirmItem.fnConfirm = this.rejectRefund;
+    this.confirmItem.confirmData = id;
+    this.swal.setConfirm(this.confirmItem);
+    this.swalOptions.icon = 'question';
+    this.swalOptions.title = 'Rechazar Reembolso';
+    this.swalOptions.html = `¿Esta seguro de que desea rechazar el reembolso?`;
+    this.swalOptions.showConfirmButton = true;
+    this.swalOptions.showCancelButton = true;
+    this.swal.show(this.swalOptions);
+  }
+
+  rejectRefund(isConfirm: string, data: any, context: any) {
+    context.purchaseService.rejectReturn(data).subscribe({
+      next: () => {
+        context.swalOptions.icon = 'success';
+        context.swalOptions.html = 'Se ha rechazado el reembolso correctamente';
+        context.swalOptions.title = 'Rembolso rechazado';
+        context.swal.show(context.swalOptions);
+        context.swalOptions.showCancelButton = false;
+        context.confirmItem.fnConfirm = null;
+        context.swal.setConfirm(context.confirmItem);
+        context.retrieveData();
+      },
+      error: (err: HttpErrorResponse) => {
+        context.swalOptions.showCancelButton = false;
+        context.confirmItem.fnConfirm = null;
+        context.swal.setConfirm(context.confirmItem);
+        context.swal.showErrors(err, {
+          icon: 'error',
+          title: 'Error',
+          html: err.message
         });
         console.error(err);
       }

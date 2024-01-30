@@ -75,7 +75,7 @@ export class ProductCardsComponent implements OnInit {
         this.swalService.show(this.swalOptions);
       },
       error: (error) => {
-        this.swalService.showErrors(error, {title: 'Error', text: error.message});
+        this.swalService.showErrors(error, {title: 'Error', html: error.message});
       }
     });
   }

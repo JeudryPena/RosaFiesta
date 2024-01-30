@@ -79,7 +79,7 @@ export class CartComponent implements OnInit {
               const discount = await lastValueFrom(discountResponse);
               totalItems += detail.quantity;
               if (discount != null) {
-                detail.option.offerPrice = detail.unitPrice - (detail.unitPrice * (discount.value / 100));
+                detail.option.offerPrice = detail.option.price - (detail.option.price * (discount.value / 100));
                 detail.option.discountValue = discount.value;
                 totalPrice += detail.option.offerPrice * detail.quantity;
               } else {

@@ -54,7 +54,7 @@
           <div class="auth-section">
             <button class="btn btn-success" routerLink="/auth/register"><i class="register-icon w-icon"></i>Registrarse
             </button>
-            <button (click)="loginUser(loginForm.value)" [disabled]="!loginForm.valid" class="btn btn-primary"
+            <button (click)="loginUser(loginForm.value)" [disabled]="!loginForm.valid" autofocus class="btn btn-primary"
                     type="submit"><i class="login-icon w-icon"></i>
               Iniciar Sesión
             </button>

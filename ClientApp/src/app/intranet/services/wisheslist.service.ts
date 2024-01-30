@@ -29,6 +29,6 @@ export class WisheslistService {
   }
 
   DeleteAllProductsFromWishList(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/deleteAll`);
+    return this.http.delete(`${this.apiUrl}deleteAll`);
   }
 }

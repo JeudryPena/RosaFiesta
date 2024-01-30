@@ -57,7 +57,7 @@ export class RegisterComponent {
       .subscribe({
         next: () => {
           this.toastService.show('Registro exitoso!', 'Revisa tu email para confirmarlo', {
-            classname: 'bg - success text - light',
+            classname: 'bg-success text-light',
             delay: 10000
           });
           this.router.navigate(['auth']);

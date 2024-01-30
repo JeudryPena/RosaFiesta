@@ -48,4 +48,15 @@ internal sealed class ReviewRepository : IReviewRepository
 	/// <returns></returns>
 	public async Task<IEnumerable<ReviewEntity>> GetAllDetailedAsync(Guid optionId, CancellationToken cancellationToken)
 	=> await _context.Reviews.Include(x => x.User).Where(x => x.OptionId == optionId).ToListAsync(cancellationToken);
+
+	public async Task<float> GetTotalReviewsWithDatesAsync(CancellationToken cancellationToken, DateOnly start, DateOnly end)
+	{
+		float total = await _context.Reviews.Where(x => DateOnly.FromDateTime(x.CreatedAt.Date) >= start && DateOnly.FromDateTime(x.CreatedAt.Date) <= end).CountAsync(cancellationToken);
+		float totalReviews = await _context.Reviews
+			.Where(x => DateOnly.FromDateTime(x.CreatedAt.Date) >= start &&
+			            DateOnly.FromDateTime(x.CreatedAt.Date) <= end)
+			.SumAsync(x => x.Rating, cancellationToken);
+		float average = totalReviews / total;
+		return average;
+	}
 }

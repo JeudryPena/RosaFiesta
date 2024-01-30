@@ -10,6 +10,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PurchaseDetailDto} from "@core/interfaces/Product/UserInteract/purchaseDetailDto";
 import {CartsService} from "@intranet/services/carts.service";
 import {WarrantiesService} from "@admin/inventory/services/warranties.service";
+import {SwalService} from "@core/shared/services/swal.service";
 
 @Component({
   selector: 'app-wish-lists',
@@ -27,7 +28,8 @@ export class WishListsComponent {
     private readonly reviewService: ReviewsService,
     private readonly discountService: DiscountsService,
     private readonly cartService: CartsService,
-    private readonly warrantyService: WarrantiesService
+    private readonly warrantyService: WarrantiesService,
+    private readonly swalService: SwalService
   ) {
 
   }
@@ -52,8 +54,17 @@ export class WishListsComponent {
     }
     this.cartService.AddProductToCart(cartDto).subscribe({
       next: () => {
-        this.router.navigate(['']);
+        this.swalService.show({
+          icon: 'success',
+          title: 'Producto Añadido',
+          html: 'El producto se añadio al carrito correctamente'
+        })
       }, error: (err) => {
+        this.swalService.showErrors(err, {
+          title: 'Error al eliminar el producto',
+          html: 'Ha ocurrido un error al añadir el producto al carrito',
+          icon: 'error'
+        })
         console.error(err);
       }
     });
@@ -62,8 +73,18 @@ export class WishListsComponent {
   deleteItem(optionId: string) {
     this.wishListService.RemoveItem(this.wishListId, optionId).subscribe({
       next: () => {
+        this.swalService.show({
+          icon: 'success',
+          title: 'Producto eliminado',
+          html: 'El producto se ha eliminado de la lista de deseos correctamente'
+        })
         this.retrieveProducts();
       }, error: (error) => {
+        this.swalService.showErrors(error, {
+          title: 'Error al eliminar el producto',
+          html: 'Ha ocurrido un error al eliminar el producto de la lista de deseos',
+          icon: 'error'
+        })
         console.error(error);
       }
     });
@@ -74,15 +95,33 @@ export class WishListsComponent {
   }
 
   cleanList() {
-    this.wishListService.DeleteAllProductsFromWishList().subscribe({});
+    this.wishListService.DeleteAllProductsFromWishList().subscribe({
+      next: () => {
+        this.swalService.show({
+          icon: 'success',
+          title: 'Lista limpia',
+          html: 'La lista se ha limpiado correctamente'
+        })
+        this.retrieveProducts();
+      }, error: (error) => {
+        this.swalService.showErrors(error, {
+          title: 'Error al eliminar el producto',
+          html: 'Ha ocurrido un error al eliminar el producto de la lista de deseos',
+          icon: 'error'
+        })
+        console.error(error);
+      }
+    })
   }
 
   private retrieveProducts() {
     this.productsWish$ = this.wishListService.getWishList().pipe(
       catchError(err => {
-        this.router.navigate(['/main-page']).then(
-          () => console.error(err)
-        );
+        this.swalService.showErrors(err, {
+          title: 'Error',
+          html: 'Ha ocurrido un error al traer el contenido de la lista',
+          icon: 'error'
+        })
         throw err
       }),
       map((wishListResponse: WishListResponse) => {

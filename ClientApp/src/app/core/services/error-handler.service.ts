@@ -1,24 +1,25 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorHandlerService implements HttpInterceptor {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req)
-    .pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage = this.handleError(error);
-        return throwError(() => new Error(errorMessage));
-      })
-    )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = this.handleError(error);
+          return throwError(() => new Error(errorMessage));
+        })
+      )
   }
 
   // @ts-ignore
@@ -26,16 +27,13 @@ export class ErrorHandlerService implements HttpInterceptor {
     if (error.status === 500) {
       return this.handleInternalServer(error);
     }
-    if(error.status === 404){
+    if (error.status === 404) {
       return this.handleNotFound(error);
-    }
-    else if(error.status === 400){
+    } else if (error.status === 400) {
       return this.handleBadRequest(error);
-    }
-    else if(error.status === 401) {
+    } else if (error.status === 401) {
       return this.handleUnauthorized(error);
-    }
-    else if(error.status === 403) {
+    } else if (error.status === 403) {
       return this.handleForbidden(error);
     }
   }
@@ -45,17 +43,17 @@ export class ErrorHandlerService implements HttpInterceptor {
   }
 
   private handleForbidden = (error: HttpErrorResponse) => {
-    this.router.navigate(["/forbidden"], { queryParams: { returnUrl: this.router.url }});
+    // this.router.navigate(["/forbidden"], { queryParams: { returnUrl: this.router.url }});
 
     return "Forbidden";
   }
 
   private handleNotFound = (error: HttpErrorResponse): string => {
-    this.router.navigate(['/404']);
+    // this.router.navigate(['/404']);
     return error.message;
   }
 
-  private handleUnauthorized = (error: HttpErrorResponse) => { 
+  private handleUnauthorized = (error: HttpErrorResponse) => {
     return error.error.message ? error.error.message : error.message;
   }
 

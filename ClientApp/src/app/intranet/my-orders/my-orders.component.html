@@ -51,11 +51,13 @@
               <mat-icon class="print-icon"></mat-icon>
               <span>Imprimir Factura</span>
             </button>
-            <button (click)="requestRefund(element.id)" class="d-flex align-items-center"
-                    mat-menu-item>
-              <mat-icon class="refund-icon"></mat-icon>
-              <span>{{ element.status === 'Rembolso' ? 'Retirar reembolso' : 'Solicitar Rembolso' }}</span>
-            </button>
+            @if (element.status === 'Pagado') {
+              <button (click)="requestRefund(element.id)" class="d-flex align-items-center"
+                      mat-menu-item>
+                <mat-icon class="refund-icon"></mat-icon>
+                <span>{{ element.status === 'Rembolso' ? 'Retirar reembolso' : 'Solicitar Rembolso' }}</span>
+              </button>
+            }
           </mat-menu>
         </td>
 

@@ -23,4 +23,6 @@ public interface IReviewRepository
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	Task<IEnumerable<ReviewEntity>> GetAllDetailedAsync(Guid optionId, CancellationToken cancellationToken);
+
+	Task<float> GetTotalReviewsWithDatesAsync(CancellationToken cancellationToken, DateOnly start, DateOnly end);
 }
