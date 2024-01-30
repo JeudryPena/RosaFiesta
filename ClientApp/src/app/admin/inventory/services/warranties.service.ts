@@ -28,7 +28,9 @@ function sort(warranties: WarrantiesManagementResponse[], column: SortColumn, di
 function matches(warranty: WarrantiesManagementResponse, term: string, pipe: PipeTransform) {
   return (
     warranty.name?.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(warranty.id).includes(term)
+    warranty.description?.toLowerCase().includes(term.toLowerCase()) ||
+    warranty.type?.toLowerCase().includes(term.toLowerCase())
+    || warranty.status?.toLowerCase().includes(term.toLowerCase())
   );
 }
 

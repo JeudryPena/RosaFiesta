@@ -28,7 +28,7 @@ function sort(users: ManagementUsersResponse[], column: SortColumn, direction: s
 function matches(user: ManagementUsersResponse, term: string, pipe: PipeTransform) {
   return (
     user.userName.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(user.id).includes(term)
+    user.email.toLowerCase().includes(term.toLowerCase())
   );
 }
 

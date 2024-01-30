@@ -32,8 +32,7 @@ function sort(products: ManagementProductsResponse[], column: SortColumn, direct
 
 function matches(product: ManagementProductsResponse, term: string, pipe: PipeTransform) {
   return (
-    product.id?.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(product.code).includes(term)
+    product.options?.some((option) => option.title.toLowerCase().includes(term.toLowerCase())) || product.code?.toLowerCase().includes(term.toLowerCase())
   );
 }
 

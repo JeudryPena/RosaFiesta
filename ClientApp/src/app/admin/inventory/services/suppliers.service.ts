@@ -25,8 +25,10 @@ function sort(suppliers: SupplierResponse[], column: SortColumn, direction: stri
 
 function matches(supplier: SupplierResponse, term: string, pipe: PipeTransform) {
   return (
-    supplier.name.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(supplier.id).includes(term)
+    supplier.name?.toLowerCase().includes(term.toLowerCase()) ||
+    supplier.email?.toLowerCase().includes(term.toLowerCase()) ||
+    supplier.phone?.toLowerCase().includes(term.toLowerCase()) ||
+    supplier.address?.toLowerCase().includes(term.toLowerCase())
   );
 }
 

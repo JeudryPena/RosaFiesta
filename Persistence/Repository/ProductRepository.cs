@@ -167,7 +167,7 @@ public class ProductRepository : IProductRepository
 	/// <returns></returns>
 	public async Task<IEnumerable<ProductEntity>> GetAllRecommendedAsync(CancellationToken cancellationToken)
 	{
-		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Option).ThenInclude(x => x != null ? x.Image : null).Where(x => x.Views > 0).OrderByDescending(x => x.Views).Take(5).ToListAsync(cancellationToken);
+		IEnumerable<ProductEntity> products = await _dbContext.Products.Include(x => x.Option).ThenInclude(x => x != null ? x.Image : null).Where(x => x.Views > 0).OrderByDescending(x => x.Views).Take(4).ToListAsync(cancellationToken);
 		return products;
 	}
 

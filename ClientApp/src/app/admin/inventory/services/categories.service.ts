@@ -30,7 +30,7 @@ function sort(categories: Category[], column: SortColumn, direction: string): Ca
 function matches(category: Category, term: string, pipe: PipeTransform) {
   return (
     category.name.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(category.id).includes(term)
+    category.description.toLowerCase().includes(term.toLowerCase())
   );
 }
 
@@ -38,7 +38,7 @@ function matches(category: Category, term: string, pipe: PipeTransform) {
   providedIn: 'root'
 })
 export class CategoriesService {
-  public categoriesData: Category[] = [];
+  public _categoriesData: Array<Category> = [];
   public categoriesPreview: CategoryPreviewResponse[] = [];
   private apiUrl = `${config.apiURL}categories/`
   private _search$ = new Subject<void>();
@@ -109,7 +109,7 @@ export class CategoriesService {
 
   RetrieveData() {
     this.GetCategoriesManagement().subscribe((data) => {
-      this.categoriesData = data;
+      this._categoriesData = data;
       this._search$
         .pipe(
           tap(() => this._loading$.next(true)),
@@ -170,7 +170,7 @@ export class CategoriesService {
 
   private _search(): Observable<SearchResult> {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
-    let items = sort(this.categoriesData, sortColumn, sortDirection);
+    let items = sort(this._categoriesData, sortColumn, sortDirection);
 
     items = items.filter((category) => matches(category, searchTerm, this.pipe));
     const total = items.length;
