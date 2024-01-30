@@ -157,6 +157,11 @@ export class ModalProductComponent implements OnInit {
     this.categoryForm = response.category;
     this.warrantyForm = response.warranty;
     this.supplierForm = response.supplier;
+    for (const option of response.options) {
+      await this.ReadImages(option.images);
+      option.images = this.uploadFiles;
+      this.uploadFiles = [];
+    }
     this.options = response.options || [];
     this.ReSelect()
     this.productForm$.next(this.fb.group({

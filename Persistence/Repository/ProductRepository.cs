@@ -123,7 +123,7 @@ public class ProductRepository : IProductRepository
 
 	public async Task<ProductEntity> GetProductWithOption(Guid id, CancellationToken cancellationToken)
 	{
-		var product = await _dbContext.Products.Include(x => x.Options).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+		var product = await _dbContext.Products.Include(x => x.Options.Where(x => x.IsDeleted != true)).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 		if (product == null)
 			throw new ArgumentNullException(nameof(product));
 		return product;
@@ -302,5 +302,15 @@ public class ProductRepository : IProductRepository
 		}
 		
 		return mostPurchasedProducts;
+	}
+
+	public void UpdateRange(List<OptionEntity> options)
+	{
+		_dbContext.UpdateRange(options);
+	}
+
+	public void AddRangeImages(List<MultipleOptionImagesEntity> multipleImagesResponses)
+	{
+		_dbContext.AddRange(multipleImagesResponses);
 	}
 } 

@@ -68,4 +68,6 @@ public interface IProductRepository
 	Task VerifyIfOptionExists(string optionTitle, CancellationToken cancellationToken);
 	Task VerifyIfOptionAlredyExists(string optionTitle, Guid optionId, CancellationToken cancellationToken);
 	Task<IEnumerable<MostPurchasedProductsWithDates>> GetMostPurchasedProductsWithDatesAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken);
+	void UpdateRange(List<OptionEntity> options);
+	void AddRangeImages(List<MultipleOptionImagesEntity> multipleImagesResponses);
 }
