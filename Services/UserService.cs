@@ -58,7 +58,7 @@ internal sealed class UserService : IUserService
 		return usersResponse;
 	}
 
-	public async Task UpdateAsync(string? username, string userId, UserForCreationDto userForUpdateDto,
+	public async Task UpdateAsync(string updaterId, string userId, UserForCreationDto userForUpdateDto,
 		CancellationToken cancellationToken = default)
 	{
 		await _repositoryManager.UserRepository.VerifyUserAlredyExistsAsync(userForUpdateDto.UserName, userId, cancellationToken);
@@ -68,23 +68,26 @@ internal sealed class UserService : IUserService
 			cancellationToken
 		) ?? throw new UserNotFoundException(userId);
 		user = userForUpdateDto.Adapt(user);
-		_repositoryManager.UserRepository.Update(user);
-		IEnumerable<string> newRoles = new List<string>();
+		if (user.BirthDate.AddYears(18) > DateOnly.FromDateTime(DateTime.UtcNow))
+			throw new InvalidOperationException("El usuario debe ser mayor de 18 años");
+		user.UpdatedAt = DateTimeOffset.UtcNow;
+		user.UpdatedBy = updaterId;
+		await _userManager.UpdateAsync(user);
 		foreach (var rol in userForUpdateDto.RolesId)
 		{
+			IList<string> roles = await _userManager.GetRolesAsync(user);
+			foreach (var oldRole in roles)
+			{
+				await _userManager.RemoveFromRoleAsync(user, oldRole);
+			}
 			var role = await _roleManager.FindByIdAsync(rol.RoleId);
 			if (role == null)
 				throw new NullReferenceException(rol.RoleId);
-			newRoles.Append(role.Name);
+			var result = await _userManager.AddToRoleAsync(user, role.Name);
+			if (!result.Succeeded)
+				IdentityResultMessage(result);
 		}
-		var currentRoles = await _userManager.GetRolesAsync(user);
-		var rolesToRemove = currentRoles.Except(newRoles).ToList();
-		foreach (var role in rolesToRemove)
-			await _userManager.RemoveFromRoleAsync(user, role);
-		var rolesToAdd = newRoles.Except(currentRoles).ToList();
-		foreach (var role in rolesToAdd)
-			await _userManager.AddToRoleAsync(user, role);
-		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(updaterId, cancellationToken);
 	}
 
 	public async Task DeleteAsync(string userId, CancellationToken cancellationToken = default)
@@ -122,6 +125,10 @@ internal sealed class UserService : IUserService
 		user.SecurityStamp = Guid.NewGuid().ToString();
 		user.Cart = new();
 		user.WishList = new WishListEntity { Id = Guid.NewGuid() };
+		user.CreatedAt = DateTimeOffset.UtcNow;
+		user.CreatedBy = userId;
+		if (user.BirthDate.AddYears(18) > DateOnly.FromDateTime(DateTime.UtcNow))
+			throw new InvalidOperationException("El usuario debe ser mayor de 18 años");
 		var result = await _userManager.CreateAsync(user, userForCreationDto.Password);
 		if (!result.Succeeded)
 			IdentityResultMessage(result);

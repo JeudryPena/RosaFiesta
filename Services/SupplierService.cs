@@ -52,6 +52,8 @@ internal sealed class SupplierService : ISupplierService
 	public async Task CreateAsync(string userId, SupplierDto supplierDto, CancellationToken cancellationToken = default)
 	{
 		var supplier = supplierDto.Adapt<SupplierEntity>();
+		await _repositoryManager.SupplierRepository.VerifyUniqueEmail(supplier.Email, cancellationToken);
+		await _repositoryManager.SupplierRepository.VerifyUniquePhone(supplier.Phone, cancellationToken);
 		_repositoryManager.SupplierRepository.Insert(supplier);
 		if (supplierDto.SupplierProducts != null)
 			foreach (var product in supplierDto.SupplierProducts)
@@ -68,6 +70,8 @@ internal sealed class SupplierService : ISupplierService
 	{
 		SupplierEntity supplier = await _repositoryManager.SupplierRepository.GetByIdAsync(supplierId, cancellationToken);
 		supplier = supplierDto.Adapt(supplier);
+		await _repositoryManager.SupplierRepository.VerifyUniqueEmailUpdate(supplier.Id, supplier.Email, cancellationToken);
+		await _repositoryManager.SupplierRepository.VerifyUniquePhoneUpdate(supplier.Id, supplier.Phone, cancellationToken);
 		_repositoryManager.SupplierRepository.Update(supplier);
 		if (supplierDto.SupplierProducts != null)
 		{

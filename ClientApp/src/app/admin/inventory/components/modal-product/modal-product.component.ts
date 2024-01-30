@@ -100,6 +100,31 @@ export class ModalProductComponent implements OnInit {
     console.log(input)
   }
 
+  async ReadImages(images: any) {
+    let promises: any[] = [];
+    let realImages = images.filter((image: any) => !(image instanceof File));
+    for (const image of realImages) {
+      let i = image.image;
+      const file$ = this.filesService.getPhoto(i);
+      let response: any = await lastValueFrom(file$);
+      const fileName = i.split('\\').pop();
+      promises.push(this.RetrieveFile(response, fileName));
+    }
+    await Promise.all(promises);
+  }
+
+
+  async RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
+    if (data.body) {
+
+      const downloadedFile = new Blob([data.body], {type: data.body.type});
+
+      const file = new File([downloadedFile], fileName, {type: `${data.body.type}`});
+      this.uploadFiles.push(file);
+    }
+  }
+
+
   async onEdit() {
     const product$ = this.service.GetProduct(this.productId);
     let response: ProductResponse = await lastValueFrom(product$);
@@ -107,6 +132,11 @@ export class ModalProductComponent implements OnInit {
     this.categoryForm = response.category;
     this.warrantyForm = response.warranty;
     this.supplierForm = response.supplier;
+    for (const option of response.options) {
+      await this.ReadImages(option.images);
+      option.images = this.uploadFiles;
+      this.uploadFiles = [];
+    }
     this.options = response.options || [];
     this.ReSelect()
     await this.RetrieveRelations();
@@ -154,27 +184,6 @@ export class ModalProductComponent implements OnInit {
     this.optionFirst = index;
   }
 
-  async ReadImages(images: any) {
-    let promises: any[] = [];
-    for (const image of images) {
-      let i = image.image;
-      const file$ = this.filesService.getPhoto(i);
-      let response: any = await lastValueFrom(file$);
-      const fileName = i.split('\\').pop();
-      promises.push(this.RetrieveFile(response, fileName));
-    }
-    await Promise.all(promises);
-  }
-
-  async RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
-    if (data.body) {
-
-      const downloadedFile = new Blob([data.body], {type: data.body.type});
-
-      const file = new File([downloadedFile], fileName, {type: `${data.body.type}`});
-      this.uploadFiles.push(file);
-    }
-  }
 
   ReSelect() {
     this.categorySelected = this.categoryForm?.name;
@@ -298,11 +307,7 @@ export class ModalProductComponent implements OnInit {
       quantityAvailable: new FormControl(this.options[index].quantityAvailable),
     })
     this.imageFirst = this.options[index].imageIndex;
-    if (this.update == true || this.read == true) {
-      await this.ReadImages(this.options[index].images);
-    } else {
-      this.uploadFiles = this.options[index].images;
-    }
+    this.uploadFiles = this.options[index].images;
     for (const f of this.uploadFiles) {
       await this.uploadComponent.preview(f);
     }
@@ -331,6 +336,9 @@ export class ModalProductComponent implements OnInit {
   }
 
   removeOption(index: number) {
+    if (index == this.optionFirst) {
+      this.optionFirst = 0;
+    }
     this.options.splice(index, 1);
   }
 

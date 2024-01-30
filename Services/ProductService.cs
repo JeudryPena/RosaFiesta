@@ -2,6 +2,7 @@
 using Contracts.Model.Product.Response;
 
 using Domain.Entities.Product;
+using Domain.Entities.Product.Helpers;
 using Domain.IRepository;
 
 using Mapster;
@@ -86,17 +87,64 @@ internal sealed class ProductService : IProductService
 		ProductDto productDto, CancellationToken cancellationToken = default)
 	{
 		ProductEntity product = await _repositoryManager.ProductRepository.GetByIdAsync(productId, cancellationToken);
-		product = productDto.Adapt(product);
-		foreach (var option in product.Options)
+		product.Code = productDto.Code;
+		product.IsService = productDto.IsService;
+		product.CategoryId = productDto.CategoryId;
+		product.WarrantyId = productDto.WarrantyId;
+		product.SupplierId = productDto.SupplierId;
+		List<MultipleOptionImagesEntity> multipleImagesResponses = new List<MultipleOptionImagesEntity>();
+		
+		foreach(var option in product.Options)
 		{
-			await _repositoryManager.ProductRepository.VerifyIfOptionAlredyExists(option.Title, option.Id,  cancellationToken);
+			if (!productDto.Options.Any(x => x.Id == option.Id))
+			{
+				option.IsDeleted = true;
+			}
 		}
 		_repositoryManager.ProductRepository.Update(product);
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		
+		foreach(var opt in productDto.Options)
+		{
+			OptionEntity option = new OptionEntity();
+			if (opt.Id != null)
+			{
+				option = await _repositoryManager.ProductRepository.GetOptionByIdAsync((Guid)opt.Id, cancellationToken);
+				await _repositoryManager.ProductRepository.VerifyIfOptionAlredyExists(opt.Title, option.Id, cancellationToken);
+			}
+			else
+			{
+				option.Id = Guid.NewGuid();
+			}
+			
+			option.Title = opt.Title;
+			option.Description = opt.Description;
+			option.Price = opt.Price;
+			option.QuantityAvailable = opt.QuantityAvailable;
+			option.Color = opt.Color;
+			option.GenderFor = (GenderType)opt.GenderFor;
+			option.Condition = (ConditionType)opt.Condition;
+			option.Images.Clear();
+			option.Image = null;
+			option.ImageId = null;
+			_repositoryManager.ProductRepository.UpdateOption(option);
+			foreach(var optionDto in opt.Images)
+			{
+				MultipleOptionImagesEntity multipleOptionImagesEntity = new MultipleOptionImagesEntity
+				{
+					Id = Guid.NewGuid(),
+					Image = optionDto.Image,
+					OptionId = option.Id
+				};
+				multipleImagesResponses.Add(multipleOptionImagesEntity);
+			}
+		}
+		_repositoryManager.ProductRepository.AddRangeImages(multipleImagesResponses);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
 		ProductEntity newProduct = await _repositoryManager.ProductRepository.GetProductWithOption(product.Id, cancellationToken);
 		newProduct.OptionId = newProduct.Options[productDto.OptionIndex].Id;
 		int index = 0;
-		foreach (var option in newProduct.Options)
+		foreach (var option in newProduct.Options.Where(x => x.IsDeleted == false))
 		{
 			if (option.Images != null)
 				option.ImageId = option.Images.ElementAt(productDto.Options.ElementAt(index).ImageIndex).Id;

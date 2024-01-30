@@ -29,4 +29,31 @@ internal sealed class SupplierRepository : ISupplierRepository
 
 	public void Insert(SupplierEntity supplier) => _dbContext.Suppliers.Add(supplier);
 	public void Update(SupplierEntity supplier) => _dbContext.Suppliers.Update(supplier);
+	public async Task VerifyUniqueEmail(string? supplierEmail, CancellationToken cancellationToken)
+	{
+		bool supplierExists = await _dbContext.Suppliers.AnyAsync(x => x.Email == supplierEmail, cancellationToken);
+		if (supplierExists)
+			throw new Exception("Ya existe un proveedor con ese correo electrónico");
+	}
+
+	public async Task VerifyUniquePhone(string? supplierPhone, CancellationToken cancellationToken)
+	{
+		bool supplierExists = await _dbContext.Suppliers.AnyAsync(x => x.Phone == supplierPhone, cancellationToken);
+		if (supplierExists)
+			throw new Exception("Ya existe un proveedor con ese número de teléfono");
+	}
+
+	public async Task VerifyUniqueEmailUpdate(Guid supplierId, string? supplierEmail, CancellationToken cancellationToken)
+	{
+		bool supplierExists = await _dbContext.Suppliers.AnyAsync(x => x.Email == supplierEmail && x.Id != supplierId, cancellationToken);
+		if (supplierExists)
+			throw new Exception("Ya existe un proveedor con ese correo electrónico");
+	}
+
+	public async Task VerifyUniquePhoneUpdate(Guid supplierId, string? supplierPhone, CancellationToken cancellationToken)
+	{
+		bool supplierExists = await _dbContext.Suppliers.AnyAsync(x => x.Phone == supplierPhone && x.Id != supplierId, cancellationToken);
+		if (supplierExists)
+			throw new Exception("Ya existe un proveedor con ese número de teléfono");
+	}
 }
