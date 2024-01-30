@@ -7,7 +7,7 @@ public class ProductResponse : ByBaseResponse
 	public bool IsService { get; set; }
 	public OptionsResponse Option { get; set; }
 	public CategoriesListResponse Category { get; set; }
-	public SuppliersListResponse? SupplierId { get; set; }
+	public SuppliersListResponse? Supplier { get; set; }
 	public WarrantiesListResponse? Warranty { get; set; }
 	public ICollection<OptionsResponse> Options { get; set; }
 }
