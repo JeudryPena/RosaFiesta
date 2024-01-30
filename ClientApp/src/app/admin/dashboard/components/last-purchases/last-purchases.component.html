@@ -2,9 +2,11 @@
   <mat-card-header class="d-flex gap-3">
     <mat-card-title-group>
       <mat-card-title>Ultimas Compras</mat-card-title>
-      <div class="chart-header">
-        <a class="btn" routerLink="/admin/dashboard/orders">Ver todas las ordenes</a>
-      </div>
+      @if (user.role === 'Admin' || user.role === 'SalesManager') {
+        <div class="chart-header">
+          <a class="btn" routerLink="/admin/dashboard/orders">Ver todas las ordenes</a>
+        </div>
+      }
     </mat-card-title-group>
   </mat-card-header>
 

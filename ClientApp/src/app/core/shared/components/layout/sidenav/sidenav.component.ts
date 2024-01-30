@@ -1,5 +1,5 @@
 import {animate, keyframes, style, transition, trigger} from '@angular/animations';
-import {Component, EventEmitter, HostListener, Input, OnDestroy, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {CategoriesService} from '@admin/inventory/services/categories.service';
@@ -9,6 +9,8 @@ import {dashboardData} from './dashboard-data';
 import {inventoryData} from './inventory-data';
 import {Layout} from './layout';
 import {CategoryPreviewResponse} from "@core/interfaces/Product/category";
+import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
+import {AuthenticateService} from "@auth/services/authenticate.service";
 
 interface SidenavToggle {
   screenWidth: number;
@@ -46,19 +48,21 @@ interface SidenavToggle {
     ])
   ]
 })
-export class SidenavComponent implements OnDestroy {
+export class SidenavComponent implements OnDestroy, OnInit {
   @Output() onToggleSidenav: EventEmitter<SidenavToggle> = new EventEmitter();
   @Input() layout: Layout = Layout.Normal;
   collapsed = false;
   screenWidth = 0;
-  navData: any;
+  navData: any[];
   multiple: boolean = false;
+  user: CurrentUserResponse;
   private subscription: Subscription;
 
   constructor(
     private categoryService: CategoriesService,
     private sidenavService: SidenavService,
-    private router: Router
+    private router: Router,
+    private readonly authService: AuthenticateService
   ) {
     this.subscription = this.sidenavService.toggleSidenav$.subscribe(() => {
       this.toggleCollapsed();
@@ -66,6 +70,7 @@ export class SidenavComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authenticate();
     this.screenWidth = window.innerWidth;
     this.collapsed = false;
     if (this.layout === Layout.Normal) {
@@ -74,6 +79,12 @@ export class SidenavComponent implements OnDestroy {
       this.navData = dashboardData;
     } else if (this.layout === Layout.Inventory) {
       this.navData = inventoryData;
+    }
+  }
+
+  authenticate(): void {
+    if (this.authService.isUserAuthenticated()) {
+      this.user = this.authService.currentUser();
     }
   }
 
@@ -94,7 +105,7 @@ export class SidenavComponent implements OnDestroy {
     } else if (this.layout === Layout.Dashboard) {
       this.router.navigate([`admin/dashboard/${id}`]);
     } else if (this.layout === Layout.Inventory) {
-      this.router.navigate([`admin/inventory/management-${id}`]);
+      this.router.navigate([`admin/inventory/${id}`]);
     }
   }
 

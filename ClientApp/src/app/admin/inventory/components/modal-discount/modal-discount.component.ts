@@ -23,7 +23,6 @@ export class ModalDiscountComponent implements OnInit {
   @Input() title: string = '';
   @Input() code: string = '';
 
-
   discountForm$ = new BehaviorSubject<FormGroup>(null);
 
   products: any[] = [];
@@ -86,8 +85,8 @@ export class ModalDiscountComponent implements OnInit {
     this.navegationProperties();
     this.discountForm$.next(this.fb.group({
       value: response.value,
-      start: response.start,
-      end: response.end,
+      start: new Date(response.start),
+      end: new Date(response.end),
       productsDiscounts: [],
     }));
   }
@@ -98,8 +97,8 @@ export class ModalDiscountComponent implements OnInit {
     this.products = response.productsDiscounts || [];
     const form = this.fb.group({
       value: response.value,
-      start: response.start,
-      end: response.end,
+      start: new Date(response.start),
+      end: new Date(response.end),
       createdAt: this.datePipe.transform(response.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
       updatedAt: this.datePipe.transform(response.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
       createdBy: response.createdBy,

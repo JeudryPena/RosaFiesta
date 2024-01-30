@@ -30,7 +30,7 @@ public class CategoriesController : ControllerBase
 	}
 
 	[HttpGet("categoriesManagement")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> GetCategoriesManagementAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<CategoryManagementResponse> categories = await _serviceManager.CategoryService.GetAllCategoriesManagementAsync(cancellationToken);
@@ -66,7 +66,7 @@ public class CategoriesController : ControllerBase
 	}
 
 	[HttpGet("{categoryId}/category-management")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> GetCategoryManagementByIdAsync(int categoryId, CancellationToken cancellationToken)
 	{
 		CategoryManagementResponse products = await _serviceManager.CategoryService.GetManagementByIdAsync(categoryId, cancellationToken);
@@ -74,7 +74,7 @@ public class CategoriesController : ControllerBase
 	}
 
 	[HttpPost]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> PersistAsync([FromBody] CategoryDto categoryDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -85,7 +85,7 @@ public class CategoriesController : ControllerBase
 	}
 
 	[HttpPut("{categoryId}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> UpdateAsync(int categoryId, [FromBody] CategoryDto categoryUpdateDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -96,7 +96,7 @@ public class CategoriesController : ControllerBase
 	}
 
 	[HttpDelete("{categoryId}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> DeleteAsync(int categoryId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

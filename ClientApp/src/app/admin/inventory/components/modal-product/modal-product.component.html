@@ -66,14 +66,16 @@
             <ol *ngFor="let option of options; let i = index" class="list-group list-group-numbered ">
               <li>
                 <div class="input-group flex-nowrap">
-                  <button (click)="selectOption(i)" class="w-100 btn text-md-start list btn-outline-light"
+                  <button [disabled]="optionForm != null && i == optionForm.get('index')?.value"
+                          (click)="selectOption(i)"
+                          class="w-100 btn text-md-start list btn-outline-light"
                           type="text">{{
                       i +
                       1
                     }}. {{ option.title }}
                   </button>
                   <button (click)="SelectFirst(i)" [disabled]="read" [ngClass]="{'focus': optionFirst === i}"
-                          class="btn btn-outline-light list pe-2 ps-2 input-group-text first">
+                          class="btn btn-outline-light list pe-2 ps-2 input-group-text firstButton">
                     <i class="fa-solid fa-1"></i>
                   </button>
                   <button (click)="removeOption(i)" [disabled]="read"
@@ -159,7 +161,8 @@
           </h5>
         </div>
         <div class="management-input-container">
-          <app-upload-images [imageFirst]="imageFirst" [multiple]="true" [pictures]="pictures" [read]="read"
+          <app-upload-images #uploadComponent [imageFirst]="imageFirst" [multiple]="true" [pictures]="pictures"
+                             [read]="read"
                              [uploadFiles]="uploadFiles"></app-upload-images>
         </div>
         <div class="management-input-container textarea" isFocus>
@@ -210,7 +213,7 @@
               <select aria-label=".form-select-sm example"
                       class="management-input input form-select form-select-sm"
                       formControlName="genderFor" required type="number">
-                <option selected=1 value=1>Varón</option>
+                <option selected value=1>Varón</option>
                 <option value=2>Hembra</option>
                 <option value=3>Ambos</option>
               </select>

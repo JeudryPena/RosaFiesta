@@ -75,6 +75,13 @@ export class ModalUserComponent {
 
     Promise.all([userResponse, relationsResponse]).then(([userResponse, relationsResponse]) => {
       this.rolesList = relationsResponse || [];
+      const roles = userResponse.userRoles.map(x => {
+        return {
+          roleId: x.role.id,
+          name: x.role.name
+        }
+      })
+      this.roles = roles || [];
       this.userForm$.next(this.fb.group({
         userName: new FormControl(userResponse.userName),
         email: new FormControl(userResponse.email),
@@ -103,13 +110,19 @@ export class ModalUserComponent {
         password: new FormControl(''),
         confirmPassword: new FormControl(''),
         birthDate: new FormControl(userResponse.birthDate),
-        userRoles: new FormControl(''),
         promotionalMails: new FormControl(userResponse.promotionalMails),
         createdAt: this.datePipe.transform(userResponse.createdAt, 'dd-MMM-yyyy h:mm:ss a'),
         updatedAt: this.datePipe.transform(userResponse.updatedAt, 'dd-MMM-yyyy h:mm:ss a'),
         createdBy: userResponse.createdBy,
         updatedBy: userResponse.updatedBy,
       });
+      const roles = userResponse.userRoles.map(x => {
+        return {
+          roleId: x.role.id,
+          name: x.role.name
+        }
+      })
+      this.roles = roles || [];
       userForm.disable();
       this.userForm$.next(userForm);
     });

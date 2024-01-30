@@ -1,6 +1,6 @@
 import {DatePipe} from "@angular/common";
 import {HttpResponse} from '@angular/common/http';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, lastValueFrom} from 'rxjs';
@@ -17,6 +17,8 @@ import {ProductsService} from '../../services/products.service';
 import {SuppliersService} from '../../services/suppliers.service';
 import {WarrantiesService} from '../../services/warranties.service';
 import {CategoriesListResponse} from "@core/interfaces/Product/category";
+import {SwalService} from "@core/shared/services/swal.service";
+import {UploadImagesComponent} from "@admin/inventory/components/upload-images/upload-images.component";
 
 @Component({
   selector: 'app-modal-product',
@@ -27,6 +29,7 @@ export class ModalProductComponent implements OnInit {
   updateOption = false;
   optionTitle = '';
   color = '';
+  @ViewChild(UploadImagesComponent) uploadComponent: UploadImagesComponent;
 
   @Input() read: boolean = false;
   @Input() update: boolean = false;
@@ -61,7 +64,8 @@ export class ModalProductComponent implements OnInit {
     private suppliersService: SuppliersService,
     private filesService: FilesService,
     private fb: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private readonly swalService: SwalService
   ) {
 
   }
@@ -99,7 +103,7 @@ export class ModalProductComponent implements OnInit {
   async onEdit() {
     const product$ = this.service.GetProduct(this.productId);
     let response: ProductResponse = await lastValueFrom(product$);
-    this.optionFirst = response.options.indexOf(response.option)
+    this.optionFirst = response.options.findIndex(x => x.id == response.option.id);
     this.categoryForm = response.category;
     this.warrantyForm = response.warranty;
     this.supplierForm = response.supplier;
@@ -107,9 +111,9 @@ export class ModalProductComponent implements OnInit {
     this.ReSelect()
     await this.RetrieveRelations();
     this.productForm$.next(this.fb.group({
-      code: [''],
+      code: [response.code],
       options: [],
-      isService: [false],
+      isService: [response.isService],
       categoryId: [''],
       warrantyId: [''],
       supplierId: ['']
@@ -119,7 +123,7 @@ export class ModalProductComponent implements OnInit {
   async onRead() {
     const product$ = this.service.GetProduct(this.productId);
     let response: ProductResponse = await lastValueFrom(product$);
-    this.optionFirst = this.optionFirst = response.options.indexOf(response.option)
+    this.optionFirst = response.options.findIndex(x => x.id == response.option.id);
     this.categoryForm = response.category;
     this.warrantyForm = response.warranty;
     this.supplierForm = response.supplier;
@@ -160,7 +164,6 @@ export class ModalProductComponent implements OnInit {
       promises.push(this.RetrieveFile(response, fileName));
     }
     await Promise.all(promises);
-    this.preview();
   }
 
   async RetrieveFile(data: HttpResponse<Blob>, fileName: string) {
@@ -222,6 +225,14 @@ export class ModalProductComponent implements OnInit {
 
   saveOption(optionFormValue: any) {
     const option = {...optionFormValue};
+    if (this.uploadFiles.length == 0) {
+      this.swalService.show({
+        title: 'Error',
+        text: 'Debe agregar al menos una imagen al producto',
+        icon: 'error'
+      });
+      return;
+    }
     option.images = this.uploadFiles;
     const optionDto: OptionDto = {
       id: option.id,
@@ -292,19 +303,12 @@ export class ModalProductComponent implements OnInit {
     } else {
       this.uploadFiles = this.options[index].images;
     }
+    for (const f of this.uploadFiles) {
+      await this.uploadComponent.preview(f);
+    }
     setTimeout(() => {
 
     }, 10);
-  }
-
-  preview() {
-    this.uploadFiles.forEach(f => {
-      const reader = new FileReader();
-      reader.readAsDataURL(f);
-      reader.onload = () => {
-        this.pictures.push(reader.result);
-      };
-    });
   }
 
   validate = (controlName: string, errorName: string) => {
@@ -339,13 +343,12 @@ export class ModalProductComponent implements OnInit {
     modalRef.componentInstance.title = '¿Desea actualizar el Producto?';
     modalRef.componentInstance.status = Status.Pending;
 
-    modalRef.result.then(result => {
+    modalRef.result.then(async result => {
       if (result) {
         const product = {...productFormValue};
         if (this.options.length !== 0)
-          this.UpdateImages();
-        else
-          this.OnUpdateProduct(product);
+          await this.UpdateImages();
+        await this.OnUpdateProduct(product);
       }
     });
   }
@@ -359,7 +362,7 @@ export class ModalProductComponent implements OnInit {
     }
   }
 
-  OnUpdateProduct(product: any) {
+  async OnUpdateProduct(product: any) {
     const productDto: ProductDto = {
       code: product.code,
       isService: product.isService,
@@ -393,9 +396,15 @@ export class ModalProductComponent implements OnInit {
     modalRef.result.then(async result => {
       if (result) {
         const product = {...productFormValue};
-        if (this.options.length !== 0) {
-          await this.AddImages();
+        if (this.options.length === 0) {
+          this.swalService.show({
+            title: 'Error',
+            text: 'Debe agregar al menos una opción',
+            icon: 'error'
+          })
+          return;
         }
+        await this.AddImages();
         await this.OnAddProduct(product);
       }
     });
@@ -411,6 +420,14 @@ export class ModalProductComponent implements OnInit {
   }
 
   async OnAddProduct(product: any) {
+    if (this.categoryForm?.id == null) {
+      this.swalService.show({
+        title: 'Error',
+        text: 'Debe seleccionar una categoría',
+        icon: 'error'
+      })
+      return;
+    }
     const productDto: ProductDto = {
       code: product.code ? product.code : null,
       isService: product.isService,

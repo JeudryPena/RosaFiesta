@@ -4,6 +4,8 @@ import {QuotesService} from "@intranet/services/quotes.service";
 import {PurchaseService} from "@intranet/services/purchase.service";
 import {lastValueFrom} from "rxjs";
 import {MostPurchasedProductsResponse} from "@core/interfaces/Product/Response/MostPurchasedProductsResponse";
+import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
+import {AuthenticateService} from "@auth/services/authenticate.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,16 +19,25 @@ export class DashboardComponent implements OnInit {
   quoteCount: number = 0;
   gainsCount: number = 0;
   mostPurchasedProducts: MostPurchasedProductsResponse[] = [];
+  user: CurrentUserResponse;
 
   constructor(
     private readonly productService: ProductsService,
     private readonly qouteService: QuotesService,
-    private readonly purchaseService: PurchaseService
+    private readonly purchaseService: PurchaseService,
+    private readonly authService: AuthenticateService
   ) {
   }
 
   ngOnInit(): void {
+    this.authenticate();
     this.retrieveData();
+  }
+
+  authenticate() {
+    if (this.authService.isUserAuthenticated()) {
+      this.user = this.authService.currentUser();
+    }
   }
 
   async retrieveData() {

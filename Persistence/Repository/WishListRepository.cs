@@ -25,7 +25,7 @@ internal sealed class WishListRepository : IWishListRepository
 
 	public async Task<WishListEntity> GetWishListByIdAsync(string userId, CancellationToken cancellationToken = default)
 	{
-		WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList
+		WishListEntity? wishListEntity = await _rosaFiestaContext.WishesList.IgnoreQueryFilters()
 			.Include(wl => wl.ProductsWish)
 			.FirstOrDefaultAsync(wl => wl.UserId == userId, cancellationToken);
 		if (wishListEntity == null)

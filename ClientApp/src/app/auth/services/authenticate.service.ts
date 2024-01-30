@@ -140,8 +140,29 @@ export class AuthenticateService {
   public isUserAdmin = (): boolean => {
     const token = localStorage.getItem("token");
     const decodedToken = this.jwtHelper.decodeToken(token!);
-    const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    const role = decodedToken.role;
     return role === 'Admin';
+  }
+
+  public isUserSalesManager = (): boolean => {
+    const token = localStorage.getItem("token");
+    const decodedToken = this.jwtHelper.decodeToken(token!);
+    const role = decodedToken.role;
+    return role === 'SalesManager';
+  }
+
+  public isUserProductsManager = (): boolean => {
+    const token = localStorage.getItem("token");
+    const decodedToken = this.jwtHelper.decodeToken(token!);
+    const role = decodedToken.role;
+    return role === 'ProductsManager';
+  }
+
+  public isUserMarketingManager = (): boolean => {
+    const token = localStorage.getItem("token");
+    const decodedToken = this.jwtHelper.decodeToken(token!);
+    const role = decodedToken.role;
+    return role === 'MarketingManager';
   }
 
   public logout = () => {

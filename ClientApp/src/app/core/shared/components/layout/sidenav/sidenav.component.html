@@ -12,21 +12,17 @@
     </div>
 
     <ul class="sidenav-nav">
-
-      <li *ngFor="let data of navData" class="sidenav-nav-item">
-        <a (click)="handleClick(data)" *ngIf="data.subCategories && data.subCategories.length > 0"
-           class="sidenav-nav-link">
-          <i [class]="data.icon" class="sidenav-link-icon w-icon"></i>
-          <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">{{ data.name }}</span>
-        </a>
-
-        <a (click)="Navigate(data.id)"
-           *ngIf="!data.subCategories || (data.subCategories && data.subCategories.length === 0)"
-           class="sidenav-nav-link">
-          <i [class]="data.icon" class="sidenav-link-icon w-icon"></i>
-          <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">{{ data.name }}</span>
-        </a>
-      </li>
+      @for (data of navData; track data) {
+        @if ((data.name === 'Usuarios' && user.role === 'Admin') || (data.name !== 'Usuarios' && data.name !== 'Descuentos' && data.name !== 'Pedidos') || (data.name === 'Descuentos' && (user.role === 'MarketingManager' || user.role === 'Admin')) || (data.name === 'Pedidos' && (user.role === 'SalesManager' || user.role === 'Admin'))) {
+          <li class="sidenav-nav-item">
+            <a (click)="Navigate(data.id)"
+               class="sidenav-nav-link">
+              <i [class]="data.icon" class="sidenav-link-icon w-icon"></i>
+              <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">{{ data.name }}</span>
+            </a>
+          </li>
+        }
+      }
     </ul>
   </div>
 </div>

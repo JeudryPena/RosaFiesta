@@ -25,7 +25,7 @@ public class PurchaseController : ControllerBase
 	}
 	
 	[HttpGet("analytic-data/{start}/{end}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveAnalyticDataAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
 	{
 		AnalyticDataResponse analyticData = await _serviceManager.OrderService.GetAnalyticDataAsync(start, end, cancellationToken);
@@ -33,7 +33,7 @@ public class PurchaseController : ControllerBase
 	}
 	
 	[HttpGet("order-comparative/{start}/{end}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveOrderCompareAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
 	{
 		OrderComparativeResponse orderCompare = await _serviceManager.OrderService.GetOrderCompareAsync(start, end, cancellationToken);
@@ -41,7 +41,7 @@ public class PurchaseController : ControllerBase
 	}
 	
 	[HttpGet("count")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveCount(CancellationToken cancellationToken)
 	{
 		int count = await _serviceManager.PurchaseDetailService.GetCountAsync(cancellationToken);
@@ -49,7 +49,7 @@ public class PurchaseController : ControllerBase
 	}
 	
 	[HttpGet("gains")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveGains(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -60,7 +60,7 @@ public class PurchaseController : ControllerBase
 	}
 	
 	[HttpGet("most-purchased-products")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveMostPurchasedProductsAsync(CancellationToken cancellationToken)
 	{
 		IEnumerable<MostPurchasedProductsResponse> mostPurchasedProducts = await _serviceManager.ProductService.GetMostPurchasedProductsAsync(cancellationToken);
@@ -68,7 +68,7 @@ public class PurchaseController : ControllerBase
 	}
 	
 	[HttpGet("most-purchased-products/{start}/{end}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveMostPurchasedProductsWithDatesAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken)
 	{
 		IEnumerable<MostPurchasedProductsWithDatesResponse> mostPurchasedProducts = await _serviceManager.ProductService.GetMostPurchasedProductsWithDatesAsync(start, end, cancellationToken);
@@ -76,7 +76,7 @@ public class PurchaseController : ControllerBase
 	}
 
 	[HttpGet("orders/{take:int}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveAll(int take, CancellationToken cancellationToken)
 	{
 		int? ordersToTake;
@@ -89,7 +89,7 @@ public class PurchaseController : ControllerBase
 	}
 
 	[HttpGet("orders/{userId}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveUserOrders(string userId, CancellationToken cancellationToken)
 	{
 		IEnumerable<OrderPreviewResponse> orders = await _serviceManager.OrderService.GetByUserIdAsync(userId, cancellationToken);
@@ -124,7 +124,7 @@ public class PurchaseController : ControllerBase
 	}
 
 	[HttpGet]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> RetrieveDetails(CancellationToken cancellationToken)
 	{
 		IEnumerable<PurchaseDetailResponse> purchaseDetails = await _serviceManager.PurchaseDetailService.GetAllAsync(cancellationToken);
@@ -149,7 +149,7 @@ public class PurchaseController : ControllerBase
 	}
 
 	[HttpPut("{detailId:guid}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> UpdatePurchaseDetail(Guid detailId, [FromBody] PurchaseDetailDto purchaseDetail, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -169,8 +169,8 @@ public class PurchaseController : ControllerBase
 		return Ok(valid);
 	}
 	
-	[HttpGet("{orderId:guid}/oficializeReturn")]
-	[Authorize(Roles="Admin")]
+	[HttpGet("{orderId:guid}/oficialize-return")]
+	[Authorize(Roles="Admin, SalesManager")]
 	public async Task<IActionResult> OficializeReturnOrder(Guid orderId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -179,9 +179,20 @@ public class PurchaseController : ControllerBase
 		bool valid = await _serviceManager.OrderService.OficializeReturnOrderDetailAsync(userId, orderId, cancellationToken);
 		return Ok(valid);
 	}
+	
+	[HttpGet("{orderId:guid}/reject-return")]
+	[Authorize(Roles="Admin, SalesManager")]	
+	public async Task<IActionResult> RejectReturnOrder(Guid orderId, CancellationToken cancellationToken)
+	{
+		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId == null)
+			return StatusCode((int)HttpStatusCode.Unauthorized);
+		bool valid = await _serviceManager.OrderService.RejectReturnOrderDetailAsync(userId, orderId, cancellationToken);
+		return Ok(valid);
+	}
 
 	[HttpDelete("{detailId}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles="Admin, SalesManager")]
 	public async Task<IActionResult> DeletePurchaseDetail(Guid detailId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

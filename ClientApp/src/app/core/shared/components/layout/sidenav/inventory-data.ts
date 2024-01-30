@@ -7,27 +7,27 @@ export const inventoryData: IData[] = [
     name: 'Usuarios',
   },
   {
-    id: 'products',
+    id: 'management-products',
     icon: 'products-icon',
     name: 'Productos',
   },
   {
-    id: 'categories',
+    id: 'management-categories',
     icon: 'tag-icon',
     name: 'Categorías'
   },
   {
-    id: 'discounts',
+    id: 'management-discounts',
     icon: 'percent-icon',
     name: 'Descuentos'
   },
   {
-    id: 'suppliers',
+    id: 'management-suppliers',
     icon: 'truck-icon',
     name: 'Suplidores',
   },
   {
-    id: 'warranties',
+    id: 'management-warranties',
     icon: 'certified-icon',
     name: 'Garantías',
   },

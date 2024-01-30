@@ -160,12 +160,14 @@
                 </a>
                 <div aria-labelledby="adminMenu" ngbDropdownMenu>
                   <div class="admin-dropdown">
-                    <a class="dropdown-item" routerLink="/admin/inventory"><i
-                      class="inventory-icon me-1"></i>Inventario</a>
-                    <a class="dropdown-item" routerLink="/admin/dashboard"><i
-                      class="dashboard-icon me-1"></i>Panel
-                      de
-                      Admin</a>
+                    @if (user.role !== 'SalesManager') {
+                      <a class="dropdown-item" routerLink="/admin/inventory"><i
+                        class="inventory-icon me-1"></i>Inventario</a>
+                      <a class="dropdown-item" routerLink="/admin/dashboard"><i
+                        class="dashboard-icon me-1"></i>Panel
+                        de
+                        Admin</a>
+                    }
                   </div>
                 </div>
               </div>

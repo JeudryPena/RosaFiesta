@@ -13,7 +13,7 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin, SalesManager")]
 public class SuppliersController : ControllerBase
 {
 	private readonly IServiceManager _serviceManager;

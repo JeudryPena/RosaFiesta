@@ -54,8 +54,15 @@ internal sealed class WishListService : IWishListService
 			wishListEntity.ProductsWish = new List<WishListProductsEntity>();
 		foreach (var i in wishListDto)
 		{
-			if (wishListEntity.ProductsWish.Any(x => x.OptionId == i.OptionId))
-				throw new Exception("El producto ya esta en tu lista de Deseos");
+			var option = wishListEntity.ProductsWish.FirstOrDefault(x => x.OptionId == i.OptionId);
+			if (option != null)
+			{
+				if (option.IsDeleted)
+					option.IsDeleted = false;
+				else
+					throw new Exception("El producto ya esta en tu lista de Deseos.");
+			}
+			
 			wishListEntity.ProductsWish.Add(new()
 			{
 				WishListId = wishListEntity.Id,
@@ -76,13 +83,23 @@ internal sealed class WishListService : IWishListService
 		WishListEntity wishListEntity = await _repositoryManager.WishListRepository.GetWishListByIdAsync(userId, cancellationToken);
 		if (wishListEntity.ProductsWish == null)
 			wishListEntity.ProductsWish = new List<WishListProductsEntity>();
-		if (wishListEntity.ProductsWish.Any(x => x.OptionId == optionId))
-			throw new Exception("El producto ya esta en tu lista de Deseos.");
-		wishListEntity.ProductsWish.Add(new()
+		var option = wishListEntity.ProductsWish.FirstOrDefault(x => x.OptionId == optionId);
+		if (option != null)
 		{
-			WishListId = wishListEntity.Id,
-			OptionId = optionId
-		});
+			if (option.IsDeleted)
+				option.IsDeleted = false;
+			else
+				throw new Exception("El producto ya esta en tu lista de Deseos.");
+		}
+		else
+		{
+			wishListEntity.ProductsWish.Add(new()
+			{
+				WishListId = wishListEntity.Id,
+				OptionId = optionId
+			});
+		}
+
 		_repositoryManager.WishListRepository.Update(wishListEntity);
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(null, cancellationToken);
 	}

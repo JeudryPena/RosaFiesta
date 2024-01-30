@@ -98,4 +98,12 @@ public class UserRepository : IUserRepository
 		int totalClients = await _context.Users.Where(x => DateOnly.FromDateTime(x.CreatedAt.Date) >= start && DateOnly.FromDateTime(x.CreatedAt.Date) <= end && x.Orders != null && x.Orders.Count > 0).CountAsync(cancellationToken);
 		return totalClients;
 	}
+
+	public async Task<string> GetUserEmail(string userId, CancellationToken cancellationToken)
+	{
+		string? email = await _context.Users.Where(x => x.Id == userId).Select(x => x.Email).FirstOrDefaultAsync(cancellationToken);
+		if (email == null)
+			throw new Exception("User not found");
+		return email;
+	}
 }

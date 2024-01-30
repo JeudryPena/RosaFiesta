@@ -26,6 +26,7 @@ public class AuthenticateController : ControllerBase
 	}
 	
 	[HttpGet("change-promotional-emails")]
+	[Authorize]
 	public async Task<IActionResult> ChangePromotionalEmailsAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -36,6 +37,7 @@ public class AuthenticateController : ControllerBase
 	}
 	
 	[HttpDelete("delete-user")]
+	[Authorize]
 	public async Task<IActionResult> DeleteMyUserAsync(CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

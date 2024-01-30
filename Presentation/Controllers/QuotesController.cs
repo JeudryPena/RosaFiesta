@@ -23,7 +23,7 @@ public class QuotesController : ControllerBase
 	}
 	
 	[HttpGet("count")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles="Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> GetQuotesCount(CancellationToken cancellationToken)
 	{
 		int count = await _serviceManager.QuoteService.GetQuotesCountAsync(cancellationToken);
@@ -31,7 +31,7 @@ public class QuotesController : ControllerBase
 	}
 
 	[HttpGet]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, SalesManager")]
 	public async Task<IActionResult> GetQuotes(CancellationToken cancellationToken)
 	{
 		IEnumerable<QuotePreviewResponse> quotes = await _serviceManager.QuoteService.GetQuotesAsync(cancellationToken);
@@ -39,7 +39,7 @@ public class QuotesController : ControllerBase
 	}
 
 	[HttpGet("{userId}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, SalesManager")]
 	public async Task<IActionResult> GetQuotesByUserId(string userId, CancellationToken cancellationToken)
 	{
 		IEnumerable<QuotePreviewResponse> quotes = await _serviceManager.QuoteService.GetQuotesByUserIdAsync(userId, cancellationToken);
@@ -58,7 +58,7 @@ public class QuotesController : ControllerBase
 	}
 
 	[HttpGet("userQuote/{userId}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles="Admin, ProductsManager, MarketingManager, SalesManager")]
 	public async Task<IActionResult> GetUserQuote(string userId, CancellationToken cancellationToken)
 	{
 		IEnumerable<QuotePreviewResponse> quotes = await _serviceManager.QuoteService.GetQuotesByUserIdAsync(userId, cancellationToken);
@@ -81,6 +81,7 @@ public class QuotesController : ControllerBase
 	}
 	
 	[HttpPut("oficialize")]
+	[Authorize(Roles="Admin, SalesManager")]
 	public async Task<IActionResult> OficializeQuote([FromBody] OficializeQuoteDto oficializeQuoteDto, CancellationToken cancellationToken)
 	{
 		await _serviceManager.QuoteService.OficializeQuoteAsync(oficializeQuoteDto, cancellationToken);

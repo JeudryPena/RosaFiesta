@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
@@ -9,6 +9,7 @@ import {SwalService} from "@core/shared/services/swal.service";
 import {FilesService} from "@core/shared/services/files.service";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {OrderManagementPreviewResponse} from "@core/interfaces/Product/Response/OrderManagementPreviewResponse";
+import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
 
 @Component({
   selector: 'app-last-purchases',
@@ -19,6 +20,8 @@ export class LastPurchasesComponent implements OnInit {
   dataSource: MatTableDataSource<OrderManagementPreviewResponse> = new MatTableDataSource<OrderManagementPreviewResponse>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filesTbSort') filesTbSort = new MatSort();
+  @Input() user: CurrentUserResponse;
+
   displayedColumns: string[] = ['orderId', 'customerName', 'total', 'transactionDate', 'status', 'actions'];
   swalOptions: SweetAlertOptions = {icon: 'info'};
 

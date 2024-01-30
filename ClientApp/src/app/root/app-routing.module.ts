@@ -16,7 +16,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {path: '', loadChildren: publicModule},
-  {path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard]},
+  {path: 'admin', loadChildren: adminModule},
   {path: 'auth', loadChildren: authModule},
   {path: 'intranet', loadChildren: intranetModule, component: LayoutComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: 'main-page'}

@@ -23,7 +23,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpGet("warrantiesList")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> GetWarrantiesForAdmin(CancellationToken cancellationToken)
 	{
 		IEnumerable<WarrantiesListResponse> warranties = await _serviceManager.WarrantyService.GetAllForAdminAsync(cancellationToken);
@@ -31,7 +31,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpGet("management")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> GetWarrantiesForManagement(CancellationToken cancellationToken)
 	{
 		IEnumerable<WarrantiesManagementResponse> warranties = await _serviceManager.WarrantyService.GetAllForManagementAsync(cancellationToken);
@@ -46,7 +46,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpGet("{warrantyId:guid}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> GetManagementWarranty(Guid warrantyId, CancellationToken cancellationToken)
 	{
 		WarrantyResponse warranty = await _serviceManager.WarrantyService.GetWarrantyAsync(warrantyId, cancellationToken);
@@ -70,7 +70,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpPost]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> CreateWarranty([FromBody] WarrantyDto warranty, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -81,7 +81,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpPut("{warrantyId:guid}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> UpdateWarranty(Guid warrantyId, [FromBody] WarrantyDto warrantyDto, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -92,7 +92,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpPut("{warrantyId:guid}/status")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> UpdateWarrantyStatus(Guid warrantyId, [FromBody] int warrantyStatus, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -103,7 +103,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpDelete("{warrantyId:guid}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> DeleteWarranty(Guid warrantyId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -114,7 +114,7 @@ public class WarrantiesController : ControllerBase
 	}
 
 	[HttpDelete("{warrantyId:guid}/products/{productId:guid}")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin, ProductsManager")]
 	public async Task<IActionResult> DeleteWarrantyProduct(Guid warrantyId, Guid productId, CancellationToken cancellationToken)
 	{
 		string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -16,14 +16,17 @@ import {ManagementUsersComponent} from "@admin/inventory/containers/management-u
 import {
   ManagementSuppliersComponent
 } from "@admin/inventory/containers/management-suppliers/management-suppliers.component";
+import {AdminGuard} from "@core/guards/admin.guard";
+import {AdminProductsGuard} from "@core/guards/admin-products.guard";
+import {AdminMarketingGuard} from "@core/guards/admin-marketing.guard";
 
 const routes: Routes = [
-  {path: 'management-warranties', component: ManagementWarrantiesComponent},
-  {path: 'management-categories', component: ManagementCategoriesComponent},
-  {path: 'management-products', component: ManagementProductsComponent},
-  {path: 'management-discounts', component: ManagementDiscountsComponent},
-  {path: '', component: ManagementUsersComponent},
-  {path: 'management-suppliers', component: ManagementSuppliersComponent}
+  {path: 'management-warranties', component: ManagementWarrantiesComponent, canActivate: [AdminProductsGuard]},
+  {path: 'management-categories', component: ManagementCategoriesComponent, canActivate: [AdminProductsGuard]},
+  {path: 'management-products', component: ManagementProductsComponent, canActivate: [AdminProductsGuard]},
+  {path: 'management-discounts', component: ManagementDiscountsComponent, canActivate: [AdminMarketingGuard]},
+  {path: '', component: ManagementUsersComponent, canActivate: [AdminGuard]},
+  {path: 'management-suppliers', component: ManagementSuppliersComponent, canActivate: [AdminProductsGuard]}
 ];
 
 export const inventoryRouter: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

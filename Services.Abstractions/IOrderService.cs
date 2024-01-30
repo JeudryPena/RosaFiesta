@@ -19,4 +19,5 @@ public interface IOrderService
 	Task<bool> OficializeReturnOrderDetailAsync(string userId, Guid orderId, CancellationToken cancellationToken);
 	Task<OrderComparativeResponse> GetOrderCompareAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken);
 	Task<AnalyticDataResponse> GetAnalyticDataAsync(DateOnly start, DateOnly end, CancellationToken cancellationToken);
+	Task<bool> RejectReturnOrderDetailAsync(string userId, Guid orderId, CancellationToken cancellationToken);
 }

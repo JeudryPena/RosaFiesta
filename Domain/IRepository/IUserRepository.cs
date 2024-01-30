@@ -23,4 +23,5 @@ public interface IUserRepository
 	Task<List<string>> GetAdminEmails(CancellationToken cancellationToken);
 	Task<List<string>> GetAllUsersWithPromoEnabled(CancellationToken cancellationToken);
 	Task<int> GetTotalClientsWithDatesAsync(CancellationToken cancellationToken, DateOnly start, DateOnly end);
+	Task<string> GetUserEmail(string userId, CancellationToken cancellationToken);
 }

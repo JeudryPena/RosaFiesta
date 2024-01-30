@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NgxFileDropEntry } from 'ngx-file-drop';
+import {Component, Input, OnInit} from '@angular/core';
+import {NgxFileDropEntry} from 'ngx-file-drop';
 
 @Component({
   selector: 'app-upload-images',
@@ -13,15 +13,13 @@ export class UploadImagesComponent implements OnInit {
   @Input() public read: boolean = false;
   @Input() imageFirst!: number | null;
 
-  constructor(
-
-  ) {
+  constructor() {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     for (const f of this.uploadFiles) {
-      this.preview(f);
+      await this.preview(f);
     }
   }
 
@@ -29,7 +27,7 @@ export class UploadImagesComponent implements OnInit {
     this.imageFirst = index;
   }
 
-  preview(f: File) {
+  async preview(f: File) {
     const reader = new FileReader();
     reader.readAsDataURL(f);
     reader.onload = () => {

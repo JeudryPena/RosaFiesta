@@ -98,6 +98,7 @@ internal sealed class OrderService : IOrderService
 		if (order.Status == OrderStatusType.Rembolso)
 		{
 			order.Status = OrderStatusType.Pagado;
+			await CancelReturnOrderEmailAsync(userId, orderId, cancellationToken);
 		}
 		else
 		{
@@ -127,6 +128,7 @@ internal sealed class OrderService : IOrderService
 		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
 		order.Status = OrderStatusType.Reembolsado;
 		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		await OficializeReturnOrderEmailAsync(userId, orderId, cancellationToken);
 		return true;
 	}
 
@@ -150,6 +152,15 @@ internal sealed class OrderService : IOrderService
 		return analyticData;
 	}
 
+	public async Task<bool> RejectReturnOrderDetailAsync(string userId, Guid orderId, CancellationToken cancellationToken)
+	{
+		OrderEntity order = await _repositoryManager.OrderRepository.GetByIdAsync(orderId, cancellationToken);
+		order.Status = OrderStatusType.Cancelado;
+		await _repositoryManager.UnitOfWork.SaveChangesAsync(userId, cancellationToken);
+		await RejectReturnOrderEmailAsync(userId, orderId, cancellationToken);
+		return true;
+	}
+
 	public async Task ReturnOrderEmailAsync(string userId, Guid orderId, CancellationToken cancellationToken)
 	{
 		string userName = await _repositoryManager.UserRepository.GetUserName(userId, cancellationToken);
@@ -171,5 +182,62 @@ internal sealed class OrderService : IOrderService
 		await _emailSender.SendEmailAsync(message);
 	}
 	
+	public async Task CancelReturnOrderEmailAsync(string userId, Guid orderId, CancellationToken cancellationToken)
+	{
+		string userName = await _repositoryManager.UserRepository.GetUserName(userId, cancellationToken);
+		
+		string codeEncoded = HttpUtility.UrlEncode(userId);
+		string orderIdEncoded = HttpUtility.UrlEncode(orderId.ToString());
+		var param = new Dictionary<string, string?>
+		{
+			{"userId", codeEncoded},
+			{"orderId", orderIdEncoded}
+		};
+		
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/admin/dashboard/orders", param);
+		
+		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Ver solicitud</a>";
+		List<string> emails = await _repositoryManager.UserRepository.GetAdminEmails(cancellationToken);
+
+		var message = new EmailMessage(emails, "Solicitud de reembolso cancelada", $"El Usuario {userName} ha cancelado su solicitud de reembolso, haz Click en el siguiente botón para ver detalles: <br/> <br/> {htmlButton}", null);
+		await _emailSender.SendEmailAsync(message);
+	}
 	
+	public async Task OficializeReturnOrderEmailAsync(string userId, Guid orderId, CancellationToken cancellationToken)
+	{
+		string codeEncoded = HttpUtility.UrlEncode(userId);
+		string orderIdEncoded = HttpUtility.UrlEncode(orderId.ToString());
+		var param = new Dictionary<string, string?>
+		{
+			{"userId", codeEncoded},
+			{"orderId", orderIdEncoded}
+		};
+		
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/admin/dashboard/orders", param);
+		
+		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Ver solicitud</a>";
+		string email = await _repositoryManager.UserRepository.GetUserEmail(userId, cancellationToken);
+
+		var message = new EmailMessage(new[] {email}, "Solicitud de reembolso aprobada", $"Tu solicitud de reembolso ha sido aprobada, haz Click en el siguiente botón para ver tus solicitudes: <br/> <br/> {htmlButton}", null);
+		await _emailSender.SendEmailAsync(message);
+	}
+	
+	public async Task RejectReturnOrderEmailAsync(string userId, Guid orderId, CancellationToken cancellationToken)
+	{
+		string codeEncoded = HttpUtility.UrlEncode(userId);
+		string orderIdEncoded = HttpUtility.UrlEncode(orderId.ToString());
+		var param = new Dictionary<string, string?>
+		{
+			{"userId", codeEncoded},
+			{"orderId", orderIdEncoded}
+		};
+		
+		var callback = QueryHelpers.AddQueryString("http://localhost:4200/admin/dashboard/orders", param);
+		
+		var htmlButton = $"<a href='{callback}' style='background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Ver solicitud</a>";
+		string email = await _repositoryManager.UserRepository.GetUserEmail(userId, cancellationToken);
+
+		var message = new EmailMessage(new[] {email}, "Solicitud de reembolso rechazada", $"Tu solicitud de reembolso ha sido rechazada, haz Click en el siguiente botón para ver tus solicitudes: <br/> <br/> {htmlButton}", null);
+		await _emailSender.SendEmailAsync(message);
+	}
 }
