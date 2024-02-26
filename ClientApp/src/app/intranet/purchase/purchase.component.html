@@ -30,7 +30,7 @@
                           @for (detail of this.details; track detail) {
                             @for (detailOption of detail.purchaseOptions; track detailOption) {
                               <li class="list-group-item d-flex justify-content-between lh-sm">
-                                <div class="row w-100">
+                                <div class="row w-100 ps-3">
                                   <div class="col-auto px-0">
                                     <img alt="" class="rounded-2 purchase-item-image"
                                          src="{{detailOption.option.image | imgPath}}">

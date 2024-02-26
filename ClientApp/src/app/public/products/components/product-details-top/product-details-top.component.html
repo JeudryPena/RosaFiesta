@@ -21,7 +21,7 @@
           <span><img alt="" src="./assets/icons/message.svg"/></span>
           <span>{{ (product.option.reviews)?.length }}</span>
         </div>
-        <div class="separator"></div>
+        <!--        <div class="separator"></div>-->
         <!--        <div class="details-review">-->
         <!--          <span><img src="./assets/icons/basket.png"/></span>-->
         <!--          <span>{{}}</span>-->
@@ -99,7 +99,8 @@
       </div>
       <div class="details-supplier-wrapper">
         <p class="stock-status">
-          <span><i class="fas fa-check"></i></span> {{ product.option.stock }}
+          <span><i class="fas fa-check"></i></span> {{ product.option.stock === 'InStock' ? 'Disponible' : 'Agotado' }}
+          : {{ product.option.quantityAvailable }}
         </p>
         <form [formGroup]="cartForm" action="">
           <div class="supplier-service">

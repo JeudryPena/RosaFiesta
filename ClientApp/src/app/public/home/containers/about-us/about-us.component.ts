@@ -10,6 +10,11 @@ import {AuthenticateService} from "@auth/services/authenticate.service";
 })
 export class AboutUsComponent implements OnInit, OnDestroy {
 
+  options: google.maps.MapOptions = {
+    center: {lat: 40, lng: -20},
+    zoom: 4
+  };
+
   config = config;
 
   myClass = document.getElementById('main');

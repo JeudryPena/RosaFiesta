@@ -6,4 +6,6 @@ export interface OptionCartResponse {
   price: number;
   offerPrice: number;
   discountValue: number;
+  quantityAvailable: number;
+  weight: number;
 }

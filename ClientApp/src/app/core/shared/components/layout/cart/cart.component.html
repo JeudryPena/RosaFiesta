@@ -45,7 +45,13 @@
                      class="btn btn-outline-secondary me-2" min="0" placement="bottom"
                      popoverTitle="Ajustar Cantidad" step="1" triggers="manual" type="number">
               <ng-template #popover>
-                <input [(ngModel)]="detailOption.newQuantity" type="number">
+                <p class="stock-status mb-2">
+                  <span><i
+                    class="fas fa-check"></i></span> {{ detailOption.option.quantityAvailable > detailOption.quantity ? 'Disponible' : 'Agotado' }}
+                  : {{ detailOption.option.quantityAvailable }}
+                </p>
+
+                <input class="form-control-sm" [(ngModel)]="detailOption.newQuantity" type="number">
                 <button
                   (click)="OnQuantityChange(detailOption.newQuantity, detailOption.detailId, detailOption.optionId); p.close()"
                   class="btn btn-primary btn-sm">Guardar

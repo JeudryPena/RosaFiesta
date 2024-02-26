@@ -26,6 +26,7 @@ public class OptionEntity : ISoftDelete
 	public int? Quantity { get; set; }
 	[StringLength(20, MinimumLength = 3)]
 	public ConditionType Condition { get; set; }
+	public float Weight { get; set; }
 	[StringLength(20, MinimumLength = 3)]
 	public GenderType GenderFor { get; set; }
 	public bool IsDeleted { get; set; }

@@ -40,6 +40,11 @@
             </div>
             <div class="col-3">
               <form [formGroup]="cartForm" action="">
+                <p class="stock-status mb-2">
+                  <span><i
+                    class="fas fa-check"></i></span> {{ product.option.quantityAvailable > 0 ? 'Disponible' : 'Agotado' }}
+                  : {{ product.option.quantityAvailable }}
+                </p>
                 <div class="supplier-service d-flex gap-3 align-items-center pb-2">
                   <span>Cantidad</span>
                   <input class="form-control quantity" formControlName="quantity" max="100" min="1" step="1"

@@ -5,6 +5,7 @@ public class OptionPreviewResponse : BaseResponse
 	public Guid Id { get; set; }
 	public string Title { get; set; }
 	public double Price { get; set; }
+	public int QuantityAvailable { get; set; }
 	public MultipleImagesResponse Image { get; set; }
 	public string Condition { get; set; }
 	public float? AverageRating => Reviews == null || Reviews.Count == 0 ? null : Reviews.Average(r => r.Rating);
