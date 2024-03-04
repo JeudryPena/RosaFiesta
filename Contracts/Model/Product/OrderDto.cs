@@ -9,5 +9,7 @@ public sealed class OrderDto
     public string? CurrencyCode { get; set; }
     public string? PayerId { get; set; }
     public double? Shipping { get; set; }
+    public double? ShippingDiscount { get; set; }
+    public double? Taxes { get; set; }
     public DateTimeOffset? TransactionDate { get; set; }
 }

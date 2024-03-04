@@ -1,8 +1,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "types": [
-      "d3-scale"
+      "d3-scale",
+      "googlemaps"
     ],
     "paths": {
       "@node/*": [
@@ -62,6 +67,9 @@
     ]
   },
   "angularCompilerOptions": {
+    "types": [
+      "googlemaps"
+    ],
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

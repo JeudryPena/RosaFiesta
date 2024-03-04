@@ -13,6 +13,8 @@ export interface OrderResponse extends BaseResponse {
   currencyCode: string;
   payerId: string;
   shipping: number;
+  shippingDiscount: number;
+  taxes: number;
   total: number;
   address: AddressDto;
   quote: QuoteDetailPreviewResponse;

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SwalService} from "@core/shared/services/swal.service";
@@ -18,31 +18,47 @@ import {OrderDto} from "@core/interfaces/Product/UserInteract/orderDto";
 
 declare var paypal: any;
 
+export interface Address {
+  description: string,
+  postalCode: string,
+  municipality: string,
+  province: string
+}
+
 @Component({
   selector: 'app-purchase',
   templateUrl: './purchase.component.html',
   styleUrls: ['./purchase.component.sass']
 })
-export class PurchaseComponent implements OnInit {
+export class PurchaseComponent implements OnInit, AfterViewInit {
 
   stepperOrientation: Observable<StepperOrientation>;
 
+  @ViewChild('address', {static: true}) addressElement: ElementRef;
   @ViewChild('paypal', {static: true}) paypalElement: ElementRef;
 
   totalItems: number = 0;
   totalPrice: number = 0;
+  totalWeight: number = 0;
+  itbis: number = 0;
+  taxMetter = 1.5;
   sendPrice: number = 0;
   details: PurchaseDetailResponse[] = [];
+  businessDirection: google.maps.LatLngLiteral = {lat: 18.408969038725395, lng: -70.10919130614657};
+  shippingDiscount: number = 0;
 
   firstStepForm: FormGroup;
+  secondStepForm: FormGroup;
   thirdStepForm: FormGroup;
   swalOptions: SweetAlertOptions = {icon: 'info'};
+  autocomplete: google.maps.places.Autocomplete | undefined;
 
   config = {
     onCompleteAuthorization: (authorization: string) => {
       this.completePurchase(authorization);
     }
   };
+  protected readonly Math = Math;
 
   constructor(
     public modalService: NgbModal,
@@ -54,11 +70,67 @@ export class PurchaseComponent implements OnInit {
     private service: CartsService,
     private warrantyService: WarrantiesService,
     private purchaseService: PurchaseService,
-    private authenticateService: AuthenticateService
+    private authenticateService: AuthenticateService,
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
+  }
+
+  ngAfterViewInit(): void {
+    google.maps.importLibrary('places').then(() => {
+      this.autocomplete = new google.maps.places.Autocomplete(this.addressElement.nativeElement, {
+        componentRestrictions: {country: "DO"},
+        types: ['establishment']
+      });
+      this.autocomplete.addListener("place_changed", async () => {
+        const place = this.autocomplete?.getPlace();
+        let zipCode = "";
+        let province = "";
+        let municipality = "";
+        const municipalityTypes = ["locality", "sublocality", "sublocality_level_1", "sublocality_level_2"];
+        for (let j = 0; j < place.address_components.length; j++) {
+          if (place.address_components[j].types[0] == 'postal_code') {
+            zipCode = place.address_components[j].short_name;
+          }
+          for (let k = 0; k < place.address_components[j].types.length; k++) {
+            const type = place.address_components[j].types[k];
+            if (type == 'administrative_area_level_1') {
+              if (place.address_components[j].long_name != "Distrito Nacional" && place.address_components[j].long_name != "Santo Domingo")
+                province = "Distrito Nacional (Santo Domingo)";
+              else
+                province = place.address_components[j].long_name;
+            } else if (municipalityTypes.includes(type)) {
+              municipality = place.address_components[j].long_name;
+            }
+          }
+        }
+        const sendDirection: google.maps.LatLngLiteral = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        }
+        google.maps.importLibrary('geometry').then(async () => {
+          const distance = google.maps.geometry.spherical.computeDistanceBetween(
+            sendDirection,
+            this.businessDirection
+          );
+          this.sendPrice = (distance * 0.001) * this.taxMetter;
+          if (distance < 4000) {
+            this.shippingDiscount = Math.max((this.totalPrice * 0.25), 0);
+          } else {
+            this.shippingDiscount = 0;
+          }
+
+          this.firstStepForm.setValue({
+            description: place.name,
+            postalCode: zipCode,
+            municipality: municipality,
+            province: province
+          });
+          await this.initConfig();
+        });
+      })
+    });
   }
 
   completePurchase(order: any) {
@@ -80,10 +152,10 @@ export class PurchaseComponent implements OnInit {
       currencyCode: order.purchase_units[0].amount.currency_code,
       payerId: order.payer.payer_id,
       shipping: order.purchase_units[0].amount.breakdown.shipping.value,
+      shippingDiscount: order.purchase_units[0].amount.breakdown.shipping_discount.value,
+      taxes: order.purchase_units[0].amount.breakdown.tax_total.value,
       transactionDate: order.create_time
     }
-
-    console.log(orderDto)
 
     this.purchaseService.purchase(orderDto).subscribe({
       next: (response) => {
@@ -108,16 +180,27 @@ export class PurchaseComponent implements OnInit {
   }
 
   async initConfig() {
+
+    const addressValue = this.firstStepForm.value;
+
+    const addressDto: Address = {
+      description: addressValue.description,
+      postalCode: addressValue.postalCode,
+      municipality: addressValue.municipality,
+      province: addressValue.province
+    }
+
     let items: any[] = [];
     for (let detail of this.details) {
       for (let option of detail.purchaseOptions) {
+        const value = option.option.offerPrice ? option.option.offerPrice : option.option.price;
         const item: any = {
           name: option.option.title,
           quantity: option.quantity.toString(),
           category: "PHYSICAL_GOODS",
           unit_amount: {
             currency_code: 'USD',
-            value: `${option.option.offerPrice ? option.option.offerPrice : option.option.price}`,
+            value: `${value.toFixed(2)}`,
           }
         }
         items.push(item);
@@ -130,18 +213,48 @@ export class PurchaseComponent implements OnInit {
       createOrder: (data, actions) => {
         return actions.order.create({
           intent: 'CAPTURE',
+          application_context: {
+            shipping_preference: 'SET_PROVIDED_ADDRESS'
+          },
           payer: {
-            email_address: `${user.email}`
+            email_address: `${user.email}`,
+            address: {
+              address_line_2: addressDto.description,
+              admin_area_2: addressDto.municipality,
+              postal_code: addressDto.postalCode,
+              country_code: 'DO'
+            }
           },
           purchase_units: [{
             amount: {
               currency_code: 'USD',
-              value: `${this.totalPrice + this.sendPrice}`,
+              value: `${(this.totalPrice + (Math.max((this.sendPrice - this.shippingDiscount), 0)) + this.itbis).toFixed(2)}`,
               breakdown: {
                 item_total: {
                   currency_code: 'USD',
-                  value: `${this.totalPrice + this.sendPrice}`
+                  value: `${(this.totalPrice).toFixed(2)}`
+                },
+                shipping: {
+                  currency_code: 'USD',
+                  value: `${(this.sendPrice).toFixed(2)}`
+                },
+                tax_total: {
+                  currency_code: 'USD',
+                  value: `${(this.itbis).toFixed(2)}`
+                },
+                shipping_discount: {
+                  currency_code: 'USD',
+                  value: `${(this.shippingDiscount).toFixed(2)}`
                 }
+              }
+            },
+            shipping: {
+              address: {
+                address_line_2: addressDto.description,
+                admin_area_2: addressDto.municipality,
+                postal_code: addressDto.postalCode,
+                country_code: 'DO',
+                email: `${user.email}`
               }
             },
             items: items
@@ -182,6 +295,7 @@ export class PurchaseComponent implements OnInit {
         if (response.details) {
           let totalItems = 0;
           let totalPrice = 0;
+          let totalWeight = 0;
           for (let element of response.details) {
             for (let detail of element.purchaseOptions) {
               const discountResponse = this.discountService.GetOptionDiscount(detail.optionId);
@@ -191,8 +305,10 @@ export class PurchaseComponent implements OnInit {
                 detail.option.offerPrice = detail.option.price - (detail.option.price * (discount.value / 100));
                 detail.option.discountValue = discount.value;
                 totalPrice += detail.option.offerPrice * detail.quantity;
+                totalWeight += detail.option.weight * detail.quantity;
               } else {
                 totalPrice += detail.option.price * detail.quantity;
+                totalWeight += detail.option.weight * detail.quantity;
               }
             }
             if (element.warrantyId) {
@@ -203,13 +319,9 @@ export class PurchaseComponent implements OnInit {
 
           this.totalItems = totalItems;
           this.totalPrice = totalPrice;
-          const sendPrice = totalItems * totalPrice * 0.05;
-          if (sendPrice < 200)
-            this.sendPrice = 0;
-          else
-            this.sendPrice = sendPrice;
+          this.totalWeight = totalWeight;
+          this.itbis = totalPrice * 0.18;
           this.details = response.details;
-          await this.initConfig();
         } else {
           this.swalService.show({icon: 'error', title: 'No tienes productos en el carrito'});
           this.router.navigate(['/main-page/home']);
@@ -223,6 +335,12 @@ export class PurchaseComponent implements OnInit {
 
   private initForms() {
     this.firstStepForm = this.fb.group({
+      description: new FormControl('', [Validators.required]),
+      postalCode: new FormControl('', [Validators.required]),
+      municipality: "",
+      province: "",
+    })
+    this.secondStepForm = this.fb.group({
       detailsConfirmed: new FormControl(false, [Validators.required])
     })
     this.thirdStepForm = this.fb.group({

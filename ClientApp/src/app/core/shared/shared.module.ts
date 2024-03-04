@@ -61,6 +61,7 @@ import {ColorPickerModule} from "ngx-color-picker";
 import {PdfComponent} from "@core/shared/components/pdfcomponent/pdf.component";
 import {MainSidenavComponent} from "@core/shared/components/layout/main-sidenav/main-sidenav.component";
 import {LastPurchasesComponent} from "@admin/dashboard/components/last-purchases/last-purchases.component";
+import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 
 const shareButtonsConfig: ShareButtonsConfig = {
   debug: true
@@ -113,7 +114,8 @@ const shareButtonsConfig: ShareButtonsConfig = {
     FilterProductsPipe,
     PdfComponent,
     MainSidenavComponent,
-    LastPurchasesComponent
+    LastPurchasesComponent,
+
   ],
   imports: [
     ReactiveFormsModule,
@@ -133,7 +135,10 @@ const shareButtonsConfig: ShareButtonsConfig = {
     DecimalPipe,
     AvatarModule,
     NgbTimepickerModule,
-    ColorPickerModule
+    ColorPickerModule,
+    GoogleMap,
+    MapMarker,
+    MapInfoWindow
   ],
   exports: [
     TestComponent,
@@ -199,7 +204,10 @@ const shareButtonsConfig: ShareButtonsConfig = {
     ColorPickerModule,
     PdfComponent,
     MainSidenavComponent,
-    LastPurchasesComponent
+    LastPurchasesComponent,
+    GoogleMap,
+    MapMarker,
+    MapInfoWindow
   ],
   providers: [
     NgbRatingConfig,

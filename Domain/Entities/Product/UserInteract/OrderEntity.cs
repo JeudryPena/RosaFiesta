@@ -22,6 +22,8 @@ public class OrderEntity : BaseEntity, IAutoUpdate
 	[StringLength(100, MinimumLength = 3)]
 	public string? PayerId { get; set; } = string.Empty;
 	public double? Shipping { get; set; }
+	public double ShippingDiscount { get; set; }
+	public double Taxes { get; set; }
 	public double? Total { get; set; }
 	public Guid AddressId { get; set; }
 	public AddressEntity Address { get; set; }

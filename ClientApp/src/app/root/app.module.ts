@@ -20,6 +20,8 @@ import {RouterModule} from "@angular/router";
 import {register} from "swiper/element/bundle";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 import {ErrorHandlerService} from "@core/services/error-handler.service";
+import {AvatarModule} from "ngx-avatars";
+
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -45,6 +47,7 @@ register();
     HttpClientModule,
     SocialLoginModule,
     JwtModule,
+    AvatarModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

@@ -41,7 +41,19 @@
             </div>
           </div>
         </div>
-        <google-map [options]="options"/>
+        <div>
+          <!-- (mapClick)="addMarker($event)" (mapMousemove)="move($event)"-->
+          <google-map
+            [height]="height" [options]="options" [width]="width"
+
+          >
+            @for (position of markerPositions; track position) {
+              <map-marker #marker="mapMarker" (mapClick)="openInfoWindow(marker)" [position]="position"
+                          [options]="markerOptions"/>
+            }
+            <map-info-window>Info Window content</map-info-window>
+          </google-map>
+        </div>
       </div>
     </div>
     <div class="footer-container">

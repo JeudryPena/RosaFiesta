@@ -13,6 +13,8 @@ public class OrderResponse : BaseResponse
 	public string TransactionId { get; set; }
 	public string CurrencyCode { get; set; }
 	public string PayerId { get; set; } 
+	public double Taxes { get; set; }
+	public double ShippingDiscount { get; set; }
 	public double Shipping { get; set; }
 	public double Total { get; set; }
 	public AddressDto? Address { get; set; }

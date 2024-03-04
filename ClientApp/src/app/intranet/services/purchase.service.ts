@@ -24,6 +24,10 @@ export class PurchaseService {
   ) {
   }
 
+  getLatLngByZipcode(zipcode: string) {
+    return this.http.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&region=DO&key=${config.googleMapsApiKey}`);
+  }
+
   retrieveAllOrders(take: number = 0): Observable<OrderManagementPreviewResponse[]> {
     return this.http.get<OrderManagementPreviewResponse[]>(`${this.apiUrl}orders/${take}`);
   }

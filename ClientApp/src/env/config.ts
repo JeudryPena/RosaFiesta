@@ -9,4 +9,5 @@ export interface Config {
   payPalClientId: string;
   payPalSecret: string;
   whatsappNumber: string;
+  googleMapsApiKey: string;
 }

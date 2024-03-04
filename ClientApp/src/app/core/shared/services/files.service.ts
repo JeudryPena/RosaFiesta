@@ -135,8 +135,6 @@ export class FilesService {
   generatePDF(action: InvoiceAction = InvoiceAction.VIEW, invoice: OrderResponse) {
 
     const products: PurchaseOrderOptionResponse[] = invoice.details.map(x => x.purchaseOptions).flat();
-    console.log(products)
-
     const total = products.reduce((sum, p) => sum + (p.quantity * p.unitPrice), 0).toFixed(2);
 
     let docDefinition = {
@@ -203,10 +201,13 @@ export class FilesService {
             body: [
 
               ['Producto', 'Precio', 'Cantidad', 'Monto'],
-              ...products.map(p => ([p.title, p.unitPrice, p.quantity, (p.unitPrice * p.quantity).toFixed(2)])), [{
-                text: 'Monto Total',
+              ...products.map(p => ([p.title, p.unitPrice, p.quantity, (p.unitPrice * p.quantity).toFixed(2)])),
+              [{text: 'ITBIS', colSpan: 3}, {}, {}, invoice.taxes],
+              [{
+                text: 'Costo de Envío',
                 colSpan: 3
-              }, {}, {}, total]
+              }, {}, {}, Math.max((invoice.shipping - invoice.shippingDiscount), 0)],
+              [{text: 'Monto Total', colSpan: 3}, {}, {}, total]
             ]
           }
         },

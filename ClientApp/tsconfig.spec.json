@@ -3,8 +3,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
+    "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "types": [
       "jasmine",
+      "googlemaps",
       "@angular/localize"
     ]
   },

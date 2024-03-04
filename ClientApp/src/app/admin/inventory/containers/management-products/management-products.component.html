@@ -25,7 +25,7 @@
             <tr class="table-row">
               <th class="table-cell" scope="col">Código</th>
               <th class="table-cell" scope="col">Servicio</th>
-              <th class="table-cell" scope="col">Opciones</th>
+              <th class="table-cell" scope="col">Opciones / Cantidad</th>
               <th class="table-cell" scope="col">Categoría</th>
               <th class="table-cell" scope="col">Creación</th>
               <th class="table-cell" scope="col">Modificación</th>
@@ -50,9 +50,15 @@
               <td>
                 <div *ngFor="let option of item.options" class="d-flex justify-content-between">
                   <div container="body" ngbDropdown>
-                                            <span class="badge text-bg-primary" ngbDropdownToggle>
-                                                {{ option.title }}
-                                            </span>
+                    <span class="badge text-bg-primary" ngbDropdownToggle>
+                      {{ option.title }}
+                    </span>
+                    <span>
+                        /
+                      </span>
+                    <span class="badge text-bg-success">
+                      {{ option.quantityAvailable }}
+                    </span>
                     <div ngbDropdownMenu>
                       <button (click)="Delete(item.id, option.id)" ngbDropdownItem><i
                         class="fa-solid fa-trash pe-2"></i>Eliminar

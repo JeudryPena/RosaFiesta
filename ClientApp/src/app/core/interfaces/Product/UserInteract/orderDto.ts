@@ -7,6 +7,8 @@ export interface OrderDto {
   transactionId: string;
   currencyCode: string;
   payerId: string;
-  shipping: number;
+  shipping: number | null;
+  shippingDiscount: number | null;
+  taxes: number | null;
   transactionDate: string;
 }
