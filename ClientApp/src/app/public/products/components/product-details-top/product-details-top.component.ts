@@ -8,8 +8,7 @@ import {encrypt} from "@core/shared/util/util-encrypt";
 import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share-buttons.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {WisheslistService} from "@intranet/services/wisheslist.service";
-import {SwalService} from "@core/shared/services/swal.service";
-import Swal, {SweetAlertOptions} from "sweetalert2";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-product-details-top',
@@ -19,8 +18,6 @@ import Swal, {SweetAlertOptions} from "sweetalert2";
 export class ProductDetailsTopComponent implements OnInit {
   cartForm!: FormGroup;
 
-  swalOptions: SweetAlertOptions = {icon: 'info'};
-
   @Input() product: ProductDetailResponse;
   @Input() isAuthenticated = false;
 
@@ -28,8 +25,7 @@ export class ProductDetailsTopComponent implements OnInit {
     private readonly cartService: CartsService,
     private readonly router: Router,
     private readonly modalService: NgbModal,
-    private readonly wishlistService: WisheslistService,
-    private readonly swalService: SwalService,
+    private readonly wishlistService: WisheslistService
   ) {
 
   }
@@ -62,14 +58,23 @@ export class ProductDetailsTopComponent implements OnInit {
 
     this.cartService.AddProductToCart(cartDto).subscribe({
       next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se añadió el producto al carrito correctamente';
-        this.swalOptions.title = 'Producto añadido';
-        this.swalService.show(this.swalOptions);
+
+        Swal.fire({
+          title: "Producto añadido",
+          text: "Se añadió el producto al carrito correctamente",
+          icon: "success"
+        }).then((response) => {
+          if (response.isConfirmed) {
+            this.router.navigate(['/intranet/purchase']);
+          }
+        });
         this.cartService.updatedCart();
-        this.router.navigate(['/intranet/purchase']);
       }, error: (err) => {
-        this.swalService.error();
+        Swal.fire({
+          title: "Error",
+          text: err.message,
+          icon: "error"
+        });
         console.error(err);
       }
     });
@@ -114,13 +119,18 @@ export class ProductDetailsTopComponent implements OnInit {
     }
     this.wishlistService.addToWishList(optionId).subscribe({
       next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha agregado el producto a la lista de deseos correctamente';
-        this.swalOptions.title = 'Producto agregado';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          title: "Producto agregado",
+          text: "Se ha agregado el producto a la lista de deseos correctamente",
+          icon: "success"
+        });
       },
       error: (error) => {
-        this.swalService.showErrors(error, {title: 'Error', text: error.message});
+        Swal.fire({
+          title: "Error",
+          text: error.message,
+          icon: "error"
+        });
       }
     });
   }
@@ -163,13 +173,18 @@ export class ProductDetailsTopComponent implements OnInit {
 
     this.cartService.AddProductToCart(cartDto).subscribe({
       next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se añadió el producto al carrito correctamente';
-        this.swalOptions.title = 'Producto añadido';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          title: "Producto añadido",
+          text: "Se añadió el producto al carrito correctamente",
+          icon: "success"
+        });
         this.cartService.updatedCart();
       }, error: (err) => {
-        this.swalService.error();
+        Swal.fire({
+          title: "Error",
+          text: err.message,
+          icon: "error"
+        });
         console.error(err);
       }
     });

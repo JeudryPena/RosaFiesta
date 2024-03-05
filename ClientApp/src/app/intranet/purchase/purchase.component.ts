@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {SwalService} from "@core/shared/services/swal.service";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal, {SweetAlertOptions} from "sweetalert2";
 import {lastValueFrom, map, Observable} from "rxjs";
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {StepperOrientation} from '@angular/material/stepper';
@@ -62,7 +61,6 @@ export class PurchaseComponent implements OnInit, AfterViewInit {
 
   constructor(
     public modalService: NgbModal,
-    private readonly swalService: SwalService,
     private readonly breakpointObserver: BreakpointObserver,
     private readonly fb: FormBuilder,
     private discountService: DiscountsService,
@@ -159,16 +157,21 @@ export class PurchaseComponent implements OnInit, AfterViewInit {
 
     this.purchaseService.purchase(orderDto).subscribe({
       next: (response) => {
-        this.swalService.show({
+        Swal.fire({
           icon: 'success',
           title: 'Pago procesado correctamente',
           text: 'Gracias por su compra, en breve recibirá un correo con los detalles de su compra, puede revisar el estado de su compra en la sección de mis ordenes'
-        });
-        this.router.navigate(['/intranet/settings']);
+        }).then((result) => {
+          this.router.navigate(['/intranet/settings']);
+        })
         this.service.updatedCart();
       },
       error: (err) => {
-        this.swalService.error();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al procesar el pago',
+          text: 'Ocurrió un error al procesar el pago, por favor intente de nuevo'
+        })
         console.error(err);
       }
     })
@@ -323,11 +326,20 @@ export class PurchaseComponent implements OnInit, AfterViewInit {
           this.itbis = totalPrice * 0.18;
           this.details = response.details;
         } else {
-          this.swalService.show({icon: 'error', title: 'No tienes productos en el carrito'});
-          this.router.navigate(['/main-page/home']);
+          Swal.fire({
+            icon: 'error',
+            title: 'No tienes productos en el carrito',
+            text: 'No tienes productos en el carrito, por favor agrega productos para continuar con el proceso de compra'
+          }).then((result) => {
+            this.router.navigate(['/main-page/home']);
+          });
         }
       }, error: (error) => {
-        this.swalService.error();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al obtener el carrito',
+          text: 'Ocurrió un error al obtener el carrito, por favor intente de nuevo'
+        });
         console.error(error);
       }
     });

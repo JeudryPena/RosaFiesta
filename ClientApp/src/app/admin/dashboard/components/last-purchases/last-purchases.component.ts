@@ -2,10 +2,9 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal, {SweetAlertOptions} from "sweetalert2";
 import {InvoiceAction} from "@core/interfaces/invoice";
 import {PurchaseService} from "@intranet/services/purchase.service";
-import {SwalService} from "@core/shared/services/swal.service";
 import {FilesService} from "@core/shared/services/files.service";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {OrderManagementPreviewResponse} from "@core/interfaces/Product/Response/OrderManagementPreviewResponse";
@@ -29,7 +28,6 @@ export class LastPurchasesComponent implements OnInit {
 
   constructor(
     private readonly purchaseService: PurchaseService,
-    private readonly swal: SwalService,
     private readonly fileService: FilesService
   ) {
   }
@@ -44,7 +42,11 @@ export class LastPurchasesComponent implements OnInit {
         this.fileService.generatePDF(invoiceAction, order);
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al generar la factura, porfavor contacte con el Administrador'
+        })
         console.error(error);
       }
     });
@@ -58,7 +60,11 @@ export class LastPurchasesComponent implements OnInit {
         this.dataSource.sort = this.filesTbSort;
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al obtener las compras, porfavor contacte con el Administrador'
+        })
         console.error(error);
       }
     });

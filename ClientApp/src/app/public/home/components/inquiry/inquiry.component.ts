@@ -4,8 +4,7 @@ import {AuthenticateService} from "@auth/services/authenticate.service";
 import {CurrentUserResponse} from "@core/interfaces/Security/Response/userResponse";
 import {config} from "@env/config.dev";
 import {QuotesService} from "@intranet/services/quotes.service";
-import {SwalService} from "@core/shared/services/swal.service";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal from "sweetalert2";
 import {QuoteDto} from "@core/interfaces/Enterprise/quoteDto";
 
 @Component({
@@ -17,13 +16,11 @@ export class InquiryComponent implements OnInit {
 
   formGroup: FormGroup
   user: CurrentUserResponse;
-  swalOptions: SweetAlertOptions = {icon: 'info'};
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthenticateService,
-    private readonly quoteService: QuotesService,
-    private readonly swalService: SwalService
+    private readonly quoteService: QuotesService
   ) {
 
   }
@@ -53,7 +50,11 @@ export class InquiryComponent implements OnInit {
         this.messageWhatsapp(quote);
       },
       error: (err) => {
-        this.swalService.error();
+        Swal.fire({
+          title: 'Error',
+          text: 'Ocurrio un error al enviar la cotización, por favor contactarse con el Administrador.',
+          icon: 'error'
+        });
         console.error(err)
       }
     });

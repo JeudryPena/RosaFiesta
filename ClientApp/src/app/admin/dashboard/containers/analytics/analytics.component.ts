@@ -9,7 +9,7 @@ import {Platform} from "@angular/cdk/platform";
 import {AnalyticDataResponse} from "@core/interfaces/Product/Response/MostPurchasedProductsResponse";
 import {FilesService} from "@core/shared/services/files.service";
 import {AuthenticateService} from "@auth/services/authenticate.service";
-import {SwalService} from "@core/shared/services/swal.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-analytics',
@@ -39,8 +39,7 @@ export class AnalyticsComponent implements OnInit {
   constructor(
     private readonly purchaseService: PurchaseService,
     private readonly fileService: FilesService,
-    private readonly authenticateService: AuthenticateService,
-    private readonly swalService: SwalService
+    private readonly authenticateService: AuthenticateService
   ) {
   }
 
@@ -128,11 +127,11 @@ export class AnalyticsComponent implements OnInit {
 
   generateReport() {
     if (this.start == null || this.end == null || this.analyticData == null || this.orderComparative.length == 0 || this.multi.length == 0 || this.userName == null) {
-      this.swalService.show({
+      Swal.fire({
         title: 'No se pudo generar el reporte',
         text: 'Es necesario que haya data encontrada en las fechas designadas',
         icon: 'error'
-      });
+      })
       return;
     }
     this.fileService.generateReport(this.start, this.end, this.analyticData, this.orderComparative, this.multi, this.userName);

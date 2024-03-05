@@ -17,8 +17,8 @@ import {ProductsService} from '../../services/products.service';
 import {SuppliersService} from '../../services/suppliers.service';
 import {WarrantiesService} from '../../services/warranties.service';
 import {CategoriesListResponse} from "@core/interfaces/Product/category";
-import {SwalService} from "@core/shared/services/swal.service";
 import {UploadImagesComponent} from "@admin/inventory/components/upload-images/upload-images.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-modal-product',
@@ -64,8 +64,7 @@ export class ModalProductComponent implements OnInit {
     private suppliersService: SuppliersService,
     private filesService: FilesService,
     private fb: FormBuilder,
-    private datePipe: DatePipe,
-    private readonly swalService: SwalService
+    private datePipe: DatePipe
   ) {
 
   }
@@ -240,7 +239,7 @@ export class ModalProductComponent implements OnInit {
   saveOption(optionFormValue: any) {
     const option = {...optionFormValue};
     if (this.uploadFiles.length == 0) {
-      this.swalService.show({
+      Swal.fire({
         title: 'Error',
         text: 'Debe agregar al menos una imagen al producto',
         icon: 'error'
@@ -410,7 +409,7 @@ export class ModalProductComponent implements OnInit {
       if (result) {
         const product = {...productFormValue};
         if (this.options.length === 0) {
-          this.swalService.show({
+          Swal.fire({
             title: 'Error',
             text: 'Debe agregar al menos una opción',
             icon: 'error'
@@ -434,11 +433,11 @@ export class ModalProductComponent implements OnInit {
 
   async OnAddProduct(product: any) {
     if (this.categoryForm?.id == null) {
-      this.swalService.show({
+      Swal.fire({
         title: 'Error',
         text: 'Debe seleccionar una categoría',
         icon: 'error'
-      })
+      });
       return;
     }
     const productDto: ProductDto = {
@@ -471,7 +470,6 @@ export class ModalProductComponent implements OnInit {
 
   colorChange($event: string) {
     const withoutHash = $event.replace(/^[#]?/, "")
-    console.log(withoutHash);
     this.optionForm.controls['color']?.setValue(withoutHash);
   }
 

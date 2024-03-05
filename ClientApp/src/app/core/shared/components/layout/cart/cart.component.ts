@@ -5,9 +5,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CartResponse} from '@core/interfaces/Product/Response/cartResponse';
 import {CartsService} from '@intranet/services/carts.service';
 import {ProductsService} from '@admin/inventory/services/products.service';
-import {SwalService} from "@core/shared/services/swal.service";
 import {WisheslistService} from "@intranet/services/wisheslist.service";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal from "sweetalert2";
 import {lastValueFrom} from "rxjs";
 import {DiscountsService} from "@admin/inventory/services/discounts.service";
 import {PurchaseDetailResponse} from "@core/interfaces/Product/UserInteract/Response/purchaseDetailResponse";
@@ -22,9 +21,6 @@ export class CartComponent implements OnInit {
   viewCart: boolean = false;
   details: PurchaseDetailResponse[] = [];
   totalPrice: number = 0;
-
-  swalOptions: SweetAlertOptions = {icon: 'info'};
-
   @Input() totalItems: number = 0;
   @Output() total: EventEmitter<number> = new EventEmitter<number>();
 
@@ -33,7 +29,6 @@ export class CartComponent implements OnInit {
     public modalService: NgbModal,
     private router: Router,
     private wishlistService: WisheslistService,
-    private swalService: SwalService,
     private discountService: DiscountsService
   ) {
     this.service.getCart$.subscribe({
@@ -54,14 +49,19 @@ export class CartComponent implements OnInit {
   addToWishList(detailId: string, optionId: string) {
     this.wishlistService.addToWishList(optionId).subscribe({
       next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha agregado el producto a la lista de deseos correctamente';
-        this.swalOptions.title = 'Producto agregado';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto agregado',
+          html: 'Se ha agregado el producto a la lista de deseos correctamente',
+        });
         this.deleteItem(detailId, optionId);
       },
       error: (error) => {
-        this.swalService.error();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          html: 'No se ha podido agregar el producto a la lista de deseos',
+        });
         console.error(error);
       }
     });
@@ -94,29 +94,37 @@ export class CartComponent implements OnInit {
           this.total.emit(this.totalItems);
         }
       }, error: (error) => {
-        this.swalService.error();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          html: 'No se ha podido obtener el carrito, por favor contacte al Administrador',
+        });
         console.error(error);
       }
     });
   }
 
   OnQuantityChange(quantity: number, detailId: string, optionId: string) {
-    console.log(quantity)
     this.service.verifyStock(detailId, optionId, quantity).subscribe({
       next: () => {
         this.service.UpdateQuantity(quantity, detailId, optionId).subscribe({
           next: () => {
             this.getCartItems();
           }, error: (error) => {
-            this.swalService.error();
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              html: 'No se ha podido actualizar la cantidad del producto, por favor contacte al Administrador',
+            });
             console.error(error);
           }
         });
       }, error: (error) => {
-        this.swalOptions.icon = 'error';
-        this.swalOptions.html = error;
-        this.swalOptions.title = 'Stock insuficiente';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          icon: 'error',
+          title: 'Stock insuficiente',
+          html: error,
+        });
         this.getCartItems();
         console.error(error);
       }
@@ -126,13 +134,18 @@ export class CartComponent implements OnInit {
   deleteItem(detailId: string, optionId: string) {
     this.service.RemoveItem(detailId, optionId).subscribe({
       next: (response: any) => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha eliminado el producto a la lista de deseos correctamente';
-        this.swalOptions.title = 'Producto eliminado';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto eliminado',
+          html: 'Se ha eliminado el producto del carrito correctamente',
+        });
         this.getCartItems();
       }, error: (error) => {
-        this.swalService.error();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          html: 'No se ha podido eliminar el producto del carrito, por favor contacte al Administrador',
+        });
         console.error(error)
       }
     });
@@ -141,13 +154,18 @@ export class CartComponent implements OnInit {
   clearCart() {
     this.service.ClearCart().subscribe({
       next: (response: any) => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha vaciado el carrito correctamente';
-        this.swalOptions.title = 'Carrito vaciado';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          icon: 'success',
+          title: 'Carrito vaciado',
+          html: 'Se ha vaciado el carrito correctamente',
+        });
         this.getCartItems();
       }, error: (error) => {
-        this.swalService.error();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          html: 'No se ha podido vaciar el carrito, por favor contacte al Administrador',
+        });
         console.error(error);
       }
     });

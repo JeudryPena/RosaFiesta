@@ -6,8 +6,7 @@
       "node_modules/@types"
     ],
     "types": [
-      "d3-scale",
-      "googlemaps"
+      "d3-scale"
     ],
     "paths": {
       "@node/*": [
@@ -68,7 +67,6 @@
   },
   "angularCompilerOptions": {
     "types": [
-      "googlemaps"
     ],
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

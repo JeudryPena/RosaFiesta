@@ -3,10 +3,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {OrderManagementPreviewResponse} from "@core/interfaces/Product/Response/OrderManagementPreviewResponse";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal from "sweetalert2";
 import {InvoiceAction} from "@core/interfaces/invoice";
 import {PurchaseService} from "@intranet/services/purchase.service";
-import {SwalConfirmItem, SwalService} from "@core/shared/services/swal.service";
 import {FilesService} from "@core/shared/services/files.service";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -23,18 +22,11 @@ export class OrdersComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filesTbSort') filesTbSort = new MatSort();
   displayedColumns: string[] = ['orderId', 'customerName', 'total', 'transactionDate', 'status', 'actions'];
-  swalOptions: SweetAlertOptions = {icon: 'info'};
 
   invoiceAction = InvoiceAction;
-  public confirmItem: SwalConfirmItem = {
-    fnConfirm: this.confirmRefund,
-    confirmData: null,
-    context: this
-  };
 
   constructor(
     private readonly purchaseService: PurchaseService,
-    private readonly swal: SwalService,
     private readonly fileService: FilesService,
     public modalService: NgbModal
   ) {
@@ -50,7 +42,11 @@ export class OrdersComponent {
         this.fileService.generatePDF(invoiceAction, order);
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al generar la factura, porfavor contacte con el Administrador'
+        })
         console.error(error);
       }
     });
@@ -73,7 +69,11 @@ export class OrdersComponent {
         };
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al obtener los datos, porfavor contacte con el Administrador'
+        })
         console.error(error);
       }
     });
@@ -94,74 +94,63 @@ export class OrdersComponent {
   }
 
   refund(id: string) {
-    this.confirmItem.fnConfirm = this.confirmRefund;
-    this.confirmItem.confirmData = id;
-    this.swal.setConfirm(this.confirmItem);
-    this.swalOptions.icon = 'question';
-    this.swalOptions.title = 'Oficializar Reembolso';
-    this.swalOptions.html = `¿Esta seguro de que desea oficializar el reembolso?`;
-    this.swalOptions.showConfirmButton = true;
-    this.swalOptions.showCancelButton = true;
-    this.swal.show(this.swalOptions);
-  }
-
-  confirmRefund(isConfirm: string, data: any, context: any) {
-    context.purchaseService.oficializeReturn(data).subscribe({
-      next: () => {
-        context.swalOptions.icon = 'success';
-        context.swalOptions.html = 'Se ha realizado el reembolso correctamente';
-        context.swalOptions.title = 'Rembolso realizado';
-        context.swal.show(context.swalOptions);
-        context.swalOptions.showCancelButton = false;
-        context.confirmItem.fnConfirm = null;
-        context.swal.setConfirm(context.confirmItem);
-        context.retrieveData();
-      },
-      error: (err: HttpErrorResponse) => {
-        context.swal.showErrors(err, {
-          icon: 'error',
-          title: 'Error',
-          html: err.message
+    Swal.fire({
+      icon: 'question',
+      title: 'Reembolso',
+      html: `¿Esta seguro de que desea realizar el reembolso?`,
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.purchaseService.requestRefund(id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Reembolso realizado',
+              html: 'Se ha realizado el reembolso correctamente'
+            });
+            this.retrieveData();
+          },
+          error: (err: HttpErrorResponse) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              html: err.message
+            });
+            console.error(err);
+          }
         });
-        console.error(err);
       }
     });
   }
 
   cancelRefund(id: string) {
-    this.confirmItem.fnConfirm = this.rejectRefund;
-    this.confirmItem.confirmData = id;
-    this.swal.setConfirm(this.confirmItem);
-    this.swalOptions.icon = 'question';
-    this.swalOptions.title = 'Rechazar Reembolso';
-    this.swalOptions.html = `¿Esta seguro de que desea rechazar el reembolso?`;
-    this.swalOptions.showConfirmButton = true;
-    this.swalOptions.showCancelButton = true;
-    this.swal.show(this.swalOptions);
-  }
-
-  rejectRefund(isConfirm: string, data: any, context: any) {
-    context.purchaseService.rejectReturn(data).subscribe({
-      next: () => {
-        context.swalOptions.icon = 'success';
-        context.swalOptions.html = 'Se ha rechazado el reembolso correctamente';
-        context.swalOptions.title = 'Rembolso rechazado';
-        context.swal.show(context.swalOptions);
-        context.swalOptions.showCancelButton = false;
-        context.confirmItem.fnConfirm = null;
-        context.swal.setConfirm(context.confirmItem);
-        context.retrieveData();
-      },
-      error: (err: HttpErrorResponse) => {
-        context.swalOptions.showCancelButton = false;
-        context.confirmItem.fnConfirm = null;
-        context.swal.setConfirm(context.confirmItem);
-        context.swal.showErrors(err, {
-          icon: 'error',
-          title: 'Error',
-          html: err.message
+    Swal.fire({
+      icon: 'question',
+      title: 'Cancelar Reembolso',
+      html: `¿Esta seguro de que desea cancelar el reembolso?`,
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.purchaseService.rejectReturn(id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Reembolso cancelado',
+              html: 'Se ha cancelado el reembolso correctamente'
+            });
+            this.retrieveData();
+          },
+          error: (err: HttpErrorResponse) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              html: err.message
+            });
+            console.error(err);
+          }
         });
-        console.error(err);
       }
     });
   }

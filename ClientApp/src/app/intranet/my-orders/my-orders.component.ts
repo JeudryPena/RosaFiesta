@@ -3,9 +3,8 @@ import {PurchaseService} from "@intranet/services/purchase.service";
 import {OrderPreviewResponse} from "@core/interfaces/Product/Response/orderPreviewResponse";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from '@angular/material/paginator';
-import {SwalService} from "@core/shared/services/swal.service";
 import {MatSort} from "@angular/material/sort";
-import {SweetAlertOptions} from "sweetalert2";
+import Swal from "sweetalert2";
 import {InvoiceAction} from "@core/interfaces/invoice";
 import {OrderResponse} from "@core/interfaces/Product/UserInteract/Response/orderResponse";
 import {FilesService} from "@core/shared/services/files.service";
@@ -25,7 +24,6 @@ export class MyOrdersComponent implements OnInit {
 
   constructor(
     private readonly purchaseService: PurchaseService,
-    private readonly swal: SwalService,
     private readonly fileService: FilesService
   ) {
   }
@@ -40,7 +38,11 @@ export class MyOrdersComponent implements OnInit {
         this.fileService.generatePDF(invoiceAction, order);
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          title: 'No se pudo obtener los datos',
+          icon: 'error',
+          text: 'No se pudo obtener los datos'
+        })
         console.error(error);
       }
     });
@@ -49,15 +51,20 @@ export class MyOrdersComponent implements OnInit {
   requestRefund(id: string) {
     this.purchaseService.requestRefund(id).subscribe({
       next: (data: boolean) => {
-        let swalOptions: SweetAlertOptions = {};
-        swalOptions.title = data ? 'Solicitud de reembolso enviada' : 'No se pudo enviar la solicitud de reembolso';
-        swalOptions.icon = data ? 'success' : 'error';
-        swalOptions.text = data ? 'Se ha enviado la solicitud de reembolso correctamente' : 'Su compra ya excedio el tiempo para solicitar un reembolso';
-        this.swal.show(swalOptions);
-        this.retrieveData()
+        Swal.fire({
+          title: data ? 'Solicitud de reembolso enviada' : 'No se pudo enviar la solicitud de reembolso',
+          icon: data ? 'success' : 'error',
+          text: data ? 'Se ha enviado la solicitud de reembolso correctamente' : 'Su compra ya excedio el tiempo para solicitar un reembolso'
+        }).then(() => {
+          this.retrieveData()
+        });
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          title: 'No se pudo enviar la solicitud de reembolso',
+          icon: 'error',
+          text: 'No se pudo enviar la solicitud de reembolso'
+        })
         console.error(error);
       }
     });
@@ -71,7 +78,11 @@ export class MyOrdersComponent implements OnInit {
         this.dataSource.sort = this.filesTbSort;
       },
       error: (error) => {
-        this.swal.error()
+        Swal.fire({
+          title: 'No se pudo obtener los datos',
+          icon: 'error',
+          text: 'No se pudo obtener los datos'
+        });
         console.error(error);
       }
     });

@@ -4,7 +4,6 @@ import {ReviewsService} from "@intranet/services/reviews.service";
 import {ReviewDto} from "@core/interfaces/Product/UserInteract/reviewDto";
 import {DetailReviewsResponse} from "@core/interfaces/Product/UserInteract/Response/reviewResponse";
 import Swal, {SweetAlertOptions} from "sweetalert2";
-import {SwalService} from "@core/shared/services/swal.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -37,7 +36,6 @@ export class DetailReviewTabComponent implements OnInit, OnChanges {
   constructor(
     private readonly fb: FormBuilder,
     private readonly reviewService: ReviewsService,
-    private readonly swalService: SwalService,
     private readonly router: Router
   ) {
   }

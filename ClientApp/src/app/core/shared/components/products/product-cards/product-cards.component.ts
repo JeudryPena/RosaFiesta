@@ -3,8 +3,7 @@ import {ProductPreviewResponse} from "@core/interfaces/Product/Response/productP
 import {WisheslistService} from "@intranet/services/wisheslist.service";
 import {Router} from "@angular/router";
 import {encrypt} from "@core/shared/util/util-encrypt";
-import {SwalService} from "@core/shared/services/swal.service";
-import Swal, {SweetAlertOptions} from "sweetalert2";
+import Swal from "sweetalert2";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ShareButtonsComponent} from "@core/shared/components/share-buttons/share-buttons.component";
 import {AuthenticateService} from "@auth/services/authenticate.service";
@@ -16,13 +15,11 @@ import {AuthenticateService} from "@auth/services/authenticate.service";
 })
 export class ProductCardsComponent implements OnInit {
   @Input() products: ProductPreviewResponse[];
-  swalOptions: SweetAlertOptions = {icon: 'info'};
   isAuthenticated: boolean;
 
   constructor(
     private readonly wishlistService: WisheslistService,
     private readonly router: Router,
-    private readonly swalService: SwalService,
     private readonly modalService: NgbModal,
     private readonly authService: AuthenticateService
   ) {
@@ -69,13 +66,18 @@ export class ProductCardsComponent implements OnInit {
     }
     this.wishlistService.addToWishList(optionId).subscribe({
       next: () => {
-        this.swalOptions.icon = 'success';
-        this.swalOptions.html = 'Se ha agregado el producto a la lista de deseos correctamente';
-        this.swalOptions.title = 'Producto agregado';
-        this.swalService.show(this.swalOptions);
+        Swal.fire({
+          title: 'Producto agregado',
+          icon: 'success',
+          html: 'Se ha agregado el producto a la lista de deseos correctamente'
+        });
       },
       error: (error) => {
-        this.swalService.showErrors(error, {title: 'Error', html: error.message});
+        Swal.fire({
+          title: 'No se pudo agregar el producto',
+          icon: 'error',
+          html: error.message
+        });
       }
     });
   }

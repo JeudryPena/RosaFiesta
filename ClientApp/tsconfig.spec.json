@@ -9,7 +9,6 @@
     ],
     "types": [
       "jasmine",
-      "googlemaps",
       "@angular/localize"
     ]
   },

@@ -133,25 +133,24 @@ export class FilesService {
   }
 
   generatePDF(action: InvoiceAction = InvoiceAction.VIEW, invoice: OrderResponse) {
-
+    const warranty = invoice.details.find(x => x.warranty !== null).warranty;
     const products: PurchaseOrderOptionResponse[] = invoice.details.map(x => x.purchaseOptions).flat();
+    console.log(invoice)
     const total = products.reduce((sum, p) => sum + (p.quantity * p.unitPrice), 0).toFixed(2);
 
     let docDefinition = {
       content: [
         {
           text: 'RosaFiesta',
-          fontSize: 16,
+          fontSize: 20,
           alignment: 'center',
-          color: '#1980e5'
         },
         {
           text: 'Factura',
-          fontSize: 20,
+          fontSize: 16,
           bold: true,
           alignment: 'center',
-          decoration: 'underline',
-          color: 'skyblue'
+          decoration: 'underline'
         },
         {
           text: 'Detalles del Cliente ',
@@ -201,13 +200,13 @@ export class FilesService {
             body: [
 
               ['Producto', 'Precio', 'Cantidad', 'Monto'],
-              ...products.map(p => ([p.title, p.unitPrice, p.quantity, (p.unitPrice * p.quantity).toFixed(2)])),
-              [{text: 'ITBIS', colSpan: 3}, {}, {}, invoice.taxes],
+              ...products.map(p => ([p.title, `$${p.unitPrice}`, `$${p.quantity}`, `$${(p.unitPrice * p.quantity).toFixed(2)}`])),
+              [{text: 'ITBIS', colSpan: 3}, {}, {}, `$${invoice.taxes}`],
               [{
                 text: 'Costo de Envío',
                 colSpan: 3
-              }, {}, {}, Math.max((invoice.shipping - invoice.shippingDiscount), 0)],
-              [{text: 'Monto Total', colSpan: 3}, {}, {}, total]
+              }, {}, {}, `$${Math.max((invoice.shipping - invoice.shippingDiscount), 0)}`],
+              [{text: 'Monto Total', colSpan: 3}, {}, {}, `$${total}`]
             ]
           }
         },
@@ -226,14 +225,13 @@ export class FilesService {
           ]
         },
         {
-          text: 'Terminos y Condiciones',
+          text: 'Terminos de la Garantía',
           style: 'sectionHeader'
         },
         {
           ul: [
-            `La orden puede ser retornada en maximo 10 dias.`,
-            'La garantía de cada producto esta sujeta a terminos y condiciones del fabricador.',
-            'Esta es la factura de su compra',
+            warranty !== null ? warranty.description :
+              `No aplica.`
           ],
         }
       ],
